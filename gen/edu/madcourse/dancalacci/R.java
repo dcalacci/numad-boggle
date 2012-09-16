@@ -71,8 +71,8 @@ public final class R {
         public static final int sudoku_menu=0x7f0b0001;
     }
     public static final class raw {
-        public static final int game=0x7f060000;
-        public static final int main=0x7f060001;
+        public static final int sudoku_game=0x7f060000;
+        public static final int sudoku_main=0x7f060001;
     }
     public static final class string {
         public static final int about_label=0x7f0a000f;

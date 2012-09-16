@@ -5,12 +5,17 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="15" />
+        android:targetSdkVersion="10" />
+    
+    <!-- NUMAD Authorization -->
+
 
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/CustomTheme" >
+        
+        <!-- Main Activity -->
         <activity
             android:name="edu.madcourse.dancalacci.MainActivity"
             android:label="@string/title_activity_main" >
@@ -21,25 +26,29 @@
             </intent-filter>
         </activity>
         
+        <!-- TeamMembers Activity -->
         <activity 
             android:name=".TeamMembers"
             android:theme="@android:style/Theme.Dialog"
             android:label="@string/team_members_label">
         </activity>
         
+        <!-- Sudoku Activities -->
         <activity
-            android:name="edu.madcourse.dancalacci.sudoku.Sudoku"
+            android:name=".sudoku.Sudoku"
             android:label="@string/sudoku_label">
         </activity>
-
-        <activity android:name="edu.madcourse.dancalacci.sudoku.About"
+        
+        <activity android:name=".sudoku.About"
               android:label="@string/about_title"
               android:theme="@android:style/Theme.Dialog">
         </activity>
-        <activity android:name="edu.madcourse.dancalacci.sudoku.Prefs"
+        
+        <activity android:name=".sudoku.Prefs"
               android:label="@string/settings_title">
         </activity>
-        <activity android:name="edu.madcourse.dancalacci.sudoku.Game"
+        
+        <activity android:name=".sudoku.Game"
               android:label="@string/game_title"/>
     </application>
     

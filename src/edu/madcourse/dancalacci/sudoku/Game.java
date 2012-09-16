@@ -66,7 +66,7 @@ public class Game extends Activity {
    @Override
    protected void onResume() {
       super.onResume();
-      Music.play(this, R.raw.game);
+      Music.play(this, R.raw.sudoku_game);
    }
 
    @Override

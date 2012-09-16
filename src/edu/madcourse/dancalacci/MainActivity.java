@@ -5,12 +5,17 @@ import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
 import android.content.Intent;
+import edu.neu.mobileClass.*;
 import edu.madcourse.dancalacci.sudoku.*;
 
 public class MainActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	// NUMAD Authorization
+    	PhoneCheckAPI.doAuthorization(this);
+    	
+    	//starting the activity
         super.onCreate(savedInstanceState);     
         setContentView(R.layout.activity_main);
         setTitle("Dan Calacci");
@@ -29,7 +34,8 @@ public class MainActivity extends Activity {
     }
     
     public void OnCreateErrorButtonClicked(View v) {
-    	throw new RuntimeException("This is an Error");
+    	// Throwing an error for create_error button
+    	throw new RuntimeException("This intentional Error created by Create Error button.");
     }
     
     public void OnSudokuButtonClicked(View v) {

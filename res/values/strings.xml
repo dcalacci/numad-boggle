@@ -4,7 +4,7 @@
     <string name="app_name">NUMAD-DanCalacci</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">NUMAD-DanCalacci</string>
     
    <!-- Home Screen -->
    <string name="exit_label">Exit</string>
