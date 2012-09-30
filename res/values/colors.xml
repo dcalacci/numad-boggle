@@ -19,4 +19,14 @@
    <color name="puzzle_hint_2">#2000ff80</color>
    <color name="puzzle_selected">#64ff8000</color>
    <color name="title_text">#073642</color>
+   
+   
+   
+   
+   <color name="boggle_boardColor">#657b83</color>
+   <color name="boggle_hilite">#002b36</color>
+   <color name="boggle_light">#64c6d4ef</color>
+   <color name="boggle_dark">#6456648f</color>
+   <color name="boggle_foreground">#002b36</color>
+   <color name="boggle_background">#fdf6e3</color>
 </resources>

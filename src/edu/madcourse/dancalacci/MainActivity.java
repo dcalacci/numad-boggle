@@ -7,6 +7,7 @@ import android.view.View;
 import android.content.Intent;
 import edu.neu.mobileClass.*;
 import edu.madcourse.dancalacci.sudoku.*;
+import edu.madcourse.dancalacci.boggle.*;
 
 public class MainActivity extends Activity {
 
@@ -40,6 +41,11 @@ public class MainActivity extends Activity {
     
     public void OnSudokuButtonClicked(View v) {
     	Intent i = new Intent(this, Sudoku.class);
+    	startActivity(i);
+    }
+    
+    public void OnBoggleButtonClicked(View v) {
+    	Intent i = new Intent(this, Boggle.class);
     	startActivity(i);
     }
 }

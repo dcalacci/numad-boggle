@@ -32,6 +32,12 @@
        android:layout_height="wrap_content"
        android:text="@string/create_error_label" 
        android:onClick="OnCreateErrorButtonClicked" />
+   <Button
+       android:id="@+id/boggle_button"
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+       android:text="@string/boggle_label"
+       android:onClick="OnBoggleButtonClicked" />
        
 <!--    <Button
       android:id="@+id/continue_button"

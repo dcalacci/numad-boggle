@@ -53,6 +53,17 @@
         
         <activity android:name=".sudoku.Game"
               android:label="@string/game_title"/>
+        
+        <activity 
+            android:name=".boggle.Boggle"
+            android:label="@string/boggle_label">
+        </activity>
+        
+        <activity 
+            android:name=".boggle.Game"
+            android:label="@string/boggle_label">
+        </activity>
+        
     </application>
     
 </manifest>
