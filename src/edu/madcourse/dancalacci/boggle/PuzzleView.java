@@ -71,6 +71,8 @@ public class PuzzleView extends View {
    
    float boardWidth;
    float boardHeight;
+   
+   // these need to be not pre-defined.  Test with different resolutions.
    int boardOffSetX = 20;
    int boardOffSetY = 20;
    int boardBottomBuffer = 200;
