@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.util.TypedValue;
 import edu.madcourse.dancalacci.R;
 
 
@@ -49,7 +50,7 @@ public class PuzzleView extends View {
       // ...
       setId(ID); 
    }
-   
+
    @Override
    protected Parcelable onSaveInstanceState() {
 	   Parcelable p = super.onSaveInstanceState();
@@ -69,13 +70,17 @@ public class PuzzleView extends View {
 	   super.onRestoreInstanceState(bundle.getParcelable(VIEW_STATE));
    }
    
-   float boardWidth;
+   float boardBottomSide;
+   float boardRightSide;
    float boardHeight;
+   float boardWidth;
+   
+   float wordEntryHeight;
    
    // these need to be not pre-defined.  Test with different resolutions.
-   int boardOffSetX = 20;
-   int boardOffSetY = 20;
-   int boardBottomBuffer = 200;
+   float boardOffSetX;
+   float boardOffSetY;
+   float boardBottomBuffer;
    float boardBottomBorder;
    float boardRightBorder;
    float boardLeftBorder;
@@ -85,24 +90,47 @@ public class PuzzleView extends View {
    
    @Override
    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-      width = (w-( 2 * boardOffSetX)) / 4f;
-      height = (h - boardBottomBuffer) / 4f;
+	   
+	   
+	 // declarations for the board borders.
+	   
+	 // the start of the left side of the board
+	 boardOffSetX = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 
+			 20, 
+			 getResources().getDisplayMetrics());
+	 // the start of the top of the board
+	 boardOffSetY = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 
+			 20, 
+			 getResources().getDisplayMetrics());
+	 
+     // the x-value of the right side of the board
+     boardRightSide = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 
+    		  300, 
+    		  getResources().getDisplayMetrics());
+     // the y-value of the bottom side of the board
+     boardBottomSide = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 
+    		  300, 
+    		  getResources().getDisplayMetrics());
+     
+     boardWidth = boardRightSide - boardOffSetX; 	// the width of the board in pixels
+     boardHeight = boardBottomSide - boardOffSetY;	// the height ot the board in pixels  
       
-      boardWidth = getWidth() - (2*boardOffSetX);
-      boardHeight = getHeight() - (2*boardOffSetY) - boardBottomBuffer;
+     // the width of each die
+     dieWidth 			= boardWidth/4f;
+     // the height of each die
+     dieHeight			= boardHeight/4f;
+     
+     Log.d(TAG, "onSizeChanged: width " + width + ", height "
+             + height);
+       
       
-      
-      Log.d(TAG, "onSizeChanged: width " + width + ", height "
-            + height);
-      boardBottomBorder = getHeight() - boardBottomBuffer - boardOffSetY;
-      boardRightBorder  = getWidth() - boardOffSetX;
-      boardLeftBorder   = boardOffSetX;
-      boardTopBorder    = boardOffSetY;
-      
-      dieWidth 			= boardWidth/4f;
-      dieHeight			= boardHeight/4f;
 
       
+      
+//      
+//      float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 
+//    		  14, 
+//    		  getResources().getDisplayMetrics());
       super.onSizeChanged(w, h, oldw, oldh);
    }
    
@@ -116,20 +144,33 @@ public class PuzzleView extends View {
       // game background color
       Paint background = new Paint();
       background.setColor(getResources().getColor(R.color.boggle_background));
+      
       // draw game background
       canvas.drawRect(0, 0, getWidth(), getHeight(), background);
-      //draw board background - i'm nervous about using regular numbers here.
-      canvas.drawRect(boardOffSetX, boardOffSetY, getWidth() - boardOffSetX, getHeight() - boardBottomBuffer - boardOffSetY, boardColor);
+
+      // draw the board background
+      canvas.drawRect(	boardOffSetX, 
+    		  			boardOffSetY, 
+    		  			boardRightSide, 
+    		  			boardBottomSide, 
+    		  			boardColor);
       
       // draw background for entered word area
-      canvas.drawRect(	boardOffSetX, 
-    		  			boardBottomBorder+boardOffSetY,
-    		  			getWidth()-boardOffSetX,
-    		  			getHeight()-boardOffSetY,
-    		  			boardColor);
+//      canvas.drawRect(	boardOffSetX, 
+//    		  			boardBottomBorder+boardOffSetY,
+//    		  			getWidth()-boardOffSetX,
+//    		  			getHeight()-boardOffSetY,
+//    		  			boardColor);
+//      canvas.drawRect( 	boardOffSetX,
+//    		  			boardBottomBorder+2*boardOffSetY,
+//    		  			boardWidth,
+//    		  			wordEntryHeight,
+//    		  			boardColor);
+    		  			
  
       
-      // Draw the board...
+      // Draw the board lines
+      
       // Define colors for the grid lines
       Paint dark = new Paint();
       dark.setColor(getResources().getColor(R.color.boggle_dark));
@@ -142,35 +183,37 @@ public class PuzzleView extends View {
 
       // Draw the major grid lines
       for (int i = 0; i < 5; i++) {
-    	  
-    	  canvas.drawLine(boardLeftBorder + i*(boardWidth/4), boardTopBorder, 
-    			          boardLeftBorder + i*(boardWidth/4), boardBottomBorder, 
-    			          hilite);
-    	  canvas.drawLine(boardLeftBorder, boardTopBorder + i*(boardHeight/4),
-    			  		  boardRightBorder, boardTopBorder + i*(boardHeight/4),
-    			  		  hilite);
+    	  // vertical lines
+    	  canvas.drawLine(boardOffSetX + i*(boardWidth/4f), boardOffSetY, 
+    			  boardOffSetX + i*(boardWidth/4f), boardBottomSide, hilite);
+    	  // horizontal lines
+    	  canvas.drawLine(boardOffSetX, boardOffSetY + i*(boardHeight/4f), boardRightSide, 
+    			  boardOffSetY + i*(boardHeight/4f), hilite);
       }
 
-      // Draw the minor grid lines (trying to make them look like real buttons, or something)
+      // Draw the minor grid lines
       for (int i = 0; i < 5; i++) {
     	  
-    	  canvas.drawLine(	boardLeftBorder + i*(boardWidth/4)+1, boardTopBorder, 
-		          			boardLeftBorder + i*(boardWidth/4)+1, boardBottomBorder, 
+    	  canvas.drawLine(	boardOffSetX + i*(boardWidth/4)+1, boardOffSetY, 
+		          			boardOffSetX + i*(boardWidth/4)+1, boardBottomSide, 
 		          			light);
-    	  canvas.drawLine(	boardLeftBorder, boardTopBorder + i*(boardHeight/4)+1,
-		  		  			boardRightBorder, boardTopBorder + i*(boardHeight/4)+1,
+    	  canvas.drawLine(	boardOffSetX, boardOffSetY + i*(boardHeight/4)+1,
+		  		  			boardRightSide, boardOffSetY + i*(boardHeight/4)+1,
 		  		  			light);
-    	  canvas.drawLine(	boardLeftBorder, boardTopBorder + i*(boardHeight/4)-1,
-		  					boardRightBorder, boardTopBorder + i*(boardHeight/4)-1,
+    	  canvas.drawLine(	boardOffSetX, boardOffSetY + i*(boardHeight/4)-1,
+		  					boardRightSide, boardOffSetY + i*(boardHeight/4)-1,
 		  					light);
-    	  canvas.drawLine(	boardLeftBorder + i*(boardWidth/4)-1, boardTopBorder, 
-        					boardLeftBorder + i*(boardWidth/4)-1, boardBottomBorder, 
+    	  canvas.drawLine(	boardOffSetX + i*(boardWidth/4)-1, boardOffSetY, 
+        					boardOffSetX + i*(boardWidth/4)-1, boardBottomSide, 
         					light);
       }
+      
+      // draw the entered word area
       
       
 
       // Draw the numbers...
+      
       // Define color and style for numbers
       Paint foreground = new Paint(Paint.ANTI_ALIAS_FLAG);
       foreground.setColor(getResources().getColor(
@@ -180,16 +223,14 @@ public class PuzzleView extends View {
       foreground.setTextScaleX(dieWidth / dieHeight);
       foreground.setTextAlign(Paint.Align.CENTER);
 
-
-      
       // Draw the number in the center of the tile
       FontMetrics fm = foreground.getFontMetrics();
-      // Centering in X: use alignment (and X at midpoint)
+      
+      // center values for the dies
       float x = dieWidth / 2;
-      // Centering in Y: measure ascent/descent first
       float y = dieHeight / 2 ;
       
-      //drawing letters    		  										  
+      //drawing the letters  		  										  
       for (int i = 0; i<4; i++) {
     	  for (int j=0; j<4; j++) {
     		  canvas.drawText(	this.game.getLetterString(i, j),
@@ -199,10 +240,7 @@ public class PuzzleView extends View {
     	  }
       }
       
-      // Draw the selected 
-      
    }
    
-   // ...
 }
 
