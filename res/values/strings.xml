@@ -30,9 +30,13 @@
    <string name="about_label">About</string>
    <string name="sudoku_exit_label">Exit</string>
    
-   <!-- this needs to be different... -->
+
    <string name="boggle_label">Boggle</string>
    <string name="boggle_new_game_label">New Game</string>
+   <string name="boggle_pause_label">Pause</string>
+   <string name="boggle_resume_label">Resume</string>
+   <string name="boggle_quit_label">Quit</string>
+   <string name="boggle_continue_game_label">Continue Game</string>
 
    <string name="settings_label">Settings...</string>
    <string name="settings_title">Sudoku settings</string>

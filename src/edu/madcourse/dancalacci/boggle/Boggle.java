@@ -20,8 +20,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import edu.madcourse.dancalacci.R;
+import android.widget.Button;
+
 
 public class Boggle extends Activity {
+private static final String PREF_BOARD = "board";
    private static final String TAG = "Sudoku";
    
    /** Called when the activity is first created. */
@@ -30,13 +33,16 @@ public class Boggle extends Activity {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.boggle_main);
       
+      this.setContinueButtonVis();
       setTitle("Boggle");
+      
    }
 
    @Override
    protected void onResume() {
       super.onResume();
       //Music.play(this, R.raw.sudoku_main);
+      this.setContinueButtonVis();
    }
 
    @Override
@@ -47,46 +53,28 @@ public class Boggle extends Activity {
    
    public void OnNewGameButtonClicked(View v) {
 	   Intent i = new Intent(this, Game.class);
+	   i.putExtra(Game.TO_CONTINUE, 0);
 	   startActivity(i);
    }
-
-//   public void onClick(View v) {
-//      switch (v.getId()) {
-//      case R.id.continue_button:
-//      //   startGame(Game.DIFFICULTY_CONTINUE);
-//    	  startGame();
-//         break;
-//         // ...
-//      case R.id.about_button:
-//         Intent i = new Intent(this, About.class);
-//         startActivity(i);
-//         break;
-//      // More buttons go here (if any) ...
-//      case R.id.new_button:
-//         openNewGameDialog();
-//         break;
-//      case R.id.exit_button:
-//         finish();
-//         break;
-//      }
-//   }
    
-//   @Override
-//   public boolean onCreateOptionsMenu(Menu menu) {
-//      super.onCreateOptionsMenu(menu);
-//      MenuInflater inflater = getMenuInflater();
-//      inflater.inflate(R.menu.sudoku_menu, menu);
-//      return true;
-//   }
+   public void OnContinueGameButtonClicked(View v) {
+	   Intent i = new Intent(this, Game.class);
+	   i.putExtra(Game.TO_CONTINUE, 1);
+	   startActivity(i);
+   }
+   
+   /**
+    * Sets the continue button's visibility based on the saved data 
+    * in the application - if there is a saved board, it shows the 
+    * continue button.  If there is not, the continue button is set to invisible.
+    */
+   private void setContinueButtonVis() {
+	      Button continue_button = (Button)findViewById(R.id.boggle_continue_game_button);
+	      if (!getSharedPreferences(Game.BOGGLE_PREF, MODE_PRIVATE).contains(PREF_BOARD)) {
+	    	  continue_button.setVisibility(View.INVISIBLE);
+	      } else {
+	    	  continue_button.setVisibility(View.VISIBLE);
+	      }
+   }
 
-//   @Override
-//   public boolean onOptionsItemSelected(MenuItem item) {
-//      switch (item.getItemId()) {
-//      case R.id.settings:
-//         startActivity(new Intent(this, Prefs.class));
-//         return true;
-//      // More items go here (if any) ...
-//      }
-//      return false;
-//   }
 }

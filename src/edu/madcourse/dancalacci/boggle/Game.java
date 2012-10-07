@@ -1,27 +1,30 @@
 package edu.madcourse.dancalacci.boggle;
 
-import android.R;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import android.app.Activity;
-import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
-import android.widget.Toast;
-import java.util.Collections;
-import java.util.Arrays; 
-import java.util.List; 
-import java.util.ArrayList;
-
-import edu.madcourse.dancalacci.sudoku.Music;
+import android.widget.FrameLayout;
+import edu.madcourse.dancalacci.R;
 
 
 public class Game extends Activity {
 	// tag for this activity
 	private static final String TAG = "Boggle";
 	
+	public static final String BOGGLE_PREF = "edu.madcourse.dancalacci.boggle";
 	private static final String PREF_BOARD = "board";
 	private static final String PREF_SELECTED = "selected";
 	private static final String PREF_TIME = "time";
+	
+	public static final String TO_CONTINUE = "boggle_continue";
+	public static final int CONTINUE = 1;
+	public static final int NEW = 0;
 
 	// view for this puzzle.
 	private PuzzleView puzzleView;
@@ -56,7 +59,7 @@ public class Game extends Activity {
      add( Arrays.asList( 'h', 'l', 'n', 'n', 'r', 'z' ));
      add( Arrays.asList( 'd', 'e', 'i', 'l', 'r', 'x' ));
    }};
-   // TODO: find the older dice distribution, make a new list.
+   // TODO: find the older dice distribution, make a new list for another difficulty
 
    // List that represents what tiles have been selected
    private List<Boolean> selected = new ArrayList<Boolean>();
@@ -66,18 +69,35 @@ public class Game extends Activity {
      super.onCreate(savedInstanceState);
      Log.d(TAG, "onCreate"); // log the event
 
-     // make a new puzzleview, set it to the front view.
+     // set the layout, start the view.
      puzzleView = new PuzzleView(this);
-     setContentView(puzzleView);
-     puzzleView.requestFocus();
-     generateTiles();
-     // should brd be automatically generated and stored here? idk.
+     
+     setContentView(R.layout.boggle_game);
+     FrameLayout boardFrame = (FrameLayout)findViewById(R.id.boggle_board);
+     boardFrame.addView(puzzleView);
+     
+     // if TO_CONTINUE is 1, continue the game.  if not, start a new one.
+     int diff = getIntent().getIntExtra(TO_CONTINUE, CONTINUE);
+     this.startBoard(diff);
+     
    }
+   
+   //TODO: gray out the screen, display a "resume" and "quit" buttons
+//   public void OnPauseButtonClicked(View v) {
+//   }
    
    @Override
    protected void onResume() {
 	   super.onResume();
 	   //Music.play(this, R.raw.game);
+//	   if (getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).contains(PREF_BOARD)) {
+//		   String board = getPreferences(MODE_PRIVATE).getString(PREF_BOARD, "false");
+//		   this.brd = Game.stringToBoard(board);
+//	   }
+//	   if (getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).contains(PREF_SELECTED)) {
+//		   String sel = getPreferences(MODE_PRIVATE).getString(PREF_SELECTED, "false");
+//		   this.selected = Game.stringToSelected(sel);
+//	   }
    }
    
    @Override
@@ -87,14 +107,30 @@ public class Game extends Activity {
 	   // Music.stop(this);
 	   
 	   // save boggle board
-	   getPreferences(MODE_PRIVATE).edit().putString(PREF_BOARD, 
+	   getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).edit().putString(PREF_BOARD, 
 			   boardToString(brd)).commit();
 	   // save the selected characters
-	   getPreferences(MODE_PRIVATE).edit().putString(PREF_SELECTED, 
+	   getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).edit().putString(PREF_SELECTED, 
 			   selectedToString(selected)).commit();
 	   
    }
    
+   /**
+    * Either restores a saved board, or creates a new one, depending on the given state.
+    * @param state 	1 signifies that there is a saved board, 0 signifies there is not.
+    */
+   private void startBoard(int state) {
+	   if (state == 1) {
+		   String board = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).getString(PREF_BOARD, "false");
+		   this.brd = Game.stringToBoard(board);
+		   String sel = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).getString(PREF_SELECTED, "false");
+		   this.selected = Game.stringToSelected(sel);
+	   } else {
+		   getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).edit().remove(PREF_BOARD).commit();
+		   getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).edit().remove(PREF_SELECTED).commit();
+		   this.generateTiles();
+	   }
+   }
    
    // Conversions for saving and resuming from saved preferences
    /**

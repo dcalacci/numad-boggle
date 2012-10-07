@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+
+        <RelativeLayout
+            android:id="@+id/boggle_navbar"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@color/boggle_boardColor"
+	        android:orientation="vertical" 
+	        android:layout_alignParentBottom="true">
+	
+			<ToggleButton
+			    android:id="@+id/boggle_pause_toggle"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentLeft="true"
+			    android:textOff="@string/boggle_pause_label"
+			    android:textOn="@string/boggle_resume_label" />
+			
+			<Button
+	            android:id="@+id/boggle_quit"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_alignParentRight="true"
+	            android:text="@string/boggle_quit_label" />
+    	</RelativeLayout>
+
+
+    <ListView 
+        style="@style/WordListFont"
+        android:id="@+id/boggle_entered_words"
+        android:background="@color/boggle_background"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/boggle_board"
+        android:layout_above="@+id/boggle_navbar">
+    </ListView>
+
+    <FrameLayout
+        android:id="@+id/boggle_board"
+        android:layout_width="fill_parent"
+        android:layout_height="320dp">
+    </FrameLayout>
+    
+</RelativeLayout>

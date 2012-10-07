@@ -11,6 +11,7 @@
 package edu.madcourse.dancalacci.boggle;
 
 import android.content.Context;
+import android.util.AttributeSet;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.FontMetrics;
