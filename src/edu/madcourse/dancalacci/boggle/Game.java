@@ -1,5 +1,8 @@
 package edu.madcourse.dancalacci.boggle;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -7,6 +10,8 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
@@ -117,8 +122,29 @@ public class Game extends Activity {
    }
    
    protected Boolean isWord(String word) {
-	   //Boggle.bloom.add(word);
-	   return Boggle.bloom.contains(word);
+	   int length = word.length();
+	   char c = word.charAt(0);
+	   AssetManager am = getAssets();
+	   try {
+		   InputStreamReader reader = 
+			   new InputStreamReader(am.open(length + "/" + c + ".jpg"), "UTF-8");
+		   BufferedReader br = new BufferedReader(reader); 
+		   String line;
+		   //The line below throws an IOException!!
+		   line = br.readLine();
+		   
+		   while (line !=null) {
+			   if (line.equals(word)) {
+				   return true;
+			   } else {
+				   line = br.readLine();
+			   }
+		   }
+	   } catch (Exception e) {
+		   Log.e("isWord", "Reading file", e);
+	   }
+	   //if it doesn't work, return false.
+	   return false;
    }
    
    

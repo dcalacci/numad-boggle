@@ -24,7 +24,6 @@ import android.view.View.OnClickListener;
 import edu.madcourse.dancalacci.R;
 import android.widget.Button;
 import java.io.*;
-import edu.madcourse.bloomfilter.*;
 import java.util.BitSet;
 
 
@@ -33,7 +32,6 @@ private static final String PREF_BOARD = "board";
 
 // create a new bloom filter with the optimal number of # of hash functions and bits
 // this particular combination of k and m should give us p = 1E-20 probability of a false positive
-public static BloomFilter<String> bloom;
 
    private static final String TAG = "Sudoku";
    
@@ -45,31 +43,8 @@ public static BloomFilter<String> bloom;
       
       this.setContinueButtonVis();
       setTitle("Boggle");
-      
-      this.populateBloomFilter();
    }
 
-   
-   protected void populateBloomFilter() {
-	   BitSet bs;
-	   try {
-		   AssetManager assets = getAssets();
-		   AssetFileDescriptor afd = assets.openFd("bitset.data");
-		   FileInputStream fis = afd.createInputStream();
-		   //InputStream iStream = getAssets().open("bitSet.data");
-		   ObjectInputStream obj_in = new ObjectInputStream(fis);
-		   
-		   Object obj = obj_in.readObject();
-		   bs = (BitSet)obj;
-		   // 33 is the number of hash functions calculated to 
-		   // provide the best probability with the wordlist in use.
-		   bloom = new BloomFilter<String>(bs.size(), 432334, 432334, bs);
-	   } catch (IOException e) {
-		   Log.wtf("BITVECTOR_READWRITE", e);
-	   } catch (ClassNotFoundException e) {
-		   Log.wtf("OBJECT_READ", e);
-	   }
-   }
    
    @Override
    protected void onResume() {
