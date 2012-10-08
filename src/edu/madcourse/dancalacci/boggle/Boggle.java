@@ -21,10 +21,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import edu.madcourse.dancalacci.R;
 import android.widget.Button;
+import java.io.*;
+import edu.madcourse.bloomfilter.*;
+import java.util.BitSet;
 
 
 public class Boggle extends Activity {
 private static final String PREF_BOARD = "board";
+
+// create a new bloom filter with the optimal number of # of hash functions and bits
+// this particular combination of k and m should give us p = 1E-20 probability of a false positive
+public static BloomFilter<String> bloom;
+
    private static final String TAG = "Sudoku";
    
    /** Called when the activity is first created. */
@@ -36,8 +44,28 @@ private static final String PREF_BOARD = "board";
       this.setContinueButtonVis();
       setTitle("Boggle");
       
+      this.populateBloomFilter();
    }
 
+   
+   protected void populateBloomFilter() {
+	   BitSet bs;
+	   try {
+		   InputStream iStream = getAssets().open("bitSet.data");
+		   ObjectInputStream obj_in = new ObjectInputStream(iStream);
+		   
+		   Object obj = obj_in.readObject();
+		   bs = (BitSet)obj;
+		   // 33 is the number of hash functions calculated to 
+		   // provide the best probability with the wordlist in use.
+		   bloom = new BloomFilter<String>(33, bs);
+	   } catch (IOException e) {
+		   Log.wtf("BITVECTOR_READWRITE", e);
+	   } catch (ClassNotFoundException e) {
+		   Log.wtf("OBJECT_READ", e);
+	   }
+   }
+   
    @Override
    protected void onResume() {
       super.onResume();

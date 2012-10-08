@@ -227,6 +227,11 @@ public class PuzzleView extends View {
       // Draw the number in the center of the tile
       FontMetrics fm = foreground.getFontMetrics();
       
+      canvas.drawText( this.game.isWord("aalborg").toString(),
+    		  200, 200, foreground);
+      canvas.drawText( this.game.isWord("absolute").toString(),
+    		  200, 200, foreground);
+      
       // center values for the dies
       float x = dieWidth / 2;
       float y = dieHeight / 2 ;

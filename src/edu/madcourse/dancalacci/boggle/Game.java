@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
 import edu.madcourse.dancalacci.R;
+import edu.madcourse.bloomfilter.*;
 
 
 public class Game extends Activity {
@@ -29,7 +30,6 @@ public class Game extends Activity {
 	// view for this puzzle.
 	private PuzzleView puzzleView;
 	
-	private BloomFilter<String> bloom = new BloomFilter<String>(66, 41439467);
 
 	// the collection of tiles is represented by an array of characters
 	// such that an index refers to a square on the board:
@@ -117,11 +117,10 @@ public class Game extends Activity {
 	   
    }
    
-   private Boolean isWord(String word) {
-	   return bloom.contains(word);
+   protected Boolean isWord(String word) {
+	   //Boggle.bloom.add(word);
+	   return Boggle.bloom.contains(word);
    }
-   
-   
    
    
    /**
