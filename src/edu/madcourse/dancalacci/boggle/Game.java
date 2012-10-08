@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
 import edu.madcourse.dancalacci.R;
-import edu.madcourse.bloomfilter.*;
 
 
 public class Game extends Activity {
