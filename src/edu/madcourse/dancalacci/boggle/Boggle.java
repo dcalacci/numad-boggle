@@ -12,6 +12,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -51,14 +53,17 @@ public static BloomFilter<String> bloom;
    protected void populateBloomFilter() {
 	   BitSet bs;
 	   try {
-		   InputStream iStream = getAssets().open("bitSet.data");
-		   ObjectInputStream obj_in = new ObjectInputStream(iStream);
+		   AssetManager assets = getAssets();
+		   AssetFileDescriptor afd = assets.openFd("bitset.data");
+		   FileInputStream fis = afd.createInputStream();
+		   //InputStream iStream = getAssets().open("bitSet.data");
+		   ObjectInputStream obj_in = new ObjectInputStream(fis);
 		   
 		   Object obj = obj_in.readObject();
 		   bs = (BitSet)obj;
 		   // 33 is the number of hash functions calculated to 
 		   // provide the best probability with the wordlist in use.
-		   bloom = new BloomFilter<String>(33, bs);
+		   bloom = new BloomFilter<String>(bs.size(), 432334, 432334, bs);
 	   } catch (IOException e) {
 		   Log.wtf("BITVECTOR_READWRITE", e);
 	   } catch (ClassNotFoundException e) {
