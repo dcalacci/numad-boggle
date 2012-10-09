@@ -64,6 +64,11 @@
             android:label="@string/boggle_label">
         </activity>
         
+        <activity
+            android:name=".boggle.Pause"
+            android:label="@string/pause_label">
+        </activity>
+        
     </application>
     
 </manifest>

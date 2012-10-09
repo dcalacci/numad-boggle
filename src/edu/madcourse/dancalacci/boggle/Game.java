@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
@@ -399,7 +400,8 @@ public class Game extends Activity {
    public void onSubmitWordButtonClicked(View v) {
 	   String word = iWord.toString();
 	   Log.d(TAG, "User entered word: " + word);
-	   if (isWord(word)) {
+	   // if it's a word and it hasn't been entered yet
+	   if (isWord(word) && !enteredWords.contains(word)) {
 		   this.enteredWords.add(word);
 		   Log.d(TAG, "It's a word! Entered words is now: " + enteredWords.toString());
 		   updateListView();
@@ -420,6 +422,11 @@ public class Game extends Activity {
 	   ListView listview = (ListView)findViewById(R.id.boggle_entered_words);
 	   listview.setAdapter(adapter);
 	   listview.setCacheColorHint(color.boggle_boardColor);
+   }
+   
+   public void onPauseButtonClicked(View v) {
+	   Intent i = new Intent(this, Pause.class);
+	   startActivity(i);
    }
    
    public void onClearWordButtonClicked(View v) {

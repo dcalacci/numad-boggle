@@ -31,6 +31,9 @@
    <string name="sudoku_exit_label">Exit</string>
    <string name="boggle_submit_word_label">Submit Word</string>
    <string name="boggle_clear_word_label">Clear Word</string>
+   <string name="pause_label">Pause</string>
+   <string name="boggle_pause_text">Game Paused</string>
+   <string name="boggle_pause_resume_button_label">Resume Game</string>
 
    <string name="boggle_label">Boggle</string>
    <string name="boggle_new_game_label">New Game</string>
