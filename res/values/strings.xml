@@ -40,7 +40,14 @@
        connected on the Boggle board horizontally, vertically, or diagonally.
        After you are done constructing a word, you can submit the word by 
        pressing the "submit word" button, and you can clear the word
-       that you are currently building using the "clear word" button.</string>
+       that you are currently building using the "clear word" button.
+       You receive one point if the word is three letters.  If the word is
+       over three letters long, you receive a point for every additional letter.\n
+       For example:\n
+       cat would score one point\n
+       home would score two points\n
+       homes would score three points\n
+       and so on.</string>
        
    <string name="boggle_acknowledgements_content">Acknowledgements</string>
    <string name="boggle_acknowledgements_button_label">Acknowledgements</string>

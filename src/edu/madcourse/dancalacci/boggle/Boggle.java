@@ -86,14 +86,14 @@ private static final String PREF_SELECTED = "selected";
    /**
     * Sets the continue button's visibility based on the saved data 
     * in the application - if there is a saved board, it shows the 
-    * continue button.  If there is not, the continue button is set to invisible.
+    * continue button.  If there is not, the continue button is set to GONE.
     */
    private void setContinueButtonVis() {
 	      Button continue_button = (Button)findViewById(R.id.boggle_continue_game_button);
 	      if (!getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).contains(PREF_BOARD)) {
-	    	  continue_button.setVisibility(View.INVISIBLE);
+	    	  continue_button.setVisibility(View.GONE);
 	      } else {
-	    	  continue_button.setVisibility(View.VISIBLE);
+	    	  continue_button.setVisibility(0);
 	      }
    }
 
