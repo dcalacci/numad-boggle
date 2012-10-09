@@ -28,6 +28,7 @@ public class Game extends Activity {
 	private static final String PREF_SELECTED = "selected";
 	private static final String PREF_TIME = "time";
 	protected static final String NO_GAME = "no_game";
+	protected static final String PREF_IWORD = "iword";
 	
 	public static final String TO_CONTINUE = "boggle_continue";
 	public static final int CONTINUE = 1;
@@ -71,7 +72,9 @@ public class Game extends Activity {
 
    // List that represents what tiles have been selected
    private ArrayList<Boolean> selected = new ArrayList<Boolean>();
-
+   
+   protected StringBuffer iWord = new StringBuffer();
+   
    @Override
    protected void onCreate(Bundle savedInstanceState) {
      super.onCreate(savedInstanceState);
@@ -174,12 +177,18 @@ public class Game extends Activity {
    private void startBoard(int state) {
 	   // if it's a continue game
 	   if (state == 1) {
+		   String iword = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).getString(PREF_IWORD, "");
+		   this.iWord = new StringBuffer(iword);
+		   Log.d(TAG, "Current working word is: " +iword);
+		   
 		   String board = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).getString(PREF_BOARD, "false");
 		   this.brd = Game.stringToBoard(board);
+		   
 		   String sel = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).getString(PREF_SELECTED, "false");
 		   Log.d(TAG, "Selected tiles loaded from sharedprefs: " + sel);
 		   this.selected = stringToSelected(sel);
 		   Log.d(TAG, "Selected tiles is now: " + selected.toString());
+		   
 		   this.puzzleView.setSelectedDice(this.selected);
 	   } 
 	   // if it's a new game
@@ -342,7 +351,8 @@ public class Game extends Activity {
    
    /**
     * Renders the letter at the given coordinate position as "selected":
-    * sets the corresponding index in the selected list to true.
+    * sets the corresponding index in the selected list to true, and 
+    * adds the selected characer to the iWord stringbuffer.
     * @param i	the x-coordinate of the selected character
     * @param j	the y-coodinate of the selected character
     */
@@ -350,8 +360,36 @@ public class Game extends Activity {
 	   int index = getTileIndex(i, j);
 	   Log.d(TAG, "Setting tile at " + index + " to true");
 	   selected.set(index, true);
+	   this.iWord.append(getLetter(index));
    }
    
+   protected void deSelectTile(int i, int j) {
+	   int index = getTileIndex(i, j);
+	   Log.d(TAG, "Setting tile at " +index+ "to false");
+	   selected.set(index, false);
+	   this.iWord.deleteCharAt(iWord.length()-1);
+   }
+   
+   
+   /**
+    * Code to execute when the submit word button is pressed
+    * @param v view parameter from button
+    */
+   public void onSubmitWordButtonClicked(View v) {
+	   String word = iWord.toString();
+	   if (isWord(word)) {
+		   //TODO: add word to list
+	   } else {
+		   //TODO: play WRONG sound, don't add word
+	   }
+	   //TODO: remove all selected tiles
+	   
+   }
+   
+   /**
+    * Code to execute when the quit button is pressed
+    * @param v view parameter from button
+    */
    public void onQuitButtonClicked(View v) {
 	   SharedPreferences pref = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE);
 	   SharedPreferences.Editor edit = pref.edit();

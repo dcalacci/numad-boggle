@@ -12,13 +12,12 @@
 	        android:orientation="vertical" 
 	        android:layout_alignParentBottom="true">
 	
-			<ToggleButton
+			<Button
 			    android:id="@+id/boggle_pause_toggle"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
 			    android:layout_alignParentLeft="true"
-			    android:textOff="@string/boggle_pause_label"
-			    android:textOn="@string/boggle_resume_label" />
+			    android:text="@string/boggle_pause_label"/>
 			
 			<Button
 	            android:id="@+id/boggle_quit"
@@ -27,6 +26,16 @@
 	            android:layout_alignParentRight="true"
 	            android:text="@string/boggle_quit_label" 
 	            android:onClick="onQuitButtonClicked"/>
+
+			<Button
+			    android:id="@+id/boggle_submit_word"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentTop="true"
+			    android:layout_centerHorizontal="true" 
+			    android:text="@string/boggle_submit_word_label"
+			    android:onClick="onSubmitWordButtonClicked"/>
+
     	</RelativeLayout>
 
 

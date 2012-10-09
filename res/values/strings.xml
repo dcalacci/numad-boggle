@@ -29,7 +29,7 @@
    <string name="new_game_label">New Game</string>
    <string name="about_label">About</string>
    <string name="sudoku_exit_label">Exit</string>
-   
+   <string name="boggle_submit_word_label">Submit Word</string>
 
    <string name="boggle_label">Boggle</string>
    <string name="boggle_new_game_label">New Game</string>

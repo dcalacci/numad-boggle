@@ -46,6 +46,7 @@ public class PuzzleView extends View {
    private final Game game;
    private static ArrayList<Rect> selRects = new ArrayList<Rect>();
    private static ArrayList<Point> selDie = new ArrayList<Point>();
+//   private static Stack<Point> lastSelected2 = new Stack<Point>();
    private static Point lastSelected;
    
    public PuzzleView(Context context) {
@@ -83,9 +84,6 @@ public class PuzzleView extends View {
    float boardHeight;
    float boardWidth;
    
-   float wordEntryHeight;
-   
-   // these need to be not pre-defined.  Test with different resolutions.
    float boardOffSetX;
    float boardOffSetY;
    float dieWidth;
@@ -101,6 +99,9 @@ public class PuzzleView extends View {
       super.onSizeChanged(w, h, oldw, oldh);
    }
    
+   /**
+    * Sets all the constants for the view.
+    */
    protected void setConstants() {
 		 // the start of the left side of the board
 		 boardOffSetX = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 
@@ -277,6 +278,11 @@ public class PuzzleView extends View {
 				   Log.d("onTouchEvent", "added rect at: " + xIndex + ", " + yIndex);
 				   // refresh screen
 				   invalidate();
+			   }
+			   // if the selected die is already selected and it is the die that was last selected
+			   else if ((isDieSelected(xIndex, yIndex)) && (lastSelected.equals(xIndex, yIndex))) {
+				   
+				   
 			   }
 		   }
 	   }
