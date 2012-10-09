@@ -3,6 +3,7 @@ package edu.madcourse.dancalacci.boggle;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,8 +16,11 @@ import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.ListView;
 import edu.madcourse.dancalacci.R;
+import edu.madcourse.dancalacci.R.color;
 
 
 public class Game extends Activity {
@@ -99,6 +103,7 @@ public class Game extends Activity {
      
      // make the board based on the continue state
      this.startBoard(cont);
+     
      
      
    }
@@ -207,7 +212,7 @@ public class Game extends Activity {
 		   Log.d(TAG, "Selected tiles loaded from sharedprefs: " + sel);
 		   this.selected = stringToSelected(sel);
 		   Log.d(TAG, "Selected tiles is now: " + selected.toString());
-		   
+		   updateListView();
 		   this.puzzleView.setSelectedDice(this.selected);
 	   } 
 	   // if it's a new game
@@ -397,6 +402,7 @@ public class Game extends Activity {
 	   if (isWord(word)) {
 		   this.enteredWords.add(word);
 		   Log.d(TAG, "It's a word! Entered words is now: " + enteredWords.toString());
+		   updateListView();
 		   //TODO: play RIGHT sound
 	   } else {
 		   Log.d(TAG, "It's not a word. Entered words is still: "+ enteredWords.toString());
@@ -404,6 +410,16 @@ public class Game extends Activity {
 	   }
 	   Log.d(TAG, "User just clicked submit word.  Clearing all selected tiles");
 	   this.clearSelectedTiles();
+   }
+   
+   private void updateListView() {
+	   ArrayList entered = enteredWords;
+	   Collections.reverse(entered);
+	   ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, entered);
+	   
+	   ListView listview = (ListView)findViewById(R.id.boggle_entered_words);
+	   listview.setAdapter(adapter);
+	   listview.setCacheColorHint(color.boggle_boardColor);
    }
    
    public void onClearWordButtonClicked(View v) {

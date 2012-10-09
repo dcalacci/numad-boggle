@@ -4,7 +4,7 @@
 
     
     <style name="WordListFont" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">#b58900</item>
+        <item name="android:textColor">#fdf6e3</item>
         <!-- <item name="android:typeface">monospace</item> -->
     </style>
 </resources>

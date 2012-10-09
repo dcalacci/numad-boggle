@@ -52,7 +52,7 @@
     <ListView 
         style="@style/WordListFont"
         android:id="@+id/boggle_entered_words"
-        android:background="@color/boggle_background"
+        android:background="@color/boggle_boardColor"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/boggle_board"
