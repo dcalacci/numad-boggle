@@ -22,6 +22,7 @@ import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Parcelable;
 import android.os.Vibrator;
 import android.util.Log;
@@ -49,6 +50,9 @@ public class PuzzleView extends View {
    private static ArrayList<Rect> selRects = new ArrayList<Rect>();
    private static ArrayList<Point> selDie = new ArrayList<Point>();
    private static Point lastSelected;
+   private int time = 180;
+   private String timeText = "Time Remaning: 180";
+   private boolean gameOver = false;
    
    public PuzzleView(Context context) {
       
@@ -98,6 +102,17 @@ public class PuzzleView extends View {
 //    		  14, 
 //    		  getResources().getDisplayMetrics());
       super.onSizeChanged(w, h, oldw, oldh);
+   }
+   
+   
+   protected void setTime(int time) {
+	   this.time = time;
+	   this.timeText = ("Time Remaning: " +this.time);
+	   invalidate();
+   }
+   
+   protected int getTime() {
+	   return this.time;
    }
    
    /**
@@ -198,7 +213,7 @@ public class PuzzleView extends View {
         					light);
       }
       
-      // draw the score
+      // draw the score and time remaning
       Paint score = new Paint(Paint.ANTI_ALIAS_FLAG);
       score.setColor(getResources().getColor(R.color.boggle_foreground));
       score.setStyle(Style.FILL);
@@ -206,6 +221,10 @@ public class PuzzleView extends View {
       score.setTextAlign(Paint.Align.LEFT);
       
       canvas.drawText("Score: " + game.score, 0, boardOffSetY/1.5f, score);
+      
+      // draw the time
+      score.setTextAlign(Paint.Align.RIGHT);
+      canvas.drawText(timeText, boardRightSide+boardOffSetX, boardOffSetY/1.5f, score);
       // Draw the numbers...
       
       // Define color and style for numbers
@@ -244,6 +263,19 @@ public class PuzzleView extends View {
 	      }
       } else {
     	  
+      }
+      
+      if (gameOver) {
+    	  foreground.setColor(getResources().getColor(R.color.game_over));
+    	  foreground.setTextAlign(Paint.Align.CENTER);
+          canvas.drawText("GAME OVER. SCORE: \n" +game.score, boardWidth/2+boardOffSetX,
+        		  boardHeight/2+boardOffSetY, foreground);
+        try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			Log.e(TAG, "Could not sleep", e);
+		}
+		game.onQuitButtonClicked(this);
       }
    }
    
@@ -512,6 +544,11 @@ public class PuzzleView extends View {
    private float getyCord(int y) {
 	   float height = dieHeight / 2;
 	   return height+boardOffSetY+(2*height*y);
+   }
+   
+   protected void finishGame() {
+	   this.gameOver = true;
+	   invalidate();
    }
    
 }

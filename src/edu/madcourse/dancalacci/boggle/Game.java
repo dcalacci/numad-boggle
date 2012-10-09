@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -172,6 +173,9 @@ public class Game extends Activity {
 		   Log.d(TAG, "Current score: " +score);
 		   edit.putInt(PREF_SCORE, score);
 		   
+		   Log.d(TAG, "Current time: " +puzzleView.getTime());
+		   edit.putInt(PREF_TIME, puzzleView.getTime());
+		   
 		   edit.commit();
 		   Log.d(TAG, "What is actually in sharedprefs: " + pref.getString(PREF_SELECTED, "nothing"));
 	   }
@@ -237,6 +241,11 @@ public class Game extends Activity {
 		   this.selected = stringToSelected(sel);
 		   Log.d(TAG, "Selected tiles is now: " + selected.toString());
 		   updateListView();
+		   
+		   int time = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).getInt(PREF_TIME, 180);
+		   startCountDown(time);
+		   
+		   Log.d(TAG, "Time loaded from sharedprefs: "+puzzleView.getTime());
 		   this.puzzleView.setSelectedDice(this.selected);
 	   } 
 	   // if it's a new game
@@ -254,7 +263,27 @@ public class Game extends Activity {
 		   Log.d(TAG, "setting selected die in startBoard view");
 		   Log.d(TAG, "Selected tiles in startBoard: " +this.selected.toString());
 		   this.puzzleView.setSelectedDice(this.selected);
+		   
+		   startCountDown(180);
 	   }
+   }
+   protected void startCountDown(int time) {
+	   time = time*1000;
+	   new CountDownTimer(time, 100) {
+
+		     public void onTick(long millisUntilFinished) {
+		    	 int time = ((int)millisUntilFinished / 1000);
+		    	 Log.d(TAG, "Setting time to : " +time);
+		    	 puzzleView.setTime(time);
+		    	 puzzleView.invalidate();
+		     }
+
+		     public void onFinish() {
+		    	 puzzleView.setTime(0);
+		    	 puzzleView.finishGame();
+		    	 //TODO: display a "game over" message, button calls quit game.
+		     }
+		  }.start();
    }
    
    
@@ -478,4 +507,5 @@ public class Game extends Activity {
 	   edit.commit();
 	   finish();
    }
+   
 }
