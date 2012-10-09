@@ -22,7 +22,7 @@
    
    
    
-   
+   <color name="boggle_selectedDieColor">#25eee8d5</color>
    <color name="boggle_boardColor">#657b83</color>
    <color name="boggle_hilite">#002b36</color>
    <color name="boggle_light">#64c6d4ef</color>

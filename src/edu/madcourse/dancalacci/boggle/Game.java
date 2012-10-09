@@ -14,18 +14,20 @@ import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.FrameLayout;
 import edu.madcourse.dancalacci.R;
 
 
 public class Game extends Activity {
 	// tag for this activity
-	private static final String TAG = "Boggle";
+	private static final String TAG = "Boggle_Game";
 	
 	public static final String BOGGLE_PREF = "edu.madcourse.dancalacci.boggle";
 	private static final String PREF_BOARD = "board";
 	private static final String PREF_SELECTED = "selected";
 	private static final String PREF_TIME = "time";
+	protected static final String NO_GAME = "no_game";
 	
 	public static final String TO_CONTINUE = "boggle_continue";
 	public static final int CONTINUE = 1;
@@ -42,7 +44,7 @@ public class Game extends Activity {
 	// 9  10 11 12
 	// 13 14 15 16
 	// List that represents the tiles on the board
-   protected List<Character> brd = new ArrayList<Character>();
+   protected ArrayList<Character> brd = new ArrayList<Character>();
   
    // Each list in the top array represents a die
    // Each element of the bottom array represents a side of a die
@@ -68,23 +70,31 @@ public class Game extends Activity {
    // TODO: find the older dice distribution, make a new list for another difficulty
 
    // List that represents what tiles have been selected
-   private List<Boolean> selected = new ArrayList<Boolean>();
+   private ArrayList<Boolean> selected = new ArrayList<Boolean>();
 
    @Override
    protected void onCreate(Bundle savedInstanceState) {
      super.onCreate(savedInstanceState);
      Log.d(TAG, "onCreate"); // log the event
 
+	SharedPreferences pref = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE);
+	SharedPreferences.Editor edit = pref.edit();
+	edit.putBoolean(NO_GAME, false);
+	edit.commit();
+
+     // if TO_CONTINUE is 1, continue the game.  if not, start a new one.
+     int cont = getIntent().getIntExtra(TO_CONTINUE, CONTINUE);
+     this.clearSelectedTiles();
+     
      // set the layout, start the view.
      puzzleView = new PuzzleView(this);
-     
      setContentView(R.layout.boggle_game);
      FrameLayout boardFrame = (FrameLayout)findViewById(R.id.boggle_board);
      boardFrame.addView(puzzleView);
      
-     // if TO_CONTINUE is 1, continue the game.  if not, start a new one.
-     int diff = getIntent().getIntExtra(TO_CONTINUE, CONTINUE);
-     this.startBoard(diff);
+     // make the board based on the continue state
+     this.startBoard(cont);
+     
      
    }
    
@@ -106,18 +116,27 @@ public class Game extends Activity {
 //	   }
    }
    
+   
    @Override
    protected void onPause() {
 	   super.onPause();
 	   Log.d(TAG, "onPause");
 	   // Music.stop(this);
 	   
-	   // save boggle board
-	   getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).edit().putString(PREF_BOARD, 
-			   boardToString(brd)).commit();
-	   // save the selected characters
-	   getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).edit().putString(PREF_SELECTED, 
-			   selectedToString(selected)).commit();
+	   SharedPreferences pref = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE);
+	   SharedPreferences.Editor edit = pref.edit();
+	   
+	   // if 
+	   if (pref.getBoolean(NO_GAME, false)) {
+		   Log.d(TAG, "onPause called from Quit button, not saving anything");
+	   } else {
+		   Log.d(TAG, "Saving board and selected tiles to SharedPrefs");
+		   Log.d(TAG, "Selected tiles to be saved: " + selected.toString());
+		   edit.putString(PREF_BOARD, boardToString(brd));
+		   edit.putString(PREF_SELECTED, selectedToString(selected));
+		   edit.commit();
+		   Log.d(TAG, "What is actually in sharedprefs: " + pref.getString(PREF_SELECTED, "nothing"));
+	   }
 	   
    }
    
@@ -130,7 +149,7 @@ public class Game extends Activity {
 			   new InputStreamReader(am.open(length + "/" + c + ".jpg"), "UTF-8");
 		   BufferedReader br = new BufferedReader(reader); 
 		   String line;
-		   //The line below throws an IOException!!
+		   
 		   line = br.readLine();
 		   
 		   while (line !=null) {
@@ -153,17 +172,47 @@ public class Game extends Activity {
     * @param state 	1 signifies that there is a saved board, 0 signifies there is not.
     */
    private void startBoard(int state) {
+	   // if it's a continue game
 	   if (state == 1) {
 		   String board = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).getString(PREF_BOARD, "false");
 		   this.brd = Game.stringToBoard(board);
 		   String sel = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).getString(PREF_SELECTED, "false");
-		   this.selected = Game.stringToSelected(sel);
-	   } else {
-		   getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).edit().remove(PREF_BOARD).commit();
-		   getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).edit().remove(PREF_SELECTED).commit();
+		   Log.d(TAG, "Selected tiles loaded from sharedprefs: " + sel);
+		   this.selected = stringToSelected(sel);
+		   Log.d(TAG, "Selected tiles is now: " + selected.toString());
+		   this.puzzleView.setSelectedDice(this.selected);
+	   } 
+	   // if it's a new game
+	   else {
+		   // clear all the shared preferences
+		   SharedPreferences pref = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE);
+		   SharedPreferences.Editor edit = pref.edit();
+		   Log.d(TAG, "Clear Shared Prefs");
+		   edit.clear();
+		   edit.commit();
+		   
+		   // generate the board
 		   this.generateTiles();
+		   clearSelectedTiles();
+		   Log.d(TAG, "setting selected die in startBoard view");
+		   Log.d(TAG, "Selected tiles in startBoard: " +this.selected.toString());
+		   this.puzzleView.setSelectedDice(this.selected);
 	   }
    }
+   
+   
+   /**
+    * Clears the arraylist<Boolean> that represents the selected tiles
+    */
+   private void clearSelectedTiles() {
+	   this.selected.clear();
+	   for (int i = 0; i <= 15; i++) {
+		   this.selected.add(false);
+	   }
+	   Log.d(TAG, "Cleared Selected Tiles");
+	   
+   }
+   
    
    // Conversions for saving and resuming from saved preferences
    /**
@@ -184,12 +233,11 @@ public class Game extends Activity {
     * @param rep 	The given string representation of the board
     * @return		The list representation of the selected tiles
     */
-   static protected List<Boolean> stringToSelected(String rep) {
-	   List<Boolean> sel = new ArrayList<Boolean>();
+   protected ArrayList<Boolean> stringToSelected(String rep) {
+	   ArrayList<Boolean> sel = new ArrayList<Boolean>();
 	   for (int i=0; i< rep.length(); i++) {
 		   sel.add( rep.charAt(i) == '1' ?
-				   sel.add(true) :
-					   sel.add(false));
+				     true : false);
 		   }
 	   return sel;
 	   }
@@ -213,8 +261,8 @@ public class Game extends Activity {
     * @param rep	The string representation of the board
     * @return		The list representation of the board
     */
-   static protected List<Character> stringToBoard(String rep) {
-	   List<Character> board = new ArrayList<Character>();
+   static protected ArrayList<Character> stringToBoard(String rep) {
+	   ArrayList<Character> board = new ArrayList<Character>();
 	   for (int i = 0; i < rep.length(); i++) {
 		   board.add(rep.charAt(i));
 	   }
@@ -267,9 +315,10 @@ public class Game extends Activity {
     * @param j	the y-coordinate of the character
     * @return	An Integer representing the index in the board
     */
-   private int getTileIndex(int i, int j) {
+   int getTileIndex(int i, int j) {
 	   return i + (4 * j);
    }
+   
    
    /**
     * Returns the letter at the given index.
@@ -299,9 +348,17 @@ public class Game extends Activity {
     */
    protected void selectTile(int i, int j) {
 	   int index = getTileIndex(i, j);
+	   Log.d(TAG, "Setting tile at " + index + " to true");
 	   selected.set(index, true);
    }
    
-   
-
+   public void onQuitButtonClicked(View v) {
+	   SharedPreferences pref = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE);
+	   SharedPreferences.Editor edit = pref.edit();
+	   Log.d(TAG, "Clear Shared Prefs");
+	   edit.clear();
+	   edit.putBoolean(NO_GAME, true);
+	   edit.commit();
+	   finish();
+   }
 }

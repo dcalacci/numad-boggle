@@ -29,6 +29,8 @@ import java.util.BitSet;
 
 public class Boggle extends Activity {
 private static final String PREF_BOARD = "board";
+public static final String BOGGLE_PREF = "edu.madcourse.dancalacci.boggle";
+private static final String PREF_SELECTED = "selected";
 
 // create a new bloom filter with the optimal number of # of hash functions and bits
 // this particular combination of k and m should give us p = 1E-20 probability of a false positive
@@ -78,7 +80,7 @@ private static final String PREF_BOARD = "board";
     */
    private void setContinueButtonVis() {
 	      Button continue_button = (Button)findViewById(R.id.boggle_continue_game_button);
-	      if (!getSharedPreferences(Game.BOGGLE_PREF, MODE_PRIVATE).contains(PREF_BOARD)) {
+	      if (!getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).contains(PREF_BOARD)) {
 	    	  continue_button.setVisibility(View.INVISIBLE);
 	      } else {
 	    	  continue_button.setVisibility(View.VISIBLE);
