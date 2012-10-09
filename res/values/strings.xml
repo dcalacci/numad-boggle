@@ -34,6 +34,24 @@
    <string name="pause_label">Pause</string>
    <string name="boggle_pause_text">Game Paused</string>
    <string name="boggle_pause_resume_button_label">Resume Game</string>
+   <string name="boggle_rules_button_label">Rules</string>
+   <string name="boggle_rules_text">The words must only use a single letter 
+       on the Boggle board once and all letters in the word must be 
+       connected on the Boggle board horizontally, vertically, or diagonally.
+       After you are done constructing a word, you can submit the word by 
+       pressing the "submit word" button, and you can clear the word
+       that you are currently building using the "clear word" button.</string>
+       
+   <string name="boggle_acknowledgements_content">Acknowledgements</string>
+   <string name="boggle_acknowledgements_button_label">Acknowledgements</string>
+   <string name="boggle_acknowledgements_text">
+       I\'d like to thank several people from this class for giving me
+       inspiration for some of the design concepts I use in this application,
+       especially the timer aspect, but I don\'t know their names.
+       Some pieces of code were inspired by answers to questions on StackOverflow, 
+       and some were taken directly out of the Android Documentation.
+       All images were designed by me.
+   </string>
 
    <string name="boggle_label">Boggle</string>
    <string name="boggle_new_game_label">New Game</string>

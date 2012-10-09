@@ -15,6 +15,8 @@ import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -79,6 +81,17 @@ public class Game extends Activity {
 
    // List that represents what tiles have been selected
    private ArrayList<Boolean> selected = new ArrayList<Boolean>();
+   
+   // timer code
+//   private int currentTime = 180;
+//   private Handler mHandler = new Handler() {
+//	   int what = 1;
+//	   public void handleMessage(Message msg) {
+//		   super.handleMessage(msg);
+//		   this.sendMessageDelayed(Message.obtain(this.what), 1000);
+//		   currentTime--;
+//	   }
+//   };
    
    protected StringBuffer iWord = new StringBuffer();
    

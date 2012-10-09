@@ -69,6 +69,16 @@
             android:label="@string/pause_label">
         </activity>
         
+        <activity
+            android:name=".boggle.Rules"
+            android:label="@string/boggle_rules_button_label">
+        </activity>
+        
+        <activity
+            android:name=".boggle.Acknowledgements"
+            android:label="@string/boggle_acknowledgements_button_label">
+        </activity>
+        
     </application>
     
 </manifest>

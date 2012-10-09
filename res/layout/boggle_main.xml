@@ -27,6 +27,21 @@
       android:layout_height="wrap_content"
       android:text="@string/new_game_label" 
       android:onClick="OnNewGameButtonClicked" />
+
+   <Button
+       android:id="@+id/boggle_rules_button"
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+       android:onClick="OnRulesButtonClicked"
+       android:text="@string/boggle_rules_button_label" />
+
+   <Button
+       android:id="@+id/boggle_acknowledgements_button"
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+       android:onClick="OnAcknowledgementsButtonClicked"
+       android:text="@string/boggle_acknowledgements_button_label" />
+
    <Button
        android:id="@+id/boggle_continue_game_button"
        android:layout_width="fill_parent"

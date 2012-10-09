@@ -73,6 +73,16 @@ private static final String PREF_SELECTED = "selected";
 	   startActivity(i);
    }
    
+   public void OnRulesButtonClicked(View v) {
+	   Intent i = new Intent(this, Rules.class);
+	   startActivity(i);
+   }
+   
+   public void OnAcknowledgementsButtonClicked(View v) {
+	   Intent i = new Intent(this, Acknowledgements.class);
+	   startActivity(i);
+   }
+   
    /**
     * Sets the continue button's visibility based on the saved data 
     * in the application - if there is a saved board, it shows the 
