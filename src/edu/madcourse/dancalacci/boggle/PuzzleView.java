@@ -20,8 +20,10 @@ import android.graphics.Paint;
 import android.graphics.Paint.FontMetrics;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -196,10 +198,14 @@ public class PuzzleView extends View {
         					light);
       }
       
-      // draw the entered word area
+      // draw the score
+      Paint score = new Paint(Paint.ANTI_ALIAS_FLAG);
+      score.setColor(getResources().getColor(R.color.boggle_foreground));
+      score.setStyle(Style.FILL);
+      score.setTextSize(boardOffSetY * .7f);
+      score.setTextAlign(Paint.Align.LEFT);
       
-      
-
+      canvas.drawText("Score: " + game.score, 0, boardOffSetY/1.5f, score);
       // Draw the numbers...
       
       // Define color and style for numbers
@@ -263,6 +269,22 @@ public class PuzzleView extends View {
 			   // if there is no selected die with this xindex and yindex
 			   // and it is adjacent to the last selected die
 			   if ((!isDieSelected(xIndex, yIndex)) && (canSelect(new Point(xIndex, yIndex)))) {
+				   
+				   // make the vibrator for tactile feedback
+				   Log.d(TAG, "User selected a tile - vibrating for 50ms");
+				   Vibrator v = (Vibrator) game.getSystemService(Context.VIBRATOR_SERVICE);
+				   v.vibrate(50);
+				   
+		           MediaPlayer mp = MediaPlayer.create(this.game, R.raw.button);
+		           mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+		               public void onCompletion(MediaPlayer mp) {
+		                   // TODO Auto-generated method stub
+		                   mp.release();
+		               }
+		           });
+		           mp.start();
+
 				   // generate the selected rectangle, add it to  selRects
 				   Rect selected = getDieRect(xIndex, yIndex);
 				   selRects.add(selected);
@@ -282,6 +304,7 @@ public class PuzzleView extends View {
 	   }
 	   return true;
    }
+   
    
    /**
     * Given a representation of the selected tiles, sets the selected tiles

@@ -37,6 +37,7 @@ public class Game extends Activity {
 	protected static final String NO_GAME = "no_game";
 	protected static final String PREF_IWORD = "iword";
 	protected static final String PREF_WORDLIST = "wordlist";
+	protected static final String PREF_SCORE = "score";
 	
 	public static final String TO_CONTINUE = "boggle_continue";
 	public static final int CONTINUE = 1;
@@ -55,6 +56,12 @@ public class Game extends Activity {
 	// List that represents the tiles on the board
    protected ArrayList<Character> brd = new ArrayList<Character>();
    protected ArrayList<String> enteredWords = new ArrayList<String>();
+   
+
+   // List that represents what tiles have been selected
+   private ArrayList<Boolean> selected = new ArrayList<Boolean>();
+   
+   protected int score = 0;
   
    // Each list in the top array represents a die
    // Each element of the bottom array represents a side of a die
@@ -78,9 +85,6 @@ public class Game extends Activity {
      add( Arrays.asList( 'd', 'e', 'i', 'l', 'r', 'x' ));
    }};
    // TODO: find the older dice distribution, make a new list for another difficulty
-
-   // List that represents what tiles have been selected
-   private ArrayList<Boolean> selected = new ArrayList<Boolean>();
    
    // timer code
 //   private int currentTime = 180;
@@ -165,6 +169,9 @@ public class Game extends Activity {
 		   Log.d(TAG, "Current list of entered words to be saved: "+enteredWords.toString());
 		   edit.putString(PREF_WORDLIST, enteredWords.toString());
 		   
+		   Log.d(TAG, "Current score: " +score);
+		   edit.putInt(PREF_SCORE, score);
+		   
 		   edit.commit();
 		   Log.d(TAG, "What is actually in sharedprefs: " + pref.getString(PREF_SELECTED, "nothing"));
 	   }
@@ -221,6 +228,9 @@ public class Game extends Activity {
 		   
 		   String board = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).getString(PREF_BOARD, "false");
 		   this.brd = Game.stringToBoard(board);
+		   
+		   Log.d(TAG, "Score loaded from sharedPrefs: " +score);
+		   this.score = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).getInt(PREF_SCORE, 0);
 		   
 		   String sel = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).getString(PREF_SELECTED, "false");
 		   Log.d(TAG, "Selected tiles loaded from sharedprefs: " + sel);
@@ -418,6 +428,7 @@ public class Game extends Activity {
 		   this.enteredWords.add(word);
 		   Log.d(TAG, "It's a word! Entered words is now: " + enteredWords.toString());
 		   updateListView();
+		   score = score + scoreWord(word);
 		   //TODO: play RIGHT sound
 	   } else {
 		   Log.d(TAG, "It's not a word. Entered words is still: "+ enteredWords.toString());
@@ -425,6 +436,14 @@ public class Game extends Activity {
 	   }
 	   Log.d(TAG, "User just clicked submit word.  Clearing all selected tiles");
 	   this.clearSelectedTiles();
+   }
+   
+   private int scoreWord(String word) {
+	   if (word.length() >= 3) {
+		   return word.length() - 2;
+	   } else {
+		   return 0;
+	   }
    }
    
    private void updateListView() {
