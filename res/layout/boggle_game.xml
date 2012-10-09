@@ -13,11 +13,12 @@
 	        android:layout_alignParentBottom="true">
 	
 			<Button
-			    android:id="@+id/boggle_pause_toggle"
+			    android:id="@+id/boggle_pause"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
 			    android:layout_alignParentLeft="true"
-			    android:text="@string/boggle_pause_label"/>
+			    android:text="@string/boggle_pause_label"
+			    android:onClick="onPauseButtonClicked"/>
 			
 			<Button
 	            android:id="@+id/boggle_quit"
@@ -32,9 +33,18 @@
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
 			    android:layout_alignParentTop="true"
-			    android:layout_centerHorizontal="true" 
+			    android:layout_toLeftOf="@+id/boggle_quit" 
 			    android:text="@string/boggle_submit_word_label"
 			    android:onClick="onSubmitWordButtonClicked"/>
+
+			<Button
+			    android:id="@+id/boggle_clear_word"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentTop="true"
+			    android:layout_toRightOf="@+id/boggle_pause"
+			    android:text="@string/boggle_clear_word_label"
+			    android:onClick="onClearWordButtonClicked" />
 
     	</RelativeLayout>
 

@@ -46,7 +46,6 @@ public class PuzzleView extends View {
    private final Game game;
    private static ArrayList<Rect> selRects = new ArrayList<Rect>();
    private static ArrayList<Point> selDie = new ArrayList<Point>();
-//   private static Stack<Point> lastSelected2 = new Stack<Point>();
    private static Point lastSelected;
    
    public PuzzleView(Context context) {
@@ -278,11 +277,6 @@ public class PuzzleView extends View {
 				   Log.d("onTouchEvent", "added rect at: " + xIndex + ", " + yIndex);
 				   // refresh screen
 				   invalidate();
-			   }
-			   // if the selected die is already selected and it is the die that was last selected
-			   else if ((isDieSelected(xIndex, yIndex)) && (lastSelected.equals(xIndex, yIndex))) {
-				   
-				   
 			   }
 		   }
 	   }

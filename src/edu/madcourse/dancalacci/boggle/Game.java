@@ -29,6 +29,7 @@ public class Game extends Activity {
 	private static final String PREF_TIME = "time";
 	protected static final String NO_GAME = "no_game";
 	protected static final String PREF_IWORD = "iword";
+	protected static final String PREF_WORDLIST = "wordlist";
 	
 	public static final String TO_CONTINUE = "boggle_continue";
 	public static final int CONTINUE = 1;
@@ -46,6 +47,7 @@ public class Game extends Activity {
 	// 13 14 15 16
 	// List that represents the tiles on the board
    protected ArrayList<Character> brd = new ArrayList<Character>();
+   protected ArrayList<String> enteredWords = new ArrayList<String>();
   
    // Each list in the top array represents a die
    // Each element of the bottom array represents a side of a die
@@ -137,6 +139,13 @@ public class Game extends Activity {
 		   Log.d(TAG, "Selected tiles to be saved: " + selected.toString());
 		   edit.putString(PREF_BOARD, boardToString(brd));
 		   edit.putString(PREF_SELECTED, selectedToString(selected));
+		   
+		   Log.d(TAG, "Current word to be saved: " +iWord.toString());
+		   edit.putString(PREF_IWORD, iWord.toString());
+		   
+		   Log.d(TAG, "Current list of entered words to be saved: "+enteredWords.toString());
+		   edit.putString(PREF_WORDLIST, enteredWords.toString());
+		   
 		   edit.commit();
 		   Log.d(TAG, "What is actually in sharedprefs: " + pref.getString(PREF_SELECTED, "nothing"));
 	   }
@@ -144,6 +153,9 @@ public class Game extends Activity {
    }
    
    protected Boolean isWord(String word) {
+	   if (word.isEmpty()) {
+		   return false;
+	   }
 	   int length = word.length();
 	   char c = word.charAt(0);
 	   AssetManager am = getAssets();
@@ -181,6 +193,13 @@ public class Game extends Activity {
 		   this.iWord = new StringBuffer(iword);
 		   Log.d(TAG, "Current working word is: " +iword);
 		   
+		   String entered = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).getString(PREF_WORDLIST, "");
+		   // convert the string representation to a list
+		   List<String> enteredList = Arrays.asList(entered.substring(1, entered.length() - 1).split(", "));
+		   // make an arraylist from that list
+		   this.enteredWords = new ArrayList<String>(enteredList);
+		   Log.d(TAG, "Entered words loaded from sharedPrefs: " + enteredWords.toString());
+		   
 		   String board = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).getString(PREF_BOARD, "false");
 		   this.brd = Game.stringToBoard(board);
 		   
@@ -211,12 +230,17 @@ public class Game extends Activity {
    
    
    /**
-    * Clears the arraylist<Boolean> that represents the selected tiles
+    * Clears the arraylist<Boolean> that represents the selected tiles,
+    * and removes all characters in the string buffer
     */
    private void clearSelectedTiles() {
 	   this.selected.clear();
 	   for (int i = 0; i <= 15; i++) {
 		   this.selected.add(false);
+	   }
+	   this.iWord = new StringBuffer();
+	   if (puzzleView != null) {
+		   this.puzzleView.setSelectedDice(selected);
 	   }
 	   Log.d(TAG, "Cleared Selected Tiles");
 	   
@@ -363,27 +387,27 @@ public class Game extends Activity {
 	   this.iWord.append(getLetter(index));
    }
    
-   protected void deSelectTile(int i, int j) {
-	   int index = getTileIndex(i, j);
-	   Log.d(TAG, "Setting tile at " +index+ "to false");
-	   selected.set(index, false);
-	   this.iWord.deleteCharAt(iWord.length()-1);
-   }
-   
-   
    /**
     * Code to execute when the submit word button is pressed
     * @param v view parameter from button
     */
    public void onSubmitWordButtonClicked(View v) {
 	   String word = iWord.toString();
+	   Log.d(TAG, "User entered word: " + word);
 	   if (isWord(word)) {
-		   //TODO: add word to list
+		   this.enteredWords.add(word);
+		   Log.d(TAG, "It's a word! Entered words is now: " + enteredWords.toString());
+		   //TODO: play RIGHT sound
 	   } else {
+		   Log.d(TAG, "It's not a word. Entered words is still: "+ enteredWords.toString());
 		   //TODO: play WRONG sound, don't add word
 	   }
-	   //TODO: remove all selected tiles
-	   
+	   Log.d(TAG, "User just clicked submit word.  Clearing all selected tiles");
+	   this.clearSelectedTiles();
+   }
+   
+   public void onClearWordButtonClicked(View v) {
+	   this.clearSelectedTiles();
    }
    
    /**
