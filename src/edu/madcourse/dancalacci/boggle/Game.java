@@ -269,7 +269,7 @@ public class Game extends Activity {
    }
    protected void startCountDown(int time) {
 	   time = time*1000;
-	   new CountDownTimer(time, 100) {
+	   new CountDownTimer(time, 1000) {
 
 		     public void onTick(long millisUntilFinished) {
 		    	 int time = ((int)millisUntilFinished / 1000);

@@ -23,6 +23,7 @@ import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.os.Vibrator;
 import android.util.Log;
@@ -266,17 +267,21 @@ public class PuzzleView extends View {
       }
       
       if (gameOver) {
-    	  foreground.setColor(getResources().getColor(R.color.game_over));
-    	  foreground.setTextAlign(Paint.Align.CENTER);
-          canvas.drawText("GAME OVER. SCORE: \n" +game.score, boardWidth/2+boardOffSetX,
-        		  boardHeight/2+boardOffSetY, foreground);
-        try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			Log.e(TAG, "Could not sleep", e);
-		}
+          canvas.drawText("GAME OVER" +game.score, boardWidth/2+boardOffSetX,
+          		  boardHeight/2+boardOffSetY, foreground);
+      final Handler handler = new Handler();
+      final Runnable r = new Runnable()
+      {
+          public void run() 
+          {
+              handler.postDelayed(this, 3000);
+          }
+      };
+      handler.postDelayed(r, 4000);
 		game.onQuitButtonClicked(this);
       }
+      
+
    }
    
    @Override
