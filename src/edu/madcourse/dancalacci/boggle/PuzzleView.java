@@ -139,7 +139,7 @@ public class PuzzleView extends View {
 	    		  getResources().getDisplayMetrics());
 	     
 	     boardWidth = boardRightSide - boardOffSetX; 	// the width of the board in pixels
-	     boardHeight = boardBottomSide - boardOffSetY;	// the height ot the board in pixels  
+	     boardHeight = boardBottomSide - boardOffSetY;	// the height of the board in pixels  
 	      
 	     // the width of each die
 	     dieWidth 			= boardWidth/4f;

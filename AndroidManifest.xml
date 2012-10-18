@@ -30,6 +30,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            android:screenOrientation="portrait"
         </activity>
         
         <!-- TeamMembers Activity -->
@@ -37,29 +38,34 @@
             android:name=".TeamMembers"
             android:theme="@android:style/Theme.Dialog"
             android:label="@string/team_members_label">
+            android:screenOrientation="portrait"
         </activity>
         
         <!-- Sudoku Activities -->
         <activity
             android:name=".sudoku.Sudoku"
             android:label="@string/sudoku_label">
+            android:screenOrientation="portrait"
         </activity>
         
         <activity android:name=".sudoku.About"
-              android:label="@string/about_title"
-              android:theme="@android:style/Theme.Dialog">
+            android:label="@string/about_title"
+            android:theme="@android:style/Theme.Dialog">
+            android:screenOrientation="portrait"
         </activity>
         
         <activity android:name=".sudoku.Prefs"
-              android:label="@string/settings_title">
+            android:label="@string/settings_title">
+            android:screenOrientation="portrait"
         </activity>
         
         <activity android:name=".sudoku.Game"
-              android:label="@string/game_title"/>
+            android:label="@string/game_title"/>
+        	android:screenOrientation="portrait"
         
-        <activity 
-            android:name=".boggle.Boggle"
+        <activity android:name=".boggle.Boggle"
             android:label="@string/boggle_label">
+            android:screenOrientation="portrait"
         </activity>
         
         <activity 
@@ -67,19 +73,19 @@
             android:label="@string/boggle_label">
         </activity>
         
-        <activity
-            android:name=".boggle.Pause"
+        <activity android:name=".boggle.Pause"
             android:label="@string/pause_label">
+            android:screenOrientation="portrait"
         </activity>
         
-        <activity
-            android:name=".boggle.Rules"
+        <activity android:name=".boggle.Rules"
             android:label="@string/boggle_rules_button_label">
+            android:screenOrientation="portrait"
         </activity>
         
-        <activity
-            android:name=".boggle.Acknowledgements"
+        <activity android:name=".boggle.Acknowledgements"
             android:label="@string/boggle_acknowledgements_button_label">
+            android:screenOrientation="portrait"
         </activity>
         
     </application>
