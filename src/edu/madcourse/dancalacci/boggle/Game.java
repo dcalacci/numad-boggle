@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -460,10 +461,24 @@ public class Game extends Activity {
 		   Log.d(TAG, "It's a word! Entered words is now: " + enteredWords.toString());
 		   updateListView();
 		   score = score + scoreWord(word);
-		   //TODO: play RIGHT sound
+           MediaPlayer mp = MediaPlayer.create(this, R.raw.correct_word);
+           mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+               public void onCompletion(MediaPlayer mp) {
+                   mp.release();
+               }
+           });
+           mp.start();
 	   } else {
 		   Log.d(TAG, "It's not a word. Entered words is still: "+ enteredWords.toString());
-		   //TODO: play WRONG sound, don't add word
+           MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
+           mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+               public void onCompletion(MediaPlayer mp) {
+                   mp.release();
+               }
+           });
+           mp.start();
 	   }
 	   Log.d(TAG, "User just clicked submit word.  Clearing all selected tiles");
 	   this.clearSelectedTiles();
@@ -493,6 +508,14 @@ public class Game extends Activity {
    }
    
    public void onClearWordButtonClicked(View v) {
+       MediaPlayer mp = MediaPlayer.create(this, R.raw.clear);
+       mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+           public void onCompletion(MediaPlayer mp) {
+               mp.release();
+           }
+       });
+       mp.start();
 	   this.clearSelectedTiles();
    }
    
