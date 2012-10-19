@@ -109,7 +109,7 @@ public class Game extends Activity {
      // set the layout, start the view.
      puzzleView = new PuzzleView(this);
      setContentView(R.layout.boggle_game);
-     FrameLayout boardFrame = (FrameLayout)findViewById(R.id.boggle_board);
+     FrameLayout boardFrame = (FrameLayout)findViewById(R.id.boggle_tiles);
      boardFrame.addView(puzzleView);
      
      // make the board based on the continue state

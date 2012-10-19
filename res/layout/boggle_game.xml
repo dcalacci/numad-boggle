@@ -1,68 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
-
-        <RelativeLayout
-            android:id="@+id/boggle_navbar"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:background="@color/boggle_boardColor"
-	        android:orientation="vertical" 
-	        android:layout_alignParentBottom="true">
-	
-			<Button
-			    android:id="@+id/boggle_pause"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_alignParentLeft="true"
-			    android:text="@string/boggle_pause_label"
-			    android:onClick="onPauseButtonClicked"/>
-			
-			<Button
-	            android:id="@+id/boggle_quit"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_alignParentRight="true"
-	            android:text="@string/boggle_quit_label" 
-	            android:onClick="onQuitButtonClicked"/>
-
-			<Button
-			    android:id="@+id/boggle_submit_word"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_alignParentTop="true"
-			    android:layout_toLeftOf="@+id/boggle_quit" 
-			    android:text="@string/boggle_submit_word_label"
-			    android:onClick="onSubmitWordButtonClicked"/>
-
-			<Button
-			    android:id="@+id/boggle_clear_word"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_alignParentTop="true"
-			    android:layout_toRightOf="@+id/boggle_pause"
-			    android:text="@string/boggle_clear_word_label"
-			    android:onClick="onClearWordButtonClicked" />
-
-    	</RelativeLayout>
-
-
-    <ListView 
-        style="@style/WordListFont"
-        android:id="@+id/boggle_entered_words"
-        android:background="@color/boggle_boardColor"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:weightSum="1.0" >
+
+        <FrameLayout
+            android:id="@+id/boggle_tiles"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".70" >
+        </FrameLayout>
+
+        <ListView
+            android:id="@+id/boggle_entered_words"
+            style="@style/WordListFont"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".30"
+            android:background="@color/boggle_boardColor" >
+        </ListView>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/boggle_navbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/boggle_board"
-        android:layout_above="@+id/boggle_navbar">
-    </ListView>
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@color/boggle_boardColor"
+        android:gravity="bottom"
+        android:orientation="vertical" >
 
-    <FrameLayout
-        android:id="@+id/boggle_board"
-        android:layout_width="fill_parent"
-        android:layout_height="320dp">
-    </FrameLayout>
-    
+        <Button
+            android:id="@+id/boggle_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:onClick="onPauseButtonClicked"
+            android:text="@string/boggle_pause_label" />
+
+        <Button
+            android:id="@+id/boggle_quit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:onClick="onQuitButtonClicked"
+            android:text="@string/boggle_quit_label" />
+
+        <Button
+            android:id="@+id/boggle_submit_word"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/boggle_quit"
+            android:onClick="onSubmitWordButtonClicked"
+            android:text="@string/boggle_submit_word_label" />
+
+        <Button
+            android:id="@+id/boggle_clear_word"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/boggle_pause"
+            android:onClick="onClearWordButtonClicked"
+            android:text="@string/boggle_clear_word_label" />
+    </RelativeLayout>
+
 </RelativeLayout>
