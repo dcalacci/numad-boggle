@@ -1,5 +1,6 @@
-package edu.madcourse.dancalacci.boggle;
+	package edu.madcourse.dancalacci.boggle;
 
+import edu.neu.mobileclass.apis.KeyValueAPI;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -14,18 +15,21 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import edu.madcourse.dancalacci.R;
 import edu.madcourse.dancalacci.R.color;
-
+// go_ogle_me
+// googleme
 
 public class Game extends Activity {
 	// tag for this activity
@@ -87,23 +91,13 @@ public class Game extends Activity {
    }};
    // TODO: find the older dice distribution, make a new list for another difficulty
    
-   // timer code
-//   private int currentTime = 180;
-//   private Handler mHandler = new Handler() {
-//	   int what = 1;
-//	   public void handleMessage(Message msg) {
-//		   super.handleMessage(msg);
-//		   this.sendMessageDelayed(Message.obtain(this.what), 1000);
-//		   currentTime--;
-//	   }
-//   };
-   
    protected StringBuffer iWord = new StringBuffer();
    
    @Override
    protected void onCreate(Bundle savedInstanceState) {
      super.onCreate(savedInstanceState);
      Log.d(TAG, "onCreate"); // log the event
+     requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 	SharedPreferences pref = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE);
 	SharedPreferences.Editor edit = pref.edit();
@@ -117,14 +111,11 @@ public class Game extends Activity {
      // set the layout, start the view.
      puzzleView = new PuzzleView(this);
      setContentView(R.layout.boggle_game);
-     FrameLayout boardFrame = (FrameLayout)findViewById(R.id.boggle_board);
+     FrameLayout boardFrame = (FrameLayout)findViewById(R.id.boggle_tiles);
      boardFrame.addView(puzzleView);
      
      // make the board based on the continue state
      this.startBoard(cont);
-     
-     
-     
    }
    
    //TODO: gray out the screen, display a "resume" and "quit" buttons
@@ -458,10 +449,24 @@ public class Game extends Activity {
 		   Log.d(TAG, "It's a word! Entered words is now: " + enteredWords.toString());
 		   updateListView();
 		   score = score + scoreWord(word);
-		   //TODO: play RIGHT sound
+           MediaPlayer mp = MediaPlayer.create(this, R.raw.correct_word);
+           mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+               public void onCompletion(MediaPlayer mp) {
+                   mp.release();
+               }
+           });
+           mp.start();
 	   } else {
 		   Log.d(TAG, "It's not a word. Entered words is still: "+ enteredWords.toString());
-		   //TODO: play WRONG sound, don't add word
+           MediaPlayer mp = MediaPlayer.create(this, R.raw.wrong);
+           mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+               public void onCompletion(MediaPlayer mp) {
+                   mp.release();
+               }
+           });
+           mp.start();
 	   }
 	   Log.d(TAG, "User just clicked submit word.  Clearing all selected tiles");
 	   this.clearSelectedTiles();
@@ -491,6 +496,14 @@ public class Game extends Activity {
    }
    
    public void onClearWordButtonClicked(View v) {
+       MediaPlayer mp = MediaPlayer.create(this, R.raw.clear);
+       mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+           public void onCompletion(MediaPlayer mp) {
+               mp.release();
+           }
+       });
+       mp.start();
 	   this.clearSelectedTiles();
    }
    

@@ -35,7 +35,7 @@ private static final String PREF_SELECTED = "selected";
 // create a new bloom filter with the optimal number of # of hash functions and bits
 // this particular combination of k and m should give us p = 1E-20 probability of a false positive
 
-   private static final String TAG = "Sudoku";
+   private static final String TAG = "Boggle";
    
    /** Called when the activity is first created. */
    @Override
