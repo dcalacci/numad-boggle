@@ -140,8 +140,14 @@ public class PuzzleView extends View {
 		
 		boardLeftSide = dpWidth / 8f;
 		boardRightSide = boardLeftSide * 7f;
+		
+		// and the board is a square, so we want the other values to be pretty
+		// much the same:
 		boardTopSide = boardLeftSide;
 		boardBottomSide = boardRightSide;
+		
+		// these values correspond to the x or y value of a specific side of the board
+		// in pixels
 		
 		Log.d(TAG, "boardLeftSide in dp: " + boardLeftSide);
 		Log.d(TAG, "boardRightSide in dp: " + boardRightSide);
@@ -182,8 +188,6 @@ public class PuzzleView extends View {
 				boardRightSide, 
 				boardBottomSide, 
 				boardColor);
-
-
 
 		// Draw the board lines
 
@@ -228,7 +232,7 @@ public class PuzzleView extends View {
 		Paint score = new Paint(Paint.ANTI_ALIAS_FLAG);
 		score.setColor(getResources().getColor(R.color.boggle_foreground));
 		score.setStyle(Style.FILL);
-		score.setTextSize(boardTopSide * .7f);
+		score.setTextSize(boardTopSide * .4f);
 		score.setTextAlign(Paint.Align.LEFT);
 
 		canvas.drawText("Score: " + game.score, 0, boardTopSide/2f, score);

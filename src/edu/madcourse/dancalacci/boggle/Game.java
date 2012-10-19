@@ -22,6 +22,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -96,6 +97,7 @@ public class Game extends Activity {
    protected void onCreate(Bundle savedInstanceState) {
      super.onCreate(savedInstanceState);
      Log.d(TAG, "onCreate"); // log the event
+     requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 	SharedPreferences pref = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE);
 	SharedPreferences.Editor edit = pref.edit();
@@ -114,9 +116,6 @@ public class Game extends Activity {
      
      // make the board based on the continue state
      this.startBoard(cont);
-     
-     
-     
    }
    
    //TODO: gray out the screen, display a "resume" and "quit" buttons
