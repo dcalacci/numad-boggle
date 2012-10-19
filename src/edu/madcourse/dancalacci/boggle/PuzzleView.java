@@ -88,22 +88,18 @@ public class PuzzleView extends View {
 	}
 
 	float boardBottomSide;
+	float boardTopSide;
+	float boardLeftSide;
 	float boardRightSide;
 	float boardHeight;
 	float boardWidth;
 
-	float boardOffSetX;
-	float boardOffSetY;
 	float dieWidth;
 	float dieHeight;
 
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		setConstants();
-		//      
-		//      float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 
-		//    		  14, 
-		//    		  getResources().getDisplayMetrics());
 		super.onSizeChanged(w, h, oldw, oldh);
 	}
 
@@ -122,60 +118,38 @@ public class PuzzleView extends View {
 	 * Sets all the constants for the view.
 	 */
 	protected void setConstants() {		
-		float screenWidth =  getResources().getDisplayMetrics().widthPixels;
-		float screenHeight = getResources().getDisplayMetrics().heightPixels;
-		Log.d(TAG, "Screen Width (Pixel): " + getResources().getDisplayMetrics().widthPixels);
-		Log.d(TAG, "Screen Height (Pixel): " + getResources().getDisplayMetrics().heightPixels);
 		
-		float boardRatio =  screenWidth / screenHeight; 
-		float boardSideSpacing = (float) 0.05;
-		if (boardRatio <= 0.57){
-			boardRatio = (float) 0.42;
-			boardSideSpacing = (float) 0.08;
-		}
-		
-		float leftSide = (float) (getResources().getDisplayMetrics().widthPixels * boardSideSpacing);
-		float topSide = (float) (getResources().getDisplayMetrics().heightPixels * 0.02);
-		float rightSide = (float) (getResources().getDisplayMetrics().widthPixels * boardRatio);
-		float bottomSide = (float) (float) (getResources().getDisplayMetrics().heightPixels * 0.38);
-		
-		Log.d(TAG, "leftSide Pixel: "+ leftSide);
-		Log.d(TAG, "topSide Pixel: "+ topSide);
-		Log.d(TAG, "rightSide Pixel: "+ rightSide);
-		Log.d(TAG, "bottomSide Pixel: "+ bottomSide);
-		
-		// the start of the left side of the board
-		
-		boardOffSetX = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 
-				leftSide, 
-				getResources().getDisplayMetrics());
-		// the start of the top of the board
-		boardOffSetY = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 
-				topSide, 
-				getResources().getDisplayMetrics());
+	    // get the default display object for the game's window manager
+	    Display display = game.getWindowManager().getDefaultDisplay();
 
-		// the x-value of the right side of the board		
-		boardRightSide = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 
-				rightSide, 
-				getResources().getDisplayMetrics());
+	    // get the DisplayMetrics object for the default display 
+	    DisplayMetrics outMetrics = new DisplayMetrics ();
+	    display.getMetrics(outMetrics);
 
-		// the y-value of the bottom side of the board
-		boardBottomSide = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 
-				rightSide, 
-				getResources().getDisplayMetrics());
-		/*
-		boardOffSetX = convertToDp(leftSide); 
-		boardOffSetY = convertToDp(topSide); 
-		boardRightSide = convertToDp(rightSide);
-		boardBottomSide = convertToDp(rightSide); 
-		*/
-		Log.d(TAG, "Board offSetX Dips: "+ boardOffSetX);
-		Log.d(TAG, "Board offSetY Dips: "+ boardOffSetY);
-		Log.d(TAG, "Board RightSide Dips: "+ boardRightSide);
-		Log.d(TAG, "Board BottomSide Dips: "+ boardBottomSide);
+	    // get density, Height of the window, Width of the window, etc in dips
+	    // from the display metrics resource we just created.
+	    float density  = getResources().getDisplayMetrics().density;
+	    float dpHeight = outMetrics.heightPixels / density;
+	    float dpWidth  = outMetrics.widthPixels / density;
+	    
+		Log.d(TAG, "Screen Width (dp): " + dpWidth);
+		Log.d(TAG, "Screen Height (dp): " + dpHeight);
 		
-		boardWidth = boardRightSide - boardOffSetX; 	// the width of the board in pixels
-		boardHeight = boardBottomSide - boardOffSetY;	// the height of the board in pixels  
+		// We want the buffers on the right and left sides to be 1/8th of the
+		// screen width:
+		
+		boardLeftSide = dpWidth / 8f;
+		boardRightSide = boardLeftSide * 7f;
+		boardTopSide = boardLeftSide;
+		boardBottomSide = boardRightSide;
+		
+		Log.d(TAG, "boardLeftSide in dp: " + boardLeftSide);
+		Log.d(TAG, "boardRightSide in dp: " + boardRightSide);
+		Log.d(TAG, "boardTopSide in dp: " + boardTopSide);
+		Log.d(TAG, "boardBottomSide in dp: " + boardBottomSide);
+		
+		boardWidth = boardRightSide - boardLeftSide; 	// the width of the board in pixels
+		boardHeight = boardBottomSide - boardTopSide;	// the height of the board in pixels  
 
 		// the width of each die
 		dieWidth 			= boardWidth/4f;
@@ -186,13 +160,6 @@ public class PuzzleView extends View {
 
 		Log.d(TAG, "onSizeChanged: width " + width + ", height "
 				+ height); 
-	}
-
-	private float convertToDp(float input) { 
-		// Get the screen's density scale 
-		final float scale = getResources().getDisplayMetrics().density; 
-		// Convert the dps to pixels, based on density scale
-		return (float) (input * scale + 0.5f); 
 	}
 	
 	@Override
@@ -210,8 +177,8 @@ public class PuzzleView extends View {
 		canvas.drawRect(0, 0, getWidth(), getHeight(), background);
 
 		// draw the board background
-		canvas.drawRect(	boardOffSetX, 
-				boardOffSetY, 
+		canvas.drawRect(	boardLeftSide, 
+				boardTopSide, 
 				boardRightSide, 
 				boardBottomSide, 
 				boardColor);
@@ -233,27 +200,27 @@ public class PuzzleView extends View {
 		// Draw the major grid lines
 		for (int i = 0; i < 5; i++) {
 			// vertical lines
-			canvas.drawLine(boardOffSetX + i*(boardWidth/4f), boardOffSetY, 
-					boardOffSetX + i*(boardWidth/4f), boardBottomSide, hilite);
+			canvas.drawLine(boardLeftSide + i*(boardWidth/4f), boardTopSide, 
+					boardLeftSide + i*(boardWidth/4f), boardBottomSide, hilite);
 			// horizontal lines
-			canvas.drawLine(boardOffSetX, boardOffSetY + i*(boardHeight/4f), boardRightSide, 
-					boardOffSetY + i*(boardHeight/4f), hilite);
+			canvas.drawLine(boardLeftSide, boardTopSide + i*(boardHeight/4f), boardRightSide, 
+					boardTopSide + i*(boardHeight/4f), hilite);
 		}
 
 		// Draw the minor grid lines
 		for (int i = 0; i < 5; i++) {
 
-			canvas.drawLine(	boardOffSetX + i*(boardWidth/4)+1, boardOffSetY, 
-					boardOffSetX + i*(boardWidth/4)+1, boardBottomSide, 
+			canvas.drawLine(	boardLeftSide + i*(boardWidth/4)+1, boardTopSide, 
+					boardLeftSide + i*(boardWidth/4)+1, boardBottomSide, 
 					light);
-			canvas.drawLine(	boardOffSetX, boardOffSetY + i*(boardHeight/4)+1,
-					boardRightSide, boardOffSetY + i*(boardHeight/4)+1,
+			canvas.drawLine(	boardLeftSide, boardTopSide + i*(boardHeight/4)+1,
+					boardRightSide, boardTopSide + i*(boardHeight/4)+1,
 					light);
-			canvas.drawLine(	boardOffSetX, boardOffSetY + i*(boardHeight/4)-1,
-					boardRightSide, boardOffSetY + i*(boardHeight/4)-1,
+			canvas.drawLine(	boardLeftSide, boardTopSide + i*(boardHeight/4)-1,
+					boardRightSide, boardTopSide + i*(boardHeight/4)-1,
 					light);
-			canvas.drawLine(	boardOffSetX + i*(boardWidth/4)-1, boardOffSetY, 
-					boardOffSetX + i*(boardWidth/4)-1, boardBottomSide, 
+			canvas.drawLine(	boardLeftSide + i*(boardWidth/4)-1, boardTopSide, 
+					boardLeftSide + i*(boardWidth/4)-1, boardBottomSide, 
 					light);
 		}
 
@@ -261,14 +228,14 @@ public class PuzzleView extends View {
 		Paint score = new Paint(Paint.ANTI_ALIAS_FLAG);
 		score.setColor(getResources().getColor(R.color.boggle_foreground));
 		score.setStyle(Style.FILL);
-		score.setTextSize(boardOffSetY * .7f);
+		score.setTextSize(boardTopSide * .7f);
 		score.setTextAlign(Paint.Align.LEFT);
 
-		canvas.drawText("Score: " + game.score, 0, boardOffSetY/1.5f, score);
+		canvas.drawText("Score: " + game.score, 0, boardTopSide/2f, score);
 
 		// draw the time
 		score.setTextAlign(Paint.Align.RIGHT);
-		canvas.drawText(timeText, boardRightSide+boardOffSetX, boardOffSetY/1.5f, score);
+		canvas.drawText(timeText, boardRightSide+boardLeftSide, boardTopSide/2f, score);
 		// Draw the numbers...
 
 		// Define color and style for numbers
@@ -291,8 +258,8 @@ public class PuzzleView extends View {
 		for (int i = 0; i<4; i++) {
 			for (int j=0; j<4; j++) {
 				canvas.drawText(	this.game.getLetterString(i, j),
-						x+boardOffSetX+(2*x*i),
-						y+boardOffSetY+(2*y*j) - (fm.ascent + fm.descent)/2,
+						x+boardLeftSide+(2*x*i),
+						y+boardTopSide+(2*y*j) - (fm.ascent + fm.descent)/2,
 						foreground);
 			}
 		}
@@ -310,8 +277,8 @@ public class PuzzleView extends View {
 		}
 
 		if (gameOver) {
-			canvas.drawText("GAME OVER" +game.score, boardWidth/2+boardOffSetX,
-					boardHeight/2+boardOffSetY, foreground);
+			canvas.drawText("GAME OVER" +game.score, boardWidth/2+boardLeftSide,
+					boardHeight/2+boardTopSide, foreground);
 			final Handler handler = new Handler();
 			final Runnable r = new Runnable()
 			{
@@ -340,8 +307,8 @@ public class PuzzleView extends View {
 		int yIndex;
 
 		// if the indices are within the board borders
-		if (x > boardOffSetX && x < boardRightSide) {
-			if (y > boardOffSetY && y < boardBottomSide) {
+		if (x > boardLeftSide && x < boardRightSide) {
+			if (y > boardTopSide && y < boardBottomSide) {
 				// xIndex and yIndex are the indices of the
 				// selected die on the screen.
 				yIndex = getDieYIndex(y);
@@ -506,7 +473,7 @@ public class PuzzleView extends View {
 	 * @return The x-index (0-3) of the tile that occupies that position
 	 */
 	private int getDieXIndex(float x) {
-		float start = boardOffSetX;
+		float start = boardLeftSide;
 		if (x <= start+dieWidth) {
 			return 0;
 		} else if (x <= start+ 2*dieWidth) {
@@ -524,7 +491,7 @@ public class PuzzleView extends View {
 	 * @return the y-index (0-3) of the tile that occupies that position
 	 */
 	private int getDieYIndex(float y) {
-		float start = boardOffSetY;
+		float start = boardTopSide;
 		if (y <= start+dieHeight) {
 			return 0;
 		} else if (y <= start+ 2*dieHeight) {
@@ -580,8 +547,8 @@ public class PuzzleView extends View {
 		float width = dieWidth / 2;
 		Log.d(TAG, "width is calculated to be: " +dieWidth +"/2: " + width);
 
-		Log.d(TAG, "returning: " + width + " + " + boardOffSetX + " + " + "(2 * " +width + "*" + x +")");
-		return width+boardOffSetX+(2*width*x);
+		Log.d(TAG, "returning: " + width + " + " + boardLeftSide + " + " + "(2 * " +width + "*" + x +")");
+		return width+boardLeftSide+(2*width*x);
 	}
 
 	/**
@@ -591,7 +558,7 @@ public class PuzzleView extends View {
 	 */
 	private float getyCord(int y) {
 		float height = dieHeight / 2;
-		return height+boardOffSetY+(2*height*y);
+		return height+boardTopSide+(2*height*y);
 	}
 
 	protected void finishGame() {

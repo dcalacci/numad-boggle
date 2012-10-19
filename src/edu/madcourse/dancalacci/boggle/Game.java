@@ -90,17 +90,6 @@ public class Game extends Activity {
    }};
    // TODO: find the older dice distribution, make a new list for another difficulty
    
-   // timer code
-//   private int currentTime = 180;
-//   private Handler mHandler = new Handler() {
-//	   int what = 1;
-//	   public void handleMessage(Message msg) {
-//		   super.handleMessage(msg);
-//		   this.sendMessageDelayed(Message.obtain(this.what), 1000);
-//		   currentTime--;
-//	   }
-//   };
-   
    protected StringBuffer iWord = new StringBuffer();
    
    @Override
