@@ -83,6 +83,11 @@ private static final String PREF_SELECTED = "selected";
 	   startActivity(i);
    }
    
+   public void OnMultiplayerButtonClicked(View v){
+	   Intent i = new Intent(this, Multiplayer.class);
+	   startActivity(i);
+   }
+   
    /**
     * Sets the continue button's visibility based on the saved data 
     * in the application - if there is a saved board, it shows the 

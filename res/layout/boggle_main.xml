@@ -15,6 +15,7 @@
    android:background="@color/background"
    android:gravity="center"
    android:padding="30dip">
+
    <TextView
       android:text="@string/boggle_label"
       android:layout_height="wrap_content"
@@ -34,6 +35,13 @@
        android:layout_height="wrap_content"
        android:text="@string/boggle_continue_game_label"
        android:onClick="OnContinueGameButtonClicked" />
+
+   <Button
+       android:id="@+id/boggle_multiplayer_button"
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+       android:onClick="OnMultiplayerButtonClicked"
+       android:text="@string/multiplayer_Label" />
 
    <Button
        android:id="@+id/boggle_rules_button"
