@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical" >
@@ -12,39 +12,40 @@
         <TabWidget
             android:id="@android:id/tabs"
             android:layout_width="fill_parent"
-            android:gravity="bottom"
-            android:layout_height="25dp" />
+            android:layout_height="25dp"
+            android:gravity="bottom" />
 
         <FrameLayout
             android:id="@android:id/tabcontent"
             android:layout_width="fill_parent"
-            android:layout_height="325dp"
-            android:layout_weight="0.31" />
+            android:layout_height="fill_parent"
+            android:layout_above="@+id/multiplayer_navbar"
+            android:layout_below="@android:id/tabs" />
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/multiplayer_navbar"
             android:layout_width="match_parent"
-            android:layout_height="52dp" >
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:orientation="horizontal"
+            android:weightSum="1.0" >
 
             <Button
                 android:id="@+id/multiplayer_new_request_button"
-                android:layout_width="165dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignWithParentIfMissing="true"
-                android:layout_centerHorizontal="true"
-                android:text="@string/send_request_Label" />
+                android:layout_weight=".5"
+                android:onClick="OnMultiplayerNewRequestClicked"
+                android:text="@string/multiplayer_button_label_send_request" />
 
             <Button
                 android:id="@+id/multiplayer_back_button"
-                android:layout_width="165dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="false"
-                android:text="@string/back_Label" />
-        </RelativeLayout>
-    </LinearLayout>
+                android:layout_weight="0.5"
+                android:onClick="OnMultiplayerBackClicked"
+                android:text="@string/multiplayer_button_label_back" />
+        </LinearLayout>
+    </RelativeLayout>
 
 </TabHost>

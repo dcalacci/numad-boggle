@@ -1,17 +1,14 @@
 package edu.madcourse.dancalacci.boggle;
 
-import edu.madcourse.dancalacci.R;
 import android.app.Activity;
 import android.os.Bundle;
+import edu.madcourse.dancalacci.R;
 
-public class Multiplayer_Received  extends Activity{
+public class Multiplayer_High_Scores extends Activity{
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.multiplayer_received);
+        setContentView(R.layout.multiplayer_highscores);
     }
 
-
 }
-
-

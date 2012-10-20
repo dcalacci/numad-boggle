@@ -101,6 +101,15 @@
         <!--  Mutiplayer Sent Activity -->
         <activity android:name=".boggle.Multiplayer_Sent" />
         
+        <!--  Mutiplayer High Scores Activity -->
+        <activity android:name=".boggle.Multiplayer_High_scores" />
+        
+        <!--  Mutiplayer Current Games Activity -->
+        <activity android:name=".boggle.Multiplayer_Current_games" />
+        
+        <!--  Mutiplayer Requests Activity -->
+        <activity android:name=".boggle.Multiplayer_New_requests" />
+        
     </application>
     
 </manifest>

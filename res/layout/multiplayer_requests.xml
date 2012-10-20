@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/multiplayer_requests_relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/multiplayer_requests_navbar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@color/boggle_boardColor"
+        android:gravity="bottom"
+        android:weightSum="1.0" >
+
+        <Button
+            android:id="@+id/multiplayer_requests_ok_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:onClick="onMultiplayerRequestsOkButtonClicked"
+            android:text="@string/multiplayer_requests_button_label_rammus" />
+
+        <Button
+            android:id="@+id/multiplayer_requests_cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:onClick="onMultiplayerRequestsCancelButtonClicked"
+            android:text="@string/multiplayer_requests_button_label_cancel" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/multiplayer_requests_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/multiplayer_requests_navbar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" >
+
+    </ListView>
+
+</RelativeLayout>
