@@ -20,6 +20,8 @@
    <!-- Multiplayer -->
    <string name="received_Label">Received</string>
    <string name="sent_Label">Sent</string>
+   <string name="current_games">Current Games</string>
+   <string name="high_scores">High Scores</string>
    <string name="send_request_Label">New Request</string>
    <string name="back_Label">Back</string>
    <string name="multiplayer_Label">Multiplayer</string>
