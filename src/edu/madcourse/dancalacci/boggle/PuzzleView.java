@@ -86,6 +86,8 @@ public class PuzzleView extends View {
 		Bundle bundle = (Bundle) state;
 		super.onRestoreInstanceState(bundle.getParcelable(VIEW_STATE));
 	}
+	
+	private int boardSize = this.game.size;
 
 	float boardBottomSide;
 	float boardTopSide;
@@ -158,10 +160,10 @@ public class PuzzleView extends View {
 		boardHeight = boardBottomSide - boardTopSide;	// the height of the board in pixels  
 
 		// the width of each die
-		dieWidth 			= boardWidth/4f;
+		dieWidth 			= boardWidth/(float)boardSize;
 		Log.d(TAG, "dieWidth is now: " + dieWidth);
 		// the height of each die
-		dieHeight			= boardHeight/4f;
+		dieHeight			= boardHeight/(float)boardSize;
 		Log.d(TAG, "dieHeight is now: " + dieHeight);
 
 		Log.d(TAG, "onSizeChanged: width " + width + ", height "
@@ -202,29 +204,29 @@ public class PuzzleView extends View {
 		light.setColor(getResources().getColor(R.color.boggle_light));
 
 		// Draw the major grid lines
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < boardSize+1; i++) {
 			// vertical lines
-			canvas.drawLine(boardLeftSide + i*(boardWidth/4f), boardTopSide, 
-					boardLeftSide + i*(boardWidth/4f), boardBottomSide, hilite);
+			canvas.drawLine(boardLeftSide + i*(boardWidth/(float)boardSize), boardTopSide, 
+					boardLeftSide + i*(boardWidth/(float)boardSize), boardBottomSide, hilite);
 			// horizontal lines
-			canvas.drawLine(boardLeftSide, boardTopSide + i*(boardHeight/4f), boardRightSide, 
-					boardTopSide + i*(boardHeight/4f), hilite);
+			canvas.drawLine(boardLeftSide, boardTopSide + i*(boardHeight/(float)boardSize), boardRightSide, 
+					boardTopSide + i*(boardHeight/(float)boardSize), hilite);
 		}
 
 		// Draw the minor grid lines
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < boardSize+1; i++) {
 
-			canvas.drawLine(	boardLeftSide + i*(boardWidth/4)+1, boardTopSide, 
-					boardLeftSide + i*(boardWidth/4)+1, boardBottomSide, 
+			canvas.drawLine(	boardLeftSide + i*(boardWidth/(float)boardSize)+1, boardTopSide, 
+					boardLeftSide + i*(boardWidth/(float)boardSize)+1, boardBottomSide, 
 					light);
-			canvas.drawLine(	boardLeftSide, boardTopSide + i*(boardHeight/4)+1,
-					boardRightSide, boardTopSide + i*(boardHeight/4)+1,
+			canvas.drawLine(	boardLeftSide, boardTopSide + i*(boardHeight/(float)boardSize)+1,
+					boardRightSide, boardTopSide + i*(boardHeight/(float)boardSize)+1,
 					light);
-			canvas.drawLine(	boardLeftSide, boardTopSide + i*(boardHeight/4)-1,
-					boardRightSide, boardTopSide + i*(boardHeight/4)-1,
+			canvas.drawLine(	boardLeftSide, boardTopSide + i*(boardHeight/boardSize)-1,
+					boardRightSide, boardTopSide + i*(boardHeight/(float)boardSize)-1,
 					light);
-			canvas.drawLine(	boardLeftSide + i*(boardWidth/4)-1, boardTopSide, 
-					boardLeftSide + i*(boardWidth/4)-1, boardBottomSide, 
+			canvas.drawLine(	boardLeftSide + i*(boardWidth/(float)boardSize)-1, boardTopSide, 
+					boardLeftSide + i*(boardWidth/(float)boardSize)-1, boardBottomSide, 
 					light);
 		}
 
@@ -259,8 +261,8 @@ public class PuzzleView extends View {
 		float y = dieHeight / 2 ;
 
 		//drawing the letters  		  										  
-		for (int i = 0; i<4; i++) {
-			for (int j=0; j<4; j++) {
+		for (int i = 0; i<boardSize; i++) {
+			for (int j=0; j<boardSize; j++) {
 				canvas.drawText(	this.game.getLetterString(i, j),
 						x+boardLeftSide+(2*x*i),
 						y+boardTopSide+(2*y*j) - (fm.ascent + fm.descent)/2,
@@ -401,6 +403,7 @@ public class PuzzleView extends View {
 	 * @param index the index of the tile to get the coordinate of
 	 * @return a Point that represents the coordinate of the tile
 	 */
+	//TODO: redo this 
 	private Point getCoord(int index) {
 		if (index <= 3) {
 			return new Point(index, 0);
@@ -477,17 +480,26 @@ public class PuzzleView extends View {
 	 * @return The x-index (0-3) of the tile that occupies that position
 	 */
 	private int getDieXIndex(float x) {
+		
 		float start = boardLeftSide;
-		if (x <= start+dieWidth) {
-			return 0;
-		} else if (x <= start+ 2*dieWidth) {
-			return 1;
-		} else if (x <= start + 3*dieWidth) {
-			return 2;
-		} else {
-			return 3;
+		for (int i = 1; i< boardSize; i++) {
+			if (x <= start + i*dieWidth) {
+				return i-1;
+			}
 		}
+		return boardSize-1;
 	}
+//		float start = boardLeftSide;
+//		if (x <= start+dieWidth) {
+//			return 0;
+//		} else if (x <= start+ 2*dieWidth) {
+//			return 1;
+//		} else if (x <= start + 3*dieWidth) {
+//			return 2;
+//		} else {
+//			return 3;
+//		}
+//	}
 
 	/**
 	 * Returns the y-index of a position on the screen
@@ -496,16 +508,25 @@ public class PuzzleView extends View {
 	 */
 	private int getDieYIndex(float y) {
 		float start = boardTopSide;
-		if (y <= start+dieHeight) {
-			return 0;
-		} else if (y <= start+ 2*dieHeight) {
-			return 1;
-		} else if (y <= start + 3*dieHeight) {
-			return 2;
-		} else {
-			return 3;
+		for (int i = 1; i< boardSize; i++) {
+			if (y <= start + i*dieHeight) {
+				return i-1;
+			}
 		}
+		return boardSize-1;
 	}
+//		
+//		
+//		if (y <= start+dieHeight) {
+//			return 0;
+//		} else if (y <= start+ 2*dieHeight) {
+//			return 1;
+//		} else if (y <= start + 3*dieHeight) {
+//			return 2;
+//		} else {
+//			return 3;
+//		}
+//	}
 
 	/**
 	 * Adds the selected rectangle for the given die index to SelRect

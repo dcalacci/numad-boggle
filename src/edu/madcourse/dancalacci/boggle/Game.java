@@ -44,6 +44,9 @@ public class Game extends Activity {
 	protected static final String PREF_WORDLIST = "wordlist";
 	protected static final String PREF_SCORE = "score";
 	
+	protected static final int size = 5;
+	protected CountDownTimer timer;
+	
 	public static final String TO_CONTINUE = "boggle_continue";
 	public static final int CONTINUE = 1;
 	public static final int NEW = 0;
@@ -71,23 +74,51 @@ public class Game extends Activity {
    // Each list in the top array represents a die
    // Each element of the bottom array represents a side of a die
    // this collection of boggle dies is the new, easy game.
-   private final List<List<Character>> dice = new ArrayList<List<Character>>() {{
-     add( Arrays.asList( 'a', 'a', 'e', 'e', 'g', 'n' ));
-     add( Arrays.asList( 'e', 'l', 'r', 't', 't', 'y' ));
-     add( Arrays.asList( 'a', 'o', 'o', 't', 't', 'w' ));
-     add( Arrays.asList( 'a', 'b', 'b', 'j', 'o', 'o' ));
-     add( Arrays.asList( 'e', 'h', 'r', 't', 'v', 'w' ));
-     add( Arrays.asList( 'c', 'i', 'm', 'o', 't', 'v' ));
-     add( Arrays.asList( 'd', 'i', 's', 't', 't', 'y' ));
-     add( Arrays.asList( 'e', 'i', 'o', 's', 's', 't' ));
-     add( Arrays.asList( 'd', 'e', 'l', 'r', 'v', 'y' ));
-     add( Arrays.asList( 'a', 'c', 'h', 'o', 'p', 's' ));
-     add( Arrays.asList( 'h', 'i', 'm', 'n', 'q', 'u' ));
-     add( Arrays.asList( 'e', 'e', 'i', 'n', 's', 'u' ));
-     add( Arrays.asList( 'e', 'e', 'g', 'h', 'n', 'w' ));
-     add( Arrays.asList( 'a', 'f', 'f', 'k', 'p', 's' ));
-     add( Arrays.asList( 'h', 'l', 'n', 'n', 'r', 'z' ));
-     add( Arrays.asList( 'd', 'e', 'i', 'l', 'r', 'x' ));
+//   private final List<List<Character>> dice = new ArrayList<List<Character>>() {{
+//     add( Arrays.asList( 'a', 'a', 'e', 'e', 'g', 'n' ));
+//     add( Arrays.asList( 'e', 'l', 'r', 't', 't', 'y' ));
+//     add( Arrays.asList( 'a', 'o', 'o', 't', 't', 'w' ));
+//     add( Arrays.asList( 'a', 'b', 'b', 'j', 'o', 'o' ));
+//     add( Arrays.asList( 'e', 'h', 'r', 't', 'v', 'w' ));
+//     add( Arrays.asList( 'c', 'i', 'm', 'o', 't', 'v' ));
+//     add( Arrays.asList( 'd', 'i', 's', 't', 't', 'y' ));
+//     add( Arrays.asList( 'e', 'i', 'o', 's', 's', 't' ));
+//     add( Arrays.asList( 'd', 'e', 'l', 'r', 'v', 'y' ));
+//     add( Arrays.asList( 'a', 'c', 'h', 'o', 'p', 's' ));
+//     add( Arrays.asList( 'h', 'i', 'm', 'n', 'q', 'u' ));
+//     add( Arrays.asList( 'e', 'e', 'i', 'n', 's', 'u' ));
+//     add( Arrays.asList( 'e', 'e', 'g', 'h', 'n', 'w' ));
+//     add( Arrays.asList( 'a', 'f', 'f', 'k', 'p', 's' ));
+//     add( Arrays.asList( 'h', 'l', 'n', 'n', 'r', 'z' ));
+//     add( Arrays.asList( 'd', 'e', 'i', 'l', 'r', 'x' ));
+//   }};
+   
+   private final ArrayList<List<Character>> dice = new ArrayList<List<Character>>() {{
+	   add( Arrays.asList( 'a', 'a', 'a', 'f', 'r', 's'));
+	   add( Arrays.asList( 'a', 'a', 'e', 'e', 'e', 'e'));
+	   add( Arrays.asList( 'a', 'a', 'f', 'i', 'r', 's'));
+	   add( Arrays.asList( 'a', 'd', 'e', 'n', 'n', 'n'));
+	   add( Arrays.asList( 'a', 'e', 'e', 'e', 'e', 'm'));
+	   add( Arrays.asList( 'a', 'e', 'e', 'g', 'm', 'u'));
+	   add( Arrays.asList( 'a', 'e', 'g', 'm', 'n', 'n'));
+	   add( Arrays.asList( 'a', 'f', 'i', 'r', 's', 'y'));
+	   add( Arrays.asList( 'b', 'j', 'k', 'q', 'x', 'z'));
+	   add( Arrays.asList( 'c', 'c', 'n', 's', 't', 'w'));
+	   add( Arrays.asList( 'c', 'e', 'i', 'i', 'l', 't'));
+	   add( Arrays.asList( 'c', 'e', 'i', 'l', 'p', 't'));
+	   add( Arrays.asList( 'c', 'e', 'i', 'p', 's', 't'));
+	   add( Arrays.asList( 'd', 'd', 'l', 'n', 'o', 'r'));
+	   add( Arrays.asList( 'd', 'h', 'h', 'l', 'o', 'r'));
+	   add( Arrays.asList( 'd', 'h', 'h', 'n', 'o', 't'));
+	   add( Arrays.asList( 'd', 'h', 'l', 'n', 'o', 'r'));
+	   add( Arrays.asList( 'e', 'i', 'i', 'i', 't', 't'));
+	   add( Arrays.asList( 'e', 'm', 'o', 't', 't', 't'));
+	   add( Arrays.asList( 'e', 'n', 's', 's', 's', 'u'));
+	   add( Arrays.asList( 'f', 'i', 'p', 'r', 's', 'y'));
+	   add( Arrays.asList( 'g', 'o', 'r', 'r', 'v', 'w'));
+	   add( Arrays.asList( 'h', 'i', 'p', 'r', 'r', 'y'));
+	   add( Arrays.asList( 'n', 'o', 'o', 't', 'u', 'w'));
+	   add( Arrays.asList( 'o', 'o', 'o', 't', 't', 'u'));
    }};
    // TODO: find the older dice distribution, make a new list for another difficulty
    
@@ -125,6 +156,11 @@ public class Game extends Activity {
    @Override
    protected void onResume() {
 	   super.onResume();
+	   SharedPreferences pref = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE);
+	   int time = pref.getInt(PREF_TIME, 180);
+	   timer.cancel();
+	   this.startCountDown(time);
+	   timer.start();
 	   //Music.play(this, R.raw.game);
 //	   if (getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).contains(PREF_BOARD)) {
 //		   String board = getPreferences(MODE_PRIVATE).getString(PREF_BOARD, "false");
@@ -166,6 +202,7 @@ public class Game extends Activity {
 		   
 		   Log.d(TAG, "Current time: " +puzzleView.getTime());
 		   edit.putInt(PREF_TIME, puzzleView.getTime());
+		   timer.cancel();
 		   
 		   edit.commit();
 		   Log.d(TAG, "What is actually in sharedprefs: " + pref.getString(PREF_SELECTED, "nothing"));
@@ -234,7 +271,9 @@ public class Game extends Activity {
 		   updateListView();
 		   
 		   int time = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE).getInt(PREF_TIME, 180);
+		   timer.cancel();
 		   startCountDown(time);
+		   timer.start();
 		   
 		   Log.d(TAG, "Time loaded from sharedprefs: "+puzzleView.getTime());
 		   this.puzzleView.setSelectedDice(this.selected);
@@ -256,10 +295,12 @@ public class Game extends Activity {
 		   this.puzzleView.setSelectedDice(this.selected);
 		   
 		   startCountDown(180);
+		   timer.start();
 	   }
    }
    protected void startCountDown(int time) {
 	   time = time*1000;
+	   this.timer =
 	   new CountDownTimer(time, 1000) {
 
 		     public void onTick(long millisUntilFinished) {
@@ -274,7 +315,7 @@ public class Game extends Activity {
 		    	 puzzleView.finishGame();
 		    	 //TODO: display a "game over" message, button calls quit game.
 		     }
-		  }.start();
+		  };
    }
    
    
@@ -284,7 +325,7 @@ public class Game extends Activity {
     */
    private void clearSelectedTiles() {
 	   this.selected.clear();
-	   for (int i = 0; i <= 15; i++) {
+	   for (int i = 0; i <= size*size; i++) {
 		   this.selected.add(false);
 	   }
 	   this.iWord = new StringBuffer();
@@ -359,7 +400,8 @@ public class Game extends Activity {
    protected void generateTiles() {
 	   // populate the arraylist
 	   ArrayList<Character> tiles = new ArrayList<Character>();
-	   for (int i=0; i<16; i++) {
+	   int indexSize = this.size*this.size;
+	   for (int i=0; i<indexSize; i++) {
 		   tiles.add(' ');
 	   }
 	   // "randomly" generate the board
@@ -398,7 +440,7 @@ public class Game extends Activity {
     * @return	An Integer representing the index in the board
     */
    int getTileIndex(int i, int j) {
-	   return i + (4 * j);
+	   return i + (5 * j);
    }
    
    
@@ -491,6 +533,7 @@ public class Game extends Activity {
    }
    
    public void onPauseButtonClicked(View v) {
+	   this.onPause();
 	   Intent i = new Intent(this, Pause.class);
 	   startActivity(i);
    }
