@@ -1,7 +1,6 @@
 package edu.madcourse.dancalacci.boggle;
 import java.util.*;
 
-import src.GameWrapper;
 //go_ogle_me
 //googleme
 
@@ -18,6 +17,7 @@ public class ServerAccessor {
   private static final String TURN_PREFIX = "turn_";
   private static final String ENTERED_WORDS_PREFIX = "entered_";
   private static final String SCORES_PREFIX = "scores_";
+  private static final String NUM_TURNS_PREFIX = "numTurns_";
   
   private static final ArrayList<List<Character>> dice = new ArrayList<List<Character>>() {{
 	   add( Arrays.asList( 'a', 'a', 'a', 'f', 'r', 's'));
@@ -348,24 +348,24 @@ public class ServerAccessor {
     this.addGame(creator, opponent);
 
     // add board to the server
-    String boardKey = "board_" + userskey;
+    String boardKey = BOARD_PREFIX + userskey;
     this.put(boardKey, board); // create the board on the server
 
     // value of turn element will always be a username - initiates to the creator.
-    String turnKey = "turn_" + userskey;
+    String turnKey = TURN_PREFIX + userskey;
     this.put(turnKey, creator); // create the turn element on the server
 
     // create the entered words element on the server
-    String enteredKey = "entered_" + userskey;
+    String enteredKey = ENTERED_WORDS_PREFIX + userskey;
     this.put(enteredKey, "");
 
     // create the scores element on the server
     // score is a string like "user1|50,user2|44"
-    String scoresKey = "scores_" + userskey;
+    String scoresKey = SCORES_PREFIX + userskey;
     this.put(scoresKey, creator + "|0," + opponent + "|0");
 
     // create the number of turns element on the server
-    String numTurnsKey = "numTurns_" + userskey;
+    String numTurnsKey = NUM_TURNS_PREFIX + userskey;
     this.put(numTurnsKey, "0");
   }
 
@@ -435,7 +435,7 @@ public class ServerAccessor {
   }
 
   public void updateBoard(String user1, String user2, String board) {
-    String boardKey = "board_" + this.getUsersKey(user1, user2);
+    String boardKey = BOARD_PREFIX + this.getUsersKey(user1, user2);
     String boardVal = board;
     this.put(boardKey, boardVal);
   }
@@ -457,9 +457,25 @@ public class ServerAccessor {
 			  this.stringToArrayList(this.get(enteredWordsKey));
 	  
 	  String scoresKey = SCORES_PREFIX + userskey;
+	  Hashtable scores = this.scoresStringToHashtable(
+			  this.get(scoresKey));
 	  
+	  String numTurnsKey = NUM_TURNS_PREFIX + userskey;
+	  int numTurns = Integer.parseInt(this.get(numTurnsKey));
+	  
+	  return new GameWrapper(
+			  currentTurn,
+			  board,
+			  enteredWords,
+			  scores,
+			  numTurns);
   }
   
+  /**
+   * Converts a given string representation of scores to a hashtable
+   * @param scores the string representation to convert
+   * @return the hashtable conversion
+   */
   private Hashtable<String, Integer> scoresStringToHashtable(String scores) {
 	ArrayList<String> parts = new ArrayList<String>(
 			Arrays.asList(scores.split(",")));
@@ -471,8 +487,20 @@ public class ServerAccessor {
 	return scoresDic;
   }
   
+  /**
+   * Converts a given scores hashtable to a string
+   * @param scores The hashtable of the two users' scores
+   * @return The string representation of the two users' scores.
+   */
   private String hashtableToScoresString(Hashtable<String, Integer> scores) {
-	  //TODO
+	  StringBuilder sb = new StringBuilder();
+	  List<String> usernames = Collections.list(scores.keys());
+	  String user1 = usernames.get(0);
+	  String user2 = usernames.get(1);
+	  
+	  sb.append(user1 + "|" + scores.get(user1) + "," +
+			  	user2 + "|" + scores.get(user2));
+	  return sb.toString();
   }
 
 }
