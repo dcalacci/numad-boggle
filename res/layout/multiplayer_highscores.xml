@@ -12,7 +12,7 @@
     android:text="Received Requests HERE" -->
 
     <ListView
-        android:id="@+id/multiplayer_high_scores"
+        android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
     </ListView>

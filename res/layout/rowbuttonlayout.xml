@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout01"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingBottom="6dip"
+    android:paddingTop="4dp" >
+
+    <TextView
+        android:id="@+id/lst_item_Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="120px" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/lst_item_Mobile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10px"
+        android:minWidth="120px" >
+    </TextView>
+
+    <Button
+        android:id="@+id/lst_item_Delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        android:width="80px" >
+    </Button>
+
+</LinearLayout>

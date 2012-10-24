@@ -41,7 +41,7 @@
        android:layout_width="fill_parent"
        android:layout_height="wrap_content"
        android:onClick="OnMultiplayerButtonClicked"
-       android:text="@string/multiplayer_Label" />
+       android:text="@string/boggle_multiplayer_Label" />
 
    <Button
        android:id="@+id/boggle_rules_button"

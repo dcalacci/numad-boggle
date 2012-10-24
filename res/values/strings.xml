@@ -29,6 +29,14 @@
    <string name="multiplayer_requests_button_label_rammus">OK</string>
    <string name="multiplayer_requests_button_label_cancel">Cancel</string>
    
+   
+   <!-- Received -->
+   <string name="multiplayer_received_button_label_accept">Accept</string>
+   <string name="multiplayer_received_button_label_reject">Reject</string>
+   <!-- Sent -->
+   
+   <!-- Current Games -->
+   
    <string name="sudoku_label">Sudoku</string>
    
    <!-- Create Error -->

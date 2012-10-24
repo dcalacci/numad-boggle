@@ -61,7 +61,7 @@ public class Multiplayer extends TabActivity {
 	}
 
 	public void OnMultiplayerNewRequestClicked(View v) {
-		Intent i = new Intent(this, Multiplayer_New_requests.class);
+		Intent i = new Intent(this, Multiplayer_Sent_Requests.class);
 		startActivity(i);
 	}
 

@@ -6,110 +6,109 @@
     <uses-sdk
         android:minSdkVersion="9"
         android:targetSdkVersion="10" />
-    
+
     <!-- NUMAD Authorization -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
-	<uses-permission android:name="android.permission.READ_PHONE_DATA" />
-	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.INTERNET"/>
-	<uses-permission android:name="android.permission.WRITE_SETTINGS"/> 
-	
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_DATA" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/CustomTheme" >
-        
+
         <!-- Main Activity -->
         <activity
             android:name="edu.madcourse.dancalacci.MainActivity"
-            android:label="@string/title_activity_main" 
-            android:screenOrientation="portrait">
+            android:label="@string/title_activity_main"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            
         </activity>
-        
+
         <!-- TeamMembers Activity -->
-        <activity 
+        <activity
             android:name=".TeamMembers"
-            android:theme="@android:style/Theme.Dialog"
             android:label="@string/team_members_label"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog" >
         </activity>
-        
+
         <!-- Sudoku Activities -->
         <activity
             android:name=".sudoku.Sudoku"
             android:label="@string/sudoku_label"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
-        
-        <activity android:name=".sudoku.About"
+        <activity
+            android:name=".sudoku.About"
             android:label="@string/about_title"
-            android:theme="@android:style/Theme.Dialog"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog" >
         </activity>
-        
-        <activity android:name=".sudoku.Prefs"
+        <activity
+            android:name=".sudoku.Prefs"
             android:label="@string/settings_title"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
-        
-        <activity android:name=".sudoku.Game"
+        <activity
+            android:name=".sudoku.Game"
             android:label="@string/game_title"
-        	android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
-        
-        <activity android:name=".boggle.Boggle"
+        <activity
+            android:name=".boggle.Boggle"
             android:label="@string/boggle_label"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
-        
-        <activity 
+        <activity
             android:name=".boggle.Game"
-            android:label="@string/boggle_label">
+            android:label="@string/boggle_label" >
         </activity>
-        
-        <activity android:name=".boggle.Pause"
+        <activity
+            android:name=".boggle.Pause"
             android:label="@string/pause_label"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
-        
-        <activity android:name=".boggle.Rules"
+        <activity
+            android:name=".boggle.Rules"
             android:label="@string/boggle_rules_button_label"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
-        
-        <activity android:name=".boggle.Acknowledgements"
+        <activity
+            android:name=".boggle.Acknowledgements"
             android:label="@string/boggle_acknowledgements_button_label"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
-        
-        <activity android:name=".boggle.Multiplayer"
+        <activity
+            android:name=".boggle.Multiplayer"
             android:label="@string/boggle_multiplayer_Label"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
- 
-        <!--  Mutiplayer Received Activity -->
+
+        <!-- Mutiplayer Received Activity -->
         <activity android:name=".boggle.Multiplayer_Received" />
- 
-        <!--  Mutiplayer Sent Activity -->
+        <activity android:name=".boggle.Multiplayer_Received_array_adaptor" />
+        <activity android:name=".boggle.Multiplayer_Received_row_content" />
+
+        <!-- Mutiplayer Sent Activity -->
         <activity android:name=".boggle.Multiplayer_Sent" />
-        
-        <!--  Mutiplayer High Scores Activity -->
+
+        <!-- Mutiplayer High Scores Activity -->
         <activity android:name=".boggle.Multiplayer_High_scores" />
-        
-        <!--  Mutiplayer Current Games Activity -->
+
+        <!-- Mutiplayer Current Games Activity -->
         <activity android:name=".boggle.Multiplayer_Current_games" />
-        
-        <!--  Mutiplayer Requests Activity -->
-        <activity android:name=".boggle.Multiplayer_New_requests" />
-        
+
+        <!-- Mutiplayer Requests Activity -->
+        <activity android:name=".boggle.Multiplayer_Sent_Requests" />
     </application>
-    
+
 </manifest>
