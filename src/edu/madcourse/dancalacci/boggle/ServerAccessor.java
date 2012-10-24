@@ -425,11 +425,7 @@ public class ServerAccessor {
   public void createNewGame(String user1, String user2) {
 	  String board = boardToString(generateBoard());
 	  this.initializeNewGame(user1, user2, board);
-	  
   }
-
-  
-
 
   public void updateBoard(String user1, String user2, String board) {
     String boardKey = "board_" + this.getUsersKey(user1, user2);

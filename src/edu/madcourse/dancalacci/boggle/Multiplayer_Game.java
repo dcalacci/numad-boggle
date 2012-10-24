@@ -136,7 +136,7 @@ public class Multiplayer_Game extends Activity {
 
      // if TO_CONTINUE is 1, continue the game.  if not, start a new one.
      int cont = getIntent().getIntExtra(TO_CONTINUE, CONTINUE);
-     this.clearSelectedTiles();
+   //  this.clearSelectedTiles();
      
      // set the layout, start the view.
      gameView = new Multiplayer_Game_View(this);
@@ -145,7 +145,7 @@ public class Multiplayer_Game extends Activity {
      boardFrame.addView(gameView);
      
      // make the board based on the continue state
-     this.startBoard(cont);
+    // this.startBoard(cont);
    }
    
    //TODO: gray out the screen, display a "resume" and "quit" buttons
@@ -356,7 +356,7 @@ public class Multiplayer_Game extends Activity {
 
 	   }
 	   Log.d(TAG, "User just clicked submit word.  Clearing all selected tiles");
-	   this.clearSelectedTiles();
+	//   this.clearSelectedTiles();
    }
    
    private int scoreWord(String word) {
@@ -392,7 +392,7 @@ public class Multiplayer_Game extends Activity {
            }
        });
        mp.start();
-	   this.clearSelectedTiles();
+	//   this.clearSelectedTiles();
    }
    
    /**

@@ -67,25 +67,25 @@ public class Multiplayer_CurrentGames extends ListActivity{
 			mGames = currentGamesList;
 		}
 
-		@Override
+		
 		public int getCount() {
 			// TODO Auto-generated method stub
 			return mGames.size();
 		}
 
-		@Override
+		
 		public Object getItem(int position) {
 			// TODO Auto-generated method stub
 			return position;
 		}
 
-		@Override
+		
 		public long getItemId(int position) {
 			// TODO Auto-generated method stub
 			return position;
 		}
 
-		@Override
+		
 		public View getView(int position, View view, ViewGroup parent) {
 
 			if(view == null){
@@ -120,7 +120,7 @@ public class Multiplayer_CurrentGames extends ListActivity{
 			OnClickListener(int position){
 				mPosition = position;
 			}
-			@Override
+			
 			public void onClick(View v) {
 				Log.v(TAG, "onItemClick at position " + mPosition);          
 			}       

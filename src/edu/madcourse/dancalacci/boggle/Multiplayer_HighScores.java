@@ -61,25 +61,25 @@ public class Multiplayer_HighScores extends ListActivity{
 			this.rowResID = rowResID;
 		}
 
-		@Override
+		
 		public int getCount() {
 			// TODO Auto-generated method stub
 			return mHighScores.size();
 		}
 
-		@Override
+		
 		public Object getItem(int position) {
 			// TODO Auto-generated method stub
 			return position;
 		}
 
-		@Override
+		
 		public long getItemId(int position) {
 			// TODO Auto-generated method stub
 			return position;
 		}
 
-		@Override
+		
 		public View getView(int position, View view, ViewGroup parent) {
 			
 			if(view == null){
