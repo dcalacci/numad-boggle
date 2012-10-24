@@ -33,25 +33,21 @@ public class Multiplayer_Received_array_adaptor extends BaseAdapter implements V
 		data=d;
 		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
-	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
 	public Object getItem(int position) {
 		// TODO Auto-generated method stub
 		return position;
 	}
 
-	@Override
 	public long getItemId(int position) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View vi=convertView;
 		if(convertView==null)
@@ -72,7 +68,6 @@ public class Multiplayer_Received_array_adaptor extends BaseAdapter implements V
 	}
 
 
-	@Override
 	public void onClick(View v) {
 		switch(v.getId()){
 		case R.id.multiplayer_received_accept_button:

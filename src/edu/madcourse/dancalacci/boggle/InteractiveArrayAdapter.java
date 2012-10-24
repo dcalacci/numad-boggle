@@ -52,7 +52,6 @@ public class InteractiveArrayAdapter extends ArrayAdapter<Model> {
 
 			btnDelete.setOnClickListener(new OnClickListener() {
 
-				@Override
 				public void onClick(View view) {
 					Toast.makeText(appContext,"Hellow this is clicked", Toast.LENGTH_LONG).show();
 
