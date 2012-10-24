@@ -104,4 +104,14 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 		// TODO: add ACCEPT button listener
 
 	}
+	
+	public void onMultiplayerReceivedRequestsSendNewRequestsButtonClicked(View v) {
+
+		//Intent i = new Intent(this, .class);
+		//startActivity(i);
+	}
+
+	public void onMultiplayersReceivedRequestsBackButtonClicked(View v) {
+		finish();
+	}
 }

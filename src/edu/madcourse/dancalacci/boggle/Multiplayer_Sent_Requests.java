@@ -107,13 +107,13 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 	/*	
 	 * Starts new Multiplayer Boggle Game	 
 	 */
-	public void onMultiplayerRequestsOkButtonClicked(View v) {
+	public void onMultiplayerSentRequestsSendNewRequestButtonClicked(View v) {
 
 		//Intent i = new Intent(this, .class);
 		//startActivity(i);
 	}
 
-	public void onMultiplayerRequestsCancelButtonClicked(View v) {
+	public void onMultiplayerSentRequestsBackButtonClicked(View v) {
 		finish();
 	}
 }

@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.28"
-            android:onClick="onMultiplayerRequestsOkButtonClicked"
+            android:onClick="onMultiplayerHighScoresSendNewRequestsButtonClicked"
             android:text="@string/multiplayer_button_label_send_request" />
 
         <Button
@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.72"
-            android:onClick="onMultiplayersReceivedRequestsBackButtonClicked"
+            android:onClick="onMultiplayerHighScoresBackButtonClicked"
             android:text="@string/multiplayer_button_label_back" />
     </LinearLayout>
 

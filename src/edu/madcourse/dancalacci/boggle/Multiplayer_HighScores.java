@@ -106,13 +106,13 @@ public class Multiplayer_HighScores extends ListActivity{
 	/*	
 	 * Starts new Multiplayer Boggle Game	 
 	 */
-	public void onMultiplayerRequestsOkButtonClicked(View v) {
+	public void onMultiplayerHighScoresSendNewRequestsButtonClicked(View v) {
 
 		//Intent i = new Intent(this, .class);
 		//startActivity(i);
 	}
 
-	public void onMultiplayerRequestsCancelButtonClicked(View v) {
+	public void onMultiplayerHighScoresBackButtonClicked(View v) {
 		finish();
 	}
 }

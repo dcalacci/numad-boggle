@@ -132,13 +132,13 @@ public class Multiplayer_CurrentGames extends ListActivity{
 	/*	
 	 * Starts new Multiplayer Boggle Game	 
 	 */
-	public void onMultiplayerRequestsOkButtonClicked(View v) {
+	public void onMultiplayerCurrentGamesSendNewRequestsButtonClicked(View v) {
 
 		//Intent i = new Intent(this, .class);
 		//startActivity(i);
 	}
 
-	public void onMultiplayerRequestsCancelButtonClicked(View v) {
+	public void onMultiplayersCurrentGamesBackButtonClicked(View v) {
 		finish();
 	}
 }
