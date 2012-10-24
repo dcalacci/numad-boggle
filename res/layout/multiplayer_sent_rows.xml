@@ -4,34 +4,26 @@
     android:layout_height="fill_parent"
     android:orientation="horizontal"
     android:paddingBottom="6dip"
-    android:paddingTop="4dp" >
+    android:paddingTop="4dp"
+    android:weightSum="1.0" >
 
     <TextView
-        android:id="@+id/multiplayer_received_requests_textView_content"
+        android:id="@+id/multiplayer_sent_requests_textView_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight=".5" 
+        android:layout_weight=".75" 
         android:textSize="20dp"
         android:focusable="false"
         android:focusableInTouchMode="false">
     </TextView>
 
     <Button
-        android:id="@+id/multiplayer_received_accept_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight=".25"
-        android:onClick="OnMultiplayerReceivedAcceptClicked"
-        android:text="@string/multiplayer_received_button_label_accept" >
-    </Button>
-
-    <Button
-        android:id="@+id/multiplayer_received_reject_button"
+        android:id="@+id/multiplayer_sent_delete_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight=".25"
         android:onClick="OnMultiplayerReceivedRejectClicked"
-        android:text="@string/multiplayer_received_button_label_reject" >
+        android:text="@string/multiplayer_sent_button_label_delete" >
     </Button>
 
 </LinearLayout>

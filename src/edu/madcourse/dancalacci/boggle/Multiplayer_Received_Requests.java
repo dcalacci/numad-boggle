@@ -1,75 +1,77 @@
 package edu.madcourse.dancalacci.boggle;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.madcourse.dancalacci.R;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.SimpleAdapter;
 
-public class Multiplayer_Sent_Requests extends ListActivity{
 
+public class Multiplayer_Received_Requests  extends ListActivity{
+	private String TAG = "Multiplayer_Received_Requests";
 	ServerAccessor sa;
 	String USERNAME = "user1";
-	String TAG = "Multiplayer_Sent_Requests";
-	Multiplayer_Sent_Request_Adaptor adapter;
+	Multiplayer_Received_Request_Adaptor adapter;
 
 	public void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "set contentview");
-		setContentView(R.layout.multiplayer_sent);
-		
-		
-		
+		setContentView(R.layout.multiplayer_received);
+
+
+
 		sa = new ServerAccessor();
-		adapter = new Multiplayer_Sent_Request_Adaptor(this, R.layout.multiplayer_sent, this.generate_sent_request_list());
+		adapter = new Multiplayer_Received_Request_Adaptor(this, R.layout.multiplayer_received, this.generate_request_list());
 		Log.d(TAG, "set adapter");
-		/*
-		adapter = new ArrayAdapter<String>(this,
+		/*adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1,
 				this.generate_request_list());
-		*/
+		 */
 		setListAdapter(adapter);
 	}
 
-	/* 
-	 * Creates a list of Potential players based on Web Call
-	 */
-	private ArrayList<String> generate_sent_request_list(){
+	private ArrayList<String> generate_request_list(){
 		sa.addRequest("user1", "user2");
 		Log.d(TAG, "request list: " + sa.getRequests(USERNAME).toString());
 		return sa.getRequests(USERNAME);
 	}
 
 
-	public class Multiplayer_Sent_Request_Adaptor extends BaseAdapter{
-		private ArrayList<String> mSentRequests = new ArrayList<String>();
+	public class Multiplayer_Received_Request_Adaptor extends BaseAdapter{
+		private ArrayList<String> mReceivedRequests = new ArrayList<String>();
 		private Context mContext;
 		private int rowResID;
 
-		public Multiplayer_Sent_Request_Adaptor(Context c, int rowResID, ArrayList<String> sentRequestsList){
+		public Multiplayer_Received_Request_Adaptor(Context c, int rowResID, ArrayList<String> receivedRequestsList) {
+			mContext = c;
+			mReceivedRequests = receivedRequestsList;
 			this.rowResID = rowResID;
-			this.mContext = c;
-			this.mSentRequests = sentRequestsList;
 		}
 
 		@Override
 		public int getCount() {
 			// TODO Auto-generated method stub
-			return mSentRequests.size();
+			return mReceivedRequests.size();
 		}
 
 		@Override
@@ -86,34 +88,20 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 
 		@Override
 		public View getView(int position, View view, ViewGroup parent) {
-			
 			if(view == null){
 				LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-				view = inflater.inflate(R.layout.multiplayer_sent_rows, parent, false);
+				view = inflater.inflate(R.layout.multiplayer_received_rows, parent, false);
 			}
 			
 			TextView username = (TextView) 
-					view.findViewById(R.id.multiplayer_sent_requests_textView_content);
-			username.setText(mSentRequests.get(position));
+					view.findViewById(R.id.multiplayer_received_requests_textView_content);
+			username.setText(mReceivedRequests.get(position));
 			// Give it a nice background
 			return view;
 		}			
 		
-		//TODO onClick listener for Delete button
+		// TODO: add ACCEPT button listener
+		// TODO: add ACCEPT button listener
 
-
-	}
-
-	/*	
-	 * Starts new Multiplayer Boggle Game	 
-	 */
-	public void onMultiplayerRequestsOkButtonClicked(View v) {
-
-		//Intent i = new Intent(this, .class);
-		//startActivity(i);
-	}
-
-	public void onMultiplayerRequestsCancelButtonClicked(View v) {
-		finish();
 	}
 }

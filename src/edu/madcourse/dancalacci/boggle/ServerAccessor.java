@@ -11,6 +11,34 @@ public class ServerAccessor {
   private static final String PASSWORD  = "googleme";
   private static String USER_NAME = "";
   private static String USER_PASS = "";
+  
+  private static final ArrayList<List<Character>> dice = new ArrayList<List<Character>>() {{
+	   add( Arrays.asList( 'a', 'a', 'a', 'f', 'r', 's'));
+	   add( Arrays.asList( 'a', 'a', 'e', 'e', 'e', 'e'));
+	   add( Arrays.asList( 'a', 'a', 'f', 'i', 'r', 's'));
+	   add( Arrays.asList( 'a', 'd', 'e', 'n', 'n', 'n'));
+	   add( Arrays.asList( 'a', 'e', 'e', 'e', 'e', 'm'));
+	   add( Arrays.asList( 'a', 'e', 'e', 'g', 'm', 'u'));
+	   add( Arrays.asList( 'a', 'e', 'g', 'm', 'n', 'n'));
+	   add( Arrays.asList( 'a', 'f', 'i', 'r', 's', 'y'));
+	   add( Arrays.asList( 'b', 'j', 'k', 'q', 'x', 'z'));
+	   add( Arrays.asList( 'c', 'c', 'n', 's', 't', 'w'));
+	   add( Arrays.asList( 'c', 'e', 'i', 'i', 'l', 't'));
+	   add( Arrays.asList( 'c', 'e', 'i', 'l', 'p', 't'));
+	   add( Arrays.asList( 'c', 'e', 'i', 'p', 's', 't'));
+	   add( Arrays.asList( 'd', 'd', 'l', 'n', 'o', 'r'));
+	   add( Arrays.asList( 'd', 'h', 'h', 'l', 'o', 'r'));
+	   add( Arrays.asList( 'd', 'h', 'h', 'n', 'o', 't'));
+	   add( Arrays.asList( 'd', 'h', 'l', 'n', 'o', 'r'));
+	   add( Arrays.asList( 'e', 'i', 'i', 'i', 't', 't'));
+	   add( Arrays.asList( 'e', 'm', 'o', 't', 't', 't'));
+	   add( Arrays.asList( 'e', 'n', 's', 's', 's', 'u'));
+	   add( Arrays.asList( 'f', 'i', 'p', 'r', 's', 'y'));
+	   add( Arrays.asList( 'g', 'o', 'r', 'r', 'v', 'w'));
+	   add( Arrays.asList( 'h', 'i', 'p', 'r', 'r', 'y'));
+	   add( Arrays.asList( 'n', 'o', 'o', 't', 'u', 'w'));
+	   add( Arrays.asList( 'o', 'o', 'o', 't', 't', 'u'));
+  }};
 
   public ServerAccessor() {}
 
@@ -306,7 +334,7 @@ public class ServerAccessor {
     return games;
   }
   // only called when a previous game doesn't exist
-  public void createNewGame(String creator, String opponent, String board) {
+  public void initializeNewGame(String creator, String opponent, String board) {
     String userskey = this.getUsersKey(creator, opponent);
 
     // add game to game list
@@ -344,6 +372,61 @@ public class ServerAccessor {
 //        on the server, the word that the user just entered(might be cleaner).
 //        turn_... should update itself.
 
+  protected static ArrayList<Character> generateBoard() {
+	  ArrayList<Character> tiles = new ArrayList<Character>();
+	  int indexSize = (int)Math.pow((double)Multiplayer_Game.size, (double)2);
+	  for (int i=0; i<indexSize; i++) {
+		  tiles.add(' ');
+	  }
+
+	  ArrayList<Integer> positions = new ArrayList<Integer>();
+	  for (int i = 0; i < (dice.size()); i++) {
+		  positions.add(i);  // positions now contains all numbers 1-16
+	  }
+
+	  Collections.shuffle(positions); //shuffle positions
+	  Collections.shuffle(dice);      //shuffle the dice themselves
+
+	  // step two: randomly assign a character to each space on the board
+	  for (Integer pos : positions) {
+		  Character c = dice.get(pos).get((int)(Math.random() * 5));
+		  //  c is now a random face of the current die
+		  tiles.set(pos, c);
+	  }
+	  return tiles;
+  }
+  
+  /**
+   * Build a string representation of the board for state saving
+   * @param board	The list representation of the board
+   * @return		The string representation of the board
+   */
+  static private String boardToString(List<Character> board) {
+	   StringBuilder builder = new StringBuilder();
+	   for (Character ch : board) {
+		   builder.append(ch);
+	   }
+	   return builder.toString();
+  }
+  
+  /**
+   * Convert a string to a board
+   * @param rep	The string representation of the board
+   * @return		The list representation of the board
+   */
+  static protected ArrayList<Character> stringToBoard(String rep) {
+	   ArrayList<Character> board = new ArrayList<Character>();
+	   for (int i = 0; i < rep.length(); i++) {
+		   board.add(rep.charAt(i));
+	   }
+	   return board;
+  }
+  
+  public void createNewGame(String user1, String user2) {
+	  String board = boardToString(generateBoard());
+	  this.initializeNewGame(user1, user2, board);
+	  
+  }
 
   
 

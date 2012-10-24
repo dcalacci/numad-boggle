@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal"
+    android:paddingBottom="6dip"
+    android:paddingTop="4dp" 
+    android:weightSum="1.5">
+
+    <TextView
+        android:id="@+id/multiplayer_current_games_textView_player1"
+        android:layout_width="0dp"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:layout_height="wrap_content"
+        android:layout_weight=".5"
+        android:focusable="false"
+        android:focusableInTouchMode="false" >
+    </TextView>
+    
+    <TextView
+        android:id="@+id/multiplayer_current_games_textView_VS"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="20dp"
+       	android:text="@string/multiplayer_current_games_button_label_VS"
+        android:layout_weight=".5" 
+        android:focusable="false"
+        android:focusableInTouchMode="false">
+    </TextView>
+    
+     <TextView
+        android:id="@+id/multiplayer_current_games_textView_player2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:layout_weight=".5"
+        android:focusable="false"
+        android:focusableInTouchMode="false" >
+    </TextView>
+
+
+</LinearLayout>
