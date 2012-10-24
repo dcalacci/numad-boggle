@@ -3,41 +3,37 @@ package edu.madcourse.dancalacci.boggle;
 import java.util.ArrayList;
 
 import edu.madcourse.dancalacci.R;
-import android.app.Activity;
+import edu.madcourse.dancalacci.boggle.Multiplayer_CurrentGames.Multiplayer_Current_Games_Adaptor;
 import android.app.ListActivity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class Multiplayer_Sent_Requests extends ListActivity{
-
+public class Multiplayer_HighScores extends ListActivity{
 	ServerAccessor sa;
 	String USERNAME = "user1";
-	String TAG = "Multiplayer_Sent_Requests";
-	Multiplayer_Sent_Request_Adaptor adapter;
+	String TAG = "Multiplayer_HighScores_Requests";
+	Multiplayer_HighScores_Adaptor adapter;
 
 	public void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "set contentview");
-		setContentView(R.layout.multiplayer_sent);
-		
-		
+		setContentView(R.layout.multiplayer_highscores);
 		
 		sa = new ServerAccessor();
-		adapter = new Multiplayer_Sent_Request_Adaptor(this, R.layout.multiplayer_sent, this.generate_sent_request_list());
-		Log.d(TAG, "set adapter");
+		adapter = new Multiplayer_HighScores_Adaptor(this, R.layout.multiplayer_highscores, this.generate_highscores_list());
 		/*
+		Log.d(TAG, "set adapter");
 		adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1,
 				this.generate_request_list());
@@ -48,28 +44,27 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 	/* 
 	 * Creates a list of Potential players based on Web Call
 	 */
-	private ArrayList<String> generate_sent_request_list(){
+	private ArrayList<String> generate_highscores_list(){
 		sa.addRequest("user1", "user2");
 		Log.d(TAG, "request list: " + sa.getRequests(USERNAME).toString());
 		return sa.getRequests(USERNAME);
 	}
 
-
-	public class Multiplayer_Sent_Request_Adaptor extends BaseAdapter{
-		private ArrayList<String> mSentRequests = new ArrayList<String>();
+	public class Multiplayer_HighScores_Adaptor extends BaseAdapter{
+		private ArrayList<String> mHighScores = new ArrayList<String>();
 		private Context mContext;
 		private int rowResID;
 
-		public Multiplayer_Sent_Request_Adaptor(Context c, int rowResID, ArrayList<String> sentRequestsList){
-			this.rowResID = rowResID;
+		public Multiplayer_HighScores_Adaptor(Context c, int rowResID, ArrayList<String> highscoresList){
 			this.mContext = c;
-			this.mSentRequests = sentRequestsList;
+			this.mHighScores = highscoresList;
+			this.rowResID = rowResID;
 		}
 
 		@Override
 		public int getCount() {
 			// TODO Auto-generated method stub
-			return mSentRequests.size();
+			return mHighScores.size();
 		}
 
 		@Override
@@ -89,17 +84,21 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 			
 			if(view == null){
 				LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-				view = inflater.inflate(R.layout.multiplayer_sent_rows, parent, false);
+				view = inflater.inflate(R.layout.multiplayer_highscores_rows, parent, false);
 			}
-			
+
 			TextView username = (TextView) 
-					view.findViewById(R.id.multiplayer_sent_requests_textView_content);
-			username.setText(mSentRequests.get(position));
+					view.findViewById(R.id.multiplayer_high_scores_textView_player);
+			username.setText(mHighScores.get(position));
+			
+			//TODO: change to actual scores
+			TextView score = (TextView) 
+					view.findViewById(R.id.multiplayer_high_scores_textView_score);
+			score.setText(mHighScores.get(position));
+			
 			// Give it a nice background
 			return view;
 		}			
-		
-		//TODO onClick listener for Delete button
 
 
 	}

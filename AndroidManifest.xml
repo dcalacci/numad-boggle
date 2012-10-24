@@ -94,21 +94,21 @@
         </activity>
 
         <!-- Mutiplayer Received Activity -->
-        <activity android:name=".boggle.Multiplayer_Received" />
+        <activity android:name=".boggle.Multiplayer_Received_Requests" />
         <activity android:name=".boggle.Multiplayer_Received_array_adaptor" />
         <activity android:name=".boggle.Multiplayer_Received_row_content" />
 
         <!-- Mutiplayer Sent Activity -->
-        <activity android:name=".boggle.Multiplayer_Sent" />
+        <activity android:name=".boggle.Multiplayer_Sent_Requests" />
 
         <!-- Mutiplayer High Scores Activity -->
-        <activity android:name=".boggle.Multiplayer_High_scores" />
+        <activity android:name=".boggle.Multiplayer_HighScores" />
 
         <!-- Mutiplayer Current Games Activity -->
-        <activity android:name=".boggle.Multiplayer_Current_games" />
+        <activity android:name=".boggle.Multiplayer_CurrentGames" />
 
         <!-- Mutiplayer Requests Activity -->
-        <activity android:name=".boggle.Multiplayer_Sent_Requests" />
+        <activity android:name=".boggle.Multiplayer_Received_Requests" />
     </application>
 
 </manifest>

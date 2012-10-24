@@ -5,57 +5,59 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">NUMAD-DanCalacci</string>
+
+    <!-- Home Screen -->
+    <string name="exit_label">Exit</string>
+    <string name="main_title">NUMAD Dan Calacci</string>
+    <string name="name">Dan Calacci</string>
+
+    <!-- Team Members -->
+    <string name="team_members_label">Team Members</string>
+    <string name="team_members_text">       name: Dan Calacci\nemail: dcalacci@ccs.neu.edu\nversion: 0.0.1</string>
+
+    <!-- Multiplayer -->
+    <string name="multiplayer_tab_label_received">Received</string>
+    <string name="multiplayer_tab_label_sent">Sent</string>
+    <string name="multiplayer_tab_label_current_games">Current Games</string>
+    <string name="multiplayer_tab_label_high_scores">High Scores</string>
+    <string name="multiplayer_button_label_send_request">New Request</string>
+    <string name="multiplayer_button_label_back">Back</string>
+
+    <!-- Requests -->
+    <string name="multiplayer_requests_button_label_rammus">OK</string>
+    <string name="multiplayer_requests_button_label_cancel">Cancel</string>
+
+    <!-- Received -->
+    <string name="multiplayer_received_button_label_accept">Accept</string>
+    <string name="multiplayer_received_button_label_reject">Reject</string>
+
+    <!-- Sent -->
+    <string name="multiplayer_sent_button_label_delete">Delete</string>
+
+    <!-- Current Games -->
+    <string name="multiplayer_current_games_button_label_VS">VS</string>
+
+    <!-- High Scores -->
     
-   <!-- Home Screen -->
-   <string name="exit_label">Exit</string>
-   <string name="main_title">NUMAD Dan Calacci</string>
-   <string name="name">Dan Calacci</string>
-   
-   <!-- Team Members -->
-   <string name="team_members_label">Team Members</string>
-   <string name="team_members_text">
-       name: Dan Calacci\nemail: dcalacci@ccs.neu.edu\nversion: 0.0.1
-   </string>
-   
-   <!-- Multiplayer -->
-   <string name="multiplayer_tab_label_received">Received</string>
-   <string name="multiplayer_tab_label_sent">Sent</string>
-   <string name="multiplayer_tab_label_current_games">Current Games</string>
-   <string name="multiplayer_tab_label_high_scores">High Scores</string>
-   <string name="multiplayer_button_label_send_request">New Request</string>
-   <string name="multiplayer_button_label_back">Back</string>
-   
-   <!-- Requests -->
-   <string name="multiplayer_requests_button_label_rammus">OK</string>
-   <string name="multiplayer_requests_button_label_cancel">Cancel</string>
-   
-   
-   <!-- Received -->
-   <string name="multiplayer_received_button_label_accept">Accept</string>
-   <string name="multiplayer_received_button_label_reject">Reject</string>
-   <!-- Sent -->
-   
-   <!-- Current Games -->
-   
-   <string name="sudoku_label">Sudoku</string>
-   
-   <!-- Create Error -->
-   <string name="create_error_label">Create Error</string>
-   
-   
-   <string name="sudoku_app_name">Sudoku</string>
-   <string name="sudoku_main_title">Android Sudoku</string>
-   <string name="continue_label">Continue</string>
-   <string name="new_game_label">New Game</string>
-   <string name="about_label">About</string>
-   <string name="sudoku_exit_label">Exit</string>
-   <string name="boggle_submit_word_label">Submit Word</string>
-   <string name="boggle_clear_word_label">Clear Word</string>
-   <string name="pause_label">Pause</string>
-   <string name="boggle_pause_text">Game Paused</string>
-   <string name="boggle_pause_resume_button_label">Resume Game</string>
-   <string name="boggle_rules_button_label">Rules</string>
-   <string name="boggle_rules_text">The words must only use a single letter 
+    
+    
+    <string name="sudoku_label">Sudoku</string>
+
+    <!-- Create Error -->
+    <string name="create_error_label">Create Error</string>
+    <string name="sudoku_app_name">Sudoku</string>
+    <string name="sudoku_main_title">Android Sudoku</string>
+    <string name="continue_label">Continue</string>
+    <string name="new_game_label">New Game</string>
+    <string name="about_label">About</string>
+    <string name="sudoku_exit_label">Exit</string>
+    <string name="boggle_submit_word_label">Submit Word</string>
+    <string name="boggle_clear_word_label">Clear Word</string>
+    <string name="pause_label">Pause</string>
+    <string name="boggle_pause_text">Game Paused</string>
+    <string name="boggle_pause_resume_button_label">Resume Game</string>
+    <string name="boggle_rules_button_label">Rules</string>
+    <string name="boggle_rules_text">The words must only use a single letter 
        on the Boggle board once and all letters in the word must be 
        connected on the Boggle board horizontally, vertically, or diagonally.
        After you are done constructing a word, you can submit the word by 
@@ -68,51 +70,42 @@
        home would score two points\n
        homes would score three points\n
        and so on.</string>
-       
-   <string name="boggle_acknowledgements_content">Acknowledgements</string>
-   <string name="boggle_acknowledgements_button_label">Acknowledgements</string>
-   <string name="boggle_acknowledgements_text">
-       I\'d like to thank several people from this class for giving me
+    <string name="boggle_acknowledgements_content">Acknowledgements</string>
+    <string name="boggle_acknowledgements_button_label">Acknowledgements</string>
+    <string name="boggle_acknowledgements_text">       I\'d like to thank several people from this class for giving me
        inspiration for some of the design concepts I use in this application,
        especially the timer aspect, but I don\'t know their names.
        Some pieces of code were inspired by answers to questions on StackOverflow, 
        and some were taken directly out of the Android Documentation.
-       All images were designed by me.
-   </string>
-
-   <string name="boggle_label">Boggle</string>
-   <string name="boggle_new_game_label">New Game</string>
-   <string name="boggle_pause_label">Pause</string>
-   <string name="boggle_resume_label">Resume</string>
-   <string name="boggle_quit_label">Quit</string>
-   <string name="boggle_continue_game_label">Continue Game</string>
-   <string name="boggle_multiplayer_Label">Multiplayer</string>
-
-   <string name="settings_label">Settings...</string>
-   <string name="settings_title">Sudoku settings</string>
-   <string name="settings_shortcut">s</string>
-   <string name="music_title">Music</string>
-   <string name="music_summary">Play background music</string>
-   <string name="hints_title">Hints</string>
-   <string name="hints_summary">Show hints during play</string>
-
-   <string name="new_game_title">Difficulty</string>
-   <string name="easy_label">Easy</string>
-   <string name="medium_label">Medium</string>
-   <string name="hard_label">Hard</string>
-
-   <string name="game_title">Game</string>
-   <string name="no_moves_label">No moves</string>
-   <string name="keypad_title">Keypad</string>
-   
-   <string name="about_title">About Android Sudoku</string>
-   <string name="about_text">\
+       All images were designed by me.</string>
+    <string name="boggle_label">Boggle</string>
+    <string name="boggle_new_game_label">New Game</string>
+    <string name="boggle_pause_label">Pause</string>
+    <string name="boggle_resume_label">Resume</string>
+    <string name="boggle_quit_label">Quit</string>
+    <string name="boggle_continue_game_label">Continue Game</string>
+    <string name="boggle_multiplayer_Label">Multiplayer</string>
+    <string name="settings_label">Settings...</string>
+    <string name="settings_title">Sudoku settings</string>
+    <string name="settings_shortcut">s</string>
+    <string name="music_title">Music</string>
+    <string name="music_summary">Play background music</string>
+    <string name="hints_title">Hints</string>
+    <string name="hints_summary">Show hints during play</string>
+    <string name="new_game_title">Difficulty</string>
+    <string name="easy_label">Easy</string>
+    <string name="medium_label">Medium</string>
+    <string name="hard_label">Hard</string>
+    <string name="game_title">Game</string>
+    <string name="no_moves_label">No moves</string>
+    <string name="keypad_title">Keypad</string>
+    <string name="about_title">About Android Sudoku</string>
+    <string name="about_text">\
 Sudoku is a logic-based number placement puzzle.
 Starting with a partially completed 9x9 grid, the
 objective is to fill the grid so that each
 row, each column, and each of the 3x3 boxes
 (also called <i>blocks</i>) contains the digits
-1 to 9 exactly once.
-</string>
-   
+1 to 9 exactly once.</string>
+
 </resources>

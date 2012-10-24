@@ -21,33 +21,34 @@ public class Multiplayer extends TabActivity {
 		setContentView(R.layout.multiplayer_main);
 		tabHost = (TabHost) findViewById(android.R.id.tabhost);
 
-		// Tab for Sent
+		// Tab for Current Games
 		TabSpec currentGamesSpec = tabHost.newTabSpec("Current_Games");
 		TextView currentGamesTextView = new TextView(this); 
 		currentGamesSpec.setIndicator(this.getResources().getText(R.string.multiplayer_tab_label_current_games));
-		Intent currentGamesIntent = new Intent(this, Multiplayer_Sent.class);
+		Intent currentGamesIntent = new Intent(this, Multiplayer_CurrentGames.class);
 		currentGamesSpec.setContent(currentGamesIntent);
 
 		// Tab for Received
 		TabSpec receivedSpec = tabHost.newTabSpec("Received");
 		receivedSpec.setIndicator(this.getResources().getText(R.string.multiplayer_tab_label_received));
-		Intent receivedIntent = new Intent(this, Multiplayer_Received.class);
+		Intent receivedIntent = new Intent(this, Multiplayer_Received_Requests.class);
 		receivedSpec.setContent(receivedIntent);
 
 		// Tab for Sent
 		TabSpec sentSpec = tabHost.newTabSpec("Sent");
 		TextView sentTextView = new TextView(this); 
 		sentSpec.setIndicator(this.getResources().getText(R.string.multiplayer_tab_label_sent));
-		Intent sentIntent = new Intent(this, Multiplayer_Sent.class);
+		Intent sentIntent = new Intent(this, Multiplayer_Sent_Requests.class);
 		sentSpec.setContent(sentIntent);
+		
 
-		// Tab for Sent
+		// Tab for High Scores
 		TabSpec highscoresSpec = tabHost.newTabSpec("High Scores");
 		TextView highScoresTextView = new TextView(this); 
 		highscoresSpec.setIndicator(this.getResources().getText(R.string.multiplayer_tab_label_high_scores));
-		Intent highScoresIntent = new Intent(this, Multiplayer_Sent.class);
+		Intent highScoresIntent = new Intent(this, Multiplayer_HighScores.class);
 		highscoresSpec.setContent(highScoresIntent);
-
+		
 		// Adding all TabSpec to TabHost
 		tabHost.addTab(currentGamesSpec); // Adding current games tab
 		tabHost.addTab(receivedSpec); // Adding received tab
