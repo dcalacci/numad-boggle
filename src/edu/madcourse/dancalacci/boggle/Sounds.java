@@ -29,7 +29,7 @@ public abstract class Sounds {
         mp.start();
 	}
 	
-	public static void playRight(Context c, String sound) {
+	public static void playRight(Context c) {
         MediaPlayer mp = MediaPlayer.create(c, R.raw.correct_word);
         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
@@ -38,5 +38,16 @@ public abstract class Sounds {
             }
         });
         mp.start();
+	}
+	
+	public static void playClear(Context c) {
+      MediaPlayer mp = MediaPlayer.create(c, R.raw.clear);
+       mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+           public void onCompletion(MediaPlayer mp) {
+               mp.release();
+           }
+       });
+       mp.start();
 	}
 }

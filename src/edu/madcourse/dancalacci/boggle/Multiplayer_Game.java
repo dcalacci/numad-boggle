@@ -70,55 +70,6 @@ public class Multiplayer_Game extends Activity {
    
    protected int score = 0;
   
-   // Each list in the top array represents a die
-   // Each element of the bottom array represents a side of a die
-   // this collection of boggle dies is the new, easy game.
-//   private final List<List<Character>> dice = new ArrayList<List<Character>>() {{
-//     add( Arrays.asList( 'a', 'a', 'e', 'e', 'g', 'n' ));
-//     add( Arrays.asList( 'e', 'l', 'r', 't', 't', 'y' ));
-//     add( Arrays.asList( 'a', 'o', 'o', 't', 't', 'w' ));
-//     add( Arrays.asList( 'a', 'b', 'b', 'j', 'o', 'o' ));
-//     add( Arrays.asList( 'e', 'h', 'r', 't', 'v', 'w' ));
-//     add( Arrays.asList( 'c', 'i', 'm', 'o', 't', 'v' ));
-//     add( Arrays.asList( 'd', 'i', 's', 't', 't', 'y' ));
-//     add( Arrays.asList( 'e', 'i', 'o', 's', 's', 't' ));
-//     add( Arrays.asList( 'd', 'e', 'l', 'r', 'v', 'y' ));
-//     add( Arrays.asList( 'a', 'c', 'h', 'o', 'p', 's' ));
-//     add( Arrays.asList( 'h', 'i', 'm', 'n', 'q', 'u' ));
-//     add( Arrays.asList( 'e', 'e', 'i', 'n', 's', 'u' ));
-//     add( Arrays.asList( 'e', 'e', 'g', 'h', 'n', 'w' ));
-//     add( Arrays.asList( 'a', 'f', 'f', 'k', 'p', 's' ));
-//     add( Arrays.asList( 'h', 'l', 'n', 'n', 'r', 'z' ));
-//     add( Arrays.asList( 'd', 'e', 'i', 'l', 'r', 'x' ));
-//   }};
-   
-   private final ArrayList<List<Character>> dice = new ArrayList<List<Character>>() {{
-	   add( Arrays.asList( 'a', 'a', 'a', 'f', 'r', 's'));
-	   add( Arrays.asList( 'a', 'a', 'e', 'e', 'e', 'e'));
-	   add( Arrays.asList( 'a', 'a', 'f', 'i', 'r', 's'));
-	   add( Arrays.asList( 'a', 'd', 'e', 'n', 'n', 'n'));
-	   add( Arrays.asList( 'a', 'e', 'e', 'e', 'e', 'm'));
-	   add( Arrays.asList( 'a', 'e', 'e', 'g', 'm', 'u'));
-	   add( Arrays.asList( 'a', 'e', 'g', 'm', 'n', 'n'));
-	   add( Arrays.asList( 'a', 'f', 'i', 'r', 's', 'y'));
-	   add( Arrays.asList( 'b', 'j', 'k', 'q', 'x', 'z'));
-	   add( Arrays.asList( 'c', 'c', 'n', 's', 't', 'w'));
-	   add( Arrays.asList( 'c', 'e', 'i', 'i', 'l', 't'));
-	   add( Arrays.asList( 'c', 'e', 'i', 'l', 'p', 't'));
-	   add( Arrays.asList( 'c', 'e', 'i', 'p', 's', 't'));
-	   add( Arrays.asList( 'd', 'd', 'l', 'n', 'o', 'r'));
-	   add( Arrays.asList( 'd', 'h', 'h', 'l', 'o', 'r'));
-	   add( Arrays.asList( 'd', 'h', 'h', 'n', 'o', 't'));
-	   add( Arrays.asList( 'd', 'h', 'l', 'n', 'o', 'r'));
-	   add( Arrays.asList( 'e', 'i', 'i', 'i', 't', 't'));
-	   add( Arrays.asList( 'e', 'm', 'o', 't', 't', 't'));
-	   add( Arrays.asList( 'e', 'n', 's', 's', 's', 'u'));
-	   add( Arrays.asList( 'f', 'i', 'p', 'r', 's', 'y'));
-	   add( Arrays.asList( 'g', 'o', 'r', 'r', 'v', 'w'));
-	   add( Arrays.asList( 'h', 'i', 'p', 'r', 'r', 'y'));
-	   add( Arrays.asList( 'n', 'o', 'o', 't', 'u', 'w'));
-	   add( Arrays.asList( 'o', 'o', 'o', 't', 't', 'u'));
-   }};
    // TODO: find the older dice distribution, make a new list for another difficulty
    
    protected StringBuffer iWord = new StringBuffer();
@@ -384,29 +335,7 @@ public class Multiplayer_Game extends Activity {
    }
    
    public void onClearWordButtonClicked(View v) {
-       MediaPlayer mp = MediaPlayer.create(this, R.raw.clear);
-       mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-
-           public void onCompletion(MediaPlayer mp) {
-               mp.release();
-           }
-       });
-       mp.start();
-	//   this.clearSelectedTiles();
-   }
-   
-   /**
-    * Code to execute when the quit button is pressed
-    * @param v view parameter from button
-    */
-   public void onQuitButtonClicked(View v) {
-	   SharedPreferences pref = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE);
-	   SharedPreferences.Editor edit = pref.edit();
-	   Log.d(TAG, "Clear Shared Prefs");
-	   edit.clear();
-	   edit.putBoolean(NO_GAME, true);
-	   edit.commit();
-	   finish();
+	   Sounds.playClear(this);
    }
    
 }

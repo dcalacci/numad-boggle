@@ -1,5 +1,7 @@
 package edu.madcourse.dancalacci.boggle;
 import java.util.*;
+
+import src.GameWrapper;
 //go_ogle_me
 //googleme
 
@@ -11,6 +13,11 @@ public class ServerAccessor {
   private static final String PASSWORD  = "googleme";
   private static String USER_NAME = "";
   private static String USER_PASS = "";
+  
+  private static final String BOARD_PREFIX = "board_";
+  private static final String TURN_PREFIX = "turn_";
+  private static final String ENTERED_WORDS_PREFIX = "entered_";
+  private static final String SCORES_PREFIX = "scores_";
   
   private static final ArrayList<List<Character>> dice = new ArrayList<List<Character>>() {{
 	   add( Arrays.asList( 'a', 'a', 'a', 'f', 'r', 's'));
@@ -431,6 +438,41 @@ public class ServerAccessor {
     String boardKey = "board_" + this.getUsersKey(user1, user2);
     String boardVal = board;
     this.put(boardKey, boardVal);
+  }
+  
+
+  public GameWrapper getGame(String user1, String user2) {
+	  String userskey = this.getUsersKey(user1, user2);
+	  
+	  String turnKey = TURN_PREFIX + userskey;
+	  String currentTurn = 
+			  this.get(turnKey);
+	  
+	  String boardKey = BOARD_PREFIX + userskey;
+	  ArrayList<String> board =
+			  this.stringToArrayList(this.get(boardKey));
+	  
+	  String enteredWordsKey = ENTERED_WORDS_PREFIX + userskey;
+	  ArrayList<String> enteredWords =
+			  this.stringToArrayList(this.get(enteredWordsKey));
+	  
+	  String scoresKey = SCORES_PREFIX + userskey;
+	  
+  }
+  
+  private Hashtable<String, Integer> scoresStringToHashtable(String scores) {
+	ArrayList<String> parts = new ArrayList<String>(
+			Arrays.asList(scores.split(",")));
+	Hashtable<String, Integer> scoresDic = new Hashtable<String, Integer>();
+	for (String usrScore : parts) {
+		List<String> part = Arrays.asList(usrScore.split("|"));
+		scoresDic.put(part.get(0), Integer.parseInt(part.get(1)));
+	}
+	return scoresDic;
+  }
+  
+  private String hashtableToScoresString(Hashtable<String, Integer> scores) {
+	  //TODO
   }
 
 }
