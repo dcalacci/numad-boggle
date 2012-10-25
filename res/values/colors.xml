@@ -21,6 +21,7 @@
    <color name="title_text">#073642</color>
    <color name="game_over">#cb4b16</color>
    
+   
    <color name="transparent">#00000000</color>
    
    <color name="boggle_selectedDieColor">#25eee8d5</color>
@@ -30,4 +31,6 @@
    <color name="boggle_dark">#6456648f</color>
    <color name="boggle_foreground">#002b36</color>
    <color name="boggle_background">#fdf6e3</color>
+   
+   <color name="multiplayer_game_boardColor">#657b83</color>
 </resources>

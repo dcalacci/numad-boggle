@@ -61,19 +61,24 @@ public class Multiplayer_Game extends Activity {
 		String opponent = getIntent().getStringExtra("opponent");
 		// set the layout, start the view.
 		username = getSharedPreferences(MULTI_PREF, MODE_PRIVATE).getString(username, "guest");
+		
+		sa.removeGame(username, opponent);
 
 		// if the game exists, get it.  if not, make a new one.
 		if (sa.doesGameExist(username, opponent)) {
+			Log.v(TAG, "Game Exists!");
 			this.game = sa.getGame(username, opponent);
 		} else {
+			Log.v(TAG, "game doesn't exist");
 			sa.createNewGame(username, opponent);
 			this.game = sa.getGame(username, opponent);
 		}
 
 		gameView = new Multiplayer_Game_View(this);
-		//setContentView(R.layout.multiplayer_game);
-		//FrameLayout boardFrame = (FrameLayout)findViewById(R.id.multiplayer_game_board);
-		//boardFrame.addView(gameView);
+		
+		setContentView(R.layout.multiplayer_game);
+		FrameLayout boardFrame = (FrameLayout)findViewById(R.id.multiplayer_game_tiles);
+		boardFrame.addView(gameView);
 	}
 
 	@Override
@@ -241,10 +246,8 @@ public class Multiplayer_Game extends Activity {
 		listview.setCacheColorHint(color.boggle_boardColor);
 	}
 
-	public void onPauseButtonClicked(View v) {
-		this.onPause();
-		Intent i = new Intent(this, Pause.class);
-		startActivity(i);
+	public void onMultiplayerGameBackButtonClicked(View v) {
+		finish();
 	}
 
 	public void onClearWordButtonClicked(View v) {

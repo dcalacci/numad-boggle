@@ -104,26 +104,35 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 			// TODO Auto-generated method stub
 			return position;
 		}
-		
+
 		public boolean isEmptyList(){
 			return mSentRequests.contains("");
 		}
 
 		public View getView(int position, View view, ViewGroup parent) {
 			final String row = this.mSentRequests.get(position);
-			//boolean isEmpty = isEmptyList();
-			if(view == null){
-				getListView().setEmptyView(findViewById(android.R.id.empty));
+			boolean isEmpty = isEmptyList();
+			Log.d(TAG, "Empty ArrayList "+ isEmpty);
 
-				LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-				view = inflater.inflate(R.layout.multiplayer_sent_rows, parent, false);
+			if(view == null ){
+				getListView().setEmptyView(findViewById(android.R.id.empty));
+				if(!isEmpty){
+					LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+					view = inflater.inflate(R.layout.multiplayer_sent_rows, parent, false);
+				}else{
+					LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+					view = inflater.inflate(R.layout.multiplayer_sent_rows_empty, parent, false);
+				}
 			}
-			//Log.d(TAG, "Empty ArrayList "+ isEmpty);
-			
+
 			TextView username = (TextView) 
 					view.findViewById(R.id.multiplayer_sent_requests_textView_content);
-			username.setText(mSentRequests.get(position));
-
+			if(!isEmpty){
+				username.setText(mSentRequests.get(position));
+			}else{
+				username.setText("No Requests Sent");
+			}
+			
 			buttonClickHandler btn_Handler = new buttonClickHandler(username, row);
 
 			Button btnDelete = (Button) view.findViewById(R.id.multiplayer_sent_delete_button);
