@@ -28,7 +28,7 @@ public class Multiplayer_CurrentGames extends ListActivity {
 	private static final String PREF_USER = "prefUser";
 	ServerAccessor sa;
 	String USERNAME;
-	String TAG = "Multiplayer_CurrnetGames_Requests";
+	String TAG = "Multiplayer_CurrentGames_Requests";
 	//ArrayAdapter<String> adapter;
 	Multiplayer_Current_Games_Adaptor adapter;
 
@@ -113,18 +113,32 @@ public class Multiplayer_CurrentGames extends ListActivity {
 			// TODO Auto-generated method stub
 			return position;
 		}
-
+		
+		public boolean isEmptyList(){
+			return mGames.contains("");
+		}
 
 		public View getView(int position, View view, ViewGroup parent) {
-
-			if(view == null){
-				LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-				view = inflater.inflate(R.layout.multiplayer_current_games_rows, parent, false);
+			boolean isEmpty = isEmptyList();
+			Log.d(TAG, "current games list: " + mGames.toString());
+			if(view == null ){
+				getListView().setEmptyView(findViewById(android.R.id.empty));
+				if(!isEmpty){
+					LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+					view = inflater.inflate(R.layout.multiplayer_current_games_rows, parent, false);
+				}else{
+					LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+					view = inflater.inflate(R.layout.multiplayer_current_games_rows_empty, parent, false);
+				}
 			}
 
 			TextView player1 = (TextView) 
 					view.findViewById(R.id.multiplayer_current_games_textView_player1);
-			player1.setText(USERNAME);
+			if(!isEmpty){
+				player1.setText(USERNAME);
+			}else{
+				player1.setText("No Current Games Available");
+			}
 
 			TextView player2 = (TextView) 
 					view.findViewById(R.id.multiplayer_current_games_textView_player2);

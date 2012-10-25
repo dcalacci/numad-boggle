@@ -56,8 +56,7 @@ public class ServerAccessor {
 		add( Arrays.asList( 'o', 'o', 'o', 't', 't', 'u'));
 	}};
 
-	public ServerAccessor(Context c) {
-		this.c = c;
+	public ServerAccessor() {
 	}
 
 	/**
@@ -66,6 +65,7 @@ public class ServerAccessor {
 	 */
 	public String get(String key) {
 		
+		Log.v(TAG, "starting a GetKeyTask");
 		class GetKeyTask extends AsyncTask<String, Integer, String> {
 			
 			protected String doInBackground(String... key) {
@@ -74,7 +74,8 @@ public class ServerAccessor {
 		}
 		
 		try {
-			return new GetKeyTask().execute("key").get();
+			Log.v(TAG, "executing getKeyTask with '" +key +"'");
+			return new GetKeyTask().execute(key).get();
 		} catch(Exception e) {
 			Log.e(TAG, "GetKeyTask thread died: " +e);
 			return "";

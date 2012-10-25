@@ -81,7 +81,7 @@ public class Multiplayer_New_Request_Form extends ListActivity{
 
 	public void onMultiplayerRequestsOkButtonClicked(View v) {
 		if (selectedUser.length() > 0){
-			sa.addRequest(USERNAME, selectedUser);
+			sa.sendRequest(USERNAME, selectedUser);
 			finish();
 		}else{
 			Toast.makeText(getBaseContext(), "Please select a User", Toast.LENGTH_SHORT).show();

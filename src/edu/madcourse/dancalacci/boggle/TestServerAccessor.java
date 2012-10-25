@@ -10,7 +10,7 @@ public class TestServerAccessor {
     this.sa = new ServerAccessor();
     sa.clear();
   }
-
+  /*
   public static void main(String[] args) {
     TestServerAccessor test = new TestServerAccessor();
     test.requests();
@@ -210,4 +210,5 @@ public class TestServerAccessor {
   private void assertFalse (String name, boolean result) {
     assertTrue (name, ! result);
   }
+  */
 }

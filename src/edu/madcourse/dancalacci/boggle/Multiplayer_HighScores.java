@@ -104,18 +104,31 @@ public class Multiplayer_HighScores extends ListActivity{
 			return position;
 		}
 
-
+		public boolean isEmptyList(){
+			return mHighScores.contains("");
+		}
+		
 		public View getView(int position, View view, ViewGroup parent) {
-
-			if(view == null){
-				LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-				view = inflater.inflate(R.layout.multiplayer_highscores_rows, parent, false);
+			boolean isEmpty = isEmptyList();
+			
+			if(view == null ){
+				getListView().setEmptyView(findViewById(android.R.id.empty));
+				if(!isEmpty){
+					LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+					view = inflater.inflate(R.layout.multiplayer_highscores_rows, parent, false);
+				}else{
+					LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+					view = inflater.inflate(R.layout.multiplayer_highscores_rows_empty, parent, false);
+				}
 			}
-
 
 			TextView username = (TextView) 
 					view.findViewById(R.id.multiplayer_high_scores_textView_player);
-			username.setText(mHighScores.get(position));
+			if(!isEmpty){
+				username.setText(mHighScores.get(position));
+			}else{
+				username.setText("No New High Scores");
+			}
 
 			//TODO: change to actual scores
 			TextView score = (TextView) 

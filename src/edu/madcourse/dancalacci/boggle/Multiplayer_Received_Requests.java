@@ -40,7 +40,7 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 		SharedPreferences pref = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE);
 		USERNAME = pref.getString(PREF_USER, null);
 	}
-	
+
 	public void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
@@ -48,11 +48,11 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 		setContentView(R.layout.multiplayer_received);
 
 		setUsername();
-		
+
 		getListView().setEmptyView(findViewById(android.R.id.empty));
 
 		sa = new ServerAccessor();
-		adapter = new Multiplayer_Received_Request_Adaptor(this, R.layout.multiplayer_received, this.generate_request_list());
+		adapter = new Multiplayer_Received_Request_Adaptor(this, R.layout.multiplayer_received, this.generate_received_request_list());
 		Log.d(TAG, "set adapter");
 		/*adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1,
@@ -68,7 +68,7 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 		setListAdapter(adapter);
 	}
 
-	private ArrayList<String> generate_request_list(){
+	private ArrayList<String> generate_received_request_list(){
 		Log.d(TAG, "request list: " + sa.getReceivedRequests(USERNAME).toString());
 		return sa.getReceivedRequests(USERNAME);
 	}
@@ -103,18 +103,33 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 			return position;
 		}
 
+		public boolean isEmptyList(){
+			return mReceivedRequests.contains("");
+		}
 
 		public View getView(int position, View view, ViewGroup parent) {
 			final String row = this.mReceivedRequests.get(position);
+			boolean isEmpty = isEmptyList();
 
-			if(view == null){
-				LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-				view = inflater.inflate(R.layout.multiplayer_received_rows, parent, false);
+			if(view == null ){
+				getListView().setEmptyView(findViewById(android.R.id.empty));
+				if(!isEmpty){
+					LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+					view = inflater.inflate(R.layout.multiplayer_received_rows, parent, false);
+				}else{
+					LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+					view = inflater.inflate(R.layout.multiplayer_received_rows_empty, parent, false);
+				}
 			}
 
 			TextView username = (TextView) 
 					view.findViewById(R.id.multiplayer_received_requests_textView_content);
-			username.setText(mReceivedRequests.get(position));
+			if(!isEmpty){
+				username.setText(mReceivedRequests.get(position));
+			}else{
+				username.setText("No New Requests");
+			}
+
 			// Give it a nice background
 
 			buttonClickHandler btn_Handler = new buttonClickHandler(username, row);
@@ -157,25 +172,34 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 
 				switch(v.getId()){
 				case R.id.multiplayer_received_accept_button:
-					Intent i = new Intent(mContext, Multiplayer_Game.class);
-					sa.addRequest("user1", "user2");
-					// should be row but...  i.putExtra("opponent", row);
-					i.putExtra("opponent", "user2");
-					startActivity(i);
+					Log.d(TAG, "Accept Button Clicked");
+					sa.addGame(USERNAME, row);
+
+					/* Removes Player2 from Player1 list */
+					sa.removeSentRequest(USERNAME, row);
+
+					/* Removes Player1 from Player2 List */
+					sa.removeSentRequest(row, USERNAME);
+
+					deleteRow(row);
+					notifyDataSetChanged();
+					
+
 					//Start new game activity
 					//TODO: Update Request List & Create new game pair -> Server Call
 					//TODO: Send user2 name to activity
-					Log.d(TAG, "Accept Button Clicked");
-					sa.removeReceived(USERNAME, row);
-					sa.addGame(USERNAME, row);
-					deleteRow(row);
-					notifyDataSetChanged();
+					Intent i = new Intent(mContext, Multiplayer_Game.class);
+					sa.sendRequest("user1", "user2");
+					// should be row but...  i.putExtra("opponent", row);
+					i.putExtra("opponent", "user2");
+					startActivity(i);
+					
 					Log.d(TAG, "Accept Button Clicked Delete Row");
 					break;
 				case R.id.multiplayer_received_reject_button:
 					//TODO: Update Request List -> Server Call
 					Log.d(TAG, "Reject Button Clicked");
-					sa.removeReceived(USERNAME, row);
+					sa.removeSentRequest(USERNAME, row);
 					deleteRow(row);
 					notifyDataSetChanged();
 					Log.d(TAG, "Reject Button Clicked Delete Row");

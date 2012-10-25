@@ -169,8 +169,10 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 					//Start new game activity
 					//TODO: Update Request List & Create new game pair -> Server Call
 					Log.d(TAG, "Delete Button Clicked");
-					sa.removeRequest(USERNAME, row);
+					
+					sa.removeSentRequest(USERNAME, row);
 					Log.d(TAG, "updated list after delete: "+sa.getSentRequests(USERNAME).toString());
+		
 					deleteRow(row);
 					notifyDataSetChanged();
 					Log.d(TAG, "Delete Button Clicked Delete Row");
