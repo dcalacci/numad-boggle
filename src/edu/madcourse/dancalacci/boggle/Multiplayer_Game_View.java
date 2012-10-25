@@ -68,7 +68,7 @@ public class Multiplayer_Game_View extends View {
 		setConstants();
 	}
 
-	@Override
+	
 	protected Parcelable onSaveInstanceState() {
 		Parcelable p = super.onSaveInstanceState();
 		Log.d(TAG, "onSaveInstanceState"); // log the activity
@@ -80,7 +80,7 @@ public class Multiplayer_Game_View extends View {
 		return bundle;
 	}
 
-	@Override
+	
 	protected void onRestoreInstanceState(Parcelable state) {
 		Log.d(TAG, "onRestoreInstanceState");
 		Bundle bundle = (Bundle) state;
@@ -99,7 +99,7 @@ public class Multiplayer_Game_View extends View {
 	float dieWidth;
 	float dieHeight;
 
-	@Override
+	
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		setConstants();
 		super.onSizeChanged(w, h, oldw, oldh);
@@ -170,7 +170,7 @@ public class Multiplayer_Game_View extends View {
 				+ height); 
 	}
 	
-	@Override
+	
 	protected void onDraw(Canvas canvas) {
 
 		// board background color
@@ -300,7 +300,7 @@ public class Multiplayer_Game_View extends View {
 
 	}
 
-	@Override
+	
 	public boolean onTouchEvent(MotionEvent event) {
 
 		if (event.getAction() != MotionEvent.ACTION_DOWN) {

@@ -38,7 +38,7 @@
             android:id="@+id/multiplayer_requests_ok_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.28"
+            android:layout_weight="0.30"
             android:onClick="onMultiplayerCurrentGamesSendNewRequestsButtonClicked"
             android:text="@string/multiplayer_button_label_send_request" />
 
@@ -46,7 +46,7 @@
             android:id="@+id/multiplayer_requests_cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.72"
+            android:layout_weight="0.70"
             android:onClick="onMultiplayersCurrentGamesBackButtonClicked"
             android:text="@string/multiplayer_button_label_back" />
     </LinearLayout>

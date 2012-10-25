@@ -7,6 +7,7 @@ import edu.madcourse.dancalacci.boggle.Multiplayer_HighScores.Multiplayer_HighSc
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,40 +24,46 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class Multiplayer_CurrentGames extends ListActivity {
+	public static final String BOGGLE_PREF = "edu.madcourse.dancalacci.boggle";
+	private static final String PREF_USER = "prefUser";
 	ServerAccessor sa;
-	String USERNAME = "user1";							// Change to PREF
+	String USERNAME;
 	String TAG = "Multiplayer_CurrnetGames_Requests";
 	//ArrayAdapter<String> adapter;
 	Multiplayer_Current_Games_Adaptor adapter;
+
+	public void setUsername(){
+		Log.d(TAG, "setUsername");
+		SharedPreferences pref = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE);
+		this.USERNAME = pref.getString(PREF_USER, null);
+		Log.d(TAG, "setUsername: " + USERNAME);
+	}
 
 	public void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "set contentview");
 		setContentView(R.layout.multiplayer_current_games);
-		
+
+		setUsername();
+
 		getListView().setEmptyView(findViewById(android.R.id.empty));
-		
+
 		sa = new ServerAccessor();
 
 		adapter = new Multiplayer_Current_Games_Adaptor(this, R.layout.multiplayer_current_games, this.generate_games_list());
 		Log.d(TAG, "set adapter");
-		/*
-		adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1,
-				this.generate_games_list());
-		 */
 
 		setListAdapter(adapter);
 	}
-	
+
 	public void onResume(){
-		 super.onResume();
-		 getListView().setEmptyView(findViewById(R.id.emptyView));
-		 adapter = new Multiplayer_Current_Games_Adaptor(this, R.layout.multiplayer_current_games, sa.getGames(USERNAME));
-		 setListAdapter(adapter);
+		super.onResume();
+		getListView().setEmptyView(findViewById(R.id.emptyView));
+		adapter = new Multiplayer_Current_Games_Adaptor(this, R.layout.multiplayer_current_games, sa.getGames(USERNAME));
+		setListAdapter(adapter);
 	}
-	
+
 	/*
 	 * TODO: Opens game based on user ID Key
 	 * Sets ListItem Click Listener
@@ -69,7 +76,7 @@ public class Multiplayer_CurrentGames extends ListActivity {
 		String selection = l.getItemAtPosition(position).toString();
 		Log.d(TAG, "onListItemClick: " + selection);
 	}
-	
+
 	/* 
 	 * Creates a list of Potential players based on Web Call
 	 */
@@ -179,7 +186,7 @@ public class Multiplayer_CurrentGames extends ListActivity {
 		Intent i = new Intent(this, Multiplayer_New_Request_Form.class);
 		startActivity(i);
 	}
-	
+
 	/*
 	 * Returns to previous Activity
 	 */

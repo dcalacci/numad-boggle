@@ -93,6 +93,9 @@
             android:screenOrientation="portrait" >
         </activity>
 
+         <!-- Log in Activity -->
+         <activity android:name=".boggle.Multiplayer_Login_Form" />
+         
          <!-- New Sent Request Activity -->
         <activity android:name=".boggle.Multiplayer_New_Request_Form" />
         

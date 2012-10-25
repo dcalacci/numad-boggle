@@ -71,9 +71,9 @@ public class Multiplayer_Game extends Activity {
 		}
 
 		gameView = new Multiplayer_Game_View(this);
-		setContentView(R.layout.multiplayer_game);
-		FrameLayout boardFrame = (FrameLayout)findViewById(R.id.multiplayer_game_board);
-		boardFrame.addView(gameView);
+		//setContentView(R.layout.multiplayer_game);
+		//FrameLayout boardFrame = (FrameLayout)findViewById(R.id.multiplayer_game_board);
+		//boardFrame.addView(gameView);
 	}
 
 	@Override

@@ -39,7 +39,10 @@
 
     <!-- High Scores -->
     
-    
+    <!-- Login Form-->
+    <string name="login_form_label_login_in">Log In</string>
+    <string name="login_form_label_register">Register</string>
+    <string name="login_form_header">Please Login</string>
     
     <string name="sudoku_label">Sudoku</string>
 

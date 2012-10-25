@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,16 +30,25 @@ import android.widget.SimpleAdapter;
 
 public class Multiplayer_Received_Requests  extends ListActivity{
 	private String TAG = "Multiplayer_Received_Requests";
-	ServerAccessor sa;
-	String USERNAME = "user1";
+	private static final String BOGGLE_PREF = "edu.madcourse.dancalacci.boggle";
+	private static final String PREF_USER = "prefUser";
+	private ServerAccessor sa;
+	private String USERNAME;
 	Multiplayer_Received_Request_Adaptor adapter;
 
+	public void setUsername(){
+		SharedPreferences pref = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE);
+		USERNAME = pref.getString(PREF_USER, null);
+	}
+	
 	public void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "set contentview");
 		setContentView(R.layout.multiplayer_received);
 
+		setUsername();
+		
 		getListView().setEmptyView(findViewById(android.R.id.empty));
 
 		sa = new ServerAccessor();

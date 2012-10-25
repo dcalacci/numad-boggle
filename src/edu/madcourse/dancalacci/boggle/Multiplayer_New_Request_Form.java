@@ -7,6 +7,7 @@ import edu.madcourse.dancalacci.boggle.Multiplayer_Received_Requests.Multiplayer
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,17 +23,26 @@ import android.widget.Toast;
 
 public class Multiplayer_New_Request_Form extends ListActivity{
 	private String TAG = "Multiplayer_New_Request_Form";
-	ServerAccessor sa;
-	String USERNAME = "user1";
-	private String selectedUser = "";
+	private static final String BOGGLE_PREF = "edu.madcourse.dancalacci.boggle";
+	private static final String PREF_USER = "prefUser";
+	private ServerAccessor sa;
+	private String USERNAME;
+	private String selectedUser;
 	private ArrayList<String> mUserList = new ArrayList<String>();
 	//Multiplayer_Send_Requests_Form_Adaptor adapter;
 
+	public void setUsername(){
+		SharedPreferences pref = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE);
+		USERNAME = pref.getString(PREF_USER, null);
+	}
+	
 	public void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate"); // log the event
 
+		setUsername();
+		
 		setContentView(R.layout.multiplayer_send_requests_form);
 
 		getListView().setEmptyView(findViewById(android.R.id.empty));
@@ -46,7 +56,7 @@ public class Multiplayer_New_Request_Form extends ListActivity{
 
 		// Defining the item click listener for listView
 		OnItemClickListener itemClickListener = new OnItemClickListener() {
-			@Override
+			
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
 				selectedUser = mUserList.get(position);
 				Toast.makeText(getBaseContext(), "You selected : " + mUserList.get(position), Toast.LENGTH_SHORT).show();

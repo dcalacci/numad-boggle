@@ -20,7 +20,7 @@ public class Multiplayer_Game_Service extends Service{
 		public GameServiceHandler(Looper looper) {
 			super(looper);
 		}
-		@Override
+		
 		public void handleMessage(Message msg) {
 			// Normally we would do some work here, like download a file.
 			// For our sample, we just sleep for 5 seconds.
@@ -53,7 +53,7 @@ public class Multiplayer_Game_Service extends Service{
 		mServiceHandler = new GameServiceHandler(mServiceLooper);
 	}
 
-	@Override
+	
 	public IBinder onBind(Intent arg0) {
 		// TODO Auto-generated method stub
 		
