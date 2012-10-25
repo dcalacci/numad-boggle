@@ -7,6 +7,7 @@ import edu.madcourse.dancalacci.R;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,7 +39,7 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 		Log.d(TAG, "set contentview");
 		setContentView(R.layout.multiplayer_received);
 
-
+		getListView().setEmptyView(findViewById(android.R.id.empty));
 
 		sa = new ServerAccessor();
 		adapter = new Multiplayer_Received_Request_Adaptor(this, R.layout.multiplayer_received, this.generate_request_list());
@@ -50,10 +51,16 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 		setListAdapter(adapter);
 	}
 
+	public void onResume(){
+		super.onResume();
+		getListView().setEmptyView(findViewById(R.id.emptyView));
+		adapter = new Multiplayer_Received_Request_Adaptor(this, R.layout.multiplayer_received, sa.getReceived(USERNAME));
+		setListAdapter(adapter);
+	}
+
 	private ArrayList<String> generate_request_list(){
-		sa.addRequest("user1", "user2");
-		Log.d(TAG, "request list: " + sa.getRequests(USERNAME).toString());
-		return sa.getRequests(USERNAME);
+		Log.d(TAG, "request list: " + sa.getReceived(USERNAME).toString());
+		return sa.getReceived(USERNAME);
 	}
 
 
@@ -68,47 +75,137 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 			this.rowResID = rowResID;
 		}
 
-		
+
 		public int getCount() {
 			// TODO Auto-generated method stub
 			return mReceivedRequests.size();
 		}
 
-		
+
 		public Object getItem(int position) {
 			// TODO Auto-generated method stub
 			return position;
 		}
 
-		
+
 		public long getItemId(int position) {
 			// TODO Auto-generated method stub
 			return position;
 		}
 
-		
+
 		public View getView(int position, View view, ViewGroup parent) {
+			final String row = this.mReceivedRequests.get(position);
+
 			if(view == null){
 				LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 				view = inflater.inflate(R.layout.multiplayer_received_rows, parent, false);
 			}
-			
+
 			TextView username = (TextView) 
 					view.findViewById(R.id.multiplayer_received_requests_textView_content);
 			username.setText(mReceivedRequests.get(position));
 			// Give it a nice background
+
+			buttonClickHandler btn_Handler = new buttonClickHandler(username, row);
+
+			Button btnAccept = (Button) view.findViewById(R.id.multiplayer_received_accept_button);
+			btnAccept.setOnClickListener(btn_Handler);
+			btnAccept.setTag(row);
+
+			Button btnReject = (Button) view.findViewById(R.id.multiplayer_received_reject_button);
+			btnReject.setOnClickListener(btn_Handler);
+			btnReject.setTag(row);
+
 			return view;
 		}			
-		
+
+
+		/**
+		 * Delete a row from the list of rows
+		 * @param row row to be deleted
+		 */
+		public void deleteRow(String row) {
+			if(this.mReceivedRequests.contains(row)) {
+				this.mReceivedRequests.remove(row);
+			}
+		}
+
+
+		class buttonClickHandler implements View.OnClickListener {
+			TextView textView;
+			String row;
+
+			public buttonClickHandler(TextView textView, String row ) {
+				this.textView = textView;
+				this.row = row;
+			}
+
+			public void onClick(View v) {
+				Button button = (Button) v;
+				String row = (String) button.getTag();
+
+				switch(v.getId()){
+				case R.id.multiplayer_received_accept_button:
+					//Start new game activity
+					//TODO: Update Request List & Create new game pair -> Server Call
+					//TODO: Send user2 name to activity
+					Log.d(TAG, "Accept Button Clicked");
+					sa.removeReceived(USERNAME, row);
+					sa.addGame(USERNAME, row);
+					deleteRow(row);
+					notifyDataSetChanged();
+					Log.d(TAG, "Accept Button Clicked Delete Row");
+					break;
+				case R.id.multiplayer_received_reject_button:
+					//TODO: Update Request List -> Server Call
+					Log.d(TAG, "Reject Button Clicked");
+					sa.removeReceived(USERNAME, row);
+					deleteRow(row);
+					notifyDataSetChanged();
+					Log.d(TAG, "Reject Button Clicked Delete Row");
+					break;
+				}
+			}
+
+
+		}
+
 		// TODO: add ACCEPT button listener
 		// TODO: add ACCEPT button listener
 
 	}
-	
-	public void onMultiplayerReceivedRequestsSendNewRequestsButtonClicked(View v) {
 
-		//Intent i = new Intent(this, .class);
-		//startActivity(i);
+
+	public void onClick(View v) {
+		Button button = (Button) v;
+		String row = (String) button.getTag();
+
+		switch(v.getId()){
+		case R.id.multiplayer_received_accept_button:
+			//Start new game activity
+			//TODO: Update Request List & Create new game pair -> Server Call
+			Log.d(TAG, "Accept Button Clicked");
+			if(!row.equals(null)){
+				sa.createNewGame(USERNAME, row);
+			}
+			adapter.deleteRow(row);
+			adapter.notifyDataSetChanged();
+			break;
+		case R.id.multiplayer_received_reject_button:
+			//TODO: Update Request List -> Server Call
+			Log.d(TAG, "Reject Button Clicked");
+			adapter.deleteRow(row);
+			adapter.notifyDataSetChanged();
+			break;
+		}
+
+
+	}
+
+	public void onMultiplayerReceivedRequestsSendNewRequestsButtonClicked(View v) {
+		Intent i = new Intent(this, Multiplayer_New_Request_Form.class);
+		startActivity(i);
 	}
 
 	public void onMultiplayersReceivedRequestsBackButtonClicked(View v) {

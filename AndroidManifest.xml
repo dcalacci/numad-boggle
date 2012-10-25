@@ -93,6 +93,9 @@
             android:screenOrientation="portrait" >
         </activity>
 
+         <!-- New Sent Request Activity -->
+        <activity android:name=".boggle.Multiplayer_New_Request_Form" />
+        
         <!-- Mutiplayer Received Activity -->
         <activity android:name=".boggle.Multiplayer_Received_Requests" />
         <activity android:name=".boggle.Multiplayer_Received_array_adaptor" />

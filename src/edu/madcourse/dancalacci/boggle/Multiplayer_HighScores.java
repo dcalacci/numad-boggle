@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import edu.madcourse.dancalacci.R;
 import edu.madcourse.dancalacci.boggle.Multiplayer_CurrentGames.Multiplayer_Current_Games_Adaptor;
+import edu.madcourse.dancalacci.boggle.Multiplayer_Sent_Requests.Multiplayer_Sent_Request_Adaptor;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +32,8 @@ public class Multiplayer_HighScores extends ListActivity{
 		Log.d(TAG, "set contentview");
 		setContentView(R.layout.multiplayer_highscores);
 		
+		getListView().setEmptyView(findViewById(android.R.id.empty));
+		
 		sa = new ServerAccessor();
 		adapter = new Multiplayer_HighScores_Adaptor(this, R.layout.multiplayer_highscores, this.generate_highscores_list());
 		/*
@@ -41,11 +45,18 @@ public class Multiplayer_HighScores extends ListActivity{
 		setListAdapter(adapter);
 	}
 
+	public void onResume(){
+		 super.onResume();
+		 getListView().setEmptyView(findViewById(R.id.emptyView));
+		 adapter = new Multiplayer_HighScores_Adaptor(this, R.layout.multiplayer_sent, sa.getRequests(USERNAME));
+		 setListAdapter(adapter);
+	}
+	
 	/* 
+	 * TODO: Change to GET High Scores 
 	 * Creates a list of Potential players based on Web Call
 	 */
 	private ArrayList<String> generate_highscores_list(){
-		sa.addRequest("user1", "user2");
 		Log.d(TAG, "request list: " + sa.getRequests(USERNAME).toString());
 		return sa.getRequests(USERNAME);
 	}
@@ -86,6 +97,7 @@ public class Multiplayer_HighScores extends ListActivity{
 				LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 				view = inflater.inflate(R.layout.multiplayer_highscores_rows, parent, false);
 			}
+			
 
 			TextView username = (TextView) 
 					view.findViewById(R.id.multiplayer_high_scores_textView_player);
@@ -107,11 +119,13 @@ public class Multiplayer_HighScores extends ListActivity{
 	 * Starts new Multiplayer Boggle Game	 
 	 */
 	public void onMultiplayerHighScoresSendNewRequestsButtonClicked(View v) {
-
-		//Intent i = new Intent(this, .class);
-		//startActivity(i);
+		Intent i = new Intent(this, Multiplayer_New_Request_Form.class);
+		startActivity(i);
 	}
 
+	/*
+	 * Return to previous activity
+	 */
 	public void onMultiplayerHighScoresBackButtonClicked(View v) {
 		finish();
 	}

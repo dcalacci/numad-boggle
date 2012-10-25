@@ -15,6 +15,13 @@
         android:layout_alignWithParentIfMissing="true"
         android:layout_weight="1" >
     </ListView>
+    
+    <!-- empty view -->
+    <LinearLayout
+        android:id="@android:id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/multiplayer_requests_navbar"

@@ -7,7 +7,7 @@
     android:paddingTop="4dp" >
 
     <TextView
-        android:id="@+id/multiplayer_received_requests_textView_content"
+        android:id="@+id/multiplayer_send_new_requests_textView_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight=".5" 
@@ -21,6 +21,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight=".25"
+        android:onClick="OnMultiplayerReceivedAcceptClicked"
         android:text="@string/multiplayer_received_button_label_accept" >
     </Button>
 
@@ -29,6 +30,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight=".25"
+        android:onClick="OnMultiplayerReceivedRejectClicked"
         android:text="@string/multiplayer_received_button_label_reject" >
     </Button>
 

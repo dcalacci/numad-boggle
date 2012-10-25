@@ -10,8 +10,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/multiplayer_requests_navbar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignWithParentIfMissing="true"
         android:layout_weight="1" >
     </ListView>
+
+    <!-- empty view -->
+
+    <LinearLayout
+        android:id="@android:id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/multiplayer_requests_navbar"
@@ -27,15 +39,15 @@
             android:id="@+id/multiplayer_requests_ok_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.28"
+            android:layout_weight="0.30"
             android:onClick="onMultiplayerSentRequestsSendNewRequestButtonClicked"
             android:text="@string/multiplayer_button_label_send_request" />
 
         <Button
-            android:id="@+id/multiplayer_requests_cancel_button"
+            android:id="@+id/multiplayer_requests_back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.72"
+            android:layout_weight="0.70"
             android:onClick="onMultiplayerSentRequestsBackButtonClicked"
             android:text="@string/multiplayer_button_label_back" />
     </LinearLayout>
