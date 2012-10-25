@@ -1,6 +1,10 @@
 package edu.madcourse.dancalacci.boggle;
 import java.util.*;
 
+import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
+
 //go_ogle_me
 //googleme
 
@@ -18,7 +22,12 @@ public class ServerAccessor {
 	private static final String ENTERED_WORDS_PREFIX = "entered_";
 	private static final String SCORES_PREFIX = "scores_";
 	private static final String NUM_TURNS_PREFIX = "numTurns_";
+	
+	// Context for doing asyncTask
+	private static Context c;
 
+	private static final String TAG = "ServerAccessor";
+	
 	private static final ArrayList<List<Character>> dice = new ArrayList<List<Character>>() {{
 		add( Arrays.asList( 'a', 'a', 'a', 'f', 'r', 's'));
 		add( Arrays.asList( 'a', 'a', 'e', 'e', 'e', 'e'));
@@ -47,14 +56,29 @@ public class ServerAccessor {
 		add( Arrays.asList( 'o', 'o', 'o', 't', 't', 'u'));
 	}};
 
-	public ServerAccessor() {}
+	public ServerAccessor(Context c) {
+		this.c = c;
+	}
 
 	/**
 	 * Gets the value associated with the given key
 	 * @param key    the key associated with the value to get
 	 */
 	public String get(String key) {
-		return KeyValueAPI.get(TEAM_NAME, PASSWORD, key);
+		
+		class GetKeyTask extends AsyncTask<String, Integer, String> {
+			
+			protected String doInBackground(String... key) {
+				return KeyValueAPI.get(TEAM_NAME, PASSWORD, key[0]);
+			}
+		}
+		
+		try {
+			return new GetKeyTask().execute("key").get();
+		} catch(Exception e) {
+			Log.e(TAG, "GetKeyTask thread died: " +e);
+			return "";
+		}
 	}
 
 	/**
