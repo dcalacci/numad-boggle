@@ -106,8 +106,6 @@ public class ServerAccessor {
 		ArrayList<String> users = new ArrayList<String>(Arrays.asList(strUsers.split(",")));
 		return users;
 	}
-
-
 	// Requests
 
 	/**
@@ -148,16 +146,29 @@ public class ServerAccessor {
 	}
 
 	/**
-	 * Removes the given request from the given users' request list
+	 * Removes the given request from the given users' sent request list
 	 * @param user  The user whose request list we're removing stuff from
 	 * @param req   The user request we're removing
 	 */
 	public void removeRequest(String user, String req) {
 		String key = "req_" + user;
-		ArrayList<String> curReqs = this.getRequests(key);
-		curReqs.remove(req);
-		String val = this.arrayListToString(curReqs);
-		this.put(key, val);
+		ArrayList<String> curReqs = this.getRequests(user);
+		System.out.println("getRequests for " +user +"looks like: " +this.arrayListToString(this.getRequests(user)));
+		if (curReqs.contains(req)) {
+			curReqs.remove(req);
+			System.out.println("removing " +req +" from " +user+"'s sent request list");
+			String val = this.arrayListToString(curReqs);
+			System.out.println("putting '" +val +"' at key " +key);
+			this.put(key, val);
+		}
+		
+//		
+//		
+//		String key = "req_" + user;
+//		ArrayList<String> curReqs = this.getRequests(key);
+//		curReqs.remove(req);
+//		String val = this.arrayListToString(curReqs);
+//		this.put(key, val);
 	}
 
 	// Received
@@ -207,9 +218,12 @@ public class ServerAccessor {
 	public void removeReceived(String user, String rec) {
 		String key = "rec_" + user;
 		ArrayList<String> curRecs = this.getReceived(user);
-		curRecs.remove(rec);
-		String val = this.arrayListToString(curRecs);
-		this.put(key, val);
+		if (curRecs.remove(rec)) {
+			System.out.println(rec + " was found in curRecs");
+			String val = this.arrayListToString(curRecs);
+			System.out.println("putting '" +val +"' at key " +key);
+			this.put(key, val);
+		}
 	}
 
 	/**
@@ -392,6 +406,26 @@ public class ServerAccessor {
 		this.put(numTurnsKey, "0");
 	}
 
+	/**
+	 * Send a request from user1 to user2
+	 * @param user1 The sender of the request
+	 * @param user2 The receiver of the request
+	 */
+	public void sendRequest(String user1, String user2) {
+		this.addRequest(user1, user2);
+		this.addReceived(user2, user1);
+	}
+	
+	/**
+	 * Remove a sent request from user1 to user2
+	 * @param user1 The sender of the request to be removed
+	 * @param user2 The receiver of the request to be removed
+	 */
+	public void removeSentRequest(String user1, String user2) {
+		this.removeReceived(user2, user1);
+		this.removeRequest(user1, user2);
+	}
+	
 	// TODO: create a scores interpreter
 	// TODO: create a numTurns interpreter
 	// TODO: create a board interpreter
