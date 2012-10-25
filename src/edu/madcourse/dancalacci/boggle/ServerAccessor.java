@@ -252,6 +252,15 @@ public class ServerAccessor {
 	}
 
 	/**
+	 * Gets the list of users
+	 * @return An ArrayList representation of users
+	 */
+	public ArrayList<String> getUserList() {
+		String usersKey = "users";
+		return this.stringToArrayList(get(usersKey));
+	}
+	
+	/**
 	 * Checks to see if a new user/pass combo can be registered
 	 * @param user  The username to check
 	 * @param pass  The password to check
