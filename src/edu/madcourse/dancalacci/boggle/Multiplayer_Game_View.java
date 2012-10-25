@@ -489,17 +489,6 @@ public class Multiplayer_Game_View extends View {
 		}
 		return boardSize-1;
 	}
-//		float start = boardLeftSide;
-//		if (x <= start+dieWidth) {
-//			return 0;
-//		} else if (x <= start+ 2*dieWidth) {
-//			return 1;
-//		} else if (x <= start + 3*dieWidth) {
-//			return 2;
-//		} else {
-//			return 3;
-//		}
-//	}
 
 	/**
 	 * Returns the y-index of a position on the screen
@@ -515,18 +504,6 @@ public class Multiplayer_Game_View extends View {
 		}
 		return boardSize-1;
 	}
-//		
-//		
-//		if (y <= start+dieHeight) {
-//			return 0;
-//		} else if (y <= start+ 2*dieHeight) {
-//			return 1;
-//		} else if (y <= start + 3*dieHeight) {
-//			return 2;
-//		} else {
-//			return 3;
-//		}
-//	}
 
 	/**
 	 * Adds the selected rectangle for the given die index to SelRect

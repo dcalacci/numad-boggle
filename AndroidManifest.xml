@@ -109,6 +109,8 @@
 
         <!-- Mutiplayer Current Games Activity -->
         <activity android:name=".boggle.Multiplayer_CurrentGames" />
+        
+        <activity android:name=".boggle.Multiplayer_Game" />
 
     </application>
 

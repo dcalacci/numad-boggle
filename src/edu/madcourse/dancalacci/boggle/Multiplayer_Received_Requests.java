@@ -147,6 +147,11 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 
 				switch(v.getId()){
 				case R.id.multiplayer_received_accept_button:
+					Intent i = new Intent(mContext, Multiplayer_Game.class);
+					sa.addRequest("user1", "user2");
+					// should be row but...  i.putExtra("opponent", row);
+					i.putExtra("opponent", "user2");
+					startActivity(i);
 					//Start new game activity
 					//TODO: Update Request List & Create new game pair -> Server Call
 					//TODO: Send user2 name to activity

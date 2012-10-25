@@ -46,7 +46,7 @@ public class Multiplayer_New_Request_Form extends ListActivity{
 
 		// Defining the item click listener for listView
 		OnItemClickListener itemClickListener = new OnItemClickListener() {
-			@Override
+			
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
 				selectedUser = mUserList.get(position);
 				Toast.makeText(getBaseContext(), "You selected : " + mUserList.get(position), Toast.LENGTH_SHORT).show();

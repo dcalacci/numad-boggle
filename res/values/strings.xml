@@ -22,6 +22,9 @@
     <string name="multiplayer_tab_label_high_scores">High Scores</string>
     <string name="multiplayer_button_label_send_request">New Request</string>
     <string name="multiplayer_button_label_back">Back</string>
+    <string name="multiplayer_game_back_label">Back</string>
+    <string name="multiplayer_game_submit_word_label">Submit Word</string>
+    <string name="multiplayer_game_clear_word_label">Clear Word</string>
 
     <!-- Requests -->
     <string name="multiplayer_requests_button_label_rammus">OK</string>

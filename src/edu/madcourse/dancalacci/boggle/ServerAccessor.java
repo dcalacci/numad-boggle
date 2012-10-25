@@ -332,6 +332,15 @@ public class ServerAccessor {
 		String gameVal = this.arrayListToString(games);
 		this.put(gameKey, gameVal);
 	}
+	
+	public void removeGame(String user1, String user2) {
+		String gameKey = "games";
+		String usersKey = this.getUsersKey(user1, user2);
+		ArrayList<String> games = this.stringToArrayList(this.get(gameKey));
+		games.remove(usersKey);
+		String gameVal = this.arrayListToString(games);
+		this.put(gameKey,  gameVal);
+	}
 
 	/**
 	 * Produces an arraylist of all the users that user has games with
@@ -355,6 +364,7 @@ public class ServerAccessor {
 
 		// add game to game list
 		this.addGame(creator, opponent);
+		System.out.println("adding game: " +creator +" vs " +opponent);
 
 		// add board to the server
 		String boardKey = BOARD_PREFIX + userskey;
@@ -363,6 +373,8 @@ public class ServerAccessor {
 		// value of turn element will always be a username - initiates to the creator.
 		String turnKey = TURN_PREFIX + userskey;
 		this.put(turnKey, creator); // create the turn element on the server
+		
+		System.out.println(turnKey + " is now: " + creator);
 
 		// create the entered words element on the server
 		String enteredKey = ENTERED_WORDS_PREFIX + userskey;
@@ -372,6 +384,8 @@ public class ServerAccessor {
 		// score is a string like "user1|50,user2|44"
 		String scoresKey = SCORES_PREFIX + userskey;
 		this.put(scoresKey, creator + "|0," + opponent + "|0");
+		
+		System.out.println(scoresKey + " is now: " + creator + "|0," + opponent + "|0");
 
 		// create the number of turns element on the server
 		String numTurnsKey = NUM_TURNS_PREFIX + userskey;
@@ -439,6 +453,7 @@ public class ServerAccessor {
 	}
 
 	public void createNewGame(String user1, String user2) {
+		System.out.println("Creating a new game!");
 		String board = boardToString(generateBoard());
 		this.initializeNewGame(user1, user2, board);
 	}
@@ -485,11 +500,16 @@ public class ServerAccessor {
 	 * @return the hashtable conversion
 	 */
 	private Hashtable<String, Integer> scoresStringToHashtable(String scores) {
+		
+		//TODO: THIS AIN'T WORKIN'
 		ArrayList<String> parts = new ArrayList<String>(
 				Arrays.asList(scores.split(",")));
+		System.out.println("Parts is: "+ parts.toString());
 		Hashtable<String, Integer> scoresDic = new Hashtable<String, Integer>();
 		for (String usrScore : parts) {
 			List<String> part = Arrays.asList(usrScore.split("|"));
+			System.out.println("part is now: " +part.toString());
+			System.out.println("parsing " + part.get(1) +" as an integer.");
 			scoresDic.put(part.get(0), Integer.parseInt(part.get(1)));
 		}
 		return scoresDic;
