@@ -7,19 +7,18 @@ import java.util.List;
 
 public class GameWrapper {
 	private String currentTurn;
-	private ArrayList<String> board;
+	private ArrayList<Character> board;
 	private ArrayList<String> enteredWords;
 	private Hashtable<String, Integer> scores;
 	private int numTurns;
 	
 	public GameWrapper(
 			String currentTurn,
-			ArrayList<String> board,
+			ArrayList<Character> board,
 			ArrayList<String> enteredWords,
 			Hashtable<String, Integer> scores,
 			int numTurns) {
 		this.currentTurn 	= currentTurn;
-		this.board 			= board;
 		this.enteredWords 	= enteredWords;
 		this.scores 		= scores;
 		this.numTurns 		= numTurns;
@@ -158,7 +157,7 @@ public class GameWrapper {
 	 * Gets this games' board
 	 * @return An arraylist implementation of the board.
 	 */
-	public ArrayList<String> getBoard() {
+	public ArrayList<Character> getBoard() {
 		return this.board;
 	}
 }

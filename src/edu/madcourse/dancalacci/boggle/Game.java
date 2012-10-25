@@ -333,7 +333,6 @@ public class Game extends Activity {
 		   this.puzzleView.setSelectedDice(selected);
 	   }
 	   Log.d(TAG, "Cleared Selected Tiles");
-	   
    }
    
    
