@@ -113,7 +113,7 @@ public class ServerAccessor {
 	 * @param user the user for whom to add the request
 	 * @param req  the user to add to users' request list
 	 */
-	public void addRequest(String user, String req) {
+	private void addRequest(String user, String req) {
 		String key = "req_" + user;
 		ArrayList<String> reqs = this.stringToArrayList(this.get(key));
 		reqs.add(req);
@@ -126,7 +126,7 @@ public class ServerAccessor {
 	 * @param user the user whose requests we're getting
 	 * @return an ArrayList<String> of all the given users' requests
 	 */
-	public ArrayList<String> getRequests(String user) {
+	public ArrayList<String> getSentRequests(String user) {
 		String key = "req_" + user;
 		ArrayList<String> reqs = this.stringToArrayList(this.get(key));
 		return reqs;
@@ -138,7 +138,7 @@ public class ServerAccessor {
 	 * @param reqsToAdd The list of Strings that represents all the requests to add
 	 */
 	public void addRequestList(String user, ArrayList<String> reqsToAdd) {
-		ArrayList<String> reqs = this.getRequests(user);
+		ArrayList<String> reqs = this.getSentRequests(user);
 		reqs.addAll(reqsToAdd);
 		String key = "req_" + user;
 		String val = this.arrayListToString(reqs);
@@ -150,10 +150,10 @@ public class ServerAccessor {
 	 * @param user  The user whose request list we're removing stuff from
 	 * @param req   The user request we're removing
 	 */
-	public void removeRequest(String user, String req) {
+	private void removeRequest(String user, String req) {
 		String key = "req_" + user;
-		ArrayList<String> curReqs = this.getRequests(user);
-		System.out.println("getRequests for " +user +"looks like: " +this.arrayListToString(this.getRequests(user)));
+		ArrayList<String> curReqs = this.getSentRequests(user);
+		System.out.println("getRequests for " +user +"looks like: " +this.arrayListToString(this.getSentRequests(user)));
 		if (curReqs.contains(req)) {
 			curReqs.remove(req);
 			System.out.println("removing " +req +" from " +user+"'s sent request list");
@@ -178,7 +178,7 @@ public class ServerAccessor {
 	 * @param user  The user whose recieved list we're editing
 	 * @param rec   The user to add to users's recieved list
 	 */
-	public void addReceived(String user, String rec) {
+	private void addReceived(String user, String rec) {
 		String key = "rec_" + user;
 		ArrayList<String> recs = this.stringToArrayList(this.get(key));
 		recs.add(rec);
@@ -191,7 +191,7 @@ public class ServerAccessor {
 	 * @param user  The user whose requests we're returning
 	 * @return    The list of users' received requests 
 	 */
-	public ArrayList<String> getReceived(String user) {
+	public ArrayList<String> getReceivedRequests(String user) {
 		String key = "rec_" + user;
 		ArrayList<String> recs = this.stringToArrayList(this.get(key));
 		return recs;
@@ -202,7 +202,7 @@ public class ServerAccessor {
 	 * @param user  The user whose received list we're editing
 	 * @param recs  The list of requests to add
 	 */
-	public void addReceivedList(String user, ArrayList<String> recs) {
+	public void addReceivedRequests(String user, ArrayList<String> recs) {
 		String key = "rec_" + user;
 		ArrayList<String> curRecs = this.stringToArrayList(this.get(key));
 		curRecs.addAll(recs);
@@ -215,9 +215,9 @@ public class ServerAccessor {
 	 * @param user  The user whose received list we're editing
 	 * @param rec   The received request we're removing
 	 */
-	public void removeReceived(String user, String rec) {
+	private void removeReceivedRequest(String user, String rec) {
 		String key = "rec_" + user;
-		ArrayList<String> curRecs = this.getReceived(user);
+		ArrayList<String> curRecs = this.getReceivedRequests(user);
 		if (curRecs.remove(rec)) {
 			System.out.println(rec + " was found in curRecs");
 			String val = this.arrayListToString(curRecs);
@@ -422,7 +422,7 @@ public class ServerAccessor {
 	 * @param user2 The receiver of the request to be removed
 	 */
 	public void removeSentRequest(String user1, String user2) {
-		this.removeReceived(user2, user1);
+		this.removeReceivedRequest(user2, user1);
 		this.removeRequest(user1, user2);
 	}
 	
@@ -564,5 +564,5 @@ public class ServerAccessor {
 				user2 + "|" + scores.get(user2));
 		return sb.toString();
 	}
-
 }
+

@@ -62,7 +62,7 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 	public void onResume(){
 		super.onResume();		
 		getListView().setEmptyView(findViewById(R.id.emptyView));
-		adapter = new Multiplayer_Sent_Request_Adaptor(this, R.layout.multiplayer_sent, sa.getRequests(USERNAME));
+		adapter = new Multiplayer_Sent_Request_Adaptor(this, R.layout.multiplayer_sent, sa.getSentRequests(USERNAME));
 		setListAdapter(adapter);
 	}
 
@@ -71,8 +71,8 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 	 */
 	private ArrayList<String> generate_sent_request_list(){
 		Log.d(TAG, "request list username: " + USERNAME);
-		Log.d(TAG, "request list: " + sa.getRequests(USERNAME).toString());
-		return sa.getRequests(USERNAME);
+		Log.d(TAG, "request list: " + sa.getSentRequests(USERNAME).toString());
+		return sa.getSentRequests(USERNAME);
 	}
 
 
@@ -170,7 +170,7 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 					//TODO: Update Request List & Create new game pair -> Server Call
 					Log.d(TAG, "Delete Button Clicked");
 					sa.removeRequest(USERNAME, row);
-					Log.d(TAG, "updated list after delete: "+sa.getRequests(USERNAME).toString());
+					Log.d(TAG, "updated list after delete: "+sa.getSentRequests(USERNAME).toString());
 					deleteRow(row);
 					notifyDataSetChanged();
 					Log.d(TAG, "Delete Button Clicked Delete Row");

@@ -36,31 +36,31 @@ public class TestServerAccessor {
     userlist1.add("user4");
 
     try {
-      assertTrue("emptyReq", sa.getRequests("user1").equals(emptyArrayList));
+      assertTrue("emptyReq", sa.getSentRequests("user1").equals(emptyArrayList));
       sa.addRequest("user1", "user2");
-      assertTrue("getReqsUser1", sa.getRequests("user1").contains("user2"));
+      assertTrue("getReqsUser1", sa.getSentRequests("user1").contains("user2"));
       assertTrue("arrayListToString",
-          sa.arrayListToString(sa.getRequests("user1")).equals("user2,"));
+          sa.arrayListToString(sa.getSentRequests("user1")).equals("user2,"));
       sa.addRequest("user1", "user3");
-      assertTrue("getReqsUser1", sa.getRequests("user1").contains("user2")
-          && sa.getRequests("user1").contains("user3"));
+      assertTrue("getReqsUser1", sa.getSentRequests("user1").contains("user2")
+          && sa.getSentRequests("user1").contains("user3"));
       assertTrue("arrayListToString2",
-          sa.arrayListToString(sa.getRequests("user1")).equals("user2,user3,"));
+          sa.arrayListToString(sa.getSentRequests("user1")).equals("user2,user3,"));
       ArrayList<String> toAdd = new ArrayList<String>();
       toAdd.add("user4");
       toAdd.add("user5");
       sa.addRequestList("user1", toAdd);
       // testing adding and getting multiple requests
       assertTrue("arrayListAddMultiple",
-          sa.arrayListToString(sa.getRequests("user1")).equals(
+          sa.arrayListToString(sa.getSentRequests("user1")).equals(
               "user2,user3,user4,user5,"));
       
       sa.removeRequest("user1", "user2");
       assertFalse("arrayListRemove1",
-          sa.getRequests("user1").contains("user2"));
+          sa.getSentRequests("user1").contains("user2"));
       sa.removeRequest("user1", "user3");
       assertFalse("arrayListRemove2",
-          sa.getRequests("user1").contains("user3"));
+          sa.getSentRequests("user1").contains("user3"));
 
     }
     catch(Exception e) {
@@ -80,16 +80,16 @@ public class TestServerAccessor {
     try {
       sa.addReceived("user1", "user2");
       assertTrue("addReceived1",
-          sa.getReceived("user1").contains("user2"));
+          sa.getReceivedRequests("user1").contains("user2"));
       
       sa.addReceived("user1", "user3");
       assertTrue("addReceived2",
-          sa.getReceived("user1").contains("user2") &&
-          sa.getReceived("user1").contains("user3"));
+          sa.getReceivedRequests("user1").contains("user2") &&
+          sa.getReceivedRequests("user1").contains("user3"));
       sa.clear();
       
       sa.addReceivedList("user1", userlist2);
-      ArrayList<String> user1Recs = sa.getReceived("user1");
+      ArrayList<String> user1Recs = sa.getReceivedRequests("user1");
       int count = 0;
       for (String user : userlist2) {
         assertTrue("addAllReceived1" + count,
@@ -98,7 +98,7 @@ public class TestServerAccessor {
       }
       sa.removeReceived("user1", "user2");
       assertFalse("removeReceived1",
-          sa.getReceived("user1").contains("user2"));
+          sa.getReceivedRequests("user1").contains("user2"));
       //ArrayList<String> curRecs
 
     }

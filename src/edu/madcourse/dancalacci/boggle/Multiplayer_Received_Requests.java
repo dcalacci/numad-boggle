@@ -64,13 +64,13 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 	public void onResume(){
 		super.onResume();
 		getListView().setEmptyView(findViewById(R.id.emptyView));
-		adapter = new Multiplayer_Received_Request_Adaptor(this, R.layout.multiplayer_received, sa.getReceived(USERNAME));
+		adapter = new Multiplayer_Received_Request_Adaptor(this, R.layout.multiplayer_received, sa.getReceivedRequests(USERNAME));
 		setListAdapter(adapter);
 	}
 
 	private ArrayList<String> generate_request_list(){
-		Log.d(TAG, "request list: " + sa.getReceived(USERNAME).toString());
-		return sa.getReceived(USERNAME);
+		Log.d(TAG, "request list: " + sa.getReceivedRequests(USERNAME).toString());
+		return sa.getReceivedRequests(USERNAME);
 	}
 
 

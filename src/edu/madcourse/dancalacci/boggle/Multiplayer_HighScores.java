@@ -71,8 +71,8 @@ public class Multiplayer_HighScores extends ListActivity{
 	 * Creates a list of Potential players based on Web Call
 	 */
 	private ArrayList<String> generate_highscores_list(){
-		Log.d(TAG, "request list: " + sa.getRequests(USERNAME).toString());
-		return sa.getRequests(USERNAME);
+		Log.d(TAG, "request list: " + sa.getSentRequests(USERNAME).toString());
+		return sa.getSentRequests(USERNAME);
 	}
 
 	public class Multiplayer_HighScores_Adaptor extends BaseAdapter{
