@@ -80,38 +80,6 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 		});
 	}
 	
-	public void sendRequest(String user1, String user2) {
-		
-		final Multiplayer_Received_Requests thisActivity = this;
-		final String user1f = user1;
-		final String user2f = user2;
-		
-		sa.sendRequest(user1, user2, new OnBooleanReceivedListener() {
-			
-			public void run(Boolean exitState) {
-				if (!exitState) {
-					thisActivity.sendRequest(user1f, user2f, 3);
-				}
-			}
-		});
-	}
-	
-	private void sendRequest(String user1, String user2, final int count) {
-		
-		final Multiplayer_Received_Requests thisActivity = this;
-		final String user1f = user1;
-		final String user2f = user2;
-		
-		sa.sendRequest(user1, user2, new OnBooleanReceivedListener() {
-			
-			public void run(Boolean exitState) {
-				if (!exitState && count != 0) {
-					thisActivity.sendRequest(user1f, user2f, count - 1);
-				}
-			}
-		});
-	}
-	
 
 
 	public class Multiplayer_Received_Request_Adaptor extends BaseAdapter{

@@ -35,14 +35,62 @@ public class Multiplayer_New_Request_Form extends ListActivity{
 		SharedPreferences pref = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE);
 		USERNAME = pref.getString(PREF_USER, null);
 	}
-	
+
+	public void sendRequest(String user1, String user2) {
+
+		final Multiplayer_New_Request_Form thisActivity = this;
+		final String user1f = user1;
+		final String user2f = user2;
+
+		sa.sendRequest(user1, user2, new OnBooleanReceivedListener() {
+
+			public void run(Boolean exitState) {
+				if (!exitState) {
+					thisActivity.sendRequest(user1f, user2f, 2);
+				} else {
+					Log.d(TAG, "Requst ran successfully, sending confirmation toast");
+					Toast.makeText(getBaseContext(), 
+							"Request sent to " +user2f+"!", 
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+	}
+
+	private void sendRequest(String user1, String user2, final int count) {
+
+		final Multiplayer_New_Request_Form thisActivity = this;
+		final String user1f = user1;
+		final String user2f = user2;
+
+		sa.sendRequest(user1, user2, new OnBooleanReceivedListener() {
+
+			public void run(Boolean exitState) {
+				if (!exitState && count != 0) {
+					Log.d(TAG, "trying for the " + (3-count) +"th time");
+					thisActivity.sendRequest(user1f, user2f, count - 1);
+				} else if(!exitState && count == 0) {
+					Log.d(TAG, "Couldn't connect. Sending a toast!");
+					Toast.makeText(getBaseContext(), 
+							"Sorry, I couldn't send the request. Have you already sent one to this user?", 
+							Toast.LENGTH_LONG).show();
+				} else {
+					Log.d(TAG, "Requst ran successfully, sending confirmation toast");
+					Toast.makeText(getBaseContext(), 
+							"Request sent to " +user2f+"!", 
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+	}
+
 	public void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate"); // log the event
 
 		setUsername();
-		
+
 		setContentView(R.layout.multiplayer_send_requests_form);
 
 		getListView().setEmptyView(findViewById(android.R.id.empty));
@@ -56,7 +104,7 @@ public class Multiplayer_New_Request_Form extends ListActivity{
 
 		// Defining the item click listener for listView
 		OnItemClickListener itemClickListener = new OnItemClickListener() {
-			
+
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
 				selectedUser = mUserList.get(position);
 				Toast.makeText(getBaseContext(), "You selected : " + mUserList.get(position), Toast.LENGTH_SHORT).show();
@@ -82,7 +130,7 @@ public class Multiplayer_New_Request_Form extends ListActivity{
 	public void onMultiplayerRequestsOkButtonClicked(View v) {
 		Log.d(TAG, "requestOkButton: " + selectedUser);
 		if (!(selectedUser == null)){
-			sa.sendRequest(USERNAME, selectedUser);
+			this.sendRequest(USERNAME, selectedUser);
 			finish();
 		}else{
 			Toast.makeText(getBaseContext(), "Please select a User", Toast.LENGTH_SHORT).show();

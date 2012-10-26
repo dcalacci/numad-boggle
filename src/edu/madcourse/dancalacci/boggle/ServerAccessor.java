@@ -4,6 +4,7 @@ import java.util.*;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 //go_ogle_me
 //googleme
@@ -63,6 +64,14 @@ public class ServerAccessor {
 	public ServerAccessor() {
 	}
 
+	/**
+	 * Checks if the server is available
+	 * @return True if we can connect to the server, false otherwise.
+	 */
+	public boolean canConnect() {
+		return KeyValueAPI.isServerAvailable();
+	}
+	
 	/**
 	 * Gets the value associated with the given key
 	 * @param key    the key associated with the value to get
@@ -130,6 +139,14 @@ public class ServerAccessor {
 	private void addRequest(String user, String req) {
 		String key = REQUESTS_PREFIX + user;
 		ArrayList<String> reqs = this.stringToArrayList(this.get(key));
+		ArrayList<String> recs = this.stringToArrayList(this.get(RECEIVED_PREFIX+user));
+		
+		// if we already have a received request from that user or we have already sent
+		// a request to that user
+		if ( reqs.contains(req) || recs.contains(req) ) {
+			Log.e(TAG, "Trying to add a request that already exists");
+			throw new RuntimeException("given request is already in the requests list");
+		}
 		reqs.add(req);
 		String val = this.arrayListToString(reqs);
 		this.put(key, val);
@@ -220,6 +237,14 @@ public class ServerAccessor {
 	private void addReceived(String user, String rec) {
 		String key = RECEIVED_PREFIX + user;
 		ArrayList<String> recs = this.stringToArrayList(this.get(key));
+		ArrayList<String> reqs = this.stringToArrayList(this.get(REQUESTS_PREFIX)+user);
+		
+		// if we already have a received request from that user or we have already sent
+		// a request to that user
+		if( recs.contains(rec) || reqs.contains(rec)) {
+			Log.e(TAG, "Trying to add a received request that already exits");
+			throw new RuntimeException ("Given request already in received request list");
+		}
 		recs.add(rec);
 		String val = this.arrayListToString(recs);
 		this.put(key, val);
@@ -522,12 +547,13 @@ public class ServerAccessor {
 		class sendRequestTask extends AsyncTask<String, Integer, Boolean> {
 			
 			protected Boolean doInBackground(String... key) {
-				Log.d(TAG, "in doInBackground for sendRequestTask");
-				try {
-					Thread.sleep(3000);
-				} catch(Exception e) {
-					
+				
+				// if we can't connect to the server, stop and return false.
+				if (!thisSA.canConnect()) {
+					return false;
 				}
+				
+				Log.d(TAG, "in doInBackground for sendRequestTask");
 				String user1 = key[0];
 				String user2 = key[1];
 				
@@ -537,11 +563,12 @@ public class ServerAccessor {
 				} catch(Exception e) {
 					return false;
 				}
+				Log.d(TAG, "Added the request successfully");
 				return true;
 			}
 			
 			protected void onPostExecute(Boolean result) {
-				Log.d(TAG, "in onPostExecute for sendRequestTask");
+				Log.d(TAG, "in onPostExecute for sendRequestTask. Result: " +result);
 				booleanListener.run(result);
 			}
 		}
