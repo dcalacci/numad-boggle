@@ -27,6 +27,7 @@ public class ServerAccessor {
 	private static final String RECEIVED_PREFIX = "rec_";
 	private static final String USERS_KEY = "users";
 	private static final String GAMES_KEY = "games";
+	private static final String ERROR = "ERROR";
 	
 	// Context for doing asyncTask
 	private static Context c;
@@ -160,8 +161,13 @@ public class ServerAccessor {
 	 */
 	private ArrayList<String> getSentRequests(String user) {
 		String key = REQUESTS_PREFIX + user;
-		ArrayList<String> reqs = this.stringToArrayList(this.get(key));
-		return reqs;
+		String val = this.get(key);
+		if ( key.startsWith(ERROR) ) {
+			throw new RuntimeException("Server error");
+		} else {
+			ArrayList<String> reqs = this.stringToArrayList(val);
+			return reqs;
+		}
 	}
 	
 	public void getSentRequests(String user, final OnStringArrayListLoadedListener l) {
@@ -170,9 +176,17 @@ public class ServerAccessor {
 		Log.d(TAG, "About to create an AsyncTask GetKeyTask");
 		class GetKeyTask extends AsyncTask<String, Integer, ArrayList<String>> {
 			
+			// takes the username as an input.
 			protected ArrayList<String> doInBackground(String... key) {
 				Log.d(TAG, "in doInBackground for getSentRequests");
-				return stringToArrayList(thisSA.get(key[0]));
+				try {
+					return thisSA.getSentRequests(key[0]);
+				} catch(Exception e) {
+					Log.e(TAG, "Could not get sent requests from server");
+					return new ArrayList<String>() {{
+						add("ERROR!");
+					}};
+				}
 			}
 			
 			protected void onPostExecute(ArrayList<String> result) {

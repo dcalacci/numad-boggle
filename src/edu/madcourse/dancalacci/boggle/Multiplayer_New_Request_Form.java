@@ -70,7 +70,8 @@ public class Multiplayer_New_Request_Form extends ListActivity{
 					Log.d(TAG, "trying for the " + (3-count) +"th time");
 					thisActivity.sendRequest(user1f, user2f, count - 1);
 				} else if(!exitState && count == 0) {
-					Log.d(TAG, "Couldn't connect. Sending a toast!");
+					Log.e(TAG, "Couldn't send the request.");
+					Log.d(TAG, "Sending error toast!");
 					Toast.makeText(getBaseContext(), 
 							"Sorry, I couldn't send the request. Have you already sent one to this user?", 
 							Toast.LENGTH_LONG).show();
