@@ -610,9 +610,36 @@ public class ServerAccessor {
 	 * @param user1 The sender of the request to be removed
 	 * @param user2 The receiver of the request to be removed
 	 */
-	public void removeSentRequest(String user1, String user2) {
-		this.removeReceivedRequest(user2, user1);
-		this.removeRequest(user1, user2);
+	public void removeSentRequest(String user1, String user2, final OnBooleanReceivedListener booleanListener) {
+		final ServerAccessor thisSA = this;
+		class removeSentRequestTask extends AsyncTask<String, Integer, Boolean> {
+			protected Boolean doInBackground(String... keys) {
+				String user1 = keys[0];
+				String user2 = keys[1];
+				
+				Log.d(TAG, "In doInBackground for removeSentRequest");
+				if (!thisSA.canConnect()) {
+					return false;
+				}
+				try {
+					thisSA.removeReceivedRequest(user2, user1);
+					thisSA.removeRequest(user1, user2);
+				} catch(Exception e) {
+					return false;
+				}
+				Log.d(TAG, "removed request successfully");
+				return true;
+			}
+			protected void onPostExecute(Boolean result) {
+				Log.d(TAG, "in onPostExecute for removeSentRequest. Result: "+result);
+				booleanListener.run(result);
+			}
+		}
+		try {
+			new removeSentRequestTask().execute(user1, user2);
+		} catch(Exception e) {
+			Log.e(TAG,  "removeRequestTask thread died: " +e);
+		}
 	}
 
 	// TODO: create a scores interpreter

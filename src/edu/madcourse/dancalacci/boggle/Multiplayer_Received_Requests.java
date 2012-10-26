@@ -80,7 +80,7 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 		});
 	}
 	
-
+	final Multiplayer_Received_Requests thisActivity = this;
 
 	public class Multiplayer_Received_Request_Adaptor extends BaseAdapter{
 		private ArrayList<String> mReceivedRequests = new ArrayList<String>();
@@ -175,7 +175,6 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 			}
 		}
 
-
 		class buttonClickHandler implements View.OnClickListener {
 			TextView textView;
 			String row;
@@ -187,19 +186,28 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 
 			public void onClick(View v) {
 				Button button = (Button) v;
-				String row = (String) button.getTag();
+				final String row = (String) button.getTag();
 
 				switch(v.getId()){
 				case R.id.multiplayer_received_accept_button:
 					Log.d(TAG, "Accept Button Clicked");
+					
+					
 					sa.addGame(USERNAME, row);
 					sa.createNewGame(USERNAME, row);
 					
-					/* Removes Player2 from Player1 list */
-					sa.removeSentRequest(USERNAME, row);
-
-					/* Removes Player1 from Player2 List */
-					sa.removeSentRequest(row, USERNAME);
+					//row is the user that sent the request that we have to remove
+					sa.removeSentRequest(row, USERNAME, new OnBooleanReceivedListener() {
+						public void run(Boolean exitState) {
+							if (exitState) {
+								Toast.makeText(getBaseContext(), 
+										"Could not remove request from "+row+".  Try again!", 
+										Toast.LENGTH_SHORT).show();
+							} else {
+							}
+						}
+					});
+					
 					
 					Intent i = new Intent(mContext, Multiplayer_Game.class);
 					i.putExtra("opponent", row);
@@ -226,7 +234,24 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 				case R.id.multiplayer_received_reject_button:
 					//TODO: Update Request List -> Server Call
 					Log.d(TAG, "Reject Button Clicked");
-					sa.removeSentRequest(USERNAME, row);
+					
+					//row is the user that sent the request that we have to remove
+					sa.removeSentRequest(row, USERNAME, new OnBooleanReceivedListener() {
+						public void run(Boolean exitState) {
+							Log.d(TAG, "in exitState of removeSentRequest");
+							if (!exitState) {
+								Log.d(TAG, "request from "+row+"was not deleted");
+								Toast.makeText(getBaseContext(), 
+										"Could not reject request from "+row+".  Try again!", 
+										Toast.LENGTH_SHORT).show();
+							} else {
+								Log.d(TAG, "request from "+row+" was deleted");
+								Toast.makeText(getBaseContext(), 
+										"Request from "+row+" rejected!", 
+										Toast.LENGTH_SHORT).show();
+							}
+						}
+					});
 					deleteRow(row);
 					notifyDataSetChanged();
 					Log.d(TAG, "Reject Button Clicked Delete Row");

@@ -23,6 +23,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Multiplayer_Sent_Requests extends ListActivity{
 	private static final String BOGGLE_PREF = "edu.madcourse.dancalacci.multiplayer";
@@ -182,14 +183,28 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 
 			public void onClick(View v) {
 				Button button = (Button) v;
-				String row = (String) button.getTag();
+				final String row = (String) button.getTag();
 
 				switch(v.getId()){
 				case R.id.multiplayer_sent_delete_button:
 					//Start new game activity
 					//TODO: Update Request List & Create new game pair -> Server Call
 					Log.d(TAG, "Delete Button Clicked"); 
-					sa.removeSentRequest(USERNAME, row);
+					
+					//username is the user that sent the request that we have to remove
+					sa.removeSentRequest(USERNAME, row, new OnBooleanReceivedListener() {
+						public void run(Boolean exitState) {
+							if (!exitState) {
+								Toast.makeText(getBaseContext(), 
+										"Could not delete request to "+row+".  Try again!", 
+										Toast.LENGTH_SHORT).show();
+							} else {
+								Toast.makeText(getBaseContext(), 
+										"Request to "+row +" deleted!", 
+										Toast.LENGTH_SHORT).show();
+							}
+						}
+					});
 					//Log.d(TAG, "updated list after delete: "+sa.getSentRequests(USERNAME).toString());
 
 					deleteRow(row);
