@@ -528,11 +528,7 @@ public class ServerAccessor {
 		Log.d(TAG, "baord board: "+ board);
 		this.put(boardKey, board); // create the board on the server
 		Log.d(TAG, "baord Content: "+ this.get(boardKey));
-<<<<<<< Updated upstream
 
-=======
-		
->>>>>>> Stashed changes
 		// value of turn element will always be a username - initiates to the creator.
 		String turnKey = TURN_PREFIX + userskey;
 		Log.d(TAG, "turnkey key: "+ turnKey);
@@ -705,11 +701,7 @@ public class ServerAccessor {
 		ArrayList<Character> board =
 				this.stringToBoard(this.get(boardKey));
 		Log.d(TAG, "getGame boardLetters: "+ board.toString());
-<<<<<<< Updated upstream
 
-=======
-		
->>>>>>> Stashed changes
 		String enteredWordsKey = ENTERED_WORDS_PREFIX + userskey;
 		ArrayList<String> enteredWords =
 				this.stringToArrayList(this.get(enteredWordsKey));
