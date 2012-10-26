@@ -71,10 +71,8 @@ public class Multiplayer_Game extends Activity {
 		
 		this.game = sa.getGame(username, opponent);
 		Log.v(TAG, "Get Baords: "+this.game.getCurrentTurn());
-
+		
 		this.setUsers();
-		
-		
 		
 		// if the game exists, get it.  if not, make a new one.
 		if (sa.doesGameExist(username, opponent)) {

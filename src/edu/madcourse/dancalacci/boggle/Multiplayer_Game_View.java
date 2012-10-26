@@ -134,14 +134,20 @@ public class Multiplayer_Game_View extends View {
 	    float dpHeight = outMetrics.heightPixels / density;
 	    float dpWidth  = outMetrics.widthPixels / density;
 	    
+	    float pHeight = outMetrics.heightPixels ;
+	    float pWidth  = outMetrics.widthPixels ;
+
 		Log.d(TAG, "Screen Width (dp): " + dpWidth);
 		Log.d(TAG, "Screen Height (dp): " + dpHeight);
 		
+		Log.d(TAG, "Screen Width (p): " + pWidth);
+		Log.d(TAG, "Screen Height (p): " + pHeight);
+
 		// We want the buffers on the right and left sides to be 1/8th of the
 		// screen width:
-		
-		boardLeftSide = dpWidth / 8f;
-		boardRightSide = boardLeftSide * 11f;
+
+		boardLeftSide = pWidth / 8;
+		boardRightSide = boardLeftSide * 7;
 		
 		// and the board is a square, so we want the other values to be pretty
 		// much the same:
@@ -158,6 +164,9 @@ public class Multiplayer_Game_View extends View {
 		
 		boardWidth  = boardRightSide - boardLeftSide; 	// the width of the board in pixels
 		boardHeight = boardBottomSide - boardTopSide;	// the height of the board in pixels  
+		
+		Log.d(TAG, "boardWidth : " + boardWidth);
+		Log.d(TAG, "boardHeight : " + boardHeight);
 
 		// the width of each die
 		dieWidth 			= boardWidth/(float)boardSize;
@@ -489,7 +498,7 @@ public class Multiplayer_Game_View extends View {
 	private int getDieXIndex(float x) {
 		
 		float start = boardLeftSide;
-		for (int i = 1; i< boardSize; i++) {
+		for (int i = 1; i< boardSize+1; i++) {
 			if (x <= start + i*dieWidth) {
 				return i-1;
 			}
@@ -504,7 +513,7 @@ public class Multiplayer_Game_View extends View {
 	 */
 	private int getDieYIndex(float y) {
 		float start = boardTopSide;
-		for (int i = 1; i< boardSize; i++) {
+		for (int i = 1; i< boardSize+1; i++) {
 			if (y <= start + i*dieHeight) {
 				return i-1;
 			}

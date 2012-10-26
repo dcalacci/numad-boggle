@@ -120,7 +120,7 @@ public class PuzzleView extends View {
 	 * Sets all the constants for the view.
 	 */
 	protected void setConstants() {		
-		
+
 	    // get the default display object for the game's window manager
 	    Display display = game.getWindowManager().getDefaultDisplay();
 
@@ -134,28 +134,34 @@ public class PuzzleView extends View {
 	    float dpHeight = outMetrics.heightPixels / density;
 	    float dpWidth  = outMetrics.widthPixels / density;
 	    
+	    float pHeight = outMetrics.heightPixels ;
+	    float pWidth  = outMetrics.widthPixels ;
+
 		Log.d(TAG, "Screen Width (dp): " + dpWidth);
 		Log.d(TAG, "Screen Height (dp): " + dpHeight);
 		
+		Log.d(TAG, "Screen Width (p): " + pWidth);
+		Log.d(TAG, "Screen Height (p): " + pHeight);
+
 		// We want the buffers on the right and left sides to be 1/8th of the
 		// screen width:
-		
-		boardLeftSide = dpWidth / 8f;
-		boardRightSide = boardLeftSide * 11f;
-		
+
+		boardLeftSide = pWidth / 8;
+		boardRightSide = boardLeftSide * 7;
+
 		// and the board is a square, so we want the other values to be pretty
 		// much the same:
 		boardTopSide = boardLeftSide;
 		boardBottomSide = boardRightSide;
-		
+
 		// these values correspond to the x or y value of a specific side of the board
 		// in pixels
-		
+
 		Log.d(TAG, "boardLeftSide in dp: " + boardLeftSide);
 		Log.d(TAG, "boardRightSide in dp: " + boardRightSide);
 		Log.d(TAG, "boardTopSide in dp: " + boardTopSide);
 		Log.d(TAG, "boardBottomSide in dp: " + boardBottomSide);
-		
+
 		boardWidth = boardRightSide - boardLeftSide; 	// the width of the board in pixels
 		boardHeight = boardBottomSide - boardTopSide;	// the height of the board in pixels  
 
