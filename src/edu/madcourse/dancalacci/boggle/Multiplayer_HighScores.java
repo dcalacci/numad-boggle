@@ -22,7 +22,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 public class Multiplayer_HighScores extends ListActivity{
-	private static final String BOGGLE_PREF = "edu.madcourse.dancalacci.boggle";
+	private static final String BOGGLE_PREF = "edu.madcourse.dancalacci.multiplayer";
 	private static final String PREF_USER = "prefUser";
 	private ServerAccessor sa;
 	private String USERNAME;

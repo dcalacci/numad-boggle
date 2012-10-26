@@ -477,6 +477,9 @@ public class ServerAccessor {
 
 	// only called when a previous game doesn't exist
 	private void initializeNewGame(String creator, String opponent, String board) {
+		Log.d(TAG, "Creator: " + creator + "|");
+		Log.d(TAG, "Opponent: " + opponent + "|");
+		
 		String userskey = this.getUsersKey(creator, opponent);
 
 		// add game to game list
@@ -502,6 +505,8 @@ public class ServerAccessor {
 		String scoresKey = SCORES_PREFIX + userskey;
 		String scoresContent = creator + "|0," + opponent + "|0";
 		this.put(scoresKey, scoresContent);
+
+		Log.d(TAG, "scores key: "+ scoresKey);
 		Log.d(TAG, "scores Content: "+ this.get(scoresKey));
 		System.out.println(scoresKey + " is now: " + creator + "|0," + opponent + "|0");
 
@@ -636,8 +641,13 @@ public class ServerAccessor {
 	}
 
 	public GameWrapper getGame(String user1, String user2) {
+		
+		Log.d(TAG, "USER1: " + user1 + "|");
+		Log.d(TAG, "USER2: " + user2 + "|");
+		
 		String userskey = this.getUsersKey(user1, user2);
-		Log.d(TAG, "getBoard userKey: "+ userskey);
+		
+		Log.d(TAG, "getGame userKey: "+ userskey);
 		
 		String turnKey = TURN_PREFIX + userskey;
 		String currentTurn = 
@@ -666,6 +676,13 @@ public class ServerAccessor {
 				enteredWords,
 				scores,
 				numTurns);
+	}
+	
+	public void pushGame(String user1, String user2){
+		String userskey = this.getUsersKey(user1, user2);
+		Log.d(TAG, "pushGame userKey: "+ userskey);
+		
+		
 	}
 
 	/**

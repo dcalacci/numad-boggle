@@ -31,6 +31,7 @@ import java.util.BitSet;
 public class Boggle extends Activity {
 	private static final String PREF_BOARD = "board";
 	public static final String BOGGLE_PREF = "edu.madcourse.dancalacci.boggle";
+	private static final String  MULTI_PREF = "edu.madcourse.dancalacci.multiplayer";
 	private static final String PREF_SELECTED = "selected";
 	private static final String PREF_USER = "prefUser";
 	private static final String PREF_PASS = "prefPass";
@@ -100,7 +101,7 @@ public class Boggle extends Activity {
 	}
 
 	public boolean isUserInfoAvailable(){
-		SharedPreferences pref = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE);
+		SharedPreferences pref = getSharedPreferences(MULTI_PREF, MODE_PRIVATE);
 		String username = pref.getString(PREF_USER, "null");
 		String password = pref.getString(PREF_PASS, "null");
 		Log.d(TAG, "isUserInfoAvailabe: " + username);

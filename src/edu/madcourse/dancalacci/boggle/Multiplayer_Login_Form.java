@@ -16,7 +16,7 @@ import android.widget.Toast;
 public class Multiplayer_Login_Form extends Activity{
 	private String TAG = "Multiplayer_Login_Form";
 
-	public static final String BOGGLE_PREF = "edu.madcourse.dancalacci.boggle";
+	private static final String BOGGLE_PREF = "edu.madcourse.dancalacci.multiplayer";
 	public static final String PREF_USER = "prefUser";
 	public static final String PREF_PASS = "prefPass";
 

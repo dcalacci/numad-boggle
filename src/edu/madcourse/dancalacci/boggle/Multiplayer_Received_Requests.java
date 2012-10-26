@@ -33,7 +33,7 @@ import android.widget.SimpleAdapter;
 
 public class Multiplayer_Received_Requests  extends ListActivity{
 	private String TAG = "Multiplayer_Received_Requests";
-	private static final String BOGGLE_PREF = "edu.madcourse.dancalacci.boggle";
+	private static final String BOGGLE_PREF = "edu.madcourse.dancalacci.multiplayer";
 	private static final String PREF_USER = "prefUser";
 	private ServerAccessor sa;
 	private String USERNAME;
@@ -215,7 +215,7 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 					Log.d(TAG, "Accept Button Clicked");
 					sa.addGame(USERNAME, row);
 					sa.createNewGame(USERNAME, row);
-				
+					
 					/* Removes Player2 from Player1 list */
 					sa.removeSentRequest(USERNAME, row);
 

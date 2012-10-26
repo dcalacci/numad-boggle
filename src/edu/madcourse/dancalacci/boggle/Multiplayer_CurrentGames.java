@@ -25,7 +25,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class Multiplayer_CurrentGames extends ListActivity {
-	public static final String BOGGLE_PREF = "edu.madcourse.dancalacci.boggle";
+	private static final String BOGGLE_PREF = "edu.madcourse.dancalacci.multiplayer";
 	private static final String PREF_USER = "prefUser";
 	ServerAccessor sa;
 	String USERNAME;
