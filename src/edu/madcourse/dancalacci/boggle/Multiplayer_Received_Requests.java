@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.madcourse.dancalacci.R;
+import edu.madcourse.dancalacci.boggle.Multiplayer_Sent_Requests.Multiplayer_Sent_Request_Adaptor;
 import edu.neu.mobileclass.apis.KeyValueAPI;
 import android.app.Activity;
 import android.app.ListActivity;
@@ -53,44 +54,30 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 
 		getListView().setEmptyView(findViewById(android.R.id.empty));
 
-		sa = new ServerAccessor();
-		adapter = new Multiplayer_Received_Request_Adaptor(this, R.layout.multiplayer_received, this.generate_received_request_list());
-		Log.d(TAG, "set adapter");
-		/*adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1,
-				this.generate_request_list());
-		 */
-		setListAdapter(adapter);
+		this.sa = new ServerAccessor();
+		
+		setAsynchronousListAdapter();
 	}
 
 	public void onResume(){
 		super.onResume();
-		getListView().setEmptyView(findViewById(R.id.emptyView));
-		adapter = new Multiplayer_Received_Request_Adaptor(this, R.layout.multiplayer_received, sa.getReceivedRequests(USERNAME));
-		setListAdapter(adapter);
+		setAsynchronousListAdapter();
 	}
 
-	private ArrayList<String> generate_received_request_list(){
-		Log.v(TAG, "starting a GetKeyTask");
-		class generateReceivedRequestsTask extends AsyncTask<String, Integer, ArrayList<String>> {
-
-			@Override
-			protected ArrayList<String> doInBackground(String... unused) {
-				Log.d(TAG, "request list: " + sa.getReceivedRequests(USERNAME).toString());
-				return sa.getReceivedRequests(USERNAME);
+	/**
+	 * Sets the listAdapter asynchronously, with information from
+	 * the server.
+	 */
+	private void setAsynchronousListAdapter() {
+		final Multiplayer_Received_Requests thisActivity = this;
+		
+		sa.getReceivedRequests(USERNAME, new OnStringArrayListLoadedListener() {
+			public void run(ArrayList<String> list) {
+				adapter = new Multiplayer_Received_Request_Adaptor(thisActivity, R.layout.multiplayer_received, list);
+				Log.v(TAG, "Setting List adapter: " +adapter.toString());
+				setListAdapter(adapter);
 			}
-		}
-
-		try {
-			//Log.v(TAG, "executing getKeyTask with '" +key +"'");
-			return new generateReceivedRequestsTask().execute().get();
-		} catch(Exception e) {
-			//Log.e(TAG, "GetKeyTask thread died: " +e);
-			return null;
-		}
-
-
-
+		});
 	}
 
 

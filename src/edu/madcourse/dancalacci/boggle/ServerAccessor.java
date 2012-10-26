@@ -131,12 +131,13 @@ public class ServerAccessor {
 		this.put(key, val);
 	}
 
+	//TODO: Deprecated.  Implement calling getSentRequests(asynchronous)
 	/**
 	 * Returns a list of the given users' requests
 	 * @param user the user whose requests we're getting
 	 * @return an ArrayList<String> of all the given users' requests
 	 */
-	private ArrayList<String> retrieveSentRequests(String user) {
+	private ArrayList<String> getSentRequests(String user) {
 		String key = "req_" + user;
 		ArrayList<String> reqs = this.stringToArrayList(this.get(key));
 		return reqs;
@@ -160,14 +161,10 @@ public class ServerAccessor {
 		}
 		
 		try {
-			new GetKeyTask().execute("req_" + user);
+			new GetKeyTask().execute("rec_" + user);
 		} catch(Exception e) {
 			Log.e(TAG, "GetKeyTask thread died: " +e);
 		}
-		
-//		String key = "req_" + user;
-//		ArrayList<String> reqs = this.stringToArrayList(this.get(key));
-//		l.run(reqs);
 	}
 
 	/**
@@ -176,7 +173,7 @@ public class ServerAccessor {
 	 * @param reqsToAdd The list of Strings that represents all the requests to add
 	 */
 	public void addRequestList(String user, ArrayList<String> reqsToAdd) {
-		ArrayList<String> reqs = this.retrieveSentRequests(user);
+		ArrayList<String> reqs = this.getSentRequests(user);
 		reqs.addAll(reqsToAdd);
 		String key = "req_" + user;
 		String val = this.arrayListToString(reqs);
@@ -190,8 +187,8 @@ public class ServerAccessor {
 	 */
 	private void removeRequest(String user, String req) {
 		String key = "req_" + user;
-		ArrayList<String> curReqs = this.retrieveSentRequests(user);
-		System.out.println("getRequests for " +user +"looks like: " +this.arrayListToString(this.retrieveSentRequests(user)));
+		ArrayList<String> curReqs = this.getSentRequests(user);
+		System.out.println("getRequests for " +user +"looks like: " +this.arrayListToString(this.getSentRequests(user)));
 		if (curReqs.contains(req)) {
 			curReqs.remove(req);
 			System.out.println("removing " +req +" from " +user+"'s sent request list");
@@ -229,12 +226,46 @@ public class ServerAccessor {
 	 * @param user  The user whose requests we're returning
 	 * @return    The list of users' received requests 
 	 */
-	public ArrayList<String> getReceivedRequests(String user) {
+	public ArrayList<String> getReceivedRequests(String user, final OnStringArrayListLoadedListener arrayListListener) {
+		
+		final ServerAccessor thisSA = this;
+		Log.d(TAG, "About to create an AsyncTask GetKeyTask");
+		class GetReceivedRequestsTask extends AsyncTask<String, Integer, ArrayList<String>> {
+			
+			protected ArrayList<String> doInBackground(String... key) {
+				Log.d(TAG, "in doInBackground for getSentRequests");
+				return stringToArrayList(thisSA.get(key[0]));
+			}
+			
+			protected void onPostExecute(ArrayList<String> result) {
+				Log.d(TAG, "in onPostExecute for getSentRequests");
+				arrayListListener.run(result);
+			}
+		}
+		
+		try {
+			new GetReceivedRequestsTask().execute("req_" + user);
+		} catch(Exception e) {
+			Log.e(TAG, "GetKeyTask thread died: " +e);
+		}
 		String key = "rec_" + user;
 		ArrayList<String> recs = this.stringToArrayList(this.get(key));
 		return recs;
 	}
 
+	
+	//TODO: Deprecated.  implement calling getReceivedRequests
+	/**
+	 * Returns a list of the given users' received requests
+	 * @param user the user whose requests we're getting
+	 * @return an ArrayList<String> of all the given users' requests
+	 */
+	private ArrayList<String> getReceivedRequests(String user) {
+		String key = "rec_" + user;
+		ArrayList<String> recs = this.stringToArrayList(this.get(key));
+		return recs;
+	}
+	
 	/**
 	 * Adds all users in the list to the given users' received list
 	 * @param user  The user whose received list we're editing

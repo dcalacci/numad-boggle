@@ -48,34 +48,32 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 
 		getListView().setEmptyView(findViewById(android.R.id.empty));
 		sa = new ServerAccessor();
-		
+
 		this.setAsynchronousListAdapter(); // populates the adapter with the sent requests
 	}
-	
+
 	/**
 	 * Sets the listAdapter asynchronously, with information from
 	 * the server.
 	 */
 	private void setAsynchronousListAdapter() {
 		final Multiplayer_Sent_Requests thisActivity = this;
-		
-		sa.getSentRequests(USERNAME,
-				new OnStringArrayListLoadedListener() {
-					
-					public void run(ArrayList<String> list) {
-						adapter = new Multiplayer_Sent_Request_Adaptor(thisActivity, R.layout.multiplayer_sent, list);
-						Log.v(TAG, "Setting List adapter: " +adapter.toString());
-						setListAdapter(adapter);
-					}
-				});
+
+		sa.getSentRequests(USERNAME, new OnStringArrayListLoadedListener() {
+			public void run(ArrayList<String> list) {
+				adapter = new Multiplayer_Sent_Request_Adaptor(thisActivity, R.layout.multiplayer_sent, list);
+				Log.v(TAG, "Setting List adapter: " +adapter.toString());
+				setListAdapter(adapter);
+			}
+		});
 	}
 
 	public void onResume(){
 		super.onResume();		
 		getListView().setEmptyView(findViewById(R.id.emptyView));
-		
+
 		final Multiplayer_Sent_Requests thisActivity = this;
-		
+
 		this.setAsynchronousListAdapter();
 	}
 
@@ -137,7 +135,7 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 			}else{
 				username.setText("No Requests Sent");
 			}
-			
+
 			buttonClickHandler btn_Handler = new buttonClickHandler(username, row);
 
 			Button btnDelete = (Button) view.findViewById(R.id.multiplayer_sent_delete_button);
@@ -174,10 +172,10 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 					//Start new game activity
 					//TODO: Update Request List & Create new game pair -> Server Call
 					Log.d(TAG, "Delete Button Clicked");
-					
+
 					sa.removeSentRequest(USERNAME, row);
 					//Log.d(TAG, "updated list after delete: "+sa.getSentRequests(USERNAME).toString());
-		
+
 					deleteRow(row);
 					notifyDataSetChanged();
 					Log.d(TAG, "Delete Button Clicked Delete Row");
