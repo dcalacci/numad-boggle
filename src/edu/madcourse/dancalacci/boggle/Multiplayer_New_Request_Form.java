@@ -106,14 +106,23 @@ public class Multiplayer_New_Request_Form extends ListActivity{
 			
 			public void run(ArrayList<String> list) {
 				if (list.get(0).startsWith("ERROR")) {
+					Log.e(TAG, "Userlist get resulted in an error.");
 					Toast.makeText(getBaseContext(), 
 							"Cannot access the user list.", 
 							Toast.LENGTH_SHORT).show();
 					finish();
-				} 
+				} else if(list.isEmpty()) {
+					Log.e(TAG, "UserList was empty");
+					Toast.makeText(getBaseContext(), 
+							"Cannot access the user list.", 
+							Toast.LENGTH_SHORT).show();
+					finish();
+				}
+				Log.d(TAG, "Userlist is now: " +list.toString());
 				list.remove(USERNAME);
 				adapter = new ArrayAdapter<String>(thisActivity, android.R.layout.simple_list_item_single_choice, list);
 				setListAdapter(adapter);
+				mUserList = list;
 			}
 		});
 
