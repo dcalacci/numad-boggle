@@ -23,7 +23,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class Multiplayer_Sent_Requests extends ListActivity{
 	private static final String BOGGLE_PREF = "edu.madcourse.dancalacci.multiplayer";
@@ -63,7 +62,7 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 		sa.getSentRequests(USERNAME, new OnStringArrayListLoadedListener() {
 			public void run(ArrayList<String> list) {
 				adapter = new Multiplayer_Sent_Request_Adaptor(thisActivity, R.layout.multiplayer_sent, list);
-				Log.v(TAG, "Setting Sent Requests List adapter: " +list.toString());
+				Log.v(TAG, "Setting Sent Requests List adapter: " +adapter.toString());
 				setListAdapter(adapter);
 			}
 		});
@@ -112,40 +111,28 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 		public boolean isEmptyList(){
 			return mSentRequests.contains("");
 		}
-		public boolean hadErrorInList() {
-			Log.d(TAG, "mSentRequests(0): " +mSentRequests.get(0).toString());
-			return mSentRequests.get(0).startsWith("ERROR");
-		}
 
 		public View getView(int position, View view, ViewGroup parent) {
 			final String row = this.mSentRequests.get(position);
 			boolean isEmpty = isEmptyList();
 			Log.d(TAG, "Empty ArrayList "+ isEmpty);
-			boolean hadError = hadErrorInList();
-			Log.d(TAG, "Error in getting sent requests: "+hadError);
 
 			if(view == null ){
 				getListView().setEmptyView(findViewById(android.R.id.empty));
-				
-				if (isEmpty || hadError) {
-					LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-					view = inflater.inflate(R.layout.multiplayer_sent_rows_empty, parent, false);
-				} else{
+				if(!isEmpty){
 					LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 					view = inflater.inflate(R.layout.multiplayer_sent_rows, parent, false);
+				}else{
+					LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+					view = inflater.inflate(R.layout.multiplayer_sent_rows_empty, parent, false);
 				}
 			}
 
 			TextView username = (TextView) 
 					view.findViewById(R.id.multiplayer_sent_requests_textView_content);
-			if (hadError) {
-				Log.d(TAG, "Setting text to the 'could not retrieve...' message in the sent requests listview");
-				username.setText("Could not retrieve data...");
-			} else if(!isEmpty){
-				Log.d(TAG, "Setting text in sentRequests to the correct stuff.");
+			if(!isEmpty){
 				username.setText(mSentRequests.get(position));
-			} else{
-				Log.d(TAG,"Setting text in sentRequests to 'no requests sent'");
+			}else{
 				username.setText("No Requests Sent");
 			}
 
@@ -184,8 +171,7 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 				case R.id.multiplayer_sent_delete_button:
 					//Start new game activity
 					//TODO: Update Request List & Create new game pair -> Server Call
-					Log.d(TAG, "Delete Button Clicked");
-
+					Log.d(TAG, "Delete Button Clicked"); 
 					sa.removeSentRequest(USERNAME, row);
 					//Log.d(TAG, "updated list after delete: "+sa.getSentRequests(USERNAME).toString());
 

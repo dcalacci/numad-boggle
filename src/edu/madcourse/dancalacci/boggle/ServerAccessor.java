@@ -27,13 +27,12 @@ public class ServerAccessor {
 	private static final String RECEIVED_PREFIX = "rec_";
 	private static final String USERS_KEY = "users";
 	private static final String GAMES_KEY = "games";
-	private static final String ERROR = "ERROR";
-	
+
 	// Context for doing asyncTask
 	private static Context c;
 
 	private static final String TAG = "ServerAccessor";
-	
+
 	private static final ArrayList<List<Character>> dice = new ArrayList<List<Character>>() {{
 		add( Arrays.asList( 'a', 'a', 'a', 'f', 'r', 's'));
 		add( Arrays.asList( 'a', 'a', 'e', 'e', 'e', 'e'));
@@ -72,7 +71,7 @@ public class ServerAccessor {
 	public boolean canConnect() {
 		return KeyValueAPI.isServerAvailable();
 	}
-	
+
 	/**
 	 * Gets the value associated with the given key
 	 * @param key    the key associated with the value to get
@@ -141,7 +140,7 @@ public class ServerAccessor {
 		String key = REQUESTS_PREFIX + user;
 		ArrayList<String> reqs = this.stringToArrayList(this.get(key));
 		ArrayList<String> recs = this.stringToArrayList(this.get(RECEIVED_PREFIX+user));
-		
+
 		// if we already have a received request from that user or we have already sent
 		// a request to that user
 		if ( reqs.contains(req) || recs.contains(req) ) {
@@ -161,40 +160,27 @@ public class ServerAccessor {
 	 */
 	private ArrayList<String> getSentRequests(String user) {
 		String key = REQUESTS_PREFIX + user;
-		String val = this.get(key);
-		if ( key.startsWith(ERROR) ) {
-			throw new RuntimeException("Server error");
-		} else {
-			ArrayList<String> reqs = this.stringToArrayList(val);
-			return reqs;
-		}
+		ArrayList<String> reqs = this.stringToArrayList(this.get(key));
+		return reqs;
 	}
-	
+
 	public void getSentRequests(String user, final OnStringArrayListLoadedListener l) {
-		
+
 		final ServerAccessor thisSA = this;
 		Log.d(TAG, "About to create an AsyncTask GetKeyTask");
 		class GetKeyTask extends AsyncTask<String, Integer, ArrayList<String>> {
-			
-			// takes the username as an input.
+
 			protected ArrayList<String> doInBackground(String... key) {
 				Log.d(TAG, "in doInBackground for getSentRequests");
-				try {
-					return thisSA.getSentRequests(key[0]);
-				} catch(Exception e) {
-					Log.e(TAG, "Could not get sent requests from server");
-					return new ArrayList<String>() {{
-						add("ERROR!");
-					}};
-				}
+				return stringToArrayList(thisSA.get(key[0]));
 			}
-			
+
 			protected void onPostExecute(ArrayList<String> result) {
 				Log.d(TAG, "in onPostExecute for getSentRequests");
 				l.run(result);
 			}
 		}
-		
+
 		try {
 			new GetKeyTask().execute(REQUESTS_PREFIX + user);
 		} catch(Exception e) {
@@ -231,7 +217,7 @@ public class ServerAccessor {
 			System.out.println("putting '" +val +"' at key " +key);
 			this.put(key, val);
 		}
-		
+
 //		
 //		
 //		String key = REQUESTS_PREFIX + user;
@@ -252,7 +238,7 @@ public class ServerAccessor {
 		String key = RECEIVED_PREFIX + user;
 		ArrayList<String> recs = this.stringToArrayList(this.get(key));
 		ArrayList<String> reqs = this.stringToArrayList(this.get(REQUESTS_PREFIX)+user);
-		
+
 		// if we already have a received request from that user or we have already sent
 		// a request to that user
 		if( recs.contains(rec) || reqs.contains(rec)) {
@@ -271,21 +257,21 @@ public class ServerAccessor {
 	 * @return    The list of users' received requests 
 	 */
 	public void getReceivedRequests(String user, final OnStringArrayListLoadedListener arrayListListener) {
-		
+
 		final ServerAccessor thisSA = this;
 		Log.d(TAG, "About to create an AsyncTask GetKeyTask");
 		class GetReceivedRequestsTask extends AsyncTask<String, Integer, ArrayList<String>> {
-			
+
 			protected ArrayList<String> doInBackground(String... key) {
 				return stringToArrayList(thisSA.get(key[0]));
 			}
-			
+
 			protected void onPostExecute(ArrayList<String> result) {
 				Log.d(TAG, "in onPostExecute for getSentRequests");
 				arrayListListener.run(result);
 			}
 		}
-		
+
 		try {
 			new GetReceivedRequestsTask().execute(RECEIVED_PREFIX + user);
 		} catch(Exception e) {
@@ -293,7 +279,7 @@ public class ServerAccessor {
 		}
 	}
 
-	
+
 	//TODO: Deprecated.  implement calling getReceivedRequests
 	/**
 	 * Returns a list of the given users' received requests
@@ -305,7 +291,7 @@ public class ServerAccessor {
 		ArrayList<String> recs = this.stringToArrayList(this.get(key));
 		return recs;
 	}
-	
+
 	/**
 	 * Adds all users in the list to the given users' received list
 	 * @param user  The user whose received list we're editing
@@ -382,7 +368,7 @@ public class ServerAccessor {
 		String usersKey = USERS_KEY;
 		return this.stringToArrayList(get(usersKey));
 	}
-	
+
 	/**
 	 * Checks to see if a new user/pass combo can be registered
 	 * @param user  The username to check
@@ -455,7 +441,7 @@ public class ServerAccessor {
 		String gameVal = this.arrayListToString(games);
 		this.put(gameKey, gameVal);
 	}
-	
+
 	public void removeGame(String user1, String user2) {
 		String gameKey = GAMES_KEY;
 		String usersKey = this.getUsersKey(user1, user2);
@@ -471,11 +457,11 @@ public class ServerAccessor {
 	 * @return      An arraylist that contains every user that user is in a game with
 	 */
 	public ArrayList<String> getGames(String user, final OnStringArrayListLoadedListener arrayListListener) {
-		
+
 		final ServerAccessor thisSA = this;
 		Log.d(TAG, "About to create an AsyncTask GetKeyTask");
 		class GetGamesTask extends AsyncTask<String, Integer, ArrayList<String>> {
-			
+
 			protected ArrayList<String> doInBackground(String... key) {
 				Log.d(TAG, "in doInBackground for GetGamestask");
 				String user = key[0];
@@ -489,20 +475,20 @@ public class ServerAccessor {
 				}
 				return games;
 			}
-			
+
 			protected void onPostExecute(ArrayList<String> result) {
 				Log.d(TAG, "in onPostExecute for GetGamesTask");
 				arrayListListener.run(result);
 			}
 		}
-		
+
 		try {
 			new GetGamesTask().execute(user);
 		} catch(Exception e) {
 			Log.e(TAG, "GetGames thread died: " +e);
 		}
-		
-		
+
+
 		ArrayList<String> serverGames = this.stringToArrayList(this.get(GAMES_KEY));
 		ArrayList<String> serverUsers = this.stringToArrayList(this.get(USERS_KEY));
 		ArrayList<String> games = new ArrayList<String>();
@@ -518,7 +504,7 @@ public class ServerAccessor {
 	private void initializeNewGame(String creator, String opponent, String board) {
 		Log.d(TAG, "Creator: " + creator + "|");
 		Log.d(TAG, "Opponent: " + opponent + "|");
-		
+
 		String userskey = this.getUsersKey(creator, opponent);
 
 		// add game to game list
@@ -527,12 +513,17 @@ public class ServerAccessor {
 
 		// add board to the server
 		String boardKey = BOARD_PREFIX + userskey;
+		Log.d(TAG, "board key: "+ boardKey);
+		Log.d(TAG, "baord board: "+ board);
 		this.put(boardKey, board); // create the board on the server
+		Log.d(TAG, "baord Content: "+ this.get(boardKey));
 
 		// value of turn element will always be a username - initiates to the creator.
 		String turnKey = TURN_PREFIX + userskey;
+		Log.d(TAG, "turnkey key: "+ turnKey);
+		Log.d(TAG, "turnkey Content: "+ this.get(turnKey));
 		this.put(turnKey, creator); // create the turn element on the server
-		
+
 		System.out.println(turnKey + " is now: " + creator);
 
 		// create the entered words element on the server
@@ -560,22 +551,22 @@ public class ServerAccessor {
 	 * @param user2 The receiver of the request
 	 */
 	public void sendRequest(String user1, String user2, final OnBooleanReceivedListener booleanListener) {
-		
+
 		final ServerAccessor thisSA = this;
 		Log.d(TAG, "About to create an AsyncTask sendRequestTask");
 		class sendRequestTask extends AsyncTask<String, Integer, Boolean> {
-			
+
 			protected Boolean doInBackground(String... key) {
-				
+
 				// if we can't connect to the server, stop and return false.
 				if (!thisSA.canConnect()) {
 					return false;
 				}
-				
+
 				Log.d(TAG, "in doInBackground for sendRequestTask");
 				String user1 = key[0];
 				String user2 = key[1];
-				
+
 				try {
 					thisSA.addRequest(user1, user2);
 					thisSA.addReceived(user2, user1);
@@ -585,20 +576,20 @@ public class ServerAccessor {
 				Log.d(TAG, "Added the request successfully");
 				return true;
 			}
-			
+
 			protected void onPostExecute(Boolean result) {
 				Log.d(TAG, "in onPostExecute for sendRequestTask. Result: " +result);
 				booleanListener.run(result);
 			}
 		}
-		
+
 		try {
 			new sendRequestTask().execute(user1, user2);
 		} catch(Exception e) {
 			Log.e(TAG, "sendRequestTask thread died: " +e);
 		}
 	}
-	
+
 	/**
 	 * Remove a sent request from user1 to user2
 	 * @param user1 The sender of the request to be removed
@@ -608,7 +599,7 @@ public class ServerAccessor {
 		this.removeReceivedRequest(user2, user1);
 		this.removeRequest(user1, user2);
 	}
-	
+
 	// TODO: create a scores interpreter
 	// TODO: create a numTurns interpreter
 	// TODO: create a board interpreter
@@ -682,28 +673,30 @@ public class ServerAccessor {
 	}
 
 	public GameWrapper getGame(String user1, String user2) {
-		
+
 		Log.d(TAG, "USER1: " + user1 + "|");
 		Log.d(TAG, "USER2: " + user2 + "|");
-		
+
 		String userskey = this.getUsersKey(user1, user2);
-		
+
 		Log.d(TAG, "getGame userKey: "+ userskey);
-		
+
 		String turnKey = TURN_PREFIX + userskey;
 		String currentTurn = 
 				this.get(turnKey);
 
 		String boardKey = BOARD_PREFIX + userskey;
+		Log.d(TAG, "getGame boardKey: "+ boardKey);
 		ArrayList<Character> board =
 				this.stringToBoard(this.get(boardKey));
+		Log.d(TAG, "getGame boardLetters: "+ board.toString());
 
 		String enteredWordsKey = ENTERED_WORDS_PREFIX + userskey;
 		ArrayList<String> enteredWords =
 				this.stringToArrayList(this.get(enteredWordsKey));
 
 		String scoresKey = SCORES_PREFIX + userskey;
-		Log.d(TAG, "getBoard scoresKey: "+ scoresKey);
+		Log.d(TAG, "getGame scoresKey: "+ scoresKey);
 		String gameScores = this.get(scoresKey);
 		Hashtable<String, Integer> scores = this.scoresStringToHashtable(
 				gameScores);
@@ -718,13 +711,6 @@ public class ServerAccessor {
 				scores,
 				numTurns);
 	}
-	
-	public void pushGame(String user1, String user2){
-		String userskey = this.getUsersKey(user1, user2);
-		Log.d(TAG, "pushGame userKey: "+ userskey);
-		
-		
-	}
 
 	/**
 	 * Converts a given string representation of scores to a hashtable
@@ -733,7 +719,7 @@ public class ServerAccessor {
 	 * @return the hashtable conversion
 	 */
 	private Hashtable<String, Integer> scoresStringToHashtable(String scores) {
-		
+
 		//TODO: THIS AIN'T WORKIN'
 		Log.d(TAG, "scoresToString: "+ scores);
 		ArrayList<String> parts = new ArrayList<String>(
@@ -765,4 +751,3 @@ public class ServerAccessor {
 		return sb.toString();
 	}
 }
-
