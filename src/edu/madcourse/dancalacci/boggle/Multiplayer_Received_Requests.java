@@ -114,17 +114,26 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 		public boolean isEmptyList(){
 			return mReceivedRequests.contains("");
 		}
+		
+		public boolean hadError() {
+			return mReceivedRequests.get(0).startsWith("ERROR");
+		}
 
 		public View getView(int position, View view, ViewGroup parent) {
 			final String row = this.mReceivedRequests.get(position);
 			boolean isEmpty = isEmptyList();
+			boolean hadError = hadError();
+			Log.d(TAG, "Empty ArrayList "+ isEmpty);
+			Log.d(TAG, "Had error " +hadError);
 
 			if(view == null ){
 				getListView().setEmptyView(findViewById(android.R.id.empty));
-				if(!isEmpty){
+				if(!isEmpty && !hadError){
+					Log.d(TAG, "button is there");
 					LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 					view = inflater.inflate(R.layout.multiplayer_received_rows, parent, false);
 				}else{
+					Log.d(TAG, "button isn't there");
 					LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 					view = inflater.inflate(R.layout.multiplayer_received_rows_empty, parent, false);
 				}
@@ -132,9 +141,11 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 
 			TextView username = (TextView) 
 					view.findViewById(R.id.multiplayer_received_requests_textView_content);
-			if(!isEmpty){
+			if(!isEmpty && !hadError){
 				username.setText(mReceivedRequests.get(position));
-			}else{
+			} else if (hadError) {
+				username.setText("Couldn't retrieve data...");
+			} else{
 				username.setText("No New Requests");
 			}
 
