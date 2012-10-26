@@ -8,6 +8,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.List;
 
 import android.app.Activity;
@@ -68,7 +70,12 @@ public class Multiplayer_Game extends Activity {
 		username = getSharedPreferences(MULTI_PREF, MODE_PRIVATE).getString(PREF_USER, "guest");
 		
 		this.game = sa.getGame(username, opponent);
+		Log.v(TAG, "Get Baords: "+this.game.getCurrentTurn());
 
+		this.setUsers();
+		
+		
+		
 		// if the game exists, get it.  if not, make a new one.
 		if (sa.doesGameExist(username, opponent)) {
 			Log.v(TAG, "Game Exists!");
@@ -84,6 +91,17 @@ public class Multiplayer_Game extends Activity {
 		setContentView(R.layout.multiplayer_game);
 		FrameLayout boardFrame = (FrameLayout)findViewById(R.id.multiplayer_game_tiles);
 		boardFrame.addView(gameView);
+	}
+	
+	private void setUsers(){
+		Hashtable<String, Integer> scoresContent = this.game.getScores();
+		Enumeration keys = scoresContent.keys();
+		while(keys.hasMoreElements()){
+			player1 = keys.nextElement().toString();
+			score_P1 = scoresContent.get(player1);
+			player2 = keys.nextElement().toString();
+			score_P2 = scoresContent.get(player2);
+		}
 	}
 
 	@Override

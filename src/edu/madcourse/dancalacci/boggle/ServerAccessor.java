@@ -465,6 +465,11 @@ public class ServerAccessor {
 
 			protected ArrayList<String> doInBackground(String... key) {
 				Log.d(TAG, "in doInBackground for GetGamestask");
+				try {
+					Thread.sleep(3000);
+				} catch(Exception e) {
+					
+				}
 				String user = key[0];
 				ArrayList<String> serverGames = thisSA.stringToArrayList(thisSA.get(GAMES_KEY));
 				ArrayList<String> serverUsers = thisSA.stringToArrayList(thisSA.get(USERS_KEY));

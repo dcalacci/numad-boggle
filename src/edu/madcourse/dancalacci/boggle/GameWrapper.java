@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
 
+import android.util.Log;
+
 public class GameWrapper {
 	private String currentTurn;
 	private ArrayList<Character> board;
@@ -18,6 +20,7 @@ public class GameWrapper {
 			ArrayList<String> enteredWords,
 			Hashtable<String, Integer> scores,
 			int numTurns) {
+		this.board 			= board; 
 		this.currentTurn 	= currentTurn;
 		this.enteredWords 	= enteredWords;
 		this.scores 		= scores;
@@ -158,6 +161,7 @@ public class GameWrapper {
 	 * @return An arraylist implementation of the board.
 	 */
 	public ArrayList<Character> getBoard() {
+		Log.d("GameWrapper", "getBoard: "+ this.board);
 		return this.board;
 	}
 }

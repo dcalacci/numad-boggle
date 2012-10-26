@@ -38,7 +38,7 @@ import android.graphics.Point;
 
 public class Multiplayer_Game_View extends View {
 
-	private static final String TAG = "PuzzleView";
+	private static final String TAG = "GameView";
 
 	private static final String VIEW_STATE = "viewState";
 	private static final int ID = 42; 
@@ -53,8 +53,8 @@ public class Multiplayer_Game_View extends View {
 	private static ArrayList<Rect> selRects = new ArrayList<Rect>();
 	private static ArrayList<Point> selDie = new ArrayList<Point>();
 	private static Point lastSelected;
-	private int time = 180;
-	private String timeText = "Time Remaning: 180";
+	//private int time = 180;
+	//private String timeText = "Time Remaning: 180";
 	private boolean gameOver = false;
 
 	public Multiplayer_Game_View(Context context) {
@@ -105,7 +105,7 @@ public class Multiplayer_Game_View extends View {
 		super.onSizeChanged(w, h, oldw, oldh);
 	}
 
-
+/*
 	protected void setTime(int time) {
 		this.time = time;
 		this.timeText = ("Time Remaning: " +this.time);
@@ -115,7 +115,7 @@ public class Multiplayer_Game_View extends View {
 	protected int getTime() {
 		return this.time;
 	}
-
+*/
 	/**
 	 * Sets all the constants for the view.
 	 */
@@ -238,12 +238,14 @@ public class Multiplayer_Game_View extends View {
 		score.setTextAlign(Paint.Align.LEFT);
 
 		//TODO: SCORING
-		canvas.drawText("Score: " + game.score_P1, 0, boardTopSide/2f, score);
-		canvas.drawText("Score: " + game.score_P2, 0, boardTopSide/2f, score);
+		// draw Player 1
+		canvas.drawText(game.player1 + " | " + game.score_P1, 0, boardTopSide/2f, score);
+		
 
-		// draw the time
+		// draw Player 2
 		score.setTextAlign(Paint.Align.RIGHT);
-		canvas.drawText(timeText, boardRightSide+boardLeftSide, boardTopSide/2f, score);
+		canvas.drawText(game.player2 + " | " + game.score_P2, boardRightSide+boardLeftSide, boardTopSide/2f, score);
+		//canvas.drawText(timeText, boardRightSide+boardLeftSide, boardTopSide/2f, score);
 		// Draw the numbers...
 
 		// Define color and style for numbers
