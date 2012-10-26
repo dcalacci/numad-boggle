@@ -62,7 +62,7 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 		sa.getSentRequests(USERNAME, new OnStringArrayListLoadedListener() {
 			public void run(ArrayList<String> list) {
 				adapter = new Multiplayer_Sent_Request_Adaptor(thisActivity, R.layout.multiplayer_sent, list);
-				Log.v(TAG, "Setting List adapter: " +adapter.toString());
+				Log.v(TAG, "Setting Sent Requests List adapter: " +adapter.toString());
 				setListAdapter(adapter);
 			}
 		});

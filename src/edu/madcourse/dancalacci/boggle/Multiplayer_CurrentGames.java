@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import edu.madcourse.dancalacci.R;
 import edu.madcourse.dancalacci.boggle.Multiplayer_HighScores.Multiplayer_HighScores_Adaptor;
+import edu.madcourse.dancalacci.boggle.Multiplayer_Sent_Requests.Multiplayer_Sent_Request_Adaptor;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -50,20 +51,32 @@ public class Multiplayer_CurrentGames extends ListActivity {
 		getListView().setEmptyView(findViewById(android.R.id.empty));
 
 		sa = new ServerAccessor();
-
-		adapter = new Multiplayer_Current_Games_Adaptor(this, R.layout.multiplayer_current_games, this.generate_games_list());
-		Log.d(TAG, "set adapter");
-
-		setListAdapter(adapter);
+		setAsynchronousListAdapter();
 	}
 
 	public void onResume(){
 		super.onResume();
 		getListView().setEmptyView(findViewById(R.id.emptyView));
-		adapter = new Multiplayer_Current_Games_Adaptor(this, R.layout.multiplayer_current_games, sa.getGames(USERNAME));
-		setListAdapter(adapter);
+		setAsynchronousListAdapter();
 	}
 
+	/**
+	 * Sets the listAdapter asynchronously, with information from
+	 * the server.
+	 */
+	private void setAsynchronousListAdapter() {
+		final Multiplayer_CurrentGames thisActivity = this;
+
+		sa.getGames(USERNAME, new OnStringArrayListLoadedListener() {
+			public void run(ArrayList<String> list) {
+				adapter = new Multiplayer_Current_Games_Adaptor(thisActivity, R.layout.multiplayer_current_games, list);
+				Log.v(TAG, "Setting Multiplayer Games List adapter: " +adapter.toString());
+				setListAdapter(adapter);
+			}
+		});
+	}
+	
+	
 	/*
 	 * TODO: Opens game based on user ID Key
 	 * Sets ListItem Click Listener
@@ -75,14 +88,6 @@ public class Multiplayer_CurrentGames extends ListActivity {
 		//super.onListItemClick(l, v, position, id);
 		String selection = l.getItemAtPosition(position).toString();
 		Log.d(TAG, "onListItemClick: " + selection);
-	}
-
-	/* 
-	 * Creates a list of Potential players based on Web Call
-	 */
-	private ArrayList<String> generate_games_list(){
-		Log.d(TAG, "request list: " + sa.getGames(USERNAME).toString());
-		return sa.getGames(USERNAME);
 	}
 
 	public class Multiplayer_Current_Games_Adaptor extends BaseAdapter{

@@ -22,6 +22,10 @@ public class ServerAccessor {
 	private static final String ENTERED_WORDS_PREFIX = "entered_";
 	private static final String SCORES_PREFIX = "scores_";
 	private static final String NUM_TURNS_PREFIX = "numTurns_";
+	private static final String REQUESTS_PREFIX = "req_";
+	private static final String RECEIVED_PREFIX = "rec_";
+	private static final String USERS_KEY = "users";
+	private static final String GAMES_KEY = "games";
 	
 	// Context for doing asyncTask
 	private static Context c;
@@ -124,7 +128,7 @@ public class ServerAccessor {
 	 * @param req  the user to add to users' request list
 	 */
 	private void addRequest(String user, String req) {
-		String key = "req_" + user;
+		String key = REQUESTS_PREFIX + user;
 		ArrayList<String> reqs = this.stringToArrayList(this.get(key));
 		reqs.add(req);
 		String val = this.arrayListToString(reqs);
@@ -138,7 +142,7 @@ public class ServerAccessor {
 	 * @return an ArrayList<String> of all the given users' requests
 	 */
 	private ArrayList<String> getSentRequests(String user) {
-		String key = "req_" + user;
+		String key = REQUESTS_PREFIX + user;
 		ArrayList<String> reqs = this.stringToArrayList(this.get(key));
 		return reqs;
 	}
@@ -161,7 +165,7 @@ public class ServerAccessor {
 		}
 		
 		try {
-			new GetKeyTask().execute("rec_" + user);
+			new GetKeyTask().execute(RECEIVED_PREFIX + user);
 		} catch(Exception e) {
 			Log.e(TAG, "GetKeyTask thread died: " +e);
 		}
@@ -175,7 +179,7 @@ public class ServerAccessor {
 	public void addRequestList(String user, ArrayList<String> reqsToAdd) {
 		ArrayList<String> reqs = this.getSentRequests(user);
 		reqs.addAll(reqsToAdd);
-		String key = "req_" + user;
+		String key = REQUESTS_PREFIX + user;
 		String val = this.arrayListToString(reqs);
 		this.put(key, val);
 	}
@@ -186,7 +190,7 @@ public class ServerAccessor {
 	 * @param req   The user request we're removing
 	 */
 	private void removeRequest(String user, String req) {
-		String key = "req_" + user;
+		String key = REQUESTS_PREFIX + user;
 		ArrayList<String> curReqs = this.getSentRequests(user);
 		System.out.println("getRequests for " +user +"looks like: " +this.arrayListToString(this.getSentRequests(user)));
 		if (curReqs.contains(req)) {
@@ -199,7 +203,7 @@ public class ServerAccessor {
 		
 //		
 //		
-//		String key = "req_" + user;
+//		String key = REQUESTS_PREFIX + user;
 //		ArrayList<String> curReqs = this.getRequests(key);
 //		curReqs.remove(req);
 //		String val = this.arrayListToString(curReqs);
@@ -214,7 +218,7 @@ public class ServerAccessor {
 	 * @param rec   The user to add to users's recieved list
 	 */
 	private void addReceived(String user, String rec) {
-		String key = "rec_" + user;
+		String key = RECEIVED_PREFIX + user;
 		ArrayList<String> recs = this.stringToArrayList(this.get(key));
 		recs.add(rec);
 		String val = this.arrayListToString(recs);
@@ -244,7 +248,7 @@ public class ServerAccessor {
 		}
 		
 		try {
-			new GetReceivedRequestsTask().execute("req_" + user);
+			new GetReceivedRequestsTask().execute(REQUESTS_PREFIX + user);
 		} catch(Exception e) {
 			Log.e(TAG, "GetKeyTask thread died: " +e);
 		}
@@ -258,7 +262,7 @@ public class ServerAccessor {
 	 * @return an ArrayList<String> of all the given users' requests
 	 */
 	private ArrayList<String> getReceivedRequests(String user) {
-		String key = "rec_" + user;
+		String key = RECEIVED_PREFIX + user;
 		ArrayList<String> recs = this.stringToArrayList(this.get(key));
 		return recs;
 	}
@@ -269,7 +273,7 @@ public class ServerAccessor {
 	 * @param recs  The list of requests to add
 	 */
 	public void addReceivedRequests(String user, ArrayList<String> recs) {
-		String key = "rec_" + user;
+		String key = RECEIVED_PREFIX + user;
 		ArrayList<String> curRecs = this.stringToArrayList(this.get(key));
 		curRecs.addAll(recs);
 		String val = this.arrayListToString(curRecs);
@@ -282,7 +286,7 @@ public class ServerAccessor {
 	 * @param rec   The received request we're removing
 	 */
 	private void removeReceivedRequest(String user, String rec) {
-		String key = "rec_" + user;
+		String key = RECEIVED_PREFIX + user;
 		ArrayList<String> curRecs = this.getReceivedRequests(user);
 		if (curRecs.remove(rec)) {
 			System.out.println(rec + " was found in curRecs");
@@ -298,7 +302,7 @@ public class ServerAccessor {
 	 * @param pass  The given password
 	 */
 	public boolean login(String user, String pass) {
-		String usersKey = "users";
+		String usersKey = USERS_KEY;
 		String passKey = "pass_" + user;
 
 		String passVal = this.get(passKey);
@@ -320,7 +324,7 @@ public class ServerAccessor {
 	 * @param pass  The password for the new username
 	 */
 	public void register(String user, String pass) {
-		String usersKey = "users";
+		String usersKey = USERS_KEY;
 		String passKey = "pass_" + user;
 
 		String passVal = pass;
@@ -336,7 +340,7 @@ public class ServerAccessor {
 	 * @return An ArrayList representation of users
 	 */
 	public ArrayList<String> getUserList() {
-		String usersKey = "users";
+		String usersKey = USERS_KEY;
 		return this.stringToArrayList(get(usersKey));
 	}
 	
@@ -362,7 +366,7 @@ public class ServerAccessor {
 	 * @return true if the username is already registered
 	 */
 	public boolean alreadyRegistered(String user) {
-		String usersKey = "users";
+		String usersKey = USERS_KEY;
 		ArrayList<String> users = stringToArrayList(this.get(usersKey));
 		return users.contains(user);
 	}
@@ -392,7 +396,7 @@ public class ServerAccessor {
 	 * @return        True if a game exists, false otherwise
 	 */
 	public boolean doesGameExist(String user1, String user2) {
-		String gameKey = "games";
+		String gameKey = GAMES_KEY;
 		// get the unique identifier for these two users
 		String thisGame = this.getUsersKey(user1, user2);
 		ArrayList<String> games = this.stringToArrayList(this.get(gameKey));
@@ -405,7 +409,7 @@ public class ServerAccessor {
 	 * @param user2   The second user
 	 */
 	public void addGame(String user1, String user2) {
-		String gameKey = "games";
+		String gameKey = GAMES_KEY;
 		String usersKey = this.getUsersKey(user1, user2);
 		ArrayList<String> games = this.stringToArrayList(this.get(gameKey));
 		games.add(usersKey);
@@ -414,7 +418,7 @@ public class ServerAccessor {
 	}
 	
 	public void removeGame(String user1, String user2) {
-		String gameKey = "games";
+		String gameKey = GAMES_KEY;
 		String usersKey = this.getUsersKey(user1, user2);
 		ArrayList<String> games = this.stringToArrayList(this.get(gameKey));
 		games.remove(usersKey);
@@ -427,9 +431,46 @@ public class ServerAccessor {
 	 * @param user  The user who we are concerned with
 	 * @return      An arraylist that contains every user that user is in a game with
 	 */
-	public ArrayList<String> getGames(String user) {
-		ArrayList<String> serverGames = this.stringToArrayList(this.get("games"));
-		ArrayList<String> serverUsers = this.stringToArrayList(this.get("users"));
+	public ArrayList<String> getGames(String user, final OnStringArrayListLoadedListener arrayListListener) {
+		
+		final ServerAccessor thisSA = this;
+		Log.d(TAG, "About to create an AsyncTask GetKeyTask");
+		class GetGamesTask extends AsyncTask<String, Integer, ArrayList<String>> {
+			
+			protected ArrayList<String> doInBackground(String... key) {
+				Log.d(TAG, "in doInBackground for GetGamestask");
+				try {
+					Thread.sleep(3000);
+				} catch(Exception e) {
+					
+				}
+				String user = key[0];
+				ArrayList<String> serverGames = thisSA.stringToArrayList(thisSA.get(GAMES_KEY));
+				ArrayList<String> serverUsers = thisSA.stringToArrayList(thisSA.get(USERS_KEY));
+				ArrayList<String> games = new ArrayList<String>();
+				for (String user2 : serverUsers) {
+					if (serverGames.contains(thisSA.getUsersKey(user, user2))) {
+						games.add(user2);
+					}
+				}
+				return games;
+			}
+			
+			protected void onPostExecute(ArrayList<String> result) {
+				Log.d(TAG, "in onPostExecute for GetGamesTask");
+				arrayListListener.run(result);
+			}
+		}
+		
+		try {
+			new GetGamesTask().execute(user);
+		} catch(Exception e) {
+			Log.e(TAG, "GetGames thread died: " +e);
+		}
+		
+		
+		ArrayList<String> serverGames = this.stringToArrayList(this.get(GAMES_KEY));
+		ArrayList<String> serverUsers = this.stringToArrayList(this.get(USERS_KEY));
 		ArrayList<String> games = new ArrayList<String>();
 		for (String user2 : serverUsers) {
 			if (serverGames.contains(this.getUsersKey(user, user2))) {
