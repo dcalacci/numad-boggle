@@ -478,6 +478,10 @@ public class ServerAccessor {
 						games.add(user2);
 					}
 				}
+				if (games.isEmpty()) {
+					Log.d(TAG, "games is empty! populating with error message");
+					games.add("ERROR");
+				}
 				Log.d(TAG, "returning: " +games.toString()+"for current games"); 
 				return games;
 			}

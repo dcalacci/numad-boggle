@@ -122,16 +122,26 @@ public class Multiplayer_CurrentGames extends ListActivity {
 		public boolean isEmptyList(){
 			return mGames.contains("");
 		}
+		
+		public boolean hadError() {
+			return mGames.get(0).startsWith("ERROR");
+		}
 
 		public View getView(int position, View view, ViewGroup parent) {
 			boolean isEmpty = isEmptyList();
+			boolean hadError = hadError();
+			Log.d(TAG, "Empty ArrayList "+ isEmpty);
+			Log.d(TAG, "Had error " +hadError);
+			
 			Log.d(TAG, "current games list: " + mGames.toString());
 			if(view == null ){
 				getListView().setEmptyView(findViewById(android.R.id.empty));
-				if(!isEmpty){
+				if(!isEmpty && !hadError){
+					Log.d(TAG, "button is there");
 					LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 					view = inflater.inflate(R.layout.multiplayer_current_games_rows, parent, false);
 				}else{
+					Log.d(TAG, "button isn't there");
 					LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 					view = inflater.inflate(R.layout.multiplayer_current_games_rows_empty, parent, false);
 				}
@@ -139,9 +149,14 @@ public class Multiplayer_CurrentGames extends ListActivity {
 
 			TextView player1 = (TextView) 
 					view.findViewById(R.id.multiplayer_current_games_textView_player1);
-			if(!isEmpty){
+			if(!isEmpty && !hadError){
+				Log.d(TAG, "no error, not empty");
 				player1.setText(USERNAME);
+			} else if (hadError) {
+				Log.d(TAG, "error.  displaying couldnt retrieve...");
+				player1.setText("Couldn't retrieve data...");
 			}else{
+				Log.d(TAG, "empty!");
 				player1.setText("No Current Games Available");
 			}
 
