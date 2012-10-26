@@ -165,7 +165,7 @@ public class ServerAccessor {
 		}
 		
 		try {
-			new GetKeyTask().execute(RECEIVED_PREFIX + user);
+			new GetKeyTask().execute(REQUESTS_PREFIX + user);
 		} catch(Exception e) {
 			Log.e(TAG, "GetKeyTask thread died: " +e);
 		}
@@ -248,7 +248,7 @@ public class ServerAccessor {
 		}
 		
 		try {
-			new GetReceivedRequestsTask().execute(REQUESTS_PREFIX + user);
+			new GetReceivedRequestsTask().execute(RECEIVED_PREFIX + user);
 		} catch(Exception e) {
 			Log.e(TAG, "GetKeyTask thread died: " +e);
 		}
