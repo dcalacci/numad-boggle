@@ -64,22 +64,7 @@ public class ServerAccessor {
 	 * @param key    the key associated with the value to get
 	 */
 	public String get(String key) {
-		
-		Log.v(TAG, "starting a GetKeyTask");
-		class GetKeyTask extends AsyncTask<String, Integer, String> {
-			
-			protected String doInBackground(String... key) {
-				return KeyValueAPI.get(TEAM_NAME, PASSWORD, key[0]);
-			}
-		}
-		
-		try {
-			Log.v(TAG, "executing getKeyTask with '" +key +"'");
-			return new GetKeyTask().execute(key).get();
-		} catch(Exception e) {
-			Log.e(TAG, "GetKeyTask thread died: " +e);
-			return "";
-		}
+		return KeyValueAPI.get(TEAM_NAME, PASSWORD, key);
 	}
 
 	/**
@@ -151,10 +136,38 @@ public class ServerAccessor {
 	 * @param user the user whose requests we're getting
 	 * @return an ArrayList<String> of all the given users' requests
 	 */
-	public ArrayList<String> getSentRequests(String user) {
+	private ArrayList<String> retrieveSentRequests(String user) {
 		String key = "req_" + user;
 		ArrayList<String> reqs = this.stringToArrayList(this.get(key));
 		return reqs;
+	}
+	
+	public void getSentRequests(String user, final OnStringArrayListLoadedListener l) {
+		
+		final ServerAccessor thisSA = this;
+		Log.d(TAG, "About to create an AsyncTask GetKeyTask");
+		class GetKeyTask extends AsyncTask<String, Integer, ArrayList<String>> {
+			
+			protected ArrayList<String> doInBackground(String... key) {
+				Log.d(TAG, "in doInBackground for getSentRequests");
+				return stringToArrayList(thisSA.get(key[0]));
+			}
+			
+			protected void onPostExecute(ArrayList<String> result) {
+				Log.d(TAG, "in onPostExecute for getSentRequests");
+				l.run(result);
+			}
+		}
+		
+		try {
+			new GetKeyTask().execute("req_" + user);
+		} catch(Exception e) {
+			Log.e(TAG, "GetKeyTask thread died: " +e);
+		}
+		
+//		String key = "req_" + user;
+//		ArrayList<String> reqs = this.stringToArrayList(this.get(key));
+//		l.run(reqs);
 	}
 
 	/**
@@ -163,7 +176,7 @@ public class ServerAccessor {
 	 * @param reqsToAdd The list of Strings that represents all the requests to add
 	 */
 	public void addRequestList(String user, ArrayList<String> reqsToAdd) {
-		ArrayList<String> reqs = this.getSentRequests(user);
+		ArrayList<String> reqs = this.retrieveSentRequests(user);
 		reqs.addAll(reqsToAdd);
 		String key = "req_" + user;
 		String val = this.arrayListToString(reqs);
@@ -177,8 +190,8 @@ public class ServerAccessor {
 	 */
 	private void removeRequest(String user, String req) {
 		String key = "req_" + user;
-		ArrayList<String> curReqs = this.getSentRequests(user);
-		System.out.println("getRequests for " +user +"looks like: " +this.arrayListToString(this.getSentRequests(user)));
+		ArrayList<String> curReqs = this.retrieveSentRequests(user);
+		System.out.println("getRequests for " +user +"looks like: " +this.arrayListToString(this.retrieveSentRequests(user)));
 		if (curReqs.contains(req)) {
 			curReqs.remove(req);
 			System.out.println("removing " +req +" from " +user+"'s sent request list");
@@ -398,7 +411,7 @@ public class ServerAccessor {
 		return games;
 	}
 	// only called when a previous game doesn't exist
-	public void initializeNewGame(String creator, String opponent, String board) {
+	private void initializeNewGame(String creator, String opponent, String board) {
 		String userskey = this.getUsersKey(creator, opponent);
 
 		// add game to game list

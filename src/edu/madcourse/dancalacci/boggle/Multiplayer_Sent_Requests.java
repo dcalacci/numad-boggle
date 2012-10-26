@@ -47,33 +47,38 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 		setContentView(R.layout.multiplayer_sent);
 
 		getListView().setEmptyView(findViewById(android.R.id.empty));
-
 		sa = new ServerAccessor();
-		adapter = new Multiplayer_Sent_Request_Adaptor(this, R.layout.multiplayer_sent, this.generate_sent_request_list());
-		Log.d(TAG, "set adapter");
-		/*
-		adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1,
-				this.generate_request_list());
-		 */
-		setListAdapter(adapter);
+		
+		this.setAsynchronousListAdapter(); // populates the adapter with the sent requests
+	}
+	
+	/**
+	 * Sets the listAdapter asynchronously, with information from
+	 * the server.
+	 */
+	private void setAsynchronousListAdapter() {
+		final Multiplayer_Sent_Requests thisActivity = this;
+		
+		sa.getSentRequests(USERNAME,
+				new OnStringArrayListLoadedListener() {
+					
+					public void run(ArrayList<String> list) {
+						adapter = new Multiplayer_Sent_Request_Adaptor(thisActivity, R.layout.multiplayer_sent, list);
+						Log.v(TAG, "Setting List adapter: " +adapter.toString());
+						setListAdapter(adapter);
+					}
+				});
 	}
 
 	public void onResume(){
 		super.onResume();		
 		getListView().setEmptyView(findViewById(R.id.emptyView));
-		adapter = new Multiplayer_Sent_Request_Adaptor(this, R.layout.multiplayer_sent, sa.getSentRequests(USERNAME));
-		setListAdapter(adapter);
+		
+		final Multiplayer_Sent_Requests thisActivity = this;
+		
+		this.setAsynchronousListAdapter();
 	}
 
-	/* 
-	 * Creates a list of Potential players based on Web Call
-	 */
-	private ArrayList<String> generate_sent_request_list(){
-		Log.d(TAG, "request list username: " + USERNAME);
-		Log.d(TAG, "request list: " + sa.getSentRequests(USERNAME).toString());
-		return sa.getSentRequests(USERNAME);
-	}
 
 
 	public class Multiplayer_Sent_Request_Adaptor extends BaseAdapter{
@@ -171,7 +176,7 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 					Log.d(TAG, "Delete Button Clicked");
 					
 					sa.removeSentRequest(USERNAME, row);
-					Log.d(TAG, "updated list after delete: "+sa.getSentRequests(USERNAME).toString());
+					//Log.d(TAG, "updated list after delete: "+sa.getSentRequests(USERNAME).toString());
 		
 					deleteRow(row);
 					notifyDataSetChanged();
