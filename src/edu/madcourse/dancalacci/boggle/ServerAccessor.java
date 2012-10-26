@@ -298,7 +298,7 @@ public class ServerAccessor {
 	 * @param user  The user whose received list we're editing
 	 * @param recs  The list of requests to add
 	 */
-	public void addReceivedRequests(String user, ArrayList<String> recs) {
+	private void addReceivedRequests(String user, ArrayList<String> recs) {
 		String key = RECEIVED_PREFIX + user;
 		ArrayList<String> curRecs = this.stringToArrayList(this.get(key));
 		curRecs.addAll(recs);
@@ -365,9 +365,31 @@ public class ServerAccessor {
 	 * Gets the list of users
 	 * @return An ArrayList representation of users
 	 */
-	public ArrayList<String> getUserList() {
-		String usersKey = USERS_KEY;
-		return this.stringToArrayList(get(usersKey));
+	public void getUserList(final OnStringArrayListLoadedListener l) {
+		final ServerAccessor thisSA = this;
+		class GetUserListTask extends AsyncTask<String, Integer, ArrayList<String>> {
+			
+			protected ArrayList<String> doInBackground(String... keys) {
+				Log.d(TAG, "In doInBackground for getUserList");
+				if (!thisSA.canConnect()) {
+					return new ArrayList<String>() {{
+						add("ERROR");
+					}};
+				}
+				String usersKey = USERS_KEY;
+				return thisSA.stringToArrayList(thisSA.get(usersKey));
+			}
+			
+			protected void onPostExecute(ArrayList<String> result) {
+				Log.d(TAG, "in onPostExecute in getUserList");
+				l.run(result);
+			}
+		}
+			try {
+				new GetUserListTask().execute();
+			} catch(Exception e) {
+				Log.e(TAG, "GetGames thread died: " +e);
+			}
 	}
 
 	/**
@@ -465,11 +487,6 @@ public class ServerAccessor {
 
 			protected ArrayList<String> doInBackground(String... key) {
 				Log.d(TAG, "in doInBackground for GetGamestask");
-				try {
-					Thread.sleep(3000);
-				} catch(Exception e) {
-					
-				}
 				String user = key[0];
 				ArrayList<String> serverGames = thisSA.stringToArrayList(thisSA.get(GAMES_KEY));
 				ArrayList<String> serverUsers = thisSA.stringToArrayList(thisSA.get(USERS_KEY));
@@ -478,11 +495,21 @@ public class ServerAccessor {
 				// itereates through the user list on the server, if the list of games on
 				// the server contains a game with this user and a user in that list, add
 				// that user to the list of current games.
+				
+				//TODO
+				// if serverUsers is empty for some reason, populat with error SEE BELOW.
+				
 				for (String user2 : serverUsers) {
 					if (serverGames.contains(thisSA.getUsersKey(user, user2))) {
 						games.add(user2);
 					}
 				}
+				//TODO
+				// instead, don't add the error message.  in the method that gets the games,
+				// you should instead check:
+				// if empty - it hasn't been initialized or there are no games.
+				// if error - it couldn't get the stuff from the server.
+				// otherwise, it's fine.
 				if (games.isEmpty()) {
 					Log.d(TAG, "games is empty! populating with error message");
 					games.add("ERROR");

@@ -29,7 +29,7 @@ public class Multiplayer_New_Request_Form extends ListActivity{
 	private String USERNAME;
 	private String selectedUser = null;
 	private ArrayList<String> mUserList = new ArrayList<String>();
-	//Multiplayer_Send_Requests_Form_Adaptor adapter;
+	ArrayAdapter<String> adapter;
 
 	public void setUsername(){
 		SharedPreferences pref = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE);
@@ -99,9 +99,23 @@ public class Multiplayer_New_Request_Form extends ListActivity{
 		sa = new ServerAccessor();	
 
 		// Creating an array adapter for listView
-		mUserList = this.generate_user_list();
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, mUserList);
-		setListAdapter(adapter);
+	//	mUserList = this.generate_user_list();
+		
+		final Multiplayer_New_Request_Form thisActivity = this;
+		sa.getUserList(new OnStringArrayListLoadedListener() {
+			
+			public void run(ArrayList<String> list) {
+				if (list.get(0).startsWith("ERROR")) {
+					Toast.makeText(getBaseContext(), 
+							"Cannot access the user list.", 
+							Toast.LENGTH_SHORT).show();
+					finish();
+				} 
+				list.remove(USERNAME);
+				adapter = new ArrayAdapter<String>(thisActivity, android.R.layout.simple_list_item_single_choice, list);
+				setListAdapter(adapter);
+			}
+		});
 
 		// Defining the item click listener for listView
 		OnItemClickListener itemClickListener = new OnItemClickListener() {
@@ -116,16 +130,6 @@ public class Multiplayer_New_Request_Form extends ListActivity{
 		getListView().setOnItemClickListener(itemClickListener);
 
 
-	}
-
-	/* 
-	 * Creates a list of Potential players based on Web Call
-	 */
-	private ArrayList<String> generate_user_list(){
-		Log.d(TAG, "request list: " + sa.getUserList().toString());
-		ArrayList<String> temp = sa.getUserList();
-		temp.remove(USERNAME);
-		return temp;
 	}
 
 	public void onMultiplayerRequestsOkButtonClicked(View v) {
