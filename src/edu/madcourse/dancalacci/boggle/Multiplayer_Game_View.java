@@ -141,7 +141,7 @@ public class Multiplayer_Game_View extends View {
 		// screen width:
 		
 		boardLeftSide = dpWidth / 8f;
-		boardRightSide = boardLeftSide * 7f;
+		boardRightSide = boardLeftSide * 11f;
 		
 		// and the board is a square, so we want the other values to be pretty
 		// much the same:
@@ -156,7 +156,7 @@ public class Multiplayer_Game_View extends View {
 		Log.d(TAG, "boardTopSide in dp: " + boardTopSide);
 		Log.d(TAG, "boardBottomSide in dp: " + boardBottomSide);
 		
-		boardWidth = boardRightSide - boardLeftSide; 	// the width of the board in pixels
+		boardWidth  = boardRightSide - boardLeftSide; 	// the width of the board in pixels
 		boardHeight = boardBottomSide - boardTopSide;	// the height of the board in pixels  
 
 		// the width of each die

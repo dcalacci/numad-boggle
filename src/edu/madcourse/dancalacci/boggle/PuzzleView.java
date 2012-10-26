@@ -141,7 +141,7 @@ public class PuzzleView extends View {
 		// screen width:
 		
 		boardLeftSide = dpWidth / 8f;
-		boardRightSide = boardLeftSide * 7f;
+		boardRightSide = boardLeftSide * 11f;
 		
 		// and the board is a square, so we want the other values to be pretty
 		// much the same:
