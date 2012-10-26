@@ -439,11 +439,6 @@ public class ServerAccessor {
 			
 			protected ArrayList<String> doInBackground(String... key) {
 				Log.d(TAG, "in doInBackground for GetGamestask");
-				try {
-					Thread.sleep(3000);
-				} catch(Exception e) {
-					
-				}
 				String user = key[0];
 				ArrayList<String> serverGames = thisSA.stringToArrayList(thisSA.get(GAMES_KEY));
 				ArrayList<String> serverUsers = thisSA.stringToArrayList(thisSA.get(USERS_KEY));
@@ -480,7 +475,6 @@ public class ServerAccessor {
 		return games;
 	}
 
-	
 	// only called when a previous game doesn't exist
 	private void initializeNewGame(String creator, String opponent, String board) {
 		String userskey = this.getUsersKey(creator, opponent);
@@ -520,9 +514,42 @@ public class ServerAccessor {
 	 * @param user1 The sender of the request
 	 * @param user2 The receiver of the request
 	 */
-	public void sendRequest(String user1, String user2) {
-		this.addRequest(user1, user2);
-		this.addReceived(user2, user1);
+	public void sendRequest(String user1, String user2, final OnBooleanReceivedListener booleanListener) {
+		
+		final ServerAccessor thisSA = this;
+		Log.d(TAG, "About to create an AsyncTask sendRequestTask");
+		class sendRequestTask extends AsyncTask<String, Integer, Boolean> {
+			
+			protected Boolean doInBackground(String... key) {
+				Log.d(TAG, "in doInBackground for sendRequestTask");
+				try {
+					Thread.sleep(3000);
+				} catch(Exception e) {
+					
+				}
+				String user1 = key[0];
+				String user2 = key[1];
+				
+				try {
+					thisSA.addRequest(user1, user2);
+					thisSA.addReceived(user2, user1);
+				} catch(Exception e) {
+					return false;
+				}
+				return true;
+			}
+			
+			protected void onPostExecute(Boolean result) {
+				Log.d(TAG, "in onPostExecute for sendRequestTask");
+				booleanListener.run(result);
+			}
+		}
+		
+		try {
+			new sendRequestTask().execute(user1, user2);
+		} catch(Exception e) {
+			Log.e(TAG, "sendRequestTask thread died: " +e);
+		}
 	}
 	
 	/**
