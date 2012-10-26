@@ -62,7 +62,7 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 		sa.getSentRequests(USERNAME, new OnStringArrayListLoadedListener() {
 			public void run(ArrayList<String> list) {
 				adapter = new Multiplayer_Sent_Request_Adaptor(thisActivity, R.layout.multiplayer_sent, list);
-				Log.v(TAG, "Setting Sent Requests List adapter: " +adapter.toString());
+				Log.v(TAG, "Setting Sent Requests List adapter: " +list.toString());
 				setListAdapter(adapter);
 			}
 		});
@@ -87,6 +87,12 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 		public Multiplayer_Sent_Request_Adaptor(Context c, int rowResID, ArrayList<String> sentRequestsList){
 			this.rowResID = rowResID;
 			this.mContext = c;
+			
+			Log.d(TAG, "board request is " +sentRequestsList.toString());
+			Log.d(TAG, "first of the request list is " +sentRequestsList.get(0));
+			Log.d(TAG, "does it start with error? " +sentRequestsList.get(0).startsWith("ERROR"));
+			
+			
 			this.mSentRequests = sentRequestsList;
 		}
 
@@ -111,18 +117,26 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 		public boolean isEmptyList(){
 			return mSentRequests.contains("");
 		}
+		
+		public boolean hadError() {
+			return mSentRequests.get(0).startsWith("ERROR");
+		}
 
 		public View getView(int position, View view, ViewGroup parent) {
 			final String row = this.mSentRequests.get(position);
 			boolean isEmpty = isEmptyList();
+			boolean hadError = hadError();
 			Log.d(TAG, "Empty ArrayList "+ isEmpty);
+			Log.d(TAG, "Had error " +hadError);
 
 			if(view == null ){
 				getListView().setEmptyView(findViewById(android.R.id.empty));
-				if(!isEmpty){
+				if(!isEmpty && !hadError){
+					Log.d(TAG, "button is there");
 					LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 					view = inflater.inflate(R.layout.multiplayer_sent_rows, parent, false);
 				}else{
+					Log.d(TAG, "button isn't there");
 					LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 					view = inflater.inflate(R.layout.multiplayer_sent_rows_empty, parent, false);
 				}
@@ -130,9 +144,12 @@ public class Multiplayer_Sent_Requests extends ListActivity{
 
 			TextView username = (TextView) 
 					view.findViewById(R.id.multiplayer_sent_requests_textView_content);
-			if(!isEmpty){
+			if(!isEmpty && !hadError){
 				username.setText(mSentRequests.get(position));
-			}else{
+			} else if (hadError) {
+				username.setText("Couldn't retrieve data...");
+			}
+			else{
 				username.setText("No Requests Sent");
 			}
 

@@ -168,11 +168,12 @@ public class ServerAccessor {
 
 		final ServerAccessor thisSA = this;
 		Log.d(TAG, "About to create an AsyncTask GetKeyTask");
-		class GetKeyTask extends AsyncTask<String, Integer, ArrayList<String>> {
+		class GetSentRequestsTask extends AsyncTask<String, Integer, ArrayList<String>> {
 
 			protected ArrayList<String> doInBackground(String... key) {
 				Log.d(TAG, "in doInBackground for getSentRequests");
-				return stringToArrayList(thisSA.get(key[0]));
+				return thisSA.getSentRequests(key[0]);
+				//return stringToArrayList(thisSA.get(key[0]));
 			}
 
 			protected void onPostExecute(ArrayList<String> result) {
@@ -182,7 +183,7 @@ public class ServerAccessor {
 		}
 
 		try {
-			new GetKeyTask().execute(REQUESTS_PREFIX + user);
+			new GetSentRequestsTask().execute(user);
 		} catch(Exception e) {
 			Log.e(TAG, "GetKeyTask thread died: " +e);
 		}
@@ -459,7 +460,7 @@ public class ServerAccessor {
 	public ArrayList<String> getGames(String user, final OnStringArrayListLoadedListener arrayListListener) {
 
 		final ServerAccessor thisSA = this;
-		Log.d(TAG, "About to create an AsyncTask GetKeyTask");
+		Log.d(TAG, "About to create an AsyncTask GetGamesTask");
 		class GetGamesTask extends AsyncTask<String, Integer, ArrayList<String>> {
 
 			protected ArrayList<String> doInBackground(String... key) {
@@ -468,11 +469,16 @@ public class ServerAccessor {
 				ArrayList<String> serverGames = thisSA.stringToArrayList(thisSA.get(GAMES_KEY));
 				ArrayList<String> serverUsers = thisSA.stringToArrayList(thisSA.get(USERS_KEY));
 				ArrayList<String> games = new ArrayList<String>();
+				
+				// itereates through the user list on the server, if the list of games on
+				// the server contains a game with this user and a user in that list, add
+				// that user to the list of current games.
 				for (String user2 : serverUsers) {
 					if (serverGames.contains(thisSA.getUsersKey(user, user2))) {
 						games.add(user2);
 					}
 				}
+				Log.d(TAG, "returning: " +games.toString()+"for current games"); 
 				return games;
 			}
 

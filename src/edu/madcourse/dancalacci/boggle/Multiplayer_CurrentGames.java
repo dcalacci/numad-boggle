@@ -70,7 +70,7 @@ public class Multiplayer_CurrentGames extends ListActivity {
 		sa.getGames(USERNAME, new OnStringArrayListLoadedListener() {
 			public void run(ArrayList<String> list) {
 				adapter = new Multiplayer_Current_Games_Adaptor(thisActivity, R.layout.multiplayer_current_games, list);
-				Log.v(TAG, "Setting Multiplayer Games List adapter: " +adapter.toString());
+				Log.v(TAG, "Setting Multiplayer Games List adapter: " +list.toString());
 				setListAdapter(adapter);
 			}
 		});
