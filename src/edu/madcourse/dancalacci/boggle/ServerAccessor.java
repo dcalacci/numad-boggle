@@ -222,18 +222,18 @@ public class ServerAccessor {
 	}
 
 	/**
-	 * Returns a list of the given users' received requests
+	 * Returns a list of the given users' received requests...asynchronously
 	 * @param user  The user whose requests we're returning
+	 * @param arrayListListener The listener whose run(ArrayList<String>) function we're gonna call at the end
 	 * @return    The list of users' received requests 
 	 */
-	public ArrayList<String> getReceivedRequests(String user, final OnStringArrayListLoadedListener arrayListListener) {
+	public void getReceivedRequests(String user, final OnStringArrayListLoadedListener arrayListListener) {
 		
 		final ServerAccessor thisSA = this;
 		Log.d(TAG, "About to create an AsyncTask GetKeyTask");
 		class GetReceivedRequestsTask extends AsyncTask<String, Integer, ArrayList<String>> {
 			
 			protected ArrayList<String> doInBackground(String... key) {
-				Log.d(TAG, "in doInBackground for getSentRequests");
 				return stringToArrayList(thisSA.get(key[0]));
 			}
 			
@@ -248,9 +248,6 @@ public class ServerAccessor {
 		} catch(Exception e) {
 			Log.e(TAG, "GetKeyTask thread died: " +e);
 		}
-		String key = "rec_" + user;
-		ArrayList<String> recs = this.stringToArrayList(this.get(key));
-		return recs;
 	}
 
 	
@@ -441,6 +438,8 @@ public class ServerAccessor {
 		}
 		return games;
 	}
+
+	
 	// only called when a previous game doesn't exist
 	private void initializeNewGame(String creator, String opponent, String board) {
 		String userskey = this.getUsersKey(creator, opponent);
