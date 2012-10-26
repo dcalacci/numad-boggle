@@ -506,8 +506,9 @@ public class ServerAccessor {
 		// create the scores element on the server
 		// score is a string like "user1|50,user2|44"
 		String scoresKey = SCORES_PREFIX + userskey;
-		this.put(scoresKey, creator + "|0," + opponent + "|0");
-		
+		String scoresContent = creator + "|0," + opponent + "|0";
+		this.put(scoresKey, scoresContent);
+		Log.d(TAG, "scores Content: "+ this.get(scoresKey));
 		System.out.println(scoresKey + " is now: " + creator + "|0," + opponent + "|0");
 
 		// create the number of turns element on the server
@@ -609,7 +610,8 @@ public class ServerAccessor {
 
 	public GameWrapper getGame(String user1, String user2) {
 		String userskey = this.getUsersKey(user1, user2);
-
+		Log.d(TAG, "getBoard userKey: "+ userskey);
+		
 		String turnKey = TURN_PREFIX + userskey;
 		String currentTurn = 
 				this.get(turnKey);
@@ -623,8 +625,10 @@ public class ServerAccessor {
 				this.stringToArrayList(this.get(enteredWordsKey));
 
 		String scoresKey = SCORES_PREFIX + userskey;
+		Log.d(TAG, "getBoard scoresKey: "+ scoresKey);
+		String gameScores = this.get(scoresKey);
 		Hashtable<String, Integer> scores = this.scoresStringToHashtable(
-				this.get(scoresKey));
+				gameScores);
 
 		String numTurnsKey = NUM_TURNS_PREFIX + userskey;
 		int numTurns = Integer.parseInt(this.get(numTurnsKey));
@@ -646,6 +650,7 @@ public class ServerAccessor {
 	private Hashtable<String, Integer> scoresStringToHashtable(String scores) {
 		
 		//TODO: THIS AIN'T WORKIN'
+		Log.d(TAG, "scoresToString: "+ scores);
 		ArrayList<String> parts = new ArrayList<String>(
 				Arrays.asList(scores.split(",")));
 		System.out.println("Parts is: "+ parts.toString());

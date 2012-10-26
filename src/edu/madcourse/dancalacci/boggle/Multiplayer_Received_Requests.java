@@ -181,12 +181,17 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 				case R.id.multiplayer_received_accept_button:
 					Log.d(TAG, "Accept Button Clicked");
 					sa.addGame(USERNAME, row);
-
+					sa.createNewGame(USERNAME, row);
+				
 					/* Removes Player2 from Player1 list */
 					sa.removeSentRequest(USERNAME, row);
 
 					/* Removes Player1 from Player2 List */
 					sa.removeSentRequest(row, USERNAME);
+					
+					Intent i = new Intent(mContext, Multiplayer_Game.class);
+					i.putExtra("opponent", row);
+					//sa.generateBoard();
 
 					deleteRow(row);
 					notifyDataSetChanged();
@@ -194,11 +199,15 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 					//Start new game activity
 					//TODO: Update Request List & Create new game pair -> Server Call
 					//TODO: Send user2 name to activity
-					Intent i = new Intent(mContext, Multiplayer_Game.class);
-					sa.sendRequest("user1", "user2");
-					// should be row but...  i.putExtra("opponent", row);
-					i.putExtra("opponent", "user2");
 					startActivity(i);
+					
+					
+					
+					//Intent i = new Intent(mContext, Multiplayer_Game.class);
+					//sa.sendRequest("user1", "user2");
+					// should be row but...  i.putExtra("opponent", row);
+					//i.putExtra("opponent", "user2");
+					
 
 					Log.d(TAG, "Accept Button Clicked Delete Row");
 					break;

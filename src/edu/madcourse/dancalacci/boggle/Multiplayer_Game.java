@@ -36,6 +36,7 @@ public class Multiplayer_Game extends Activity {
 	// tag for this activity
 	private static final 	String 	TAG 			= "Multiplayer_Game";
 	public static final 	String 	MULTI_PREF 		= "edu.madcourse.dancalacci.multiplayer";
+	protected static final 	String 	NO_GAME			= "no_game";
 	protected static final 	String 	PREF_IWORD 		= "iword";
 	protected static final 	String 	PREF_WORDLIST 	= "wordlist";
 	private static final 	String 	PREF_SELECTED 	= "selected";
@@ -44,7 +45,10 @@ public class Multiplayer_Game extends Activity {
 	private 	ServerAccessor 		sa 			= new ServerAccessor();
 	private 	ArrayList<Boolean> 	selected 	= new ArrayList<Boolean>();
 	protected 	StringBuffer 		iWord 		= new StringBuffer();
-
+	protected	int					score_P1	= 0;
+	protected	int					score_P2	= 0;
+	protected	String				player1;					// Player1 Name
+	protected	String				player2;					// Player2 Name
 	// view for this puzzle.
 	private 	Multiplayer_Game_View 	gameView;
 	private 	GameWrapper 			game;
@@ -62,7 +66,7 @@ public class Multiplayer_Game extends Activity {
 		// set the layout, start the view.
 		username = getSharedPreferences(MULTI_PREF, MODE_PRIVATE).getString(username, "guest");
 		
-		sa.removeGame(username, opponent);
+		this.game = sa.getGame(username, opponent);
 
 		// if the game exists, get it.  if not, make a new one.
 		if (sa.doesGameExist(username, opponent)) {
@@ -75,7 +79,7 @@ public class Multiplayer_Game extends Activity {
 		}
 
 		gameView = new Multiplayer_Game_View(this);
-		
+
 		setContentView(R.layout.multiplayer_game);
 		FrameLayout boardFrame = (FrameLayout)findViewById(R.id.multiplayer_game_tiles);
 		boardFrame.addView(gameView);
@@ -105,7 +109,7 @@ public class Multiplayer_Game extends Activity {
 	}
 
 	protected Boolean isWord(String word) {
-		if (word.isEmpty()) {
+		if (word.length() == 0) {
 			return false;
 		}
 		int length = word.length();
@@ -253,6 +257,19 @@ public class Multiplayer_Game extends Activity {
 	public void onClearWordButtonClicked(View v) {
 		Sounds.playClear(this);
 		this.clearSelectedTiles();
+	}
+	
+	/**
+	 * Sets Game Over specifics
+	 */
+	public void onGameOver(){
+		SharedPreferences pref = getSharedPreferences(MULTI_PREF, MODE_PRIVATE);
+		SharedPreferences.Editor edit = pref.edit();
+		Log.d(TAG, "Clear Shared Prefs");
+		edit.clear();
+		edit.putBoolean(NO_GAME, true);
+		edit.commit();
+		finish();
 	}
 
 	/**

@@ -49,7 +49,7 @@ public class Multiplayer_Game_View extends View {
 	private int selX;       // X index of selection
 	private int selY;       // Y index of selection
 
-	private final Game game;
+	private final Multiplayer_Game game;
 	private static ArrayList<Rect> selRects = new ArrayList<Rect>();
 	private static ArrayList<Point> selDie = new ArrayList<Point>();
 	private static Point lastSelected;
@@ -60,7 +60,7 @@ public class Multiplayer_Game_View extends View {
 	public Multiplayer_Game_View(Context context) {
 
 		super(context);
-		this.game = (Game) context;
+		this.game = (Multiplayer_Game) context;
 		setFocusable(true);
 		setFocusableInTouchMode(true);
 
@@ -237,7 +237,9 @@ public class Multiplayer_Game_View extends View {
 		score.setTextSize(boardTopSide * .4f);
 		score.setTextAlign(Paint.Align.LEFT);
 
-		canvas.drawText("Score: " + game.score, 0, boardTopSide/2f, score);
+		//TODO: SCORING
+		canvas.drawText("Score: " + game.score_P1, 0, boardTopSide/2f, score);
+		canvas.drawText("Score: " + game.score_P2, 0, boardTopSide/2f, score);
 
 		// draw the time
 		score.setTextAlign(Paint.Align.RIGHT);
@@ -283,7 +285,9 @@ public class Multiplayer_Game_View extends View {
 		}
 
 		if (gameOver) {
-			canvas.drawText("GAME OVER" +game.score, boardWidth/2+boardLeftSide,
+			canvas.drawText("GAME OVER" +game.score_P1, boardWidth/2+boardLeftSide,
+					boardHeight/2+boardTopSide, foreground);
+			canvas.drawText("GAME OVER" +game.score_P2, boardWidth/2+boardLeftSide,
 					boardHeight/2+boardTopSide, foreground);
 			final Handler handler = new Handler();
 			final Runnable r = new Runnable()
@@ -294,7 +298,8 @@ public class Multiplayer_Game_View extends View {
 				}
 			};
 			handler.postDelayed(r, 4000);
-			game.onQuitButtonClicked(this);
+			
+			game.onGameOver();
 		}
 
 
