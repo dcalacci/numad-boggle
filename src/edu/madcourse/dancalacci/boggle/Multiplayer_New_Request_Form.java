@@ -27,7 +27,7 @@ public class Multiplayer_New_Request_Form extends ListActivity{
 	private static final String PREF_USER = "prefUser";
 	private ServerAccessor sa;
 	private String USERNAME;
-	private String selectedUser;
+	private String selectedUser = null;
 	private ArrayList<String> mUserList = new ArrayList<String>();
 	//Multiplayer_Send_Requests_Form_Adaptor adapter;
 
@@ -80,7 +80,8 @@ public class Multiplayer_New_Request_Form extends ListActivity{
 	}
 
 	public void onMultiplayerRequestsOkButtonClicked(View v) {
-		if (selectedUser.length() > 0){
+		Log.d(TAG, "requestOkButton: " + selectedUser);
+		if (!(selectedUser == null)){
 			sa.sendRequest(USERNAME, selectedUser);
 			finish();
 		}else{
