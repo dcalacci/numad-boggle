@@ -14,6 +14,7 @@ import android.widget.TabHost.TabContentFactory;
 import android.widget.TextView;
 
 public class Multiplayer extends TabActivity {
+	
 	TabHost tabHost;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

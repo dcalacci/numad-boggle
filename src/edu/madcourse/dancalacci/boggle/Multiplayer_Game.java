@@ -36,6 +36,7 @@ public class Multiplayer_Game extends Activity {
 	// tag for this activity
 	private static final 	String 	TAG 			= "Multiplayer_Game";
 	public static final 	String 	MULTI_PREF 		= "edu.madcourse.dancalacci.multiplayer";
+	private static final 	String 	PREF_USER 		= "prefUser";
 	protected static final 	String 	NO_GAME			= "no_game";
 	protected static final 	String 	PREF_IWORD 		= "iword";
 	protected static final 	String 	PREF_WORDLIST 	= "wordlist";
@@ -64,7 +65,7 @@ public class Multiplayer_Game extends Activity {
 
 		String opponent = getIntent().getStringExtra("opponent");
 		// set the layout, start the view.
-		username = getSharedPreferences(MULTI_PREF, MODE_PRIVATE).getString(username, "guest");
+		username = getSharedPreferences(MULTI_PREF, MODE_PRIVATE).getString(PREF_USER, "guest");
 		
 		this.game = sa.getGame(username, opponent);
 

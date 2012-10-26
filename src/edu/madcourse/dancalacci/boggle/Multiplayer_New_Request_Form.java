@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 public class Multiplayer_New_Request_Form extends ListActivity{
 	private String TAG = "Multiplayer_New_Request_Form";
-	private static final String BOGGLE_PREF = "edu.madcourse.dancalacci.boggle";
+	private static final String BOGGLE_PREF = "edu.madcourse.dancalacci.multiplayer";
 	private static final String PREF_USER = "prefUser";
 	private ServerAccessor sa;
 	private String USERNAME;
