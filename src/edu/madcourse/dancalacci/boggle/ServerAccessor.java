@@ -555,6 +555,7 @@ public class ServerAccessor {
 
 	/**
 	 * Converts a given string representation of scores to a hashtable
+	 * The string looks like: "user1|00,user2|00"
 	 * @param scores the string representation to convert
 	 * @return the hashtable conversion
 	 */
@@ -566,7 +567,7 @@ public class ServerAccessor {
 		System.out.println("Parts is: "+ parts.toString());
 		Hashtable<String, Integer> scoresDic = new Hashtable<String, Integer>();
 		for (String usrScore : parts) {
-			List<String> part = Arrays.asList(usrScore.split("|"));
+			List<String> part = Arrays.asList(usrScore.split("\\|"));
 			System.out.println("part is now: " +part.toString());
 			System.out.println("parsing " + part.get(1) +" as an integer.");
 			scoresDic.put(part.get(0), Integer.parseInt(part.get(1)));

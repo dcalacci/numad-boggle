@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.madcourse.dancalacci.R;
+import edu.neu.mobileclass.apis.KeyValueAPI;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -69,8 +71,26 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 	}
 
 	private ArrayList<String> generate_received_request_list(){
-		Log.d(TAG, "request list: " + sa.getReceivedRequests(USERNAME).toString());
-		return sa.getReceivedRequests(USERNAME);
+		Log.v(TAG, "starting a GetKeyTask");
+		class generateReceivedRequestsTask extends AsyncTask<String, Integer, ArrayList<String>> {
+
+			@Override
+			protected ArrayList<String> doInBackground(String... unused) {
+				Log.d(TAG, "request list: " + sa.getReceivedRequests(USERNAME).toString());
+				return sa.getReceivedRequests(USERNAME);
+			}
+		}
+
+		try {
+			//Log.v(TAG, "executing getKeyTask with '" +key +"'");
+			return new generateReceivedRequestsTask().execute().get();
+		} catch(Exception e) {
+			//Log.e(TAG, "GetKeyTask thread died: " +e);
+			return null;
+		}
+
+
+
 	}
 
 
@@ -183,7 +203,6 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 
 					deleteRow(row);
 					notifyDataSetChanged();
-					
 
 					//Start new game activity
 					//TODO: Update Request List & Create new game pair -> Server Call
@@ -193,7 +212,7 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 					// should be row but...  i.putExtra("opponent", row);
 					i.putExtra("opponent", "user2");
 					startActivity(i);
-					
+
 					Log.d(TAG, "Accept Button Clicked Delete Row");
 					break;
 				case R.id.multiplayer_received_reject_button:
