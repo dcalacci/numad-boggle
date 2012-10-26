@@ -513,10 +513,15 @@ public class ServerAccessor {
 
 		// add board to the server
 		String boardKey = BOARD_PREFIX + userskey;
+		Log.d(TAG, "board key: "+ boardKey);
+		Log.d(TAG, "baord Content: "+ this.get(boardKey));
+		Log.d(TAG, "baord board: "+ board);
 		this.put(boardKey, board); // create the board on the server
 
 		// value of turn element will always be a username - initiates to the creator.
 		String turnKey = TURN_PREFIX + userskey;
+		Log.d(TAG, "turnkey key: "+ turnKey);
+		Log.d(TAG, "turnkey Content: "+ this.get(turnKey));
 		this.put(turnKey, creator); // create the turn element on the server
 		
 		System.out.println(turnKey + " is now: " + creator);
@@ -681,6 +686,7 @@ public class ServerAccessor {
 				this.get(turnKey);
 
 		String boardKey = BOARD_PREFIX + userskey;
+		Log.d(TAG, "getGame boardKey: "+ boardKey);
 		ArrayList<Character> board =
 				this.stringToBoard(this.get(boardKey));
 
@@ -689,7 +695,7 @@ public class ServerAccessor {
 				this.stringToArrayList(this.get(enteredWordsKey));
 
 		String scoresKey = SCORES_PREFIX + userskey;
-		Log.d(TAG, "getBoard scoresKey: "+ scoresKey);
+		Log.d(TAG, "getGame scoresKey: "+ scoresKey);
 		String gameScores = this.get(scoresKey);
 		Hashtable<String, Integer> scores = this.scoresStringToHashtable(
 				gameScores);
@@ -703,13 +709,6 @@ public class ServerAccessor {
 				enteredWords,
 				scores,
 				numTurns);
-	}
-	
-	public void pushGame(String user1, String user2){
-		String userskey = this.getUsersKey(user1, user2);
-		Log.d(TAG, "pushGame userKey: "+ userskey);
-		
-		
 	}
 
 	/**
