@@ -220,13 +220,13 @@ public class ServerAccessor {
 			this.put(key, val);
 		}
 
-//		
-//		
-//		String key = REQUESTS_PREFIX + user;
-//		ArrayList<String> curReqs = this.getRequests(key);
-//		curReqs.remove(req);
-//		String val = this.arrayListToString(curReqs);
-//		this.put(key, val);
+		//		
+		//		
+		//		String key = REQUESTS_PREFIX + user;
+		//		ArrayList<String> curReqs = this.getRequests(key);
+		//		curReqs.remove(req);
+		//		String val = this.arrayListToString(curReqs);
+		//		this.put(key, val);
 	}
 
 	// Received
@@ -332,7 +332,7 @@ public class ServerAccessor {
 		final String usersKey = USERS_KEY;
 		final String passKey = PASS_KEY + user;
 		final ServerAccessor thisSA = this;
-		
+
 		class LoginTask extends AsyncTask<String, Integer, Boolean> {
 			protected Boolean doInBackground(String... keys) {
 				String user = keys[0];
@@ -349,7 +349,7 @@ public class ServerAccessor {
 					Log.d(TAG, "Connection error to server");
 					return false;
 				}
-				
+
 				if (!passVal.equals(pass)) {
 					Log.d(TAG, "passwords don't match: "+passVal+" stored, "+pass+" entered.");
 					return false;
@@ -357,7 +357,7 @@ public class ServerAccessor {
 				// if we're here, the user exists and the password was right
 				return true;
 			}
-			
+
 			protected void onPostExecute(Boolean result) {
 				Log.d(TAG, "in onPostExecute in LoginTask");
 				l.run(result);
@@ -380,7 +380,7 @@ public class ServerAccessor {
 		final String usersKey = USERS_KEY;
 		final String passKey = "pass_" + user;
 		final ServerAccessor thisSA = this;
-		
+
 		class RegisterUserTask extends AsyncTask<String, Integer, Boolean> {
 			protected Boolean doInBackground(String... keys) {
 				if (!thisSA.canConnect()) {
@@ -403,7 +403,7 @@ public class ServerAccessor {
 				thisSA.put(passKey, pass); // enters the password into the server
 				return true;
 			}
-			
+
 			protected void onPostExecute(Boolean result) {
 				Log.d(TAG, "in onPostExecute in getUserList");
 				l.run(result);
@@ -414,16 +414,16 @@ public class ServerAccessor {
 		} catch(Exception e) {
 			Log.e(TAG, "RegisterUserTask thread died: " +e);
 		}
-		
-//		String usersKey = USERS_KEY;
-//		String passKey = "pass_" + user;
-//
-//		String passVal = pass;
-//		this.put(passKey, passVal); // enters the new user/pass combo into the server
-//
-//		ArrayList<String> users = stringToArrayList(this.get(usersKey));
-//		users.add(user); // adds the given username to the list of users
-//		this.put(usersKey, this.arrayListToString(users)); // updates the list of users on the server
+
+		//		String usersKey = USERS_KEY;
+		//		String passKey = "pass_" + user;
+		//
+		//		String passVal = pass;
+		//		this.put(passKey, passVal); // enters the new user/pass combo into the server
+		//
+		//		ArrayList<String> users = stringToArrayList(this.get(usersKey));
+		//		users.add(user); // adds the given username to the list of users
+		//		this.put(usersKey, this.arrayListToString(users)); // updates the list of users on the server
 	}
 
 	/**
@@ -433,7 +433,7 @@ public class ServerAccessor {
 	public void getUserList(final OnStringArrayListLoadedListener l) {
 		final ServerAccessor thisSA = this;
 		class GetUserListTask extends AsyncTask<String, Integer, ArrayList<String>> {
-			
+
 			protected ArrayList<String> doInBackground(String... keys) {
 				Log.d(TAG, "In doInBackground for getUserList");
 				if (!thisSA.canConnect()) {
@@ -444,17 +444,17 @@ public class ServerAccessor {
 				String usersKey = USERS_KEY;
 				return thisSA.stringToArrayList(thisSA.get(usersKey));
 			}
-			
+
 			protected void onPostExecute(ArrayList<String> result) {
 				Log.d(TAG, "in onPostExecute in getUserList");
 				l.run(result);
 			}
 		}
-			try {
-				new GetUserListTask().execute();
-			} catch(Exception e) {
-				Log.e(TAG, "GetGames thread died: " +e);
-			}
+		try {
+			new GetUserListTask().execute();
+		} catch(Exception e) {
+			Log.e(TAG, "GetGames thread died: " +e);
+		}
 	}
 
 	/**
@@ -521,13 +521,12 @@ public class ServerAccessor {
 	 * @param user1   The first user
 	 * @param user2   The second user
 	 */
-	public void addGame(String user1, String user2) {
-		String gameKey = GAMES_KEY;
-		String usersKey = this.getUsersKey(user1, user2);
-		ArrayList<String> games = this.stringToArrayList(this.get(gameKey));
-		games.add(usersKey);
+	private void addGame(String user1, String user2) {
+		final String usersKey = this.getUsersKey(user1, user2);
+		ArrayList<String> games = this.stringToArrayList(this.get(GAMES_KEY));
+		games.remove(usersKey);
 		String gameVal = this.arrayListToString(games);
-		this.put(gameKey, gameVal);
+		this.put(GAMES_KEY,  gameVal);
 	}
 
 	public void removeGame(String user1, String user2) {
@@ -556,14 +555,14 @@ public class ServerAccessor {
 				ArrayList<String> serverGames = thisSA.stringToArrayList(thisSA.get(GAMES_KEY));
 				ArrayList<String> serverUsers = thisSA.stringToArrayList(thisSA.get(USERS_KEY));
 				ArrayList<String> games = new ArrayList<String>();
-				
+
 				// itereates through the user list on the server, if the list of games on
 				// the server contains a game with this user and a user in that list, add
 				// that user to the list of current games.
-				
+
 				//TODO
 				// if serverUsers is empty for some reason, populat with error SEE BELOW.
-				
+
 				for (String user2 : serverUsers) {
 					if (serverGames.contains(thisSA.getUsersKey(user, user2))) {
 						games.add(user2);
@@ -708,7 +707,7 @@ public class ServerAccessor {
 			protected Boolean doInBackground(String... keys) {
 				String user1 = keys[0];
 				String user2 = keys[1];
-				
+
 				Log.d(TAG, "In doInBackground for removeSentRequest");
 				if (!thisSA.canConnect()) {
 					return false;
@@ -794,10 +793,39 @@ public class ServerAccessor {
 		return board;
 	}
 
-	public void createNewGame(String user1, String user2) {
-		System.out.println("Creating a new game!");
-		String board = boardToString(generateBoard());
-		this.initializeNewGame(user1, user2, board);
+	public void createNewGame(String user1, String user2, final OnBooleanReceivedListener l) {
+		
+		final String usersKey = this.getUsersKey(user1, user2);
+		final ServerAccessor thisSA = this;
+		
+		Log.d(TAG, "about to create an asynctask CreateGameTask");
+		
+		class CreateGameTask extends AsyncTask<String, Integer, Boolean> {
+			
+			protected Boolean doInBackground(String... key) {
+				String user1 = key[0];
+				String user2 = key[1];
+				System.out.println("Creating a new game!");
+				if (!thisSA.canConnect()) {
+					return false;
+				}
+				String board = boardToString(generateBoard());
+				thisSA.initializeNewGame(user1, user2, board);
+
+				// put updated games list into the server
+				return true;
+			}
+			
+			protected void onPostExecute(Boolean result) {
+				Log.d(TAG, "in onPostExecute for createGameTask");
+				l.run(result);
+			}
+		}
+		try {
+			new CreateGameTask().execute();
+		} catch(Exception e) {
+			Log.e(TAG, "CreateGameTask thread died: "+e);
+		}
 	}
 
 	public void updateBoard(String user1, String user2, String board) {

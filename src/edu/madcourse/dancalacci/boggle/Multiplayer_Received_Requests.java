@@ -192,21 +192,32 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 				case R.id.multiplayer_received_accept_button:
 					Log.d(TAG, "Accept Button Clicked");
 					
-					
-					sa.addGame(USERNAME, row);
-					sa.createNewGame(USERNAME, row);
-					
-					//row is the user that sent the request that we have to remove
-					sa.removeSentRequest(row, USERNAME, new OnBooleanReceivedListener() {
+					Log.d(TAG, "adding a new game using sa.createNewGame");
+					sa.createNewGame(USERNAME, row, new OnBooleanReceivedListener() {
+						
 						public void run(Boolean exitState) {
-							if (exitState) {
-								Toast.makeText(getBaseContext(), 
-										"Could not remove request from "+row+".  Try again!", 
-										Toast.LENGTH_SHORT).show();
+							if (!exitState) {
+								Toast.makeText(getBaseContext(),
+										"Couldn't accept the game.  Try again!", Toast.LENGTH_SHORT).show();
 							} else {
+								Log.d(TAG, "new game created, removing request");
+								
+								sa.removeSentRequest(row, USERNAME, new OnBooleanReceivedListener() {
+									public void run(Boolean exitState) {
+										if (!exitState) {
+											Log.d(TAG, "Couldn't remove the request");
+											Toast.makeText(getBaseContext(), 
+													"We had an error - That request might stay in your received requests list...", 
+													Toast.LENGTH_SHORT).show();
+										} else {
+										}
+									}
+								});
 							}
 						}
 					});
+					
+					//row is the user that sent the request that we have to remove
 					
 					
 					Intent i = new Intent(mContext, Multiplayer_Game.class);
@@ -217,16 +228,7 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 					notifyDataSetChanged();
 
 					//Start new game activity
-					//TODO: Update Request List & Create new game pair -> Server Call
-					//TODO: Send user2 name to activity
 					startActivity(i);
-					
-					
-					
-					//Intent i = new Intent(mContext, Multiplayer_Game.class);
-					//sa.sendRequest("user1", "user2");
-					// should be row but...  i.putExtra("opponent", row);
-					//i.putExtra("opponent", "user2");
 					
 
 					Log.d(TAG, "Accept Button Clicked Delete Row");
@@ -261,38 +263,34 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 
 
 		}
-
-		// TODO: add ACCEPT button listener
-		// TODO: add ACCEPT button listener
-
 	}
 
 
-	public void onClick(View v) {
-		Button button = (Button) v;
-		String row = (String) button.getTag();
-
-		switch(v.getId()){
-		case R.id.multiplayer_received_accept_button:
-			//Start new game activity
-			//TODO: Update Request List & Create new game pair -> Server Call
-			Log.d(TAG, "Accept Button Clicked");
-			if(!row.equals(null)){
-				sa.createNewGame(USERNAME, row);
-			}
-			adapter.deleteRow(row);
-			adapter.notifyDataSetChanged();
-			break;
-		case R.id.multiplayer_received_reject_button:
-			//TODO: Update Request List -> Server Call
-			Log.d(TAG, "Reject Button Clicked");
-			adapter.deleteRow(row);
-			adapter.notifyDataSetChanged();
-			break;
-		}
-
-
-	}
+//	public void onClick(View v) {
+//		Button button = (Button) v;
+//		String row = (String) button.getTag();
+//
+//		switch(v.getId()){
+//		case R.id.multiplayer_received_accept_button:
+//			//Start new game activity
+//			//TODO: Update Request List & Create new game pair -> Server Call
+//			Log.d(TAG, "Accept Button Clicked");
+//			if(!row.equals(null)){
+//				sa.createNewGame(USERNAME, row);
+//			}
+//			adapter.deleteRow(row);
+//			adapter.notifyDataSetChanged();
+//			break;
+//		case R.id.multiplayer_received_reject_button:
+//			//TODO: Update Request List -> Server Call
+//			Log.d(TAG, "Reject Button Clicked");
+//			adapter.deleteRow(row);
+//			adapter.notifyDataSetChanged();
+//			break;
+//		}
+//
+//
+//	}
 
 	public void onMultiplayerReceivedRequestsSendNewRequestsButtonClicked(View v) {
 		Intent i = new Intent(this, Multiplayer_New_Request_Form.class);
