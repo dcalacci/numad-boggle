@@ -316,74 +316,75 @@
         </TableRow>
     </TableLayout>
 
-    <TableLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="0.5dp"
-        android:background="#000000"
-        android:stretchColumns="*" >
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_margin="3dp"
-            android:background="#ffffff"
-            android:weightSum="1.0" >
-
-            <TextView
-                android:id="@+id/boggle_word_textView"
-                android:layout_width="0dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/boggle_foreground" />
-
-        </TableRow>
-    </TableLayout>
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1.0" >
+
+        <TableLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.5dp"
+            android:layout_weight=".7"
+            android:background="#000000"
+            android:stretchColumns="*" >
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="3dp"
+                android:background="#ffffff"
+                android:weightSum="1.0" >
+
+                <TextView
+                    android:id="@+id/boggle_word_textView"
+                    android:layout_width="0dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/boggle_foreground" />
+            </TableRow>
+        </TableLayout>
+
+        <Button
+            android:id="@+id/button_Boggle_Submit"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".3"
+            android:text="Submit" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1.0" >
 
         <ScrollView
             android:id="@+id/word_list_textView"
-            android:layout_width="164dp"
-            android:layout_height="match_parent"
+            android:layout_weight=".7"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
             android:layout_margin="3dp" >
 
             <TextView
                 android:id="@+id/boggle_used_words"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="3dp"
                 android:textColor="@color/boggle_hilite"
                 android:textSize="20dp" />
-
         </ScrollView>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/button_Boggle_Clear"
+            android:layout_width="0dp"
+            android:layout_weight=".3"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/word_list_textView"
-            android:orientation="vertical"
-            android:weightSum="1.0" >
-
-            <Button
-                android:id="@+id/button_Boggle_Submit"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:text="Submit" />
-
-            <Button
-                android:id="@+id/button_Boggle_Clear"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:text="Clear" />
-        </LinearLayout>
-    </RelativeLayout>
+            android:text="Clear" />
+    </LinearLayout>
 
 </LinearLayout>
