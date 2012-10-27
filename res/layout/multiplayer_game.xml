@@ -1,68 +1,418 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    android:soundEffectsEnabled="true" >
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <TableLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:weightSum="1.0" >
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal|fill_horizontal|center"
+        android:orientation="horizontal"
+        android:weightSum="1.0"
+        android:stretchColumns="*" >
 
-        <FrameLayout
-            android:id="@+id/multiplayer_game_tiles"
+        <TableRow
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight=".70" >
-        </FrameLayout>
+            android:layout_height="wrap_content" >
 
-        <ListView
-            android:id="@+id/multiplayer_game_entered_words"
-            style="@style/WordListFont"
+            <TextView
+                android:id="@+id/multiplayer_player1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="top|left"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.375"
+                android:gravity="left"
+                android:textColor="@color/boggle_hilite"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/multiplayer_current_turn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.25"
+                android:gravity="center"
+                android:textColor="@color/boggle_foreground"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/multiplayer_player2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|right"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.375"
+                android:gravity="right"
+                android:textColor="@color/boggle_foreground"
+                android:textSize="20dp" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal|fill_horizontal|center" >
+
+            <Button
+                android:id="@+id/button_DiceR1C1"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR1C2"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR1C3"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR1C4"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR1C5"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal|fill_horizontal|center" >
+
+            <Button
+                android:id="@+id/button_DiceR2C1"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR2C2"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR2C3"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR2C4"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR2C5"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal|fill_horizontal|center" >
+
+            <Button
+                android:id="@+id/button_DiceR3C1"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR3C2"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR3C3"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR3C4"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR3C5"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal|fill_horizontal|center" >
+
+            <Button
+                android:id="@+id/button_DiceR4C1"
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR4C2"
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR4C3"
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR4C4"
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR4C5"
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal|fill_horizontal|center" >
+
+            <Button
+                android:id="@+id/button_DiceR5C1"
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR5C2"
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR5C3"
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR5C4"
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR5C5"
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+        </TableRow>
+    </TableLayout>
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="0.5dp"
+        android:background="#000000"
+        android:stretchColumns="*" >
+
+        <TableRow
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight=".30"
-            android:background="@color/multiplayer_game_boardColor" >
-        </ListView>
-    </LinearLayout>
+            android:layout_height="fill_parent"
+            android:layout_margin="3dp"
+            android:background="#ffffff"
+            android:weightSum="1.0" >
+
+            <TextView
+                android:id="@+id/boggle_word_textView"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/boggle_foreground" />
+        </TableRow>
+    </TableLayout>
 
     <RelativeLayout
-        android:id="@+id/multiplayer_game_navbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:background="@color/multiplayer_game_boardColor"
-        android:gravity="bottom"
-        android:orientation="vertical" >
+        android:layout_height="38dp"
+        android:layout_weight="1.36" >
 
-
-        <Button
-            android:id="@+id/multiplayer_game_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ScrollView
+            android:id="@+id/word_list_textView"
+            android:layout_width="164dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:onClick="onMultiplayerGameBackButtonClicked"
-            android:text="@string/multiplayer_game_back_label" />
+            android:layout_margin="3dp" >
 
-        <Button
-            android:id="@+id/multiplayer_game_submit_word"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/multiplayer_game_clear_word"
-            android:onClick="onSubmitWordButtonClicked"
-            android:text="@string/multiplayer_game_submit_word_label" />
-
-        <Button
-            android:id="@+id/multiplayer_game_clear_word"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:onClick="onClearWordButtonClicked"
-            android:text="@string/multiplayer_game_clear_word_label" />
+            <TextView
+                android:id="@+id/boggle_used_words"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="3dp"
+                android:textColor="@color/boggle_hilite"
+                android:textSize="20dp" />
+        </ScrollView>
     </RelativeLayout>
 
-</RelativeLayout>
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="bottom"
+        android:layout_toRightOf="@+id/multiplayer_game_clear_word" >
+
+        <TableRow
+            android:id="@+id/tableRow6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom" >
+
+            <Button
+                android:id="@+id/multiplayer_game_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:onClick="onMultiplayerGameBackButtonClicked"
+                android:text="@string/multiplayer_game_back_label" />
+
+            <Button
+                android:id="@+id/multiplayer_game_clear_word"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:onClick="onClearWordButtonClicked"
+                android:text="@string/multiplayer_game_clear_word_label" />
+
+            <Button
+                android:id="@+id/multiplayer_game_submit_word"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/multiplayer_game_clear_word"
+                android:layout_weight="0.33"
+                android:onClick="onSubmitWordButtonClicked"
+                android:text="@string/multiplayer_game_submit_word_label" />
+
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

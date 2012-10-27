@@ -746,7 +746,7 @@ public class ServerAccessor {
 
 	protected static ArrayList<Character> generateBoard() {
 		ArrayList<Character> tiles = new ArrayList<Character>();
-		int indexSize = (int)Math.pow((double)Multiplayer_Game.size, (double)2);
+		int indexSize = (int)Math.pow((double)Multiplayer_Game_old.size, (double)2);
 		for (int i=0; i<indexSize; i++) {
 			tiles.add(' ');
 		}
@@ -821,8 +821,7 @@ public class ServerAccessor {
 
 		String boardKey = BOARD_PREFIX + userskey;
 		Log.d(TAG, "getGame boardKey: "+ boardKey);
-		ArrayList<Character> board =
-				this.stringToBoard(this.get(boardKey));
+		String board = this.get(boardKey);
 		Log.d(TAG, "getGame boardLetters: "+ board.toString());
 
 		String enteredWordsKey = ENTERED_WORDS_PREFIX + userskey;
