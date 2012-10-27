@@ -632,17 +632,17 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 			fillButtons(this.letterSet);
 		}
 
-		current_score = sf.getInt(PREF_SCORE, 0);
-		setScore(current_score);
-		Log.d(TAG, "onResume letter set score: "+ current_score);
+//		current_score = sf.getInt(PREF_SCORE, 0);
+//		setScore(current_score);
+//		Log.d(TAG, "onResume letter set score: "+ current_score);
 
 		String temp_WordList = sf.getString(PREF_USED_WORDS, " ");
 		Log.d(TAG, "onResume letter set word list: "+ temp_WordList);
 		convert_onPause_wordList(temp_WordList);
 		updateUsedWordsList();
 
-		currentTime = sf.getInt(PREF_TIME, 180);
-		updateTimeUI();
+//		currentTime = sf.getInt(PREF_TIME, 180);
+//		updateTimeUI();
 
 		sf.getBoolean(PREF_RESUME, false);
 	}
@@ -658,15 +658,15 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		sf.edit().putString(PREF_DICE, onPauseLetters).commit();
 		Log.d(TAG, "temp letter set pause: "+ onPauseLetters);
 
-		sf.edit().putInt(PREF_SCORE, current_score).commit();
-		Log.d(TAG, "temp letter set score: "+ current_score);
+//		sf.edit().putInt(PREF_SCORE, current_score).commit();
+//		Log.d(TAG, "temp letter set score: "+ current_score);
 
 		String wordList_Pref = generate_onPause_wordList();
 		sf.edit().putString(PREF_USED_WORDS, wordList_Pref).commit();
 		Log.d(TAG, "temp letter set used wrods: "+ wordList_Pref);
 
-		sf.edit().putInt(PREF_TIME, currentTime).commit();
-		Log.d(TAG, "temp letter set time: "+ currentTime);
+//		sf.edit().putInt(PREF_TIME, currentTime).commit();
+//		Log.d(TAG, "temp letter set time: "+ currentTime);
 
 		sf.edit().putBoolean(PREF_RESUME, true).commit();
 		Log.d(TAG, "temp letter set pause: "+ PREF_RESUME);
@@ -712,24 +712,10 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		}
 	}
 
-
-	// Updates time UI
-	public void updateTimeUI(){
-		int seconds = currentTime;
-		int minutes = seconds / 60;
-		seconds     = seconds % 60;
-
-		if (seconds < 10) {
-			mTimeLabel.setText("" + minutes + ":0" + seconds);
-		} else {
-			mTimeLabel.setText("" + minutes + ":" + seconds);            
-		}
-	}
-
 	// checks whether the game is out of time
 	public void checkGameOver(){
 		//Log.d(TAG, "checkGameOver");
-		if (currentTime == 0){
+		if (this.game.getNumTurns() == 0){
 			disableAllButtons();
 			View formedWord = findViewById(R.id.boggle_word_textView);
 			formedWord.setClickable(false);
