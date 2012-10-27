@@ -1009,10 +1009,15 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 					setCurrentTurnIcon(this.username);
 				}
 				updateWordList(targetWord);
+				
 				clearCurrentSet();
+				
 				enableAllButtons();
+				
 				swapAllButtonUnclick();
+				
 				clearWordTextView();
+				
 				updateUsedWordsList();
 			}
 		}else{

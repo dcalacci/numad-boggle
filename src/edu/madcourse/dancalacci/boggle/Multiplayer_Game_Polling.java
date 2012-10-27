@@ -10,7 +10,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.widget.Toast;
 
-public class Multiplayer_Game_Service extends Service{
+public class Multiplayer_Game_Polling extends Service{
 	private static final String TAG = "Multiplayer_Game_Service";
 	private Looper mServiceLooper;
 	private GameServiceHandler mServiceHandler;

@@ -30,36 +30,36 @@ public class ServerAccessor {
 
 	// Context for doing asyncTask
 	private static Context c;
-
+	private static int size = 5;
 	private static final String TAG = "ServerAccessor";
 
-	private static final ArrayList<List<Character>> dice = new ArrayList<List<Character>>() {{
-		add( Arrays.asList( 'a', 'a', 'a', 'f', 'r', 's'));
-		add( Arrays.asList( 'a', 'a', 'e', 'e', 'e', 'e'));
-		add( Arrays.asList( 'a', 'a', 'f', 'i', 'r', 's'));
-		add( Arrays.asList( 'a', 'd', 'e', 'n', 'n', 'n'));
-		add( Arrays.asList( 'a', 'e', 'e', 'e', 'e', 'm'));
-		add( Arrays.asList( 'a', 'e', 'e', 'g', 'm', 'u'));
-		add( Arrays.asList( 'a', 'e', 'g', 'm', 'n', 'n'));
-		add( Arrays.asList( 'a', 'f', 'i', 'r', 's', 'y'));
-		add( Arrays.asList( 'b', 'j', 'k', 'q', 'x', 'z'));
-		add( Arrays.asList( 'c', 'c', 'n', 's', 't', 'w'));
-		add( Arrays.asList( 'c', 'e', 'i', 'i', 'l', 't'));
-		add( Arrays.asList( 'c', 'e', 'i', 'l', 'p', 't'));
-		add( Arrays.asList( 'c', 'e', 'i', 'p', 's', 't'));
-		add( Arrays.asList( 'd', 'd', 'l', 'n', 'o', 'r'));
-		add( Arrays.asList( 'd', 'h', 'h', 'l', 'o', 'r'));
-		add( Arrays.asList( 'd', 'h', 'h', 'n', 'o', 't'));
-		add( Arrays.asList( 'd', 'h', 'l', 'n', 'o', 'r'));
-		add( Arrays.asList( 'e', 'i', 'i', 'i', 't', 't'));
-		add( Arrays.asList( 'e', 'm', 'o', 't', 't', 't'));
-		add( Arrays.asList( 'e', 'n', 's', 's', 's', 'u'));
-		add( Arrays.asList( 'f', 'i', 'p', 'r', 's', 'y'));
-		add( Arrays.asList( 'g', 'o', 'r', 'r', 'v', 'w'));
-		add( Arrays.asList( 'h', 'i', 'p', 'r', 'r', 'y'));
-		add( Arrays.asList( 'n', 'o', 'o', 't', 'u', 'w'));
-		add( Arrays.asList( 'o', 'o', 'o', 't', 't', 'u'));
-	}};
+	private static String[] dice_set = new String[]{ 	// strings of all possible dice
+			"AAAFRS",
+			"AAEEEE",
+			"AAFIRS",
+			"ADENNN",
+			"AEEEEM",
+			"AEEGMU",
+			"AEGMNN",
+			"AFIRSY",
+			"BJKQXZ",
+			"CCNSTW",
+			"CEIILT",
+			"CEILPT",
+			"CEIPST",
+			"DDLNOR",
+			"DHHLOR",
+			"DHHNOT",
+			"DHLNOR",
+			"EIIITT",
+			"EMOTTT",
+			"ENSSSU",
+			"FIPRSY",
+			"GORRVW",
+			"HIPRRY",
+			"NOOTUW",
+			"OOOTTU"
+	};
 
 	public ServerAccessor() {
 	}
@@ -679,28 +679,24 @@ public class ServerAccessor {
 	//        on the server, the word that the user just entered(might be cleaner).
 	//        turn_... should update itself.
 
-	protected static ArrayList<Character> generateBoard() {
-		ArrayList<Character> tiles = new ArrayList<Character>();
-		int indexSize = (int)Math.pow((double)Multiplayer_Game_old.size, (double)2);
-		for (int i=0; i<indexSize; i++) {
-			tiles.add(' ');
-		}
-
-		ArrayList<Integer> positions = new ArrayList<Integer>();
-		for (int i = 0; i < (dice.size()); i++) {
-			positions.add(i);  // positions now contains all numbers 1-16
-		}
-
-		Collections.shuffle(positions); //shuffle positions
-		Collections.shuffle(dice);      //shuffle the dice themselves
-
-		// step two: randomly assign a character to each space on the board
-		for (Integer pos : positions) {
-			Character c = dice.get(pos).get((int)(Math.random() * 5));
-			//  c is now a random face of the current die
-			tiles.set(pos, c);
-		}
-		return tiles;
+	protected static String generateBoard() {
+			Log.d(TAG, "Pick Dice");
+			int num_dice = size * size;  
+			List<Character> set_letters = new ArrayList<Character>(num_dice);
+			for (int i = 0; i<num_dice; i++){
+				int x = (int) Math.floor(Math.random() * 6);	// pick letter in list of characters
+				int d = (int) Math.floor(Math.random() * dice_set.length); // pick dice in collection
+				char c = dice_set[d].charAt(x);
+				set_letters.add(c);
+			}
+			Collections.shuffle(set_letters);
+			String final_letters = "";
+			for (Character s : set_letters){
+				final_letters += s;
+			}
+			//String final_letters = set_letters.toString().replace("," ,"").replace("[", "").replace("]", "").trim();
+			Log.d(TAG, "Pick letters: " + final_letters);
+			return final_letters;	   
 	}
 
 	/**
@@ -731,7 +727,7 @@ public class ServerAccessor {
 
 	public void createNewGame(String user1, String user2) {
 		System.out.println("Creating a new game!");
-		String board = boardToString(generateBoard());
+		String board = generateBoard();
 		this.initializeNewGame(user1, user2, board);
 	}
 
