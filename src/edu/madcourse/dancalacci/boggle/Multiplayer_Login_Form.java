@@ -1,6 +1,9 @@
 package edu.madcourse.dancalacci.boggle;
 
+import java.util.ArrayList;
+
 import edu.madcourse.dancalacci.R;
+import edu.madcourse.dancalacci.boggle.Multiplayer_Received_Requests.Multiplayer_Received_Request_Adaptor;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.opengl.Visibility;
@@ -45,24 +48,27 @@ public class Multiplayer_Login_Form extends Activity{
 
 			public void onClick(View v) {
 				// Check Login
-				String username = etUsername.getText().toString();
-				String password = etPassword.getText().toString();
-				if(sa.login(username, password)){
-					Toast.makeText(getBaseContext(), "Login Sucessful. Welcome " + username, Toast.LENGTH_SHORT).show();
-					SharedPreferences pref = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE);
-					SharedPreferences.Editor edit = pref.edit();
-					
-					edit.putString(PREF_USER, username).commit();
-					edit.putString(PREF_PASS, password).commit();
-					
-					Log.d(TAG, "Login Form: "+ pref.getString(TAG, "PREF_USER"));
-					
-					// GO TO MULTIPLAYER MENU
-					finish();
-				}else{
-					Toast.makeText(getBaseContext(), "Login Failed. Username and/or password doesn't match.", Toast.LENGTH_SHORT).show();
-					btnRegister.setVisibility(Button.VISIBLE);
-				}
+				final String username = etUsername.getText().toString();
+				final String password = etPassword.getText().toString();
+
+				sa.login(username, password, new OnBooleanReceivedListener() {
+					public void run(Boolean loggedIn) {
+						if (loggedIn) {
+							Toast.makeText(getBaseContext(), "Login Sucessful. Welcome " + username, Toast.LENGTH_SHORT).show();
+							SharedPreferences pref = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE);
+							SharedPreferences.Editor edit = pref.edit();
+
+							edit.putString(PREF_USER, username).commit();
+							edit.putString(PREF_PASS, password).commit();
+
+							Log.d(TAG, "Login Form: "+ pref.getString(TAG, "PREF_USER"));
+							finish();
+						}else{
+							Toast.makeText(getBaseContext(), "Login Failed. Username and/or password doesn't match.", Toast.LENGTH_SHORT).show();
+							btnRegister.setVisibility(Button.VISIBLE);
+						}
+					}
+				});
 			}
 		});
 
@@ -70,16 +76,23 @@ public class Multiplayer_Login_Form extends Activity{
 
 			public void onClick(View v) {
 				// Check Login
-				String username = etUsername.getText().toString();
-				String password = etPassword.getText().toString();
-				if(sa.canRegister(username,password)){
-					sa.register(username, password);
-					Toast.makeText(getBaseContext(), "Registration Sucessful. Welcome " + username, Toast.LENGTH_SHORT).show();
-					etUsername.setText(username);
-					etPassword.setText(password);
-				}else{
-					Toast.makeText(getBaseContext(), "Registration Failed. " + username + " already taken.", Toast.LENGTH_SHORT).show();
-				}
+				final String username = etUsername.getText().toString();
+				final String password = etPassword.getText().toString();
+				sa.register(username, password, new OnBooleanReceivedListener() {
+					public void run(Boolean registered) {
+						if (registered) {
+							Toast.makeText(getBaseContext(), "Registration Sucessful. " +
+									"Welcome " + username, Toast.LENGTH_SHORT).show();
+							etUsername.setText(username);
+							etPassword.setText(password);
+						}else{
+							Toast.makeText(getBaseContext(), 
+									"Registration Failed. Either the username " +
+									"already exists, or your username or password " +
+									"contained commas", Toast.LENGTH_SHORT).show();
+						}
+					}
+				});
 			}
 		});
 
