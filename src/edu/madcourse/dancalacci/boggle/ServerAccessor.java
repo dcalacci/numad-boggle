@@ -681,7 +681,7 @@ public class ServerAccessor {
 
 	protected static ArrayList<Character> generateBoard() {
 		ArrayList<Character> tiles = new ArrayList<Character>();
-		int indexSize = (int)Math.pow((double)Multiplayer_Game.size, (double)2);
+		int indexSize = (int)Math.pow((double)Multiplayer_Game_old.size, (double)2);
 		for (int i=0; i<indexSize; i++) {
 			tiles.add(' ');
 		}

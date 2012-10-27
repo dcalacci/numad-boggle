@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:weightSum="1.0" >
+
+        <FrameLayout
+            android:id="@+id/multiplayer_game_tiles"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".70" >
+        </FrameLayout>
+
+        <ListView
+            android:id="@+id/multiplayer_game_entered_words"
+            style="@style/WordListFont"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".30"
+            android:background="@color/multiplayer_game_boardColor" >
+        </ListView>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/multiplayer_game_navbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@color/multiplayer_game_boardColor"
+        android:gravity="bottom"
+        android:orientation="vertical" >
+
+
+        <Button
+            android:id="@+id/multiplayer_game_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:onClick="onMultiplayerGameBackButtonClicked"
+            android:text="@string/multiplayer_game_back_label" />
+
+        <Button
+            android:id="@+id/multiplayer_game_submit_word"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/multiplayer_game_clear_word"
+            android:onClick="onSubmitWordButtonClicked"
+            android:text="@string/multiplayer_game_submit_word_label" />
+
+        <Button
+            android:id="@+id/multiplayer_game_clear_word"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:onClick="onClearWordButtonClicked"
+            android:text="@string/multiplayer_game_clear_word_label" />
+    </RelativeLayout>
+
+</RelativeLayout>

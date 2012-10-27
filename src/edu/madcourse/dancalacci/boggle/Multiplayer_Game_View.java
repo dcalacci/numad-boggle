@@ -49,7 +49,7 @@ public class Multiplayer_Game_View extends View {
 	private int selX;       // X index of selection
 	private int selY;       // Y index of selection
 
-	private final Multiplayer_Game game;
+	private final Multiplayer_Game_old game;
 	private static ArrayList<Rect> selRects = new ArrayList<Rect>();
 	private static ArrayList<Point> selDie = new ArrayList<Point>();
 	private static Point lastSelected;
@@ -60,7 +60,7 @@ public class Multiplayer_Game_View extends View {
 	public Multiplayer_Game_View(Context context) {
 
 		super(context);
-		this.game = (Multiplayer_Game) context;
+		this.game = (Multiplayer_Game_old) context;
 		setFocusable(true);
 		setFocusableInTouchMode(true);
 

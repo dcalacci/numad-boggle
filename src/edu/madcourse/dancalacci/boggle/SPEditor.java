@@ -12,10 +12,10 @@ public abstract class SPEditor {
 	protected static final 	String 	PREF_WORDLIST = "wordlist";
 	protected static final 	String 	PREF_SCORE = "score";
 	
-	public static void saveGame(Multiplayer_Game game) {
+	public static void saveGame(Multiplayer_Game_old game) {
 		   SharedPreferences pref = game.getSharedPreferences(
 				   BOGGLE_PREF, 
-				   Multiplayer_Game.MODE_PRIVATE);
+				   Multiplayer_Game_old.MODE_PRIVATE);
 		   SharedPreferences.Editor editor = pref.edit();
 		   
 	}
