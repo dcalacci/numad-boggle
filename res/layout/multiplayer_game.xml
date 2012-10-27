@@ -32,7 +32,7 @@
                 android:textSize="20dp" />
 
             <TextView
-                android:id="@+id/multiplayer_number_turns"
+                android:id="@+id/multiplayer_current_turn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|center"

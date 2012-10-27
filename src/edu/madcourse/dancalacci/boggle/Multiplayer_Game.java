@@ -11,11 +11,13 @@ package edu.madcourse.dancalacci.boggle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Timer;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +25,7 @@ import android.os.Message;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
@@ -30,49 +33,31 @@ import android.widget.Toast;
 import edu.madcourse.dancalacci.R;
 
 public class Multiplayer_Game extends Activity implements OnClickListener {
-	private static final String TAG = "BoggleGame";
-	public static final String PREF_BOGGLE = "prefBoggle";
-	private static final String PREF_DICE = "puzzleDice" ;
-	private static final String PREF_SCORE = "boogleScore";
-	private static final String PREF_USED_WORDS = "boggleUsedWords";
-	private static final String PREF_TIME = "boggleTime";
-	public static final String PREF_RESUME = "boggleResume";
+	private static final 	String TAG = "MultiplayerBoggleGame";
+	
+	public static final 	String 	MULTI_PREF 		= "edu.madcourse.dancalacci.multiplayer";
+	public static final 	String  PREF_BOGGLE 	= "prefBoggle";
+	private static final 	String 	PREF_USER 		= "prefUser";
+	private static final 	String PREF_DICE 		= "puzzleDice" ;
+	//private static final 	String PREF_SCORE 		= "MutliplayerScore";
+	private static final 	String PREF_USED_WORDS 	= "boggleUsedWords";
+	private static final 	String PREF_TIME 		= "boggleTime";
+	public static final 	String PREF_RESUME 		= "MultipalyerboggleResume";
 
-	public static final int DIFFICULTY_EASY = 0;
-	public static final int DIFFICULTY_MEDIUM = 1;
-	public static final int DIFFICULTY_HARD = 2;
-	protected static final int DIFFICULTY_CONTINUE = -1;
+	
+	private 	SharedPreferences 	sf;
+	private 	int 				size 				= 		5;			
+	private 	int 				score_p1			= 		0; 	// current game score
+	private 	int 				score_p2			= 		0; 	// current game score
+	private 	String 				username;
+	private 	String 				opponent; 
+	private 	String 				letterSet;					// letters used in game
+	private 	String				onPauseLetters; 
+	private 	ServerAccessor 		sa 					= new ServerAccessor();
+	private 	GameWrapper 		game;
+	private 	String				current_turn;
 
-	private SharedPreferences sf;
-	private int size = 5;
-	protected int current_score = 0; 	// current game score
-	public String letterSet;		// letters used in game
-	private String onPauseLetters; 
 	private ArrayList<String> wordList= new ArrayList<String>();			// string of accepted words seperated by spaces
-	protected int currentTime = 180; // start time in seconds
-	protected int what = 1;	// handler id
-	private Handler mHandler = new Handler(){	// stop watch handler
-
-		@Override
-		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
-			super.handleMessage(msg);
-			this.sendMessageDelayed(Message.obtain(this, what),1000);
-			if(currentTime == 0 ){
-				mHandler.removeMessages(what);
-				updateTimeUI();
-				checkGameOver();
-
-			}else{
-				currentTime -= 1;
-				updateTimeUI();
-				checkGameOver();
-			}
-		} 
-
-	};
-	Timer myTimer = new Timer();	
-	private TextView mTimeLabel;
 
 	private static List<Integer> current_dice_set = 
 			new ArrayList<Integer>(); // set of current dice selected
@@ -133,41 +118,37 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		R.id.button_DiceR5C5
 	};
 
-	protected void setLetterSet(String l){
-		this.letterSet = l;
-	}
-
-	protected String getLetterSet(){
-		Log.d(TAG, "getLetterSet");
-		Log.d(TAG,"Return LetterSet:" +this.letterSet);
-		return letterSet;
-	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate");
+		requestWindowFeature(Window.FEATURE_NO_TITLE); // no title
 
-		setContentView(R.layout.boggle_game);
-		if(getIntent().getBooleanExtra(PREF_RESUME, false) == false){
-			Log.d(TAG, "newGame");
-			getSharedPreferences(PREF_BOGGLE, MODE_PRIVATE).edit().clear().commit();
+		opponent = getIntent().getStringExtra("opponent");
+		username = getSharedPreferences(MULTI_PREF, MODE_PRIVATE).getString(PREF_USER, "guest");
+		
+		
+		
+		// Sets to multiplayer views
+		setContentView(R.layout.multiplayer_game);
+		
+		this.game = sa.getGame(username, opponent);
+		this.letterSet = this.game.getBoard();
+		if (letterSet.isEmpty()){
+			letterSet = this.pick_Letters();
+			sa.updateBoard(this.username, this.opponent, letterSet);
 		}
+		this.current_turn = this.game.getCurrentTurn();
+		this.wordList = this.game.getEnteredWords();
+		
+		this.score_p1 = this.game.getUserScore(username);
+		this.score_p2 = this.game.getUserScore(opponent);		
+		
 		Log.d(TAG, "current set: "+current_dice_set.toString());
-		String letters = pick_Letters();
-		setLetterSet(letters);
-		onPauseLetters = letters;
-
-		sf = this.getSharedPreferences(PREF_BOGGLE, MODE_PRIVATE);
+		onPauseLetters = pick_Letters();
 
 		Log.d(TAG, "onCreate Letterset: "+letterSet);
 		Log.d(TAG, "onCreate tempLetterset: "+ onPauseLetters);
-		// Set Default score;
-		setScore(current_score);
-
-		mTimeLabel = (TextView) findViewById(R.id.boggle_time);
-		updateTimeUI();
-		mHandler.sendMessageDelayed(Message.obtain(mHandler, what), 1000);
 
 		View button_DiceR1C1 = findViewById(R.id.button_DiceR1C1);
 		button_DiceR1C1.setOnClickListener((OnClickListener) this);
@@ -244,25 +225,30 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		View button_DiceR5C5 = findViewById(R.id.button_DiceR5C5);
 		button_DiceR5C5.setOnClickListener((OnClickListener) this);
 
-		View button_Pause = findViewById(R.id.button_boggle_pause);
-		button_Pause.setOnClickListener((OnClickListener) this);
+		View button_back = findViewById(R.id.multiplayer_back_button);
+		button_back.setOnClickListener((OnClickListener) this);
 
-		View button_Clear = findViewById(R.id.button_Boggle_Clear);
+		View button_Clear = findViewById(R.id.multiplayer_game_clear_word);
 		button_Clear.setOnClickListener((OnClickListener) this);
 
-		View button_Submit= findViewById(R.id.button_Boggle_Submit);
+		View button_Submit= findViewById(R.id.multiplayer_game_submit_word);
 		button_Submit.setOnClickListener((OnClickListener) this);
 
-		View formedWord = findViewById(R.id.boggle_word_textView);
-		formedWord.setOnClickListener((OnClickListener) this);
+		View tv_Player1 = findViewById(R.id.multiplayer_player1);
 
+		View tv_Player2 = findViewById(R.id.multiplayer_player1);
+
+		TextView tv_Turns = (TextView) findViewById(R.id.multiplayer_current_turn);
+		
+		setCurrentTurnIcon(this.current_turn);
+		
 		View usedWordsList = findViewById(R.id.boggle_used_words);
 		usedWordsList.setOnClickListener((OnClickListener) this);
 
 		fillButtons(this.letterSet);
 
 	}
-
+	
 	public void onClick(View v) {
 		Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		String letter;
@@ -593,34 +579,42 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 				}
 			}	         
 			break;
-		case R.id.button_Boggle_Clear:
-			playClickSound(R.id.button_Boggle_Clear);
-			vib.vibrate(50);
-			clearCurrentSet();
-			enableAllButtons();
-			swapAllButtonUnclick();
-			clearWordTextView();
-			break;
-		case R.id.button_Boggle_Submit:
-			playClickSound(R.id.button_Boggle_Submit);
-			Log.d(TAG, "submit clicked");
-			vib.vibrate(50);
-			if (getBoggleWord().length() >=3 ){
-				try {
-					isWord();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		}
+	}
+
+	public void onMultiplayerGameBackButtonClicked(View v){
+		Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+		Log.d(TAG,"Back button clicked");
+		playClickSound(R.id.button_boggle_pause);
+		vib.vibrate(50);
+		clearCurrentSet();
+		finish(); 
+	}
+
+	public void onClearWordButtonClicked(View v){
+		Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+		Log.d(TAG,"Clear button clicked");
+		playClickSound(R.id.button_Boggle_Clear);
+		vib.vibrate(50);
+		clearCurrentSet();
+		enableAllButtons();
+		swapAllButtonUnclick();
+		clearWordTextView();
+	}
+
+	public void onSubmitWordButtonClicked(View v){
+		Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+		Log.d(TAG,"Submit button clicked");
+		playClickSound(R.id.button_Boggle_Submit);
+		Log.d(TAG, "submit clicked");
+		vib.vibrate(50);
+		if (getBoggleWord().length() >=3 ){
+			try {
+				isWord();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			break;
-		case R.id.button_boggle_pause:
-			playClickSound(R.id.button_boggle_pause);
-			vib.vibrate(50);
-			mHandler.removeMessages(what);
-			clearCurrentSet();
-			finish(); 
-			break;
 		}
 	}
 
@@ -902,14 +896,31 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		}
 	}
 
-	// updates the current score
-	private void updateScore(String word){
-		Log.d(TAG, "updateScore");
+	// updates player 1  score
+	private void updateGameScore_P1(String word){
+		Log.d(TAG, "updateScore P1");
 		int add_points = scorePoints(word);
-		current_score = current_score + add_points;
-		Log.i(TAG, "additional points : " + Integer.toString(current_score));
-		Log.i(TAG, "current score : " + Integer.toString(current_score));
-		setScore(current_score);
+		this.score_p1 = this.score_p1 + add_points;
+		
+		Log.i(TAG, "additional points : " + Integer.toString(this.score_p1));
+		Log.i(TAG, "current score : " + Integer.toString(this.score_p1));
+
+		this.game.updateScore(username, this.score_p1);
+		setScore(R.id.multiplayer_current_games_textView_player1, username, this.score_p1);
+	}
+	
+	
+	// update player 2 score
+	private void updateGameScore_P2(String word){
+		Log.d(TAG, "updateScore P2");
+		int add_points = scorePoints(word);
+		this.score_p2 = this.score_p2+ add_points;
+		
+		Log.i(TAG, "additional points : " + Integer.toString(this.score_p2));
+		Log.i(TAG, "current score : " + Integer.toString(this.score_p2));
+
+		this.game.updateScore(opponent, this.score_p2);
+		setScore(R.id.multiplayer_current_games_textView_player1, opponent, this.score_p2);
 	}
 
 	// scoring points
@@ -944,12 +955,14 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 	}
 
 	// sets the current score given the number
-	private void setScore(int s){
+	private void setScore(int ID, String user, int s){
 		Log.d(TAG, "setScore");
-		TextView textView_score = (TextView)findViewById(R.id.boggle_score);
+		TextView textView_score = (TextView)findViewById(ID);
 
-		Log.i(TAG, "current score : " + textView_score.getText().toString());
-		textView_score.setText(Integer.toString(s));
+		Log.i(TAG, user + "Score : " + textView_score.getText().toString());
+		
+		String score = user + " | " + s;
+		textView_score.setText(score);
 	}
 
 	//gets the word in the word view
@@ -964,6 +977,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 	private void updateWordList(String word){
 		Log.d(TAG, "updateWordList");
 		wordList.add(word);
+		this.game.addEnteredWord(word);
 		Log.d(TAG, "updateWordList: " + wordList);
 	}
 
@@ -996,7 +1010,18 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 			Log.d(TAG,"isWord: PASS");
 			if(isUsedWord(targetWord) == false){
 				Music.playClip(this, R.raw.correct_word);
-				updateScore(targetWord);
+				if(this.current_turn.equals(this.username)){
+					updateGameScore_P1(targetWord);
+					this.game.setCurrentTurn(this.opponent);
+					this.game.incrementNumTurns();
+					setCurrentTurnIcon(this.opponent);
+				}else if(this.current_turn.equals(this.opponent)){
+					updateGameScore_P2(targetWord);
+					this.current_turn = this.username;
+					this.game.setCurrentTurn(this.username);
+					this.game.incrementNumTurns();
+					setCurrentTurnIcon(this.username);
+				}
 				updateWordList(targetWord);
 				clearCurrentSet();
 				enableAllButtons();
@@ -1008,7 +1033,16 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 			Log.d(TAG,"isWord: Fail");
 		}
 	}
-
+	
+	protected void setCurrentTurnIcon(String user){
+		TextView tv_Turns =(TextView) findViewById(R.id.multiplayer_current_turn);
+		if (this.username.equals(user)){
+			tv_Turns.setText("<<");
+		}else if(this.opponent.equals(user)){
+			tv_Turns.setText(">>");
+		}
+	}
+	
 	//check whether the current dice is already in the current set
 	private boolean isInCurrentSet(int dice){
 		if (current_dice_set.contains(dice)){

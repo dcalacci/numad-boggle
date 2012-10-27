@@ -9,14 +9,16 @@ import android.util.Log;
 
 public class GameWrapper {
 	private String currentTurn;
-	private ArrayList<Character> board;
+	private String board;
 	private ArrayList<String> enteredWords;
 	private Hashtable<String, Integer> scores;
 	private int numTurns;
+	private int turnP1;
+	private int turnP2;
 	
 	public GameWrapper(
 			String currentTurn,
-			ArrayList<Character> board,
+			String board,
 			ArrayList<String> enteredWords,
 			Hashtable<String, Integer> scores,
 			int numTurns) {
@@ -25,6 +27,8 @@ public class GameWrapper {
 		this.enteredWords 	= enteredWords;
 		this.scores 		= scores;
 		this.numTurns 		= numTurns;
+		this.turnP1 = this.numTurns / 2;
+		this.turnP1 = this.numTurns / 2;
 	}
 	
 	/**
@@ -138,6 +142,16 @@ public class GameWrapper {
 	public void updateScore(String user, Integer score) {
 		this.scores.put(user, score);
 	}
+	
+	/**
+	 * Returns the score of the given user
+	 * @param user The user whose score we're getting
+	 * @return	Int, score of user
+	 */
+	public int getUserScore(String user){
+		return this.scores.get(user);
+	}
+	
 	/**
 	 * Increments the given users' score by a given amount
 	 * @param user 	The user whose score we're updating
@@ -160,7 +174,7 @@ public class GameWrapper {
 	 * Gets this games' board
 	 * @return An arraylist implementation of the board.
 	 */
-	public ArrayList<Character> getBoard() {
+	public String getBoard() {
 		Log.d("GameWrapper", "getBoard: "+ this.board);
 		return this.board;
 	}

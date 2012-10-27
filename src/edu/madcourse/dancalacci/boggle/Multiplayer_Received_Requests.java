@@ -209,7 +209,7 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 					});
 					
 					
-					Intent i = new Intent(mContext, Multiplayer_Game_old.class);
+					Intent i = new Intent(mContext, Multiplayer_Game.class);
 					i.putExtra("opponent", row);
 					//sa.generateBoard();
 

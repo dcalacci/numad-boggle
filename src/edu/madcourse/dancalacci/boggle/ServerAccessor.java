@@ -756,8 +756,7 @@ public class ServerAccessor {
 
 		String boardKey = BOARD_PREFIX + userskey;
 		Log.d(TAG, "getGame boardKey: "+ boardKey);
-		ArrayList<Character> board =
-				this.stringToBoard(this.get(boardKey));
+		String board = this.get(boardKey);
 		Log.d(TAG, "getGame boardLetters: "+ board.toString());
 
 		String enteredWordsKey = ENTERED_WORDS_PREFIX + userskey;
