@@ -23,6 +23,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import edu.madcourse.dancalacci.R;
+import edu.madcourse.dancalacci.boggle.Prefs;
+import edu.neu.mobileClass.PhoneCheckAPI;
 import android.widget.Button;
 import java.io.*;
 import java.util.BitSet;
@@ -46,17 +48,20 @@ public class Boggle extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.boggle_main);
-
+		
+		View continueButton = findViewById(R.id.boggle_continue_game_button);
+		//continueButton.setOnClickListener(this);
+		continueButton.setVisibility(continueButton.GONE);
+		
 		this.setContinueButtonVis();
 		setTitle("Boggle");
 	}
-
-
+	
 	@Override
 	protected void onResume() {
 		super.onResume();
 		//Music.play(this, R.raw.sudoku_main);
-		this.setContinueButtonVis();
+		//this.setContinueButtonVis();
 	}
 
 	@Override
@@ -66,14 +71,17 @@ public class Boggle extends Activity {
 	}
 
 	public void OnNewGameButtonClicked(View v) {
+		View continueButton = findViewById(R.id.boggle_continue_game_button);
+		continueButton.setVisibility(continueButton.VISIBLE);
 		Intent i = new Intent(this, Game.class);
-		i.putExtra(Game.TO_CONTINUE, 0);
+		i.putExtra(Game.PREF_RESUME, false);
 		startActivity(i);
 	}
 
 	public void OnContinueGameButtonClicked(View v) {
+		
 		Intent i = new Intent(this, Game.class);
-		i.putExtra(Game.TO_CONTINUE, 1);
+		i.putExtra(Game.PREF_RESUME, true);
 		startActivity(i);
 	}
 
@@ -84,6 +92,11 @@ public class Boggle extends Activity {
 
 	public void OnAcknowledgementsButtonClicked(View v) {
 		Intent i = new Intent(this, Acknowledgements.class);
+		startActivity(i);
+	}
+	
+	public void OnSettingsClicked(View v){
+		Intent i = new Intent(this, Prefs.class);
 		startActivity(i);
 	}
 

@@ -41,12 +41,12 @@
     <string name="multiplayer_current_games_button_label_VS">VS</string>
 
     <!-- High Scores -->
-    
-    <!-- Login Form-->
+
+
+    <!-- Login Form -->
     <string name="login_form_label_login_in">Log In</string>
     <string name="login_form_label_register">Register</string>
     <string name="login_form_header">Please Login</string>
-    
     <string name="sudoku_label">Sudoku</string>
 
     <!-- Create Error -->
@@ -60,6 +60,12 @@
     <string name="boggle_submit_word_label">Submit Word</string>
     <string name="boggle_clear_word_label">Clear Word</string>
     <string name="pause_label">Pause</string>
+    <string name="ok_label">OK</string>
+    <string name="score_label"></string>
+    <string name="time_label"></string>
+    <string name="rules_header">Rules</string>
+    <string name="scoring_header">Scoring</string>
+    <string name="gameplay_header">Gameplay</string>
     <string name="boggle_pause_text">Game Paused</string>
     <string name="boggle_pause_resume_button_label">Resume Game</string>
     <string name="boggle_rules_button_label">Rules</string>
@@ -89,6 +95,7 @@
     <string name="boggle_pause_label">Pause</string>
     <string name="boggle_resume_label">Resume</string>
     <string name="boggle_quit_label">Quit</string>
+    <string name="boggle_settings_label">Settings</string>
     <string name="boggle_continue_game_label">Continue Game</string>
     <string name="boggle_multiplayer_Label">Multiplayer</string>
     <string name="settings_label">Settings...</string>

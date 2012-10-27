@@ -51,6 +51,13 @@
        android:text="@string/boggle_rules_button_label" />
 
    <Button
+       android:id="@+id/boggle_settings"
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+       android:onClick="OnSettingsClicked"
+       android:text="@string/boggle_settings_label" />
+
+   <Button
        android:id="@+id/boggle_acknowledgements_button"
        android:layout_width="fill_parent"
        android:layout_height="wrap_content"

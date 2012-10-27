@@ -364,7 +364,7 @@ public class Multiplayer_Game_View extends View {
 					// make lastSelected this most recently selected point
 					lastSelected = selectedP;
 					// log it
-					game.selectTile(xIndex, yIndex);
+					this.game.selectTile(xIndex, yIndex);
 					Log.d("onTouchEvent", "added rect at: " + xIndex + ", " + yIndex);
 					// refresh screen
 					invalidate();

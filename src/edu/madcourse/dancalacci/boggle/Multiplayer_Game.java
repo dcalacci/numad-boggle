@@ -68,12 +68,6 @@ public class Multiplayer_Game extends Activity {
 		String opponent = getIntent().getStringExtra("opponent");
 		// set the layout, start the view.
 		username = getSharedPreferences(MULTI_PREF, MODE_PRIVATE).getString(PREF_USER, "guest");
-		
-		this.game = sa.getGame(username, opponent);
-		Log.v(TAG, "Get Baords: "+this.game.getCurrentTurn());
-		
-		this.setUsers();
-		
 		// if the game exists, get it.  if not, make a new one.
 		if (sa.doesGameExist(username, opponent)) {
 			Log.v(TAG, "Game Exists!");
@@ -83,14 +77,25 @@ public class Multiplayer_Game extends Activity {
 			sa.createNewGame(username, opponent);
 			this.game = sa.getGame(username, opponent);
 		}
-
+		
 		gameView = new Multiplayer_Game_View(this);
+		
+		this.game = sa.getGame(username, opponent);
+		Log.v(TAG, "Get Baords: "+this.game.getCurrentTurn());
+
+		this.setUsers();
+		this.clearSelectedTiles();
+		this.gameView.setSelectedDice(this.selected);
+		Log.d(TAG, "selceted size: " + selected.size());
+		Log.d(TAG, "selceted coontents: " + selected.toString());
+
+		
 
 		setContentView(R.layout.multiplayer_game);
 		FrameLayout boardFrame = (FrameLayout)findViewById(R.id.multiplayer_game_tiles);
 		boardFrame.addView(gameView);
 	}
-	
+
 	private void setUsers(){
 		Hashtable<String, Integer> scoresContent = this.game.getScores();
 		Enumeration keys = scoresContent.keys();
@@ -223,7 +228,9 @@ public class Multiplayer_Game extends Activity {
 	protected void selectTile(int i, int j) {
 		int index = getTileIndex(i, j);
 		Log.d(TAG, "Setting tile at " + index + " to true");
-		selected.set(index, true);
+		Log.d(TAG, "selected size " + this.selected.size());
+		Log.d(TAG, "selected size " + this.selected.toString());
+		this.selected.set(index, true);
 		this.iWord.append(getLetter(index));
 	}
 
@@ -275,7 +282,7 @@ public class Multiplayer_Game extends Activity {
 		Sounds.playClear(this);
 		this.clearSelectedTiles();
 	}
-	
+
 	/**
 	 * Sets Game Over specifics
 	 */

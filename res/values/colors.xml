@@ -8,29 +8,27 @@
  ! Visit http://www.pragmaticprogrammer.com/titles/eband3 for more book information.
 -->
 <resources>
-   <color name="background">#fdf6e3</color>
-   <color name="puzzle_background">#ffe6f0ff</color>
-   <color name="puzzle_hilite">#ffffffff</color>
-   <color name="puzzle_light">#64c6d4ef</color>
-   <color name="puzzle_dark">#6456648f</color>
-   <color name="puzzle_foreground">#ff000000</color>
-   <color name="puzzle_hint_0">#64ff0000</color>
-   <color name="puzzle_hint_1">#6400ff80</color>
-   <color name="puzzle_hint_2">#2000ff80</color>
-   <color name="puzzle_selected">#64ff8000</color>
-   <color name="title_text">#073642</color>
-   <color name="game_over">#cb4b16</color>
-   
-   
-   <color name="transparent">#00000000</color>
-   
-   <color name="boggle_selectedDieColor">#25eee8d5</color>
-   <color name="boggle_boardColor">#657b83</color>
-   <color name="boggle_hilite">#002b36</color>
-   <color name="boggle_light">#64c6d4ef</color>
-   <color name="boggle_dark">#6456648f</color>
-   <color name="boggle_foreground">#002b36</color>
-   <color name="boggle_background">#fdf6e3</color>
-   
-   <color name="multiplayer_game_boardColor">#657b83</color>
+
+    <color name="background">#fdf6e3</color>
+    <color name="puzzle_background">#ffe6f0ff</color>
+    <color name="puzzle_hilite">#ffffffff</color>
+    <color name="puzzle_light">#64c6d4ef</color>
+    <color name="puzzle_dark">#6456648f</color>
+    <color name="puzzle_foreground">#ff000000</color>
+    <color name="puzzle_hint_0">#64ff0000</color>
+    <color name="puzzle_hint_1">#6400ff80</color>
+    <color name="puzzle_hint_2">#2000ff80</color>
+    <color name="puzzle_selected">#64ff8000</color>
+    <color name="title_text">#073642</color>
+    <color name="game_over">#cb4b16</color>
+    <color name="transparent">#00000000</color>
+    <color name="boggle_selectedDieColor">#25eee8d5</color>
+    <color name="boggle_boardColor">#657b83</color>
+    <color name="boggle_hilite">#002b36</color>
+    <color name="boggle_light">#64c6d4ef</color>
+    <color name="boggle_dark">#6456648f</color>
+    <color name="boggle_foreground">#002b36</color>
+    <color name="boggle_background">#fdf6e3</color>
+    <color name="multiplayer_game_boardColor">#657b83</color>
+
 </resources>
