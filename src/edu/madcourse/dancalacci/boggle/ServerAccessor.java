@@ -27,6 +27,7 @@ public class ServerAccessor {
 	private static final String RECEIVED_PREFIX = "rec_";
 	private static final String USERS_KEY = "users";
 	private static final String GAMES_KEY = "games";
+	private static final String PASS_KEY = "pass_";
 
 	// Context for doing asyncTask
 	private static Context c;
@@ -327,19 +328,45 @@ public class ServerAccessor {
 	 * @param user  The given username
 	 * @param pass  The given password
 	 */
-	public boolean login(String user, String pass) {
-		String usersKey = USERS_KEY;
-		String passKey = "pass_" + user;
-
-		String passVal = this.get(passKey);
-		ArrayList<String> users = stringToArrayList(this.get(usersKey));
-
-		if (users.contains(user) && pass.equals(passVal)) {
-			this.USER_NAME  = user;
-			this.USER_PASS   = pass;
-			return true;
-		} else {
-			return false;
+	public void login(String user, String pass, final OnBooleanReceivedListener l) {
+		final String usersKey = USERS_KEY;
+		final String passKey = PASS_KEY + user;
+		final ServerAccessor thisSA = this;
+		
+		class LoginTask extends AsyncTask<String, Integer, Boolean> {
+			protected Boolean doInBackground(String... keys) {
+				String user = keys[0];
+				String pass = keys[1];
+				if (!thisSA.canConnect()) {
+					Log.d(TAG, "Can't connect to server");
+					return false;
+				}
+				Log.d(TAG, "In doInBackground for LoginTask");
+				String passVal = thisSA.get(passKey);
+				Log.d(TAG, passVal + " is the password");
+				ArrayList<String> users = stringToArrayList(thisSA.get(usersKey));
+				if (users.get(0).startsWith("ERROR")) {
+					Log.d(TAG, "Connection error to server");
+					return false;
+				}
+				
+				if (!passVal.equals(pass)) {
+					Log.d(TAG, "passwords don't match: "+passVal+" stored, "+pass+" entered.");
+					return false;
+				}
+				// if we're here, the user exists and the password was right
+				return true;
+			}
+			
+			protected void onPostExecute(Boolean result) {
+				Log.d(TAG, "in onPostExecute in LoginTask");
+				l.run(result);
+			}
+		}
+		try {
+			new LoginTask().execute(user, pass);
+		} catch(Exception e) {
+			Log.e(TAG, "LoginTask thread died: " +e);
 		}
 	}
 
@@ -349,16 +376,54 @@ public class ServerAccessor {
 	 * @param user  The new username to register
 	 * @param pass  The password for the new username
 	 */
-	public void register(String user, String pass) {
-		String usersKey = USERS_KEY;
-		String passKey = "pass_" + user;
-
-		String passVal = pass;
-		this.put(passKey, passVal); // enters the new user/pass combo into the server
-
-		ArrayList<String> users = stringToArrayList(this.get(usersKey));
-		users.add(user); // adds the given username to the list of users
-		this.put(usersKey, this.arrayListToString(users)); // updates the list of users on the server
+	public void register(String user, String pass, final OnBooleanReceivedListener l) {
+		final String usersKey = USERS_KEY;
+		final String passKey = "pass_" + user;
+		final ServerAccessor thisSA = this;
+		
+		class RegisterUserTask extends AsyncTask<String, Integer, Boolean> {
+			protected Boolean doInBackground(String... keys) {
+				if (!thisSA.canConnect()) {
+					return false;
+				}
+				String user = keys[0];
+				String pass = keys[1];
+				if (!thisSA.canRegister(user, pass)) {
+					return false;
+				}
+				// if we're here, the user can be registered.
+				Log.d(TAG, "In doInBackground for RegisterUserTask");
+				thisSA.put(passKey, pass); // enters the new user/pass combo in server
+				ArrayList<String> users = stringToArrayList(thisSA.get(usersKey));
+				if (users.get(0).startsWith("ERROR")) {
+					return false;
+				}
+				users.add(user); //adds given username to list of users
+				thisSA.put(usersKey, thisSA.arrayListToString(users)); // updates list of users on server
+				thisSA.put(passKey, pass); // enters the password into the server
+				return true;
+			}
+			
+			protected void onPostExecute(Boolean result) {
+				Log.d(TAG, "in onPostExecute in getUserList");
+				l.run(result);
+			}
+		}
+		try {
+			new RegisterUserTask().execute(user, pass);
+		} catch(Exception e) {
+			Log.e(TAG, "RegisterUserTask thread died: " +e);
+		}
+		
+//		String usersKey = USERS_KEY;
+//		String passKey = "pass_" + user;
+//
+//		String passVal = pass;
+//		this.put(passKey, passVal); // enters the new user/pass combo into the server
+//
+//		ArrayList<String> users = stringToArrayList(this.get(usersKey));
+//		users.add(user); // adds the given username to the list of users
+//		this.put(usersKey, this.arrayListToString(users)); // updates the list of users on the server
 	}
 
 	/**

@@ -154,7 +154,7 @@ public class Multiplayer_CurrentGames extends ListActivity {
 				player1.setText(USERNAME);
 			} else if (hadError) {
 				Log.d(TAG, "error.  displaying couldnt retrieve...");
-				player1.setText("Couldn't retrieve data...");
+				player1.setText("No Current Games Available");
 			}else{
 				Log.d(TAG, "empty!");
 				player1.setText("No Current Games Available");
