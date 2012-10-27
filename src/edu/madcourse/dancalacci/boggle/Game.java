@@ -25,6 +25,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -146,6 +147,7 @@ public class Game extends Activity implements OnClickListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate");
 
@@ -595,7 +597,8 @@ public class Game extends Activity implements OnClickListener {
 			}	         
 			break;
 		case R.id.button_Boggle_Clear:
-			playClickSound(R.id.button_Boggle_Clear);
+			Sounds.playClear(this);
+			//playClickSound(R.id.button_Boggle_Clear);
 			vib.vibrate(50);
 			clearCurrentSet();
 			enableAllButtons();
@@ -996,7 +999,8 @@ public class Game extends Activity implements OnClickListener {
 		if (check){
 			Log.d(TAG,"isWord: PASS");
 			if(isUsedWord(targetWord) == false){
-				Music.playClip(this, R.raw.correct_word);
+				Sounds.playRight(this);
+				//Music.playClip(this, R.raw.correct_word);
 				updateScore(targetWord);
 				updateWordList(targetWord);
 				clearCurrentSet();
@@ -1004,8 +1008,15 @@ public class Game extends Activity implements OnClickListener {
 				swapAllButtonUnclick();
 				clearWordTextView();
 				updateUsedWordsList();
-			}
+			}	
 		}else{
+			// play wrong sound, clear board selected, etc.
+			Sounds.playWrong(this);
+			clearCurrentSet();
+			enableAllButtons();
+			swapAllButtonUnclick();
+			clearWordTextView();	
+			
 			Log.d(TAG,"isWord: Fail");
 		}
 	}
