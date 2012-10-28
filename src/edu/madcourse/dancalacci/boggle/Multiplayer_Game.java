@@ -231,20 +231,13 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 
 		View button_DiceR5C5 = findViewById(R.id.button_DiceR5C5);
 		button_DiceR5C5.setOnClickListener((OnClickListener) this);
-
-		View button_back = findViewById(R.id.multiplayer_game_back);
-		button_back.setOnClickListener((OnClickListener) this);
-
-		View button_Clear = findViewById(R.id.multiplayer_game_clear_word);
-		button_Clear.setOnClickListener((OnClickListener) this);
-
-		View button_Submit= findViewById(R.id.multiplayer_game_submit_word);
-		button_Submit.setOnClickListener((OnClickListener) this);
-
+		
 		View tv_Player1 = findViewById(R.id.multiplayer_player1);
+		this.setScore(R.id.multiplayer_player1, username, this.score_p1);
 
 		View tv_Player2 = findViewById(R.id.multiplayer_player1);
-
+		this.setScore(R.id.multiplayer_player2, opponent, this.score_p2);
+		
 		TextView tv_Turns = (TextView) findViewById(R.id.multiplayer_current_turn);
 
 		setCurrentTurnIcon(this.current_turn);
@@ -592,7 +585,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 	public void onMultiplayerGameBackButtonClicked(View v){
 		Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		Log.d(TAG,"Back button clicked");
-		playClickSound(R.id.button_boggle_pause);
+		playClickSound(R.id.multiplayer_game_back);
 		vib.vibrate(50);
 		clearCurrentSet();
 		finish(); 
@@ -601,7 +594,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 	public void onClearWordButtonClicked(View v){
 		Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		Log.d(TAG,"Clear button clicked");
-		playClickSound(R.id.button_Boggle_Clear);
+		playClickSound(R.id.multiplayer_game_clear_word);
 		vib.vibrate(50);
 		clearCurrentSet();
 		enableAllButtons();
@@ -612,7 +605,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 	public void onSubmitWordButtonClicked(View v){
 		Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		Log.d(TAG,"Submit button clicked");
-		playClickSound(R.id.button_Boggle_Submit);
+		playClickSound(R.id.multiplayer_game_submit_word);
 		Log.d(TAG, "submit clicked");
 		vib.vibrate(50);
 		if (getBoggleWord().length() >=3 ){
@@ -632,27 +625,15 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		Music.play(this, R.raw.boggle_bgm);
 		
 		letterSet = sa.getBooard(this.username, this.opponent);
-		//Log.d(TAG, "onResume letter set resume direct: "+ sf.getString(PREF_DICE, null));	
-		
-		//letterSet = sf.getString(PREF_DICE, null);
 		Log.d(TAG, "onResume letter set resume: "+ letterSet);
 		if (letterSet != null){
 			fillButtons(this.letterSet);
 		}
-
-		//		current_score = sf.getInt(PREF_SCORE, 0);
-		//		setScore(current_score);
-		//		Log.d(TAG, "onResume letter set score: "+ current_score);
 		
 		String temp_WordList = sa.getEnteredWords(username, opponent);
 		Log.d(TAG, "onResume letter set word list: "+ temp_WordList);
 		convert_onPause_wordList(temp_WordList);
 		updateUsedWordsList();
-
-		//		currentTime = sf.getInt(PREF_TIME, 180);
-		//		updateTimeUI();
-
-		//sf.getBoolean(PREF_RESUME, false);
 	}
 
 	@Override
@@ -749,10 +730,12 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		updateWordTextView();
 		
 		if (! (this.game.getCurrentTurn().equals(username))){
+			Log.d(TAG, "Disable Submit Button");
 			Button submitButton = (Button)findViewById(R.id.multiplayer_game_submit_word);
 			//submitButton.setClickable(false);
 			submitButton.setEnabled(false);
 		}else{
+			Log.d(TAG, "enable Submit Button");
 			Button submitButton = (Button)findViewById(R.id.multiplayer_game_submit_word);
 			//submitButton.setClickable(true);
 			submitButton.setEnabled(true);
@@ -766,6 +749,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 
 	// plays click sound
 	private void playClickSound(int diceID){
+		Log.d(TAG, "playClickSound: "+ diceID);
 		Button dice = (Button)findViewById(diceID);
 		dice.playSoundEffect(android.view.SoundEffectConstants.CLICK);
 	}
@@ -907,7 +891,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		this.game.updateScore(username, this.score_p1);
 		
 		updateOverAllScores();
-		setScore(R.id.multiplayer_current_games_textView_player1, username, this.score_p1);
+		setScore(R.id.multiplayer_player1, username, this.score_p1);
 	}
 
 
@@ -923,7 +907,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		this.game.updateScore(opponent, this.score_p2);
 		
 		updateOverAllScores();
-		setScore(R.id.multiplayer_current_games_textView_player1, opponent, this.score_p2);
+		setScore(R.id.multiplayer_player2, opponent, this.score_p2);
 	}
 
 
@@ -963,8 +947,8 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 	private void setScore(int ID, String user, int s){
 		Log.d(TAG, "setScore");
 		TextView textView_score = (TextView)findViewById(ID);
-
-		Log.i(TAG, user + "Score : " + textView_score.getText().toString());
+		Log.d(TAG, "setScore ID: "+ ID);
+		Log.d(TAG, user + "Score : " + textView_score.getText().toString());
 
 		String score = user + "|" + s;
 		textView_score.setText(score);
@@ -982,7 +966,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 	private void updateWordList(String word){
 		Log.d(TAG, "updateWordList");
 		wordList.add(word);
-		this.game.addEnteredWord(word);
+		//this.game.addEnteredWord(word);
 		/**
 		 * Server Side add word 
 		 */
@@ -993,6 +977,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 	private void updateUsedWordsList(){
 		TextView usedWordsView = (TextView)findViewById(R.id.boggle_used_words);
 		String temp = generate_onPause_wordList();
+		this.updateUsedWords();
 		usedWordsView.setText(temp);
 	}
 
