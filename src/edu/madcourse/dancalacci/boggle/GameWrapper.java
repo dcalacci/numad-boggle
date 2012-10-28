@@ -173,7 +173,7 @@ public class GameWrapper {
 
 	/**
 	 * Gets this games' board
-	 * @return An arraylist implementation of the board.
+	 * @return An string implementation of the board.
 	 */
 	public String getBoard() {
 		Log.d("GameWrapper", "getBoard: "+ this.board);

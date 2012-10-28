@@ -818,7 +818,7 @@ public class ServerAccessor {
 			}
 		}
 		try {
-			new CreateGameTask().execute();
+			new CreateGameTask().execute(user1, user2);
 		} catch(Exception e) {
 			Log.e(TAG, "CreateGameTask thread died: "+e);
 		}
