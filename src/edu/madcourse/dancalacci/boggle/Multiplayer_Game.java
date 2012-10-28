@@ -729,17 +729,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		Log.d(TAG, "process_click: UpdateWordTextView");
 		updateWordTextView();
 		
-		if (! (this.game.getCurrentTurn().equals(username))){
-			Log.d(TAG, "Disable Submit Button");
-			Button submitButton = (Button)findViewById(R.id.multiplayer_game_submit_word);
-			//submitButton.setClickable(false);
-			submitButton.setEnabled(false);
-		}else{
-			Log.d(TAG, "enable Submit Button");
-			Button submitButton = (Button)findViewById(R.id.multiplayer_game_submit_word);
-			//submitButton.setClickable(true);
-			submitButton.setEnabled(true);
-		}
+		
 		/*
 			if (getBoggleWord().length() >=3 ){
 				isWord();
@@ -1026,9 +1016,25 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 				clearWordTextView();
 
 				updateUsedWordsList();
+				
+				changeSubmitButtonState();
 			}
 		}else{
 			Log.d(TAG,"isWord: Fail");
+		}
+	}
+	
+	protected void changeSubmitButtonState(){
+		if (! (this.game.getCurrentTurn().equals(username))){
+			Log.d(TAG, "Disable Submit Button");
+			Button submitButton = (Button)findViewById(R.id.multiplayer_game_submit_word);
+			//submitButton.setClickable(false);
+			submitButton.setEnabled(false);
+		}else{
+			Log.d(TAG, "enable Submit Button");
+			Button submitButton = (Button)findViewById(R.id.multiplayer_game_submit_word);
+			//submitButton.setClickable(true);
+			submitButton.setEnabled(true);
 		}
 	}
 
