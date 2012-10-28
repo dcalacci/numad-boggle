@@ -35,31 +35,31 @@ public class ServerAccessor {
 	private static final String TAG = "ServerAccessor";
 
 	private static String[] dice_set = new String[]{ 	// strings of all possible dice
-			"AAAFRS",
-			"AAEEEE",
-			"AAFIRS",
-			"ADENNN",
-			"AEEEEM",
-			"AEEGMU",
-			"AEGMNN",
-			"AFIRSY",
-			"BJKQXZ",
-			"CCNSTW",
-			"CEIILT",
-			"CEILPT",
-			"CEIPST",
-			"DDLNOR",
-			"DHHLOR",
-			"DHHNOT",
-			"DHLNOR",
-			"EIIITT",
-			"EMOTTT",
-			"ENSSSU",
-			"FIPRSY",
-			"GORRVW",
-			"HIPRRY",
-			"NOOTUW",
-			"OOOTTU"
+		"AAAFRS",
+		"AAEEEE",
+		"AAFIRS",
+		"ADENNN",
+		"AEEEEM",
+		"AEEGMU",
+		"AEGMNN",
+		"AFIRSY",
+		"BJKQXZ",
+		"CCNSTW",
+		"CEIILT",
+		"CEILPT",
+		"CEIPST",
+		"DDLNOR",
+		"DHHLOR",
+		"DHHNOT",
+		"DHLNOR",
+		"EIIITT",
+		"EMOTTT",
+		"ENSSSU",
+		"FIPRSY",
+		"GORRVW",
+		"HIPRRY",
+		"NOOTUW",
+		"OOOTTU"
 	};
 
 	public ServerAccessor() {
@@ -650,15 +650,35 @@ public class ServerAccessor {
 		String numTurnsKey = NUM_TURNS_PREFIX + userskey;
 		this.put(numTurnsKey, "0");
 	}
-	
+
+	/**
+	 * Updates the score for the game 
+	 * @param user1
+	 * @param score_1
+	 * @param user2
+	 * @param score_2
+	 */
 	public void setScoreContent(String user1, int score_1, String user2, int score_2){
 		String userskey = this.getUsersKey(user1, user2);
 		String scoresKey = SCORES_PREFIX + userskey;
 		String scoresContent = user1 + "|" +score_1+ "," + user2 + "|"+score_2;
 		this.put(scoresKey, scoresContent);
 	}
-	
-	
+
+	/**
+	 * Gets the board for the game. 
+	 * @param user1
+	 * @param user2
+	 * @return
+	 */
+	public String getBooard(String user1, String user2){
+		String userskey = this.getUsersKey(user1, user2);
+		// add board to the server
+		String boardKey = BOARD_PREFIX + userskey;
+		return this.get(boardKey);
+	}
+
+
 
 	/**
 	 * Send a request from user1 to user2
@@ -753,23 +773,23 @@ public class ServerAccessor {
 	//        turn_... should update itself.
 
 	protected static String generateBoard() {
-			Log.d(TAG, "Pick Dice");
-			int num_dice = size * size;  
-			List<Character> set_letters = new ArrayList<Character>(num_dice);
-			for (int i = 0; i<num_dice; i++){
-				int x = (int) Math.floor(Math.random() * 6);	// pick letter in list of characters
-				int d = (int) Math.floor(Math.random() * dice_set.length); // pick dice in collection
-				char c = dice_set[d].charAt(x);
-				set_letters.add(c);
-			}
-			Collections.shuffle(set_letters);
-			String final_letters = "";
-			for (Character s : set_letters){
-				final_letters += s;
-			}
-			//String final_letters = set_letters.toString().replace("," ,"").replace("[", "").replace("]", "").trim();
-			Log.d(TAG, "Pick letters: " + final_letters);
-			return final_letters;	   
+		Log.d(TAG, "Pick Dice");
+		int num_dice = size * size;  
+		List<Character> set_letters = new ArrayList<Character>(num_dice);
+		for (int i = 0; i<num_dice; i++){
+			int x = (int) Math.floor(Math.random() * 6);	// pick letter in list of characters
+			int d = (int) Math.floor(Math.random() * dice_set.length); // pick dice in collection
+			char c = dice_set[d].charAt(x);
+			set_letters.add(c);
+		}
+		Collections.shuffle(set_letters);
+		String final_letters = "";
+		for (Character s : set_letters){
+			final_letters += s;
+		}
+		//String final_letters = set_letters.toString().replace("," ,"").replace("[", "").replace("]", "").trim();
+		Log.d(TAG, "Pick letters: " + final_letters);
+		return final_letters;	   
 	}
 
 	/**
@@ -799,14 +819,14 @@ public class ServerAccessor {
 	}
 
 	public void createNewGame(String user1, String user2, final OnBooleanReceivedListener l) {
-		
+
 		final String usersKey = this.getUsersKey(user1, user2);
 		final ServerAccessor thisSA = this;
-		
+
 		Log.d(TAG, "about to create an asynctask CreateGameTask");
-		
+
 		class CreateGameTask extends AsyncTask<String, Integer, Boolean> {
-			
+
 			protected Boolean doInBackground(String... key) {
 				String user1 = key[0];
 				String user2 = key[1];
@@ -820,7 +840,7 @@ public class ServerAccessor {
 				// put updated games list into the server
 				return true;
 			}
-			
+
 			protected void onPostExecute(Boolean result) {
 				Log.d(TAG, "in onPostExecute for createGameTask");
 				l.run(result);
@@ -900,7 +920,7 @@ public class ServerAccessor {
 		}
 		return scoresDic;
 	}
-	
+
 	/**
 	 * Returns the Current turn of the the Game 
 	 * @param user1 << Host
@@ -913,7 +933,7 @@ public class ServerAccessor {
 		String currentTurn = this.get(turnKey);
 		return currentTurn;
 	}
-	
+
 	/**
 	 * Sets the Games current player's turn
 	 * @param user1 << Host
@@ -939,12 +959,31 @@ public class ServerAccessor {
 		this.put(numTurnsKey, Integer.toString(numTurns));
 	}
 	
+	
+	/**
+	 * Sets the enteredWords for the game
+	 * @param user1
+	 * @param user2
+	 * @param usedWords
+	 */
 	public void setEnteredWords(String user1, String user2, String usedWords){
 		String userskey = this.getUsersKey(user1, user2);
 		String enteredWordsKey = ENTERED_WORDS_PREFIX + userskey;
 		this.put(enteredWordsKey, usedWords);
 	}
 	
+	/**
+	 * Gets the enteredWords for the game
+	 * @param user1
+	 * @param user2
+	 * @param usedWords
+	 */
+	public String getEnteredWords(String user1, String user2){
+		String userskey = this.getUsersKey(user1, user2);
+		String enteredWordsKey = ENTERED_WORDS_PREFIX + userskey;
+		return this.get(enteredWordsKey);
+	}
+
 	/**
 	 * Converts a given scores hashtable to a string
 	 * @param scores The hashtable of the two users' scores
