@@ -225,7 +225,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		View button_DiceR5C5 = findViewById(R.id.button_DiceR5C5);
 		button_DiceR5C5.setOnClickListener((OnClickListener) this);
 
-		View button_back = findViewById(R.id.multiplayer_back_button);
+		View button_back = findViewById(R.id.multiplayer_game_back);
 		button_back.setOnClickListener((OnClickListener) this);
 
 		View button_Clear = findViewById(R.id.multiplayer_game_clear_word);
