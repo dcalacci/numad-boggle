@@ -705,6 +705,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 			View formedWord = findViewById(R.id.boggle_word_textView);
 			formedWord.setClickable(false);
 			updateUserScore();
+			sa.removeGame(username, opponent);			// removes the game from the server
 			Toast.makeText(this, "GAME OVER", Toast.LENGTH_SHORT).show();
 			finish();
 		}
