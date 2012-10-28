@@ -7,16 +7,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.PowerManager;
 import android.widget.Toast;
+import edu.madcourse.dancalacci.boggle.ServerAccessor;
 
 public class Alarm extends BroadcastReceiver 
 {    
+	private ServerAccessor sa = new ServerAccessor();
+
 	@Override
 	public void onReceive(Context context, Intent intent) 
 	{   
 		PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 		PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
 		wl.acquire();
-
+		
 		// Put here YOUR code.
 		Toast.makeText(context, "Alarm !", Toast.LENGTH_LONG).show(); // For example
 
@@ -28,9 +31,9 @@ public class Alarm extends BroadcastReceiver
 		AlarmManager am=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 		Intent i = new Intent(context, Alarm.class);
 		PendingIntent pi = PendingIntent.getBroadcast(context, 0, i, 0);
-		am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 60 * 10, pi); // Millisec * Second * Minute
+		am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 60 * 5, pi); // Millisec * Second * Minute
 	}
-
+	
 	public void CancelAlarm(Context context)
 	{
 		Intent intent = new Intent(context, Alarm.class);

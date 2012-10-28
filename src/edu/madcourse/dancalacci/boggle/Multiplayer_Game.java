@@ -16,17 +16,21 @@ import java.util.List;
 import java.util.Timer;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,7 +38,7 @@ import edu.madcourse.dancalacci.R;
 
 public class Multiplayer_Game extends Activity implements OnClickListener {
 	private static final 	String TAG = "MultiplayerBoggleGame";
-	
+
 	public static final 	String 	MULTI_PREF 		= "edu.madcourse.dancalacci.multiplayer";
 	public static final 	String  PREF_BOGGLE 	= "prefBoggle";
 	private static final 	String 	PREF_USER 		= "prefUser";
@@ -44,18 +48,19 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 	private static final 	String PREF_TIME 		= "boggleTime";
 	public static final 	String PREF_RESUME 		= "MultipalyerboggleResume";
 
-	
-	private 	SharedPreferences 	sf;
-	private 	int 				size 				= 		5;			
-	private 	int 				score_p1			= 		0; 	// current game score
-	private 	int 				score_p2			= 		0; 	// current game score
-	private 	String 				username;
-	private 	String 				opponent; 
-	private 	String 				letterSet;					// letters used in game
-	private 	String				onPauseLetters; 
-	private 	ServerAccessor 		sa 					= new ServerAccessor();
-	private 	GameWrapper 		game;
-	private 	String				current_turn;
+
+	private 	SharedPreferences 		sf;
+	private 	int 					size 				= 		5;			
+	private 	int 					score_p1			= 		0; 	// current game score
+	private 	int 					score_p2			= 		0; 	// current game score
+	private 	String 					username;
+	private 	String 					opponent; 
+	private 	String 					letterSet;					// letters used in game
+	private 	String					onPauseLetters; 
+	private 	ServerAccessor 			sa 					= new ServerAccessor();
+	private 	GameWrapper 				game;
+	private 	String						current_turn;
+	private		Multiplayer_Game_Service 	service;
 
 	private ArrayList<String> wordList= new ArrayList<String>();			// string of accepted words seperated by spaces
 
@@ -126,12 +131,14 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 
 		opponent = getIntent().getStringExtra("opponent");
 		username = getSharedPreferences(MULTI_PREF, MODE_PRIVATE).getString(PREF_USER, "guest");
-		
-		
-		
+
+		service = new Multiplayer_Game_Service(username, opponent);
+
 		// Sets to multiplayer views
 		setContentView(R.layout.multiplayer_game);
-		
+
+		doBindService();
+
 		this.game = sa.getGame(username, opponent);
 		this.letterSet = this.game.getBoard();
 		if (letterSet.isEmpty()){
@@ -140,10 +147,10 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		}
 		this.current_turn = this.game.getCurrentTurn();
 		this.wordList = this.game.getEnteredWords();
-		
+
 		this.score_p1 = this.game.getUserScore(username);
 		this.score_p2 = this.game.getUserScore(opponent);		
-		
+
 		Log.d(TAG, "current set: "+current_dice_set.toString());
 		onPauseLetters = pick_Letters();
 
@@ -239,16 +246,16 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		View tv_Player2 = findViewById(R.id.multiplayer_player1);
 
 		TextView tv_Turns = (TextView) findViewById(R.id.multiplayer_current_turn);
-		
+
 		setCurrentTurnIcon(this.current_turn);
-		
+
 		View usedWordsList = findViewById(R.id.boggle_used_words);
 		usedWordsList.setOnClickListener((OnClickListener) this);
 
 		fillButtons(this.letterSet);
 
 	}
-	
+
 	public void onClick(View v) {
 		Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		String letter;
@@ -632,17 +639,17 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 			fillButtons(this.letterSet);
 		}
 
-//		current_score = sf.getInt(PREF_SCORE, 0);
-//		setScore(current_score);
-//		Log.d(TAG, "onResume letter set score: "+ current_score);
+		//		current_score = sf.getInt(PREF_SCORE, 0);
+		//		setScore(current_score);
+		//		Log.d(TAG, "onResume letter set score: "+ current_score);
 
 		String temp_WordList = sf.getString(PREF_USED_WORDS, " ");
 		Log.d(TAG, "onResume letter set word list: "+ temp_WordList);
 		convert_onPause_wordList(temp_WordList);
 		updateUsedWordsList();
 
-//		currentTime = sf.getInt(PREF_TIME, 180);
-//		updateTimeUI();
+		//		currentTime = sf.getInt(PREF_TIME, 180);
+		//		updateTimeUI();
 
 		sf.getBoolean(PREF_RESUME, false);
 	}
@@ -653,24 +660,19 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		Log.d(TAG, "onPause");
 		Music.stop(this);
 
-		// Save the current puzzle
+		//	Stops service
+		unbindService(mConnection);
 
-		sf.edit().putString(PREF_DICE, onPauseLetters).commit();
-		Log.d(TAG, "temp letter set pause: "+ onPauseLetters);
 
-//		sf.edit().putInt(PREF_SCORE, current_score).commit();
-//		Log.d(TAG, "temp letter set score: "+ current_score);
 
-		String wordList_Pref = generate_onPause_wordList();
-		sf.edit().putString(PREF_USED_WORDS, wordList_Pref).commit();
-		Log.d(TAG, "temp letter set used wrods: "+ wordList_Pref);
+		// Server side things
 
-//		sf.edit().putInt(PREF_TIME, currentTime).commit();
-//		Log.d(TAG, "temp letter set time: "+ currentTime);
+		// update turn
+		// update scores
+		// update turn total
+		// update used words
 
-		sf.edit().putBoolean(PREF_RESUME, true).commit();
-		Log.d(TAG, "temp letter set pause: "+ PREF_RESUME);
-		//TODO: CURRENT TIME
+
 	}
 
 	// Picks a collection of letters from set of dice
@@ -744,6 +746,16 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		}
 		Log.d(TAG, "process_click: UpdateWordTextView");
 		updateWordTextView();
+		
+		if (! (this.game.getCurrentTurn().equals(username))){
+			Button submitButton = (Button)findViewById(R.id.multiplayer_game_submit_word);
+			//submitButton.setClickable(false);
+			submitButton.setEnabled(false);
+		}else{
+			Button submitButton = (Button)findViewById(R.id.multiplayer_game_submit_word);
+			//submitButton.setClickable(true);
+			submitButton.setEnabled(true);
+		}
 		/*
 			if (getBoggleWord().length() >=3 ){
 				isWord();
@@ -887,27 +899,33 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		Log.d(TAG, "updateScore P1");
 		int add_points = scorePoints(word);
 		this.score_p1 = this.score_p1 + add_points;
-		
+
 		Log.i(TAG, "additional points : " + Integer.toString(this.score_p1));
 		Log.i(TAG, "current score : " + Integer.toString(this.score_p1));
 
 		this.game.updateScore(username, this.score_p1);
+		
+		updateOverAllScores();
 		setScore(R.id.multiplayer_current_games_textView_player1, username, this.score_p1);
 	}
-	
-	
+
+
 	// update player 2 score
 	private void updateGameScore_P2(String word){
 		Log.d(TAG, "updateScore P2");
 		int add_points = scorePoints(word);
 		this.score_p2 = this.score_p2+ add_points;
-		
+
 		Log.i(TAG, "additional points : " + Integer.toString(this.score_p2));
 		Log.i(TAG, "current score : " + Integer.toString(this.score_p2));
 
 		this.game.updateScore(opponent, this.score_p2);
+		
+		updateOverAllScores();
 		setScore(R.id.multiplayer_current_games_textView_player1, opponent, this.score_p2);
 	}
+
+
 
 	// scoring points
 	private int scorePoints(String w){
@@ -946,8 +964,8 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		TextView textView_score = (TextView)findViewById(ID);
 
 		Log.i(TAG, user + "Score : " + textView_score.getText().toString());
-		
-		String score = user + " | " + s;
+
+		String score = user + "|" + s;
 		textView_score.setText(score);
 	}
 
@@ -964,6 +982,9 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		Log.d(TAG, "updateWordList");
 		wordList.add(word);
 		this.game.addEnteredWord(word);
+		/**
+		 * Server Side add word 
+		 */
 		Log.d(TAG, "updateWordList: " + wordList);
 	}
 
@@ -1009,22 +1030,22 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 					setCurrentTurnIcon(this.username);
 				}
 				updateWordList(targetWord);
-				
+
 				clearCurrentSet();
-				
+
 				enableAllButtons();
-				
+
 				swapAllButtonUnclick();
-				
+
 				clearWordTextView();
-				
+
 				updateUsedWordsList();
 			}
 		}else{
 			Log.d(TAG,"isWord: Fail");
 		}
 	}
-	
+
 	protected void setCurrentTurnIcon(String user){
 		TextView tv_Turns =(TextView) findViewById(R.id.multiplayer_current_turn);
 		if (this.username.equals(user)){
@@ -1033,7 +1054,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 			tv_Turns.setText(">>");
 		}
 	}
-	
+
 	//check whether the current dice is already in the current set
 	private boolean isInCurrentSet(int dice){
 		if (current_dice_set.contains(dice)){
@@ -1073,6 +1094,87 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 			}
 		}
 		return false;
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//									ASYNC Tasks
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	////////////////////////////////////////////////////////////////////////////////////////////////	
+	// updates the server side scoes
+	private void updateOverAllScores(){
+		/**
+		 * 
+		 */
+		sa.setScoreContent(username, this.score_p1, opponent, this.score_p2);
+	}
+	// updates the server side current turn
+	private void updateCurrentTurn(){
+		sa.setTurn(username, opponent, this.game.getCurrentTurn());
+	}
+	
+	// updates the serverside turn totals
+	private void updateTurnTotals(){
+		sa.setTurnTotal(username, opponent, this.game.getNumTurns());
+	}
+
+	// updates the serverside user words lists
+	private void updateUsedWords(){
+		sa.setEnteredWords(username, opponent, generate_onPause_wordList());
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//							SERVICE STUFFSERVICE STUFFSERVICE STUFF
+	//SERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFF
+	//SERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFF
+	//SERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFF
+	//SERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFF
+	//SERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFF
+	//SERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFF
+	//							SERVICE STUFFSERVICE STUFFSERVICE STUFF
+	//
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	private ServiceConnection mConnection = new ServiceConnection() {
+
+		public void onServiceConnected(ComponentName className, IBinder binder) {
+			service = ((Multiplayer_Game_Service.MyBinder) binder).getService();
+			Toast.makeText(Multiplayer_Game.this, "Connected",
+					Toast.LENGTH_SHORT).show();
+		}
+
+		public void onServiceDisconnected(ComponentName className) {
+			service = null;
+		} 
+	};
+
+	void doBindService() {
+		bindService(new Intent(this, Multiplayer_Game_Service.class), mConnection,
+				Context.BIND_AUTO_CREATE);
+	}
+
+	public void showServiceData(View view) {
+		if (service != null) {
+			this.game.getCurrentTurn();
+			Toast.makeText(this, "Number of elements" + service.getCurrentTurn(),
+					Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	public boolean isNewTurn(){
+		service.getCurrentTurn();
+		String serverCurrentTurn = this.game.getCurrentTurn();
+		if (this.game.getCurrentTurn().equals(serverCurrentTurn)){
+			return false;
+		}else{
+			return true;
+		} 
+
 	}
 }
 

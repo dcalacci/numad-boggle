@@ -69,7 +69,6 @@ public class GameWrapper {
 	 */
 	public void setNumTurns(int n) {
 		this.numTurns = n;
-		
 	}
 	
 	// EnteredWords

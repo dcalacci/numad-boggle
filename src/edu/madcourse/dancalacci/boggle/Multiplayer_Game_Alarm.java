@@ -11,7 +11,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.widget.Toast;
 
-public class Multiplayer_Game_Polling extends Service
+public class Multiplayer_Game_Alarm extends Service
 {
 	Alarm alarm = new Alarm();
 	public void onCreate()
@@ -21,7 +21,7 @@ public class Multiplayer_Game_Polling extends Service
 
 	public void onStart(Context context,Intent intent, int startId)
 	{
-		alarm.SetAlarm(context);
+		alarm.SetAlarm(context);	
 	}
 
 	@Override

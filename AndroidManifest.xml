@@ -138,20 +138,17 @@
         <activity
             android:name="edu.madcourse.dancalacci.boggle.Multiplayer_Game"
             android:screenOrientation="portrait" />
-        
+
         <!-- Service Receiver -->
-        <receiver
-            android:name="Alarm"
-            android:process=":remote" >
-        </receiver>
-        
-        <receiver android:name="edu.madcourse.dancalacci.boggle.AutoStart" >
+        <service android:name=".Multiplayer_Game_Service" />
+
+        <receiver android:name="Multiplayer_Game_Service_BroadcastReceiver" >
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" >
-                </action>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        
+        <receiver android:name="Multiplayer_Game_Service_Receiver" >
+        </receiver>
     </application>
 
 </manifest>

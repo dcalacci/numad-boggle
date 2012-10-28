@@ -650,6 +650,15 @@ public class ServerAccessor {
 		String numTurnsKey = NUM_TURNS_PREFIX + userskey;
 		this.put(numTurnsKey, "0");
 	}
+	
+	public void setScoreContent(String user1, int score_1, String user2, int score_2){
+		String userskey = this.getUsersKey(user1, user2);
+		String scoresKey = SCORES_PREFIX + userskey;
+		String scoresContent = user1 + "|" +score_1+ "," + user2 + "|"+score_2;
+		this.put(scoresKey, scoresContent);
+	}
+	
+	
 
 	/**
 	 * Send a request from user1 to user2
@@ -891,7 +900,51 @@ public class ServerAccessor {
 		}
 		return scoresDic;
 	}
+	
+	/**
+	 * Returns the Current turn of the the Game 
+	 * @param user1 << Host
+	 * @param user2 << Opponent
+	 * @return The string representation of the current turn of the game
+	 */
+	public String getTurn(String user1, String user2){
+		String userskey = this.getUsersKey(user1, user2);
+		String turnKey = TURN_PREFIX + userskey;
+		String currentTurn = this.get(turnKey);
+		return currentTurn;
+	}
+	
+	/**
+	 * Sets the Games current player's turn
+	 * @param user1 << Host
+	 * @param user2 << Opponent
+	 * @param The player's turn in the game 
+	 * @return The string representation of the current turn of the game
+	 */
+	public void setTurn(String user1, String user2, String turn){
+		String userskey = this.getUsersKey(user1, user2);
+		String turnKey = TURN_PREFIX + userskey;
+		this.put(turnKey, turn);
+	}
 
+	/**
+	 * Sets the number of turns passed
+	 * @param user1 << host
+	 * @param user2 << opponent
+	 * @param numTurns
+	 */
+	public void setTurnTotal(String user1, String user2, int numTurns){
+		String userskey = this.getUsersKey(user1, user2);
+		String numTurnsKey = NUM_TURNS_PREFIX + userskey;
+		this.put(numTurnsKey, Integer.toString(numTurns));
+	}
+	
+	public void setEnteredWords(String user1, String user2, String usedWords){
+		String userskey = this.getUsersKey(user1, user2);
+		String enteredWordsKey = ENTERED_WORDS_PREFIX + userskey;
+		this.put(enteredWordsKey, usedWords);
+	}
+	
 	/**
 	 * Converts a given scores hashtable to a string
 	 * @param scores The hashtable of the two users' scores
