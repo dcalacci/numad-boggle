@@ -25,6 +25,7 @@
     <string name="multiplayer_game_back_label">Back</string>
     <string name="multiplayer_game_submit_word_label">Submit Word</string>
     <string name="multiplayer_game_clear_word_label">Clear Word</string>
+    <string name="multiplayer_game_loading">Game is Loading...</string>
 
     <!-- Requests -->
     <string name="multiplayer_requests_button_label_rammus">OK</string>

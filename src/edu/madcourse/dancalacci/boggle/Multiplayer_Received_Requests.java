@@ -7,6 +7,7 @@ import edu.madcourse.dancalacci.R;
 import edu.madcourse.dancalacci.boggle.Multiplayer_Sent_Requests.Multiplayer_Sent_Request_Adaptor;
 import edu.neu.mobileclass.apis.KeyValueAPI;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -190,6 +191,13 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 
 				switch(v.getId()){
 				case R.id.multiplayer_received_accept_button:
+					// make a "game is loading..." dialog while the game is created.
+					AlertDialog.Builder builder = new AlertDialog.Builder(thisActivity);
+			        builder.setMessage(R.string.multiplayer_game_loading);
+			        final AlertDialog loadingDialog = builder.create();
+			        
+			        
+			        loadingDialog.show();
 					Log.d(TAG, "Accept Button Clicked");
 					
 					Log.d(TAG, "adding a new game using sa.createNewGame");
@@ -210,29 +218,31 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 													"We had an error - That request might stay in your received requests list...", 
 													Toast.LENGTH_SHORT).show();
 										} else {
+											loadingDialog.dismiss(); // get rid of the game is loading dialog.
+											
+											Intent i = new Intent(mContext, Multiplayer_Game.class);
+											
+											// all game data has been initialized - let's start the game!
+											i.putExtra("opponent", row);
+											//sa.generateBoard();
+
+											deleteRow(row);
+											notifyDataSetChanged();
+
+											//Start new game activity
+											startActivity(i);
+											
+
+											Log.d(TAG, "Accept Button Clicked Delete Row");
 										}
 									}
 								});
 							}
 						}
 					});
+					break;
 					
 					//row is the user that sent the request that we have to remove
-					
-					
-					Intent i = new Intent(mContext, Multiplayer_Game.class);
-					i.putExtra("opponent", row);
-					//sa.generateBoard();
-
-					deleteRow(row);
-					notifyDataSetChanged();
-
-					//Start new game activity
-					startActivity(i);
-					
-
-					Log.d(TAG, "Accept Button Clicked Delete Row");
-					break;
 				case R.id.multiplayer_received_reject_button:
 					//TODO: Update Request List -> Server Call
 					Log.d(TAG, "Reject Button Clicked");
