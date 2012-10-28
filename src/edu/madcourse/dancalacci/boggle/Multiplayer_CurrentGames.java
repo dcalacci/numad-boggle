@@ -86,8 +86,14 @@ public class Multiplayer_CurrentGames extends ListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		// TODO Auto-generated method stub
 		//super.onListItemClick(l, v, position, id);
-		String selection = l.getItemAtPosition(position).toString();
-		Log.d(TAG, "onListItemClick: " + selection);
+		String opoonent = adapter.getContent(position);
+		Log.d(TAG, "onListItemClick: " + opoonent);
+		
+		Intent i = new Intent(this, Multiplayer_Game.class);
+		// all game data has been initialized - let's start the game!
+		i.putExtra("opponent", opoonent);
+		
+		startActivity(i);
 	}
 
 	public class Multiplayer_Current_Games_Adaptor extends BaseAdapter{
@@ -102,6 +108,10 @@ public class Multiplayer_CurrentGames extends ListActivity {
 		}
 
 
+		public String getContent(int position){
+			return mGames.get(position);
+		}
+		
 		public int getCount() {
 			// TODO Auto-generated method stub
 			return mGames.size();

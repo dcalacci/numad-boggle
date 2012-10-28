@@ -175,7 +175,7 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 				this.mReceivedRequests.remove(row);
 			}
 		}
-
+		
 		class buttonClickHandler implements View.OnClickListener {
 			TextView textView;
 			String row;
@@ -273,6 +273,8 @@ public class Multiplayer_Received_Requests  extends ListActivity{
 
 
 		}
+
+	
 	}
 
 

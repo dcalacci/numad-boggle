@@ -140,6 +140,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		doBindService();
 
 		this.game = sa.getGame(username, opponent);
+		
 		this.letterSet = this.game.getBoard();
 		if (letterSet.isEmpty()){
 			letterSet = this.pick_Letters();
