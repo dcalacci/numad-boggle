@@ -55,6 +55,8 @@ public class Multiplayer_Login_Form extends Activity{
 					public void run(Boolean loggedIn) {
 						if (loggedIn) {
 							Toast.makeText(getBaseContext(), "Login Sucessful. Welcome " + username, Toast.LENGTH_SHORT).show();
+							
+							//TODO: Should this be BOGGLE_PREF or MULTI_PREF?
 							SharedPreferences pref = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE);
 							SharedPreferences.Editor edit = pref.edit();
 
