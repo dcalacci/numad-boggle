@@ -609,6 +609,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		playClickSound(R.id.multiplayer_game_submit_word);
 		Log.d(TAG, "submit clicked");
 		vib.vibrate(50);
+		//TODO if number of turns has reached the limit
 		if (getBoggleWord().length() >=3 ){
 			try {
 				isWord();
@@ -1114,12 +1115,27 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 	
 	// updates the serverside turn totals
 	private void updateTurnTotals(){
-		sa.setTurnTotal(username, opponent, this.game.getNumTurns());
+		sa.setTurnTotal(username, opponent, this.game.getNumTurns(), new OnBooleanReceivedListener() {
+			
+			public void run(Boolean exitState) {
+				if (!exitState) {
+					Log.e(TAG, "uh oh.  Turn totals notupdated");
+				}
+				
+			}
+		});
 	}
 
 	// updates the serverside user words lists
 	private void updateUsedWords(){
-		sa.setEnteredWords(username, opponent, generate_onPause_wordList());
+		sa.setEnteredWords(username, opponent, generate_onPause_wordList(), new OnBooleanReceivedListener() {
+			
+			public void run(Boolean exitState) {
+				if (!exitState) {
+					Log.e(TAG, "Couldn't set the used word list on the server");
+				}
+			}
+		});
 	}
 	
 	private void updateUserScore(){
