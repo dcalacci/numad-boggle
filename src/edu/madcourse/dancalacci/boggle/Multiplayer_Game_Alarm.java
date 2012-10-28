@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 public class Multiplayer_Game_Alarm extends Service
 {
-	Alarm alarm = new Alarm();
+	Multiplayer_Game_Alarm_BroadcastReceiver alarm = new Multiplayer_Game_Alarm_BroadcastReceiver();
 	public void onCreate()
 	{
 		super.onCreate();       

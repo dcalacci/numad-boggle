@@ -4,9 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-public class AutoStart extends BroadcastReceiver
+public class Multiplayer_Game_AutoStart extends BroadcastReceiver
 {   
-    Alarm alarm = new Alarm();
+    Multiplayer_Game_Alarm_BroadcastReceiver alarm = new Multiplayer_Game_Alarm_BroadcastReceiver();
     @Override
     public void onReceive(Context context, Intent intent)
     {   

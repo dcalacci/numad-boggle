@@ -212,7 +212,7 @@ public class Multiplayer_CurrentGames extends ListActivity {
 
 
 	}
-
+	
 	/*	
 	 * Starts new Multiplayer Boggle Game	 
 	 */

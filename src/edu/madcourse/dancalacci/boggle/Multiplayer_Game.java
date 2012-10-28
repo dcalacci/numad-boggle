@@ -1139,7 +1139,8 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 	//SERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFFSERVICE STUFF
 	//							SERVICE STUFFSERVICE STUFFSERVICE STUFF
 	//
-	/////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////	
+	
 	private ServiceConnection mConnection = new ServiceConnection() {
 
 		public void onServiceConnected(ComponentName className, IBinder binder) {
@@ -1175,6 +1176,27 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 			return true;
 		} 
 
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//							BACKGROUND BACKGROUND SERVICE STUFFBACKGROUND 
+	//BACKGROUND BACKGROUND SERVICE STUFFBACKGROUND BACKGROUND SERVICE STUFFBACKGROUND BACKGROUND
+	//BACKGROUND BACKGROUND SERVICE STUFFBACKGROUND BACKGROUND SERVICE STUFFBACKGROUND BACKGROUND 
+	//BACKGROUND BACKGROUND SERVICE STUFFBACKGROUND BACKGROUND SERVICE STUFFBACKGROUND BACKGROUND 
+	//BACKGROUND BACKGROUND SERVICE STUFFBACKGROUND BACKGROUND SERVICE STUFFBACKGROUND BACKGROUND 
+	//BACKGROUND BACKGROUND SERVICE STUFFBACKGROUND BACKGROUND SERVICE STUFFBACKGROUND BACKGROUND 
+	//BACKGROUND BACKGROUND SERVICE STUFFBACKGROUND BACKGROUND SERVICE STUFFBACKGROUND BACKGROUND 
+	//							BACKGROUND BACKGROUND SERVICE STUFFBACKGROUND 
+	/////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	public void foo(){
+		Intent i = new Intent(this, Multiplayer_Game.class);
+		i.putExtra("username", this.username);
+		i.putExtra("opponent", this.opponent);
+		i.putExtra("currentTurn", this.game.getCurrentTurn());
+		
 	}
 }
 
