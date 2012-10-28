@@ -19,7 +19,7 @@ import android.widget.Toast;
 public class Multiplayer_Login_Form extends Activity{
 	private String TAG = "Multiplayer_Login_Form";
 
-	private static final String BOGGLE_PREF = "edu.madcourse.dancalacci.multiplayer";
+	private static final String MULTI_PREF = "edu.madcourse.dancalacci.multiplayer";
 	public static final String PREF_USER = "prefUser";
 	public static final String PREF_PASS = "prefPass";
 
@@ -57,7 +57,7 @@ public class Multiplayer_Login_Form extends Activity{
 							Toast.makeText(getBaseContext(), "Login Sucessful. Welcome " + username, Toast.LENGTH_SHORT).show();
 							
 							//TODO: Should this be BOGGLE_PREF or MULTI_PREF?
-							SharedPreferences pref = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE);
+							SharedPreferences pref = getSharedPreferences(MULTI_PREF, MODE_PRIVATE);
 							SharedPreferences.Editor edit = pref.edit();
 
 							edit.putString(PREF_USER, username).commit();
