@@ -704,6 +704,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 			disableAllButtons();
 			View formedWord = findViewById(R.id.boggle_word_textView);
 			formedWord.setClickable(false);
+			updateUserScore();
 			Toast.makeText(this, "GAME OVER", Toast.LENGTH_SHORT).show();
 			finish();
 		}
@@ -1120,6 +1121,18 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 	private void updateUsedWords(){
 		sa.setEnteredWords(username, opponent, generate_onPause_wordList());
 	}
+	
+	private void updateUserScore(){
+		int serverScore_P1 = sa.getHighscore(username);
+		int serverScore_P2 = sa.getHighscore(username);
+		
+		if(serverScore_P1 < this.score_p1){
+			sa.setHighscore(username, this.score_p1);
+		}
+		if(serverScore_P2 < this.score_p2){
+			sa.setHighscore(opponent, this.score_p2);
+		}
+	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -1170,6 +1183,8 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		} 
 
 	}
+
+	
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	//

@@ -50,24 +50,15 @@ public class Multiplayer_HighScores extends ListActivity{
 		
 		sa.getSentRequests(USERNAME,
 				new OnStringArrayListLoadedListener() {
-					
-					public void run(ArrayList<String> list) {
-						adapter = new Multiplayer_HighScores_Adaptor(thisActivity, R.layout.multiplayer_sent, list);
-						setListAdapter(adapter);
-						
-					}
-				});
-		
-		
-//		sa = new ServerAccessor();
-//		adapter = new Multiplayer_HighScores_Adaptor(this, R.layout.multiplayer_highscores, this.generate_highscores_list());
-//		/*
-//		Log.d(TAG, "set adapter");
-//		adapter = new ArrayAdapter<String>(this,
-//				android.R.layout.simple_list_item_1,
-//				this.generate_request_list());
-//		 */
-//		setListAdapter(adapter);
+
+			public void run(ArrayList<String> list) {
+				adapter = new Multiplayer_HighScores_Adaptor(thisActivity, R.layout.multiplayer_sent, list);
+				setListAdapter(adapter);
+
+			}
+		});
+
+
 	}
 
 	public void onResume(){
@@ -75,31 +66,28 @@ public class Multiplayer_HighScores extends ListActivity{
 		SharedPreferences pref = getSharedPreferences(BOGGLE_PREF, MODE_PRIVATE);
 		USERNAME = pref.getString(PREF_USER, null);
 
-		
+
 		final Multiplayer_HighScores thisActivity = this;
-		
+
 		sa.getSentRequests(USERNAME,
 				new OnStringArrayListLoadedListener() {
-					
-					public void run(ArrayList<String> list) {
-						adapter = new Multiplayer_HighScores_Adaptor(thisActivity, R.layout.multiplayer_sent, list);
-						setListAdapter(adapter);
-						
-					}
-				});
-//		getListView().setEmptyView(findViewById(R.id.emptyView));
-//		adapter = new Multiplayer_HighScores_Adaptor(this, R.layout.multiplayer_sent, generate_highscores_list());
-//		setListAdapter(adapter);
+
+			public void run(ArrayList<String> list) {
+				adapter = new Multiplayer_HighScores_Adaptor(thisActivity, R.layout.multiplayer_sent, list);
+				setListAdapter(adapter);
+
+			}
+		});
 	}
 
 	/* 
 	 * TODO: Change to GET High Scores 
 	 * Creates a list of Potential players based on Web Call
 	 */
-//	private ArrayList<String> generate_highscores_list(){
-//		Log.d(TAG, "request list: " + sa.getSentRequests(USERNAME).toString());
-//		return sa.getSentRequests(USERNAME);
-//	}
+	//	private ArrayList<String> generate_highscores_list(){
+	//		Log.d(TAG, "request list: " + sa.getSentRequests(USERNAME).toString());
+	//		return sa.getSentRequests(USERNAME);
+	//	}
 
 	public class Multiplayer_HighScores_Adaptor extends BaseAdapter{
 		private ArrayList<String> mHighScores = new ArrayList<String>();
@@ -133,10 +121,10 @@ public class Multiplayer_HighScores extends ListActivity{
 		public boolean isEmptyList(){
 			return mHighScores.contains("");
 		}
-		
+
 		public View getView(int position, View view, ViewGroup parent) {
 			boolean isEmpty = isEmptyList();
-			
+
 			if(view == null ){
 				getListView().setEmptyView(findViewById(android.R.id.empty));
 				if(!isEmpty){

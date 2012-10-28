@@ -21,6 +21,7 @@ public class ServerAccessor {
 	private static final String BOARD_PREFIX = "board_";
 	private static final String TURN_PREFIX = "turn_";
 	private static final String ENTERED_WORDS_PREFIX = "entered_";
+	private static final String HIGHSCORE_PREFIX = "highscore_";
 	private static final String SCORES_PREFIX = "scores_";
 	private static final String NUM_TURNS_PREFIX = "numTurns_";
 	private static final String REQUESTS_PREFIX = "req_";
@@ -982,6 +983,17 @@ public class ServerAccessor {
 		String userskey = this.getUsersKey(user1, user2);
 		String enteredWordsKey = ENTERED_WORDS_PREFIX + userskey;
 		return this.get(enteredWordsKey);
+	}
+	
+	public void setHighscore(String user1, int score){
+		String enternedHighScore = HIGHSCORE_PREFIX + user1;
+		this.put(enternedHighScore, Integer.toString(score));
+	}
+	
+	public int getHighscore(String user1){
+		String enternedHighScore = HIGHSCORE_PREFIX + user1;
+		int score = Integer.parseInt(this.get(enternedHighScore));
+		return score;
 	}
 
 	/**
