@@ -48,8 +48,8 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 	private static final 	String PREF_TIME 		= "boggleTime";
 	public static final 	String PREF_RESUME 		= "MultipalyerboggleResume";
 
-
-	private 	SharedPreferences 		sf;
+	// need to initialize the pref object
+	private 	SharedPreferences pref = getSharedPreferences(MULTI_PREF, MODE_PRIVATE);
 	private 	int 					size 				= 		5;			
 	private 	int 					score_p1			= 		0; 	// current game score
 	private 	int 					score_p2			= 		0; 	// current game score
@@ -631,9 +631,9 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		Log.d(TAG, "onResume");
 		Music.play(this, R.raw.boggle_bgm);
 
-		Log.d(TAG, "onResume letter set resume direct: "+ sf.getString(PREF_DICE, null));	
+		Log.d(TAG, "onResume letter set resume direct: "+ pref.getString(PREF_DICE, null));	
 
-		letterSet = sf.getString(PREF_DICE, null);
+		letterSet = pref.getString(PREF_DICE, null);
 		Log.d(TAG, "onResume letter set resume: "+ letterSet);
 		if (letterSet != null){
 			fillButtons(this.letterSet);
@@ -643,7 +643,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		//		setScore(current_score);
 		//		Log.d(TAG, "onResume letter set score: "+ current_score);
 
-		String temp_WordList = sf.getString(PREF_USED_WORDS, " ");
+		String temp_WordList = pref.getString(PREF_USED_WORDS, " ");
 		Log.d(TAG, "onResume letter set word list: "+ temp_WordList);
 		convert_onPause_wordList(temp_WordList);
 		updateUsedWordsList();
@@ -651,7 +651,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		//		currentTime = sf.getInt(PREF_TIME, 180);
 		//		updateTimeUI();
 
-		sf.getBoolean(PREF_RESUME, false);
+		pref.getBoolean(PREF_RESUME, false);
 	}
 
 	@Override
