@@ -1,10 +1,10 @@
-package edu.madcourse.dancalacci.boggle;
+package edu.madcourse.dancalacci.multiplayer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.madcourse.dancalacci.R;
-import edu.madcourse.dancalacci.boggle.Multiplayer_Sent_Requests.Multiplayer_Sent_Request_Adaptor;
+import edu.madcourse.dancalacci.multiplayer.Multiplayer_Sent_Requests.Multiplayer_Sent_Request_Adaptor;
 import edu.neu.mobileclass.apis.KeyValueAPI;
 import android.app.Activity;
 import android.app.AlertDialog;

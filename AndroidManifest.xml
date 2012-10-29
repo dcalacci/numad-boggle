@@ -95,24 +95,24 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".boggle.Multiplayer"
+            android:name=".multiplayer.Multiplayer"
             android:label="@string/boggle_multiplayer_Label"
             android:screenOrientation="portrait" >
         </activity>
 
         <!-- Log in Activity -->
         <activity
-            android:name="edu.madcourse.dancalacci.boggle.Multiplayer_Login_Form"
+            android:name=".multiplayer.Multiplayer_Login_Form"
             android:screenOrientation="portrait" />
 
         <!-- New Sent Request Activity -->
         <activity
-            android:name="edu.madcourse.dancalacci.boggle.Multiplayer_New_Request_Form"
+            android:name="edu.madcourse.dancalacci.multiplayer.Multiplayer_New_Request_Form"
             android:screenOrientation="portrait" />
 
         <!-- Mutiplayer Received Activity -->
         <activity
-            android:name="edu.madcourse.dancalacci.boggle.Multiplayer_Received_Requests"
+            android:name="edu.madcourse.dancalacci.multiplayer.Multiplayer_Received_Requests"
             android:screenOrientation="portrait" />
         <activity
             android:name="edu.madcourse.dancalacci.boggle.Multiplayer_Received_array_adaptor"
@@ -123,20 +123,20 @@
 
         <!-- Mutiplayer Sent Activity -->
         <activity
-            android:name="edu.madcourse.dancalacci.boggle.Multiplayer_Sent_Requests"
+            android:name="edu.madcourse.dancalacci.multiplayer.Multiplayer_Sent_Requests"
             android:screenOrientation="portrait" />
 
         <!-- Mutiplayer High Scores Activity -->
         <activity
-            android:name="edu.madcourse.dancalacci.boggle.Multiplayer_HighScores"
+            android:name="edu.madcourse.dancalacci.multiplayer.Multiplayer_HighScores"
             android:screenOrientation="portrait" />
 
         <!-- Mutiplayer Current Games Activity -->
         <activity
-            android:name="edu.madcourse.dancalacci.boggle.Multiplayer_CurrentGames"
+            android:name="edu.madcourse.dancalacci.multiplayer.Multiplayer_CurrentGames"
             android:screenOrientation="portrait" />
         <activity
-            android:name="edu.madcourse.dancalacci.boggle.Multiplayer_Game"
+            android:name=".multiplayer.Multiplayer_Game"
             android:screenOrientation="portrait" />
 
         <!-- Service Receiver -->

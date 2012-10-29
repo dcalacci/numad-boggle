@@ -6,7 +6,7 @@
  * We make no guarantees that this code is fit for any purpose. 
  * Visit http://www.pragmaticprogrammer.com/titles/eband3 for more book information.
  ***/
-package edu.madcourse.dancalacci.boggle;
+package edu.madcourse.dancalacci.multiplayer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,6 +36,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import edu.madcourse.dancalacci.R;
+import edu.madcourse.dancalacci.boggle.Dice;
+import edu.madcourse.dancalacci.boggle.Dictionary;
+import edu.madcourse.dancalacci.boggle.Music;
 
 public class Multiplayer_Game extends Activity implements OnClickListener {
 	private static final 	String TAG = "MultiplayerBoggleGame";

@@ -1,4 +1,4 @@
-package edu.madcourse.dancalacci.boggle;
+package edu.madcourse.dancalacci.multiplayer;
 
 import edu.madcourse.dancalacci.R;
 import android.app.Activity;

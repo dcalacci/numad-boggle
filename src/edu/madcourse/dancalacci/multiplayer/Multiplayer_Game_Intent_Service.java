@@ -12,7 +12,7 @@
     http://commonsware.com/AdvAndroid
 */
 
-package edu.madcourse.dancalacci.boggle;
+package edu.madcourse.dancalacci.multiplayer;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

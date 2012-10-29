@@ -1,10 +1,10 @@
-package edu.madcourse.dancalacci.boggle;
+package edu.madcourse.dancalacci.multiplayer;
 
 import java.util.ArrayList;
 
 import edu.madcourse.dancalacci.R;
-import edu.madcourse.dancalacci.boggle.Multiplayer_HighScores.Multiplayer_HighScores_Adaptor;
-import edu.madcourse.dancalacci.boggle.Multiplayer_Sent_Requests.Multiplayer_Sent_Request_Adaptor;
+import edu.madcourse.dancalacci.multiplayer.Multiplayer_HighScores.Multiplayer_HighScores_Adaptor;
+import edu.madcourse.dancalacci.multiplayer.Multiplayer_Sent_Requests.Multiplayer_Sent_Request_Adaptor;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;

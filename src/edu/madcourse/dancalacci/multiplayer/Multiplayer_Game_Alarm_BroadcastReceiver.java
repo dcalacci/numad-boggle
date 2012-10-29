@@ -1,4 +1,4 @@
-package edu.madcourse.dancalacci.boggle;
+package edu.madcourse.dancalacci.multiplayer;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -10,8 +10,8 @@ import android.content.Intent;
 import android.os.PowerManager;
 import android.widget.Toast;
 import edu.madcourse.dancalacci.R;
-import edu.madcourse.dancalacci.boggle.Notification_Receiver;
-import edu.madcourse.dancalacci.boggle.ServerAccessor;
+import edu.madcourse.dancalacci.multiplayer.Notification_Receiver;
+import edu.madcourse.dancalacci.multiplayer.ServerAccessor;
 
 public class Multiplayer_Game_Alarm_BroadcastReceiver extends BroadcastReceiver 
 {    

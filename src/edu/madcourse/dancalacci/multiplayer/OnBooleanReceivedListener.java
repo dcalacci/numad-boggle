@@ -1,4 +1,4 @@
-package edu.madcourse.dancalacci.boggle;
+package edu.madcourse.dancalacci.multiplayer;
 
 public interface OnBooleanReceivedListener {
 	

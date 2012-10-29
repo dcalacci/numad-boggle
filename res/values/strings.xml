@@ -94,8 +94,9 @@
        especially the timer aspect, but I don\'t know their names.
        Some pieces of code were inspired by answers to questions on StackOverflow, 
        and some were taken directly out of the Android Documentation.  We received a good bit of help
-       from Matt Garnes to implement AsyncTask.
-       All images were designed by me.</string>
+       from Matt Garnes to implement AsyncTask.\n\n By Jason Ng and Dan Calacci.\n\n
+       
+       This game is totally not fully functional, but much of the back-end is in place.</string>
     <string name="boggle_label">Boggle</string>
     <string name="boggle_new_game_label">New Game</string>
     <string name="boggle_pause_label">Pause</string>

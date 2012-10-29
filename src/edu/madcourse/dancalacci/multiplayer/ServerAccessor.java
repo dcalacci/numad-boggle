@@ -1,4 +1,4 @@
-package edu.madcourse.dancalacci.boggle;
+package edu.madcourse.dancalacci.multiplayer;
 import java.util.*;
 
 import android.content.Context;
@@ -525,7 +525,7 @@ public class ServerAccessor {
 	private void addGame(String user1, String user2) {
 		final String usersKey = this.getUsersKey(user1, user2);
 		ArrayList<String> games = this.stringToArrayList(this.get(GAMES_KEY));
-		games.remove(usersKey);
+		games.add(usersKey);
 		String gameVal = this.arrayListToString(games);
 		this.put(GAMES_KEY,  gameVal);
 	}
@@ -1019,7 +1019,7 @@ public class ServerAccessor {
 			}
 		}
 		try {
-			new setEnteredWordsTask().execute();
+			new setEnteredWordsTask().execute(usedWords);
 		} catch(Exception e) {
 			Log.e(TAG, "setEnteredWordsTask thread died: "+e);
 		}

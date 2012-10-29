@@ -1,9 +1,9 @@
-package edu.madcourse.dancalacci.boggle;
+package edu.madcourse.dancalacci.multiplayer;
 
 import java.util.ArrayList;
 
 import edu.madcourse.dancalacci.R;
-import edu.madcourse.dancalacci.boggle.Multiplayer_Received_Requests.Multiplayer_Received_Request_Adaptor;
+import edu.madcourse.dancalacci.multiplayer.Multiplayer_Received_Requests.Multiplayer_Received_Request_Adaptor;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
