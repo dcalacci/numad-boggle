@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal"
+    android:paddingBottom="6dip"
+    android:paddingTop="4dp"
+    android:weightSum="1.0" >
+
+    <TextView
+        android:id="@+id/multiplayer_sent_requests_textView_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight=".75" 
+        android:textSize="20dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false">
+    </TextView>
+
+    <Button
+        android:id="@+id/multiplayer_sent_delete_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight=".25"
+        android:onClick="OnMultiplayerReceivedRejectClicked"
+        android:text="@string/multiplayer_sent_button_label_delete" >
+    </Button>
+
+</LinearLayout>

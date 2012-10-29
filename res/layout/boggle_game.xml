@@ -1,76 +1,390 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    android:soundEffectsEnabled="true" >
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal|fill_horizontal|center"
+        android:orientation="horizontal"
+        android:stretchColumns="*" >
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/boggle_score"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.4"
+                android:text="@string/score_label"
+                android:textColor="@color/boggle_hilite"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/boggle_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.4"
+                android:gravity="fill_horizontal"
+                android:text="@string/time_label"
+                android:textColor="@color/boggle_foreground"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_boggle_pause"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.2"
+                android:text="@string/pause_label" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal|fill_horizontal|center" >
+
+            <Button
+                android:id="@+id/button_DiceR1C1"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR1C2"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR1C3"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR1C4"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR1C5"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal|fill_horizontal|center" >
+
+            <Button
+                android:id="@+id/button_DiceR2C1"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR2C2"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR2C3"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR2C4"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR2C5"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal|fill_horizontal|center" >
+
+            <Button
+                android:id="@+id/button_DiceR3C1"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR3C2"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR3C3"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR3C4"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR3C5"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal|fill_horizontal|center" >
+
+            <Button
+                android:id="@+id/button_DiceR4C1"
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR4C2"
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR4C3"
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR4C4"
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR4C5"
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal|fill_horizontal|center" >
+
+            <Button
+                android:id="@+id/button_DiceR5C1"
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR5C2"
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR5C3"
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR5C4"
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/button_DiceR5C5"
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:layout_weight=".25"
+                android:background="@drawable/button_custom"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20dp" />
+        </TableRow>
+    </TableLayout>
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:weightSum="1.0" >
-
-        <FrameLayout
-            android:id="@+id/boggle_tiles"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight=".70" >
-        </FrameLayout>
-
-        <ListView
-            android:id="@+id/boggle_entered_words"
-            style="@style/WordListFont"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight=".30"
-            android:background="@color/boggle_boardColor" >
-        </ListView>
-    </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/boggle_navbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:background="@color/boggle_boardColor"
-        android:gravity="bottom"
-        android:orientation="vertical" >
+        android:orientation="horizontal"
+        android:weightSum="1.0" >
+
+        <TableLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.5dp"
+            android:layout_weight=".7"
+            android:background="#000000"
+            android:stretchColumns="*" >
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="3dp"
+                android:background="#ffffff"
+                android:weightSum="1.0" >
+
+                <TextView
+                    android:id="@+id/boggle_word_textView"
+                    android:layout_width="0dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/boggle_foreground" />
+            </TableRow>
+        </TableLayout>
 
         <Button
-            android:id="@+id/boggle_pause"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:onClick="onPauseButtonClicked"
-            android:text="@string/boggle_pause_label" />
+            android:id="@+id/button_Boggle_Submit"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".3"
+            android:text="Submit" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1.0" >
+
+        <ScrollView
+            android:id="@+id/word_list_textView"
+            android:layout_weight=".7"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_margin="3dp" >
+
+            <TextView
+                android:id="@+id/boggle_used_words"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:textColor="@color/boggle_hilite"
+                android:textSize="20dp" />
+        </ScrollView>
 
         <Button
-            android:id="@+id/boggle_quit"
-            android:layout_width="wrap_content"
+            android:id="@+id/button_Boggle_Clear"
+            android:layout_width="0dp"
+            android:layout_weight=".3"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:onClick="onQuitButtonClicked"
-            android:text="@string/boggle_quit_label" />
+            android:text="Clear" />
+    </LinearLayout>
 
-        <Button
-            android:id="@+id/boggle_submit_word"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/boggle_quit"
-            android:onClick="onSubmitWordButtonClicked"
-            android:text="@string/boggle_submit_word_label" />
-
-        <Button
-            android:id="@+id/boggle_clear_word"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/boggle_pause"
-            android:onClick="onClearWordButtonClicked"
-            android:text="@string/boggle_clear_word_label" />
-    </RelativeLayout>
-
-</RelativeLayout>
+</LinearLayout>
