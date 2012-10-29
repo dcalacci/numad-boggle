@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.Messenger;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
@@ -123,6 +124,20 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		R.id.button_DiceR5C5
 	};
 
+	Handler handler=new Handler() 
+	{ 
+		@Override 
+		public void handleMessage(Message msg) { 
+			//get data from msg 
+
+			String result = msg.getData().getString("result"); 
+			//tv.setText(result); 
+			Log.d("xxxxx", "get data" + result); 
+			super.handleMessage(msg); 
+		} 
+	};
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -132,15 +147,21 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		opponent = getIntent().getStringExtra("opponent");
 		username = getSharedPreferences(MULTI_PREF, MODE_PRIVATE).getString(PREF_USER, "guest");
 
-		service = new Multiplayer_Game_Service(username, opponent);
+		//service = new Multiplayer_Game_Service(username, opponent);
 
+		sendBroadcast(new Intent(this, OnBootReceiver.class));
+		
+		Toast.makeText(this, R.string.alarms_active,
+                Toast.LENGTH_LONG).show();
+		
 		// Sets to multiplayer views
 		setContentView(R.layout.multiplayer_game);
 
-		doBindService();
+		//doBindService();
+		//showServiceData();
 
 		this.game = sa.getGame(username, opponent);
-		
+
 		this.letterSet = this.game.getBoard();
 		if (letterSet.isEmpty()){
 			letterSet = this.pick_Letters();
@@ -232,13 +253,13 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 
 		View button_DiceR5C5 = findViewById(R.id.button_DiceR5C5);
 		button_DiceR5C5.setOnClickListener((OnClickListener) this);
-		
+
 		View tv_Player1 = findViewById(R.id.multiplayer_player1);
 		this.setScore(R.id.multiplayer_player1, username, this.score_p1);
 
 		View tv_Player2 = findViewById(R.id.multiplayer_player1);
 		this.setScore(R.id.multiplayer_player2, opponent, this.score_p2);
-		
+
 		TextView tv_Turns = (TextView) findViewById(R.id.multiplayer_current_turn);
 
 		setCurrentTurnIcon(this.current_turn);
@@ -253,6 +274,11 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		String letter;
+		if(isYourTurn()){
+			this.current_turn = sa.getTurn(username, opponent);
+			this.game.setCurrentTurn(current_turn);
+			this.changeSubmitButtonState();
+		}
 
 		switch (v.getId()) {
 		case R.id.button_DiceR1C1:	         
@@ -625,13 +651,13 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		super.onResume();
 		Log.d(TAG, "onResume");
 		Music.play(this, R.raw.boggle_bgm);
-		
+
 		letterSet = sa.getBooard(this.username, this.opponent);
 		Log.d(TAG, "onResume letter set resume: "+ letterSet);
 		if (letterSet != null){
 			fillButtons(this.letterSet);
 		}
-		
+
 		String temp_WordList = sa.getEnteredWords(username, opponent);
 		Log.d(TAG, "onResume letter set word list: "+ temp_WordList);
 		convert_onPause_wordList(temp_WordList);
@@ -645,7 +671,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		Music.stop(this);
 
 		//	Stops service
-		unbindService(mConnection);
+		//unbindService(mConnection);
 
 
 
@@ -732,8 +758,8 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		}
 		Log.d(TAG, "process_click: UpdateWordTextView");
 		updateWordTextView();
-		
-		
+
+
 		/*
 			if (getBoggleWord().length() >=3 ){
 				isWord();
@@ -883,7 +909,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		Log.i(TAG, "current score : " + Integer.toString(this.score_p1));
 
 		this.game.updateScore(username, this.score_p1);
-		
+
 		updateOverAllScores();
 		setScore(R.id.multiplayer_player1, username, this.score_p1);
 	}
@@ -899,7 +925,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		Log.i(TAG, "current score : " + Integer.toString(this.score_p2));
 
 		this.game.updateScore(opponent, this.score_p2);
-		
+
 		updateOverAllScores();
 		setScore(R.id.multiplayer_player2, opponent, this.score_p2);
 	}
@@ -1020,14 +1046,14 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 				clearWordTextView();
 
 				updateUsedWordsList();
-				
+
 				changeSubmitButtonState();
 			}
 		}else{
 			Log.d(TAG,"isWord: Fail");
 		}
 	}
-	
+
 	protected void changeSubmitButtonState(){
 		if (! (this.game.getCurrentTurn().equals(username))){
 			Log.d(TAG, "Disable Submit Button");
@@ -1113,7 +1139,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 	private void updateCurrentTurn(){
 		sa.setTurn(username, opponent, this.game.getCurrentTurn());
 	}
-	
+
 	// updates the serverside turn totals
 	private void updateTurnTotals(){
 		sa.setTurnTotal(username, opponent, this.game.getNumTurns(), new OnBooleanReceivedListener() {
@@ -1138,11 +1164,11 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 			}
 		});
 	}
-	
+
 	private void updateUserScore(){
 		int serverScore_P1 = sa.getHighscore(username);
 		int serverScore_P2 = sa.getHighscore(username);
-		
+
 		if(serverScore_P1 < this.score_p1){
 			sa.setHighscore(username, this.score_p1);
 		}
@@ -1163,7 +1189,7 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 	//							SERVICE STUFFSERVICE STUFFSERVICE STUFF
 	//
 	/////////////////////////////////////////////////////////////////////////////////////////////////	
-	
+	/*
 	private ServiceConnection mConnection = new ServiceConnection() {
 
 		public void onServiceConnected(ComponentName className, IBinder binder) {
@@ -1177,21 +1203,21 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		} 
 	};
 
-	void doBindService() {
+	public void doBindService() {
+		Log.d(TAG, "dobindservice");
 		bindService(new Intent(this, Multiplayer_Game_Service.class), mConnection,
 				Context.BIND_AUTO_CREATE);
 	}
 
-	public void showServiceData(View view) {
+	public void showServiceData() {
 		if (service != null) {
-			this.game.getCurrentTurn();
 			Toast.makeText(this, "Number of elements" + service.getCurrentTurn(),
 					Toast.LENGTH_SHORT).show();
 		}
 	}
-
-	public boolean isNewTurn(){
-		service.getCurrentTurn();
+ */
+	public boolean isYourTurn(){
+		//service.getCurrentTurn();
 		String serverCurrentTurn = this.game.getCurrentTurn();
 		if (this.game.getCurrentTurn().equals(serverCurrentTurn)){
 			return false;
@@ -1200,9 +1226,9 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 		} 
 
 	}
+	
 
-	
-	
+
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	//							BACKGROUND BACKGROUND SERVICE STUFFBACKGROUND 
@@ -1214,14 +1240,14 @@ public class Multiplayer_Game extends Activity implements OnClickListener {
 	//BACKGROUND BACKGROUND SERVICE STUFFBACKGROUND BACKGROUND SERVICE STUFFBACKGROUND BACKGROUND 
 	//							BACKGROUND BACKGROUND SERVICE STUFFBACKGROUND 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	
+
+
 	public void foo(){
 		Intent i = new Intent(this, Multiplayer_Game.class);
 		i.putExtra("username", this.username);
 		i.putExtra("opponent", this.opponent);
 		i.putExtra("currentTurn", this.game.getCurrentTurn());
-		
+
 	}
 }
 

@@ -568,6 +568,7 @@ public class ServerAccessor {
 
 				for (String user2 : serverUsers) {
 					if (serverGames.contains(thisSA.getUsersKey(user, user2))) {
+						Log.d(TAG, "serverUsers: "+ user2);
 						games.add(user2);
 					}
 				}

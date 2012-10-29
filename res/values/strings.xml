@@ -5,6 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">NUMAD-DanCalacci</string>
+    <string name="alarms_active">Alarms active!</string>
 
     <!-- Home Screen -->
     <string name="exit_label">Exit</string>
@@ -102,7 +103,7 @@
     <string name="boggle_quit_label">Quit</string>
     <string name="boggle_settings_label">Settings</string>
     <string name="boggle_continue_game_label">Continue Game</string>
-    <string name="boggle_multiplayer_Label">Multiplayer</string>
+    <string name="boggle_multiplayer_Label">Persistent Boogle</string>
     <string name="settings_label">Settings...</string>
     <string name="settings_title">Sudoku settings</string>
     <string name="settings_shortcut">s</string>

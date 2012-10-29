@@ -88,12 +88,14 @@ public class Multiplayer_CurrentGames extends ListActivity {
 		//super.onListItemClick(l, v, position, id);
 		String opoonent = adapter.getContent(position);
 		Log.d(TAG, "onListItemClick: " + opoonent);
+		if(! (opoonent.equals("ERROR"))){
+			Intent i = new Intent(this, Multiplayer_Game.class);
+			// all game data has been initialized - let's start the game!
+			i.putExtra("opponent", opoonent);
+			
+			startActivity(i);
+		}
 		
-		Intent i = new Intent(this, Multiplayer_Game.class);
-		// all game data has been initialized - let's start the game!
-		i.putExtra("opponent", opoonent);
-		
-		startActivity(i);
 	}
 
 	public class Multiplayer_Current_Games_Adaptor extends BaseAdapter{

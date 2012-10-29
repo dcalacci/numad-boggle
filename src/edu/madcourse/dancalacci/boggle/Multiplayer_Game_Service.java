@@ -1,49 +1,28 @@
 package edu.madcourse.dancalacci.boggle;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import android.app.Service;
 import android.content.Intent;
-import android.os.Binder;
-import android.os.IBinder;
+import android.os.Environment;
+import android.util.Log;
+import android.widget.Toast;
 
-public class Multiplayer_Game_Service extends Service {
-	private final IBinder mBinder = new MyBinder();
-	private String currentTurn;
-	private String user1; 
-	private String user2;
-	private ServerAccessor sa = new ServerAccessor();
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Date;
 
-	public Multiplayer_Game_Service(String user1, String user2) {
-		super();
-		this.user1 = user1;
-		this.user2 = user2;
+public class Multiplayer_Game_Service extends Multiplayer_Game_Intent_Service {
+	public Multiplayer_Game_Service() {
+		super("AppService");
 	}
-	
+
 	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		
-		this.currentTurn = sa.getTurn(user1, user2);
-		
-		return Service.START_STICKY;
-	}
+	protected void doWakefulWork(Intent intent) {
 
-	
-	@Override
-	public IBinder onBind(Intent arg0) {
-		return mBinder;
-	}
+		Log.d("Wakeful", "doing stuff");
+		Log.d("Wakeful", "doing stuff");
 
-	public class MyBinder extends Binder {
-		Multiplayer_Game_Service getService() {
-			return Multiplayer_Game_Service.this;
-		}
-	}
+		Toast.makeText(this, "wakeful", Toast.LENGTH_LONG).show();
 
-	public String getCurrentTurn() {
-		return currentTurn;
 	}
-
-} 
+}
