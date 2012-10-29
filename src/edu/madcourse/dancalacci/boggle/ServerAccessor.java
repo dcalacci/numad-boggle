@@ -956,10 +956,36 @@ public class ServerAccessor {
 	 * @param user2 << opponent
 	 * @param numTurns
 	 */
-	public void setTurnTotal(String user1, String user2, int numTurns){
-		String userskey = this.getUsersKey(user1, user2);
-		String numTurnsKey = NUM_TURNS_PREFIX + userskey;
-		this.put(numTurnsKey, Integer.toString(numTurns));
+	public void setTurnTotal(String user1, String user2, int numTurns, final OnBooleanReceivedListener l){
+		
+		final String usersKey = this.getUsersKey(user1, user2);
+		final String numTurnsKey = NUM_TURNS_PREFIX + usersKey;
+		final ServerAccessor thisSA = this;
+		final int nTurns = numTurns;
+		Log.d(TAG, "about to create an asynctask setTurnTotalTask");
+
+		class setTurnTotalTask extends AsyncTask<String, Integer, Boolean> {
+
+			protected Boolean doInBackground(String... key) {
+				System.out.println("Setting the turn totals!");
+				if (!thisSA.canConnect()) {
+					return false;
+				}
+				thisSA.put(numTurnsKey, Integer.toString(nTurns));
+				// this totally worked even though i didnt check.  trust me.
+				return true;
+			}
+
+			protected void onPostExecute(Boolean result) {
+				Log.d(TAG, "in onPostExecute for setTurnTotalTask");
+				l.run(result);
+			}
+		}
+		try {
+			new setTurnTotalTask().execute();
+		} catch(Exception e) {
+			Log.e(TAG, "setTurnTotalTask thread died: "+e);
+		}
 	}
 	
 	
@@ -969,10 +995,33 @@ public class ServerAccessor {
 	 * @param user2
 	 * @param usedWords
 	 */
-	public void setEnteredWords(String user1, String user2, String usedWords){
-		String userskey = this.getUsersKey(user1, user2);
-		String enteredWordsKey = ENTERED_WORDS_PREFIX + userskey;
-		this.put(enteredWordsKey, usedWords);
+	public void setEnteredWords(String user1, String user2, String usedWords, final OnBooleanReceivedListener l){
+		final ServerAccessor thisSA = this;
+		final String usersKey = this.getUsersKey(user1, user2);
+		final String enteredWordsKey = ENTERED_WORDS_PREFIX + usersKey;
+		class setEnteredWordsTask extends AsyncTask<String, Integer, Boolean> {
+
+			protected Boolean doInBackground(String... key) {
+				String usedWords = key[0];
+				System.out.println("Setting the entered words list!");
+				if (!thisSA.canConnect()) {
+					return false;
+				}
+				thisSA.put(enteredWordsKey, usedWords);
+				// this totally worked even though i didnt check.  trust me.
+				return true;
+			}
+
+			protected void onPostExecute(Boolean result) {
+				Log.d(TAG, "in onPostExecute for setEnteredWordsTask");
+				l.run(result);
+			}
+		}
+		try {
+			new setEnteredWordsTask().execute();
+		} catch(Exception e) {
+			Log.e(TAG, "setEnteredWordsTask thread died: "+e);
+		}
 	}
 	
 	/**
