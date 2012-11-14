@@ -41,7 +41,7 @@
    <Button
        android:id="@+id/trickiest_part"
        android:layout_width="fill_parent"
-       android:layout_height="fill_parent"
+       android:layout_height="wrap_content"
        android:text="@string/trickiest_part_button"
        android:onClick="OnTrickiestPartButtonClicked" />
        
