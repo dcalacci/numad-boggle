@@ -43,7 +43,11 @@
     <string name="multiplayer_current_games_button_label_VS">VS</string>
 
     <!-- High Scores -->
-
+    
+    <!--  Trickiest Part -->
+    <string name="trickiest_part_button">Trickiest Part</string>
+    <string name="circletouch_hello">Hello World, circletouchActivity!</string>
+    <string name="circletouch_app_name">circletouch</string>
 
     <!-- Login Form -->
     <string name="login_form_label_login_in">Log In</string>

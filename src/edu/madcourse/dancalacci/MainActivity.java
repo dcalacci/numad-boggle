@@ -8,6 +8,7 @@ import android.content.Intent;
 import edu.neu.mobileClass.*;
 import edu.madcourse.dancalacci.sudoku.*;
 import edu.madcourse.dancalacci.boggle.*;
+import edu.madcourse.dancalacci.circletouch.circletouchActivity;
 
 public class MainActivity extends Activity {
 
@@ -46,6 +47,11 @@ public class MainActivity extends Activity {
     
     public void OnBoggleButtonClicked(View v) {
     	Intent i = new Intent(this, Boggle.class);
+    	startActivity(i);
+    }
+    
+    public void OnTrickiestPartButtonClicked(View v) {
+    	Intent i = new Intent(this, circletouchActivity.class);
     	startActivity(i);
     }
 }
