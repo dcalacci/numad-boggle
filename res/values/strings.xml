@@ -12,6 +12,11 @@
     <string name="main_title">NUMAD Dan Calacci</string>
     <string name="name">Dan Calacci</string>
 
+    <!-- Plate Chart -->
+     <string name="addChlart_label">+</string>
+    <string name="history_label">History</string>
+    <string name="profile_label">Profile</string>
+    
     <!-- Team Members -->
     <string name="team_members_label">Team Members</string>
     <string name="team_members_text">       name: Dan Calacci\nemail: dcalacci@ccs.neu.edu\nversion: 0.0.1</string>

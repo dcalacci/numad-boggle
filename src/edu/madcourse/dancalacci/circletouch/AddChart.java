@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-public class circletouchActivity extends Activity {
+public class AddChart extends Activity {
     /** Called when the activity is first created. */
 	circle cir;
     @Override

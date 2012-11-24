@@ -38,7 +38,7 @@
         <!--  CircleTouch Activity -->
 
         <activity
-            android:name="edu.madcourse.dancalacci.circletouch.circletouchActivity"
+            android:name=".circletouch.AddChart"
             android:label="@string/app_name" 
             android:screenOrientation="portrait">
         </activity>
