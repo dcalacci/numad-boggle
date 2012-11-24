@@ -361,6 +361,50 @@ public class circle extends View {
 
     return inList;
   }
+  
+  public void clearChart(View v) {
+		// TODO Auto-generated method stub
+	  
+	this.mCategories.clear();
+	
+	//Protein
+    TextView protein_box = (TextView) v.findViewById(R.id.protein_box);
+    TextView protein_text = (TextView) v.findViewById(R.id.protein_label);
+    protein_box.setBackgroundColor(getResources().getColor(R.color.Protein_Grayed));
+    protein_text.setTextColor(getResources().getColor(R.color.Protein_Grayed));
+    
+    //Dairy
+    TextView dairy_box = (TextView) v.findViewById(R.id.dairy_box);
+    TextView dairy_text = (TextView) v.findViewById(R.id.dairy_label);
+    dairy_box.setBackgroundColor(getResources().getColor(R.color.Dairy_Grayed));
+    dairy_text.setTextColor(getResources().getColor(R.color.Dairy_Grayed));
+    
+    //Fruit
+    TextView fruit_box = (TextView) v.findViewById(R.id.fruit_box);
+    TextView fruit_text = (TextView) v.findViewById(R.id.fruit_label);
+    fruit_box.setBackgroundColor(getResources().getColor(R.color.Fruit_Grayed));
+    fruit_text.setTextColor(getResources().getColor(R.color.Fruit_Grayed));
+    
+    //Vegetable
+    TextView vegetable_box = (TextView) v.findViewById(R.id.vegetable_box);
+    TextView vegetable_text = (TextView) v.findViewById(R.id.vegetable_label);
+    vegetable_box.setBackgroundColor(getResources().getColor(R.color.Vegetable_Grayed));
+    vegetable_text.setTextColor(getResources().getColor(R.color.Vegetable_Grayed));
+    
+    //Grain
+    TextView box = (TextView) v.findViewById(R.id.protein_box);
+    TextView text = (TextView) v.findViewById(R.id.protein_label);
+    box.setBackgroundColor(getResources().getColor(R.color.Protein_Grayed));
+    text.setTextColor(getResources().getColor(R.color.Protein_Grayed));
+    
+    //oil_sugar
+    TextView oil_sugar_box = (TextView) v.findViewById(R.id.oil_box);
+    TextView oil_sugar_text = (TextView) v.findViewById(R.id.oil_label);
+    oil_sugar_box.setBackgroundColor(getResources().getColor(R.color.Oil_Sugar_Grayed));
+    oil_sugar_text.setTextColor(getResources().getColor(R.color.Oil_Sugar_Grayed));
+    
+	invalidate();
+  }
 
   public void onProteinClicked(View v){
     String category = "Protein";
@@ -1059,6 +1103,7 @@ public class circle extends View {
       return true;
     }
   }
+
 }
 
 

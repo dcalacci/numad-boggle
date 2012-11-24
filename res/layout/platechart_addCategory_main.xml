@@ -29,7 +29,8 @@
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="@string/back_label" />
+                    android:text="@string/back_label" 
+                     android:onClick="onBackClicked"/>
 
                 <Button
                     android:id="@+id/addChart_clear"
@@ -37,7 +38,9 @@
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="@string/clear_label" />
+                    android:text="@string/clear_label"
+                     android:onClick="onClearClicked" 
+                    />
 
                 <Button
                     android:id="@+id/addChart_save"
@@ -45,7 +48,8 @@
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="@string/save_label" />
+                    android:text="@string/save_label" 
+                    android:onClick="onSaveClicked"/>
 
             </RelativeLayout>
 

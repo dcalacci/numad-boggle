@@ -40,4 +40,17 @@ public class AddChart extends Activity {
 	public void onOilSugarClicked(View v){
 		cir.onOilSugarClicked(v);
 	}
+	
+	public void onSaveClicked(View v){
+		//TODO: do stuff
+		finish();
+	}
+	
+	public void onBackClicked(View v){
+		finish();
+	}
+	
+	public void onClearClicked(View v){
+		cir.clearChart(v);
+	}
 }
