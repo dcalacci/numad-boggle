@@ -10,6 +10,48 @@
     android:weightSum="1.00"
     tools:context=".circletouchActivity" >
 
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <Button
+                    android:id="@+id/addChart_back"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/back_label" />
+
+                <Button
+                    android:id="@+id/addChart_clear"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/clear_label" />
+
+                <Button
+                    android:id="@+id/addChart_save"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/save_label" />
+
+            </RelativeLayout>
+
+        </TableRow>
+    </TableLayout>
+
     <edu.madcourse.dancalacci.circletouch.circle
         android:id="@+id/circle"
         android:layout_width="match_parent"
