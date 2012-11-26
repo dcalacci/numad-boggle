@@ -362,182 +362,210 @@ public class circle extends View {
 		return inList;
 	}
 
-	public void clearChart(View v) {
+	public void clearChart() {
 		// TODO Auto-generated method stub
-		if(!(this.mCategories.isEmpty() && this.mPoints.isEmpty())){
 			this.mCategories.clear();
-			this.mPoints.clear();
-
-			//Protein
-			TextView protein_box = (TextView) v.findViewById(R.id.protein_box);
-			TextView protein_text = (TextView) v.findViewById(R.id.protein_label);
-			
-			protein_box.setBackgroundColor(this.getResources().getColor(R.color.Protein_Grayed));
-			protein_text.setTextColor(this.getResources().getColor(R.color.Protein_Grayed));
-
-			//Dairy
-			TextView dairy_box = (TextView) v.findViewById(R.id.dairy_box);
-			TextView dairy_text = (TextView) v.findViewById(R.id.dairy_label);
-			
-			dairy_box.setBackgroundColor(this.getResources().getColor(R.color.Dairy_Grayed));
-			dairy_text.setTextColor(this.getResources().getColor(R.color.Dairy_Grayed));
-
-			//Fruit
-			TextView fruit_box = (TextView) v.findViewById(R.id.fruit_box);
-			TextView fruit_text = (TextView) v.findViewById(R.id.fruit_label);
-			
-			fruit_box.setBackgroundColor(this.getResources().getColor(R.color.Fruit_Grayed));
-			fruit_text.setTextColor(this.getResources().getColor(R.color.Fruit_Grayed));
-
-			//Vegetable
-			TextView vegetable_box = (TextView) v.findViewById(R.id.vegetable_box);
-			TextView vegetable_text = (TextView) v.findViewById(R.id.vegetable_label);
-			
-			vegetable_box.setBackgroundColor(this.getResources().getColor(R.color.Vegetable_Grayed));
-			vegetable_text.setTextColor(this.getResources().getColor(R.color.Vegetable_Grayed));
-
-			//Grain
-			TextView box = (TextView) v.findViewById(R.id.protein_box);
-			TextView text = (TextView) v.findViewById(R.id.protein_label);
-			
-			box.setBackgroundColor(this.getResources().getColor(R.color.Protein_Grayed));
-			text.setTextColor(this.getResources().getColor(R.color.Protein_Grayed));
-
-			//oil_sugar
-			TextView oil_sugar_box = (TextView) v.findViewById(R.id.oil_box);
-			TextView oil_sugar_text = (TextView) v.findViewById(R.id.oil_label);
-			
-			oil_sugar_box.setBackgroundColor(this.getResources().getColor(R.color.Oil_Sugar_Grayed));
-			oil_sugar_text.setTextColor(getResources().getColor(R.color.Oil_Sugar_Grayed));
-
+			this.mPoints.clear();	
 			invalidate();
-		}
 	}
 
 	public void onProteinClicked(View v){
 		String category = "Protein";
-		TextView box = (TextView) v.findViewById(R.id.protein_box);
-		TextView text = (TextView) v.findViewById(R.id.protein_label);
 
 		boolean inList = isCategoryinList(category);
 
 		if(inList){
 			// Deselect
-			box.setBackgroundColor(getResources().getColor(R.color.Protein_Grayed));
-			text.setTextColor(getResources().getColor(R.color.Protein_Grayed));
+			setProteinDeselect(v);
 			removeCategory(category);
 		}else{
 			// Select
-			box.setBackgroundColor(getResources().getColor(R.color.Protein));
-			text.setTextColor(getResources().getColor(R.color.Protein));
+			setProteinDeselect(v);
 			addCategory(category, getResources().getColor(R.color.Protein));
 		}		 
 		invalidate();
 	}
-
+	
+	public void setProteinDeselect(View v){
+		TextView box = (TextView) v.findViewById(R.id.protein_box);
+		TextView text = (TextView) v.findViewById(R.id.protein_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Protein_Grayed));
+		text.setTextColor(getResources().getColor(R.color.Protein_Grayed));
+	}
+	
+	private void setProteinSelect(View v){
+		TextView box = (TextView) v.findViewById(R.id.protein_box);
+		TextView text = (TextView) v.findViewById(R.id.protein_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Protein));
+		text.setTextColor(getResources().getColor(R.color.Protein));
+	}
+	
+	
 	public void onVegetableClicked(View v){
 		String category = "Vegetable";
-		TextView box = (TextView) v.findViewById(R.id.vegetable_box);
-		TextView text = (TextView) v.findViewById(R.id.vegetable_label);
 
 		boolean inList = isCategoryinList(category);
 
 		if(inList){
 			// Deselect
-			box.setBackgroundColor(getResources().getColor(R.color.Vegetable_Grayed));
-			text.setTextColor(getResources().getColor(R.color.Vegetable_Grayed));
+			setVegetableDeselect(v);
 			removeCategory(category);
 		}else{
 			// Select
-			box.setBackgroundColor(getResources().getColor(R.color.Vegetable));
-			text.setTextColor(getResources().getColor(R.color.Vegetable));
+			setVegetableSelect(v);
 			addCategory(category, getResources().getColor(R.color.Vegetable));
 		}	
 		invalidate();
 	}
+	
+	public void setVegetableDeselect(View v){
+		TextView box = (TextView) v.findViewById(R.id.vegetable_box);
+		TextView text = (TextView) v.findViewById(R.id.vegetable_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Vegetable_Grayed));
+		text.setTextColor(getResources().getColor(R.color.Vegetable_Grayed));
+	}
+	
+	private void setVegetableSelect(View v){
+		TextView box = (TextView) v.findViewById(R.id.vegetable_box);
+		TextView text = (TextView) v.findViewById(R.id.vegetable_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Vegetable));
+		text.setTextColor(getResources().getColor(R.color.Vegetable));
+	}
 
 	public void onDairyClicked(View v){
 		String category = "Dairy";
-		TextView box = (TextView) v.findViewById(R.id.dairy_box);
-		TextView text = (TextView) v.findViewById(R.id.dairy_label);
 
 		boolean inList = isCategoryinList(category);
 
 		if(inList){
 			// Deselect
-			box.setBackgroundColor(getResources().getColor(R.color.Dairy_Grayed));
-			text.setTextColor(getResources().getColor(R.color.Dairy_Grayed));
+			setDairyDeselect(v);
 			removeCategory(category);
 		}else{
 			// Select
-			box.setBackgroundColor(getResources().getColor(R.color.Dairy));
-			text.setTextColor(getResources().getColor(R.color.Dairy));
+			setDairySelect(v);
 			addCategory(category, getResources().getColor(R.color.Dairy));
 		}	
 		invalidate();
 	}
+	
+	public void setDairyDeselect(View v){
+		TextView box = (TextView) v.findViewById(R.id.dairy_box);
+		TextView text = (TextView) v.findViewById(R.id.dairy_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Dairy_Grayed));
+		text.setTextColor(getResources().getColor(R.color.Dairy_Grayed));
+	}
+	
+	private void setDairySelect(View v){
+		TextView box = (TextView) v.findViewById(R.id.dairy_box);
+		TextView text = (TextView) v.findViewById(R.id.dairy_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Dairy));
+		text.setTextColor(getResources().getColor(R.color.Dairy));
+	}
 
 	public void onFruitClicked(View v){
 		String category = "Fruit";
-		TextView box = (TextView) v.findViewById(R.id.fruit_box);
-		TextView text = (TextView) v.findViewById(R.id.fruit_label);
 
 		boolean inList = isCategoryinList(category);
 
 		if(inList){
 			// Deselect
-			box.setBackgroundColor(getResources().getColor(R.color.Fruit_Grayed));
-			text.setTextColor(getResources().getColor(R.color.Fruit_Grayed));
+			setFruitDeselect(v);
 			removeCategory(category);
 		}else{
 			// Select
-			box.setBackgroundColor(getResources().getColor(R.color.Fruit));
-			text.setTextColor(getResources().getColor(R.color.Fruit));
+			setFruitSelect(v);
 			addCategory(category, getResources().getColor(R.color.Fruit));
 		}
 		invalidate();
 	}
+	
+	public void setFruitDeselect(View v){
+		TextView box = (TextView) v.findViewById(R.id.fruit_box);
+		TextView text = (TextView) v.findViewById(R.id.fruit_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Fruit_Grayed));
+		text.setTextColor(getResources().getColor(R.color.Fruit_Grayed));
+	}
+	
+	private void setFruitSelect(View v){
+		TextView box = (TextView) v.findViewById(R.id.fruit_box);
+		TextView text = (TextView) v.findViewById(R.id.fruit_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Fruit));
+		text.setTextColor(getResources().getColor(R.color.Fruit));
+	}
 
 	public void onGrainClicked(View v){
 		String category = "Grain";
-		TextView box = (TextView) v.findViewById(R.id.grain_box);
-		TextView text = (TextView) v.findViewById(R.id.grain_label);
 
 		boolean inList = isCategoryinList(category);
 
 		if(inList){
 			// Deselect
-			box.setBackgroundColor(getResources().getColor(R.color.Grain_Grayed));
-			text.setTextColor(getResources().getColor(R.color.Grain_Grayed));
+			setGrainDeselect(v);
 			removeCategory(category);
 		}else{
 			// Select
-			box.setBackgroundColor(getResources().getColor(R.color.Grain));
-			text.setTextColor(getResources().getColor(R.color.Grain));
+			setGrainSelect(v);
 			addCategory(category, getResources().getColor(R.color.Grain));
 		}	
 		invalidate();
 	}
+	
+	public void setGrainDeselect(View v){
+		TextView box = (TextView) v.findViewById(R.id.grain_box);
+		TextView text = (TextView) v.findViewById(R.id.grain_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Grain_Grayed));
+		text.setTextColor(getResources().getColor(R.color.Grain_Grayed));
+	}
+	
+	private void setGrainSelect(View v){
+		TextView box = (TextView) v.findViewById(R.id.grain_box);
+		TextView text = (TextView) v.findViewById(R.id.grain_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Grain));
+		text.setTextColor(getResources().getColor(R.color.Grain));
+	}
 
 	public void onOilSugarClicked(View v){
 		String category = "OilSugar";
-		TextView box = (TextView) v.findViewById(R.id.oil_box);
-		TextView text = (TextView) v.findViewById(R.id.oil_label);
 
 		boolean inList = isCategoryinList(category);
 
 		if(inList){
 			// Deselect
-			box.setBackgroundColor(getResources().getColor(R.color.Oil_Sugar_Grayed));
-			text.setTextColor(getResources().getColor(R.color.Oil_Sugar_Grayed));
+			setOilSugarDeselect(v);
 			removeCategory(category);
 		}else{
 			// Select
-			box.setBackgroundColor(getResources().getColor(R.color.Oil_Sugar));
-			text.setTextColor(getResources().getColor(R.color.Oil_Sugar));
+			setOilSugarSelect(v);
 			addCategory(category, getResources().getColor(R.color.Oil_Sugar));
 		}	
 		invalidate();
+	}
+	
+	public void setOilSugarDeselect(View v){
+		TextView box = (TextView) v.findViewById(R.id.oil_box);
+		TextView text = (TextView) v.findViewById(R.id.oil_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Oil_Sugar_Grayed));
+		text.setTextColor(getResources().getColor(R.color.Oil_Sugar_Grayed));
+	}
+	
+	private void setOilSugarSelect(View v){
+		TextView box = (TextView) v.findViewById(R.id.oil_box);
+		TextView text = (TextView) v.findViewById(R.id.oil_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Oil_Sugar));
+		text.setTextColor(getResources().getColor(R.color.Oil_Sugar));
 	}
 
 

@@ -51,6 +51,23 @@ public class AddChart extends Activity {
 	}
 	
 	public void onClearClicked(View v){
-		cir.clearChart(v);
+		cir.clearChart();
+		//Protein
+		cir.setProteinDeselect(this.findViewById(R.id.protein_view));
+		
+		//Vegetable
+		cir.setVegetableDeselect(this.findViewById(R.id.vegetable_view));
+		
+		//Dairy
+		cir.setDairyDeselect(this.findViewById(R.id.dairy_view));
+		
+		//Fruit
+		cir.setFruitDeselect(this.findViewById(R.id.fruit_view));
+		
+		//Grain
+		cir.setGrainDeselect(this.findViewById(R.id.grain_view));
+		
+		//Oil Sugar
+		cir.setOilSugarDeselect(this.findViewById(R.id.oil_view));
 	}
 }
