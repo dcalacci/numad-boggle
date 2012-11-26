@@ -12,7 +12,7 @@ public class AddChart extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.circletouch_main);
+        setContentView(R.layout.platechart_add);
         final circle c = (circle) this.findViewById(R.id.circle);
         cir = c;
     }

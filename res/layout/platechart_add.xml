@@ -2,59 +2,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:custom="http//schemas.android.com/apk/res/edu.madcourse.dancalacci.circletouch"
-    xmlns:app="http://schemas.android.com/apk/res/edu.madcourse.dancalacci.circletouch"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/Background"
     android:orientation="vertical"
     android:weightSum="1.00"
-    tools:context=".circletouchActivity" >
+    tools:context=".AddChart" >
 
-    <TableLayout
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
-        <TableRow
-            android:id="@+id/tableRow4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+        <Button
+            android:id="@+id/addChart_Back"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:onClick="onBackClicked"
+            android:text="@string/back_label" />
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+        <Button
+            android:id="@+id/addChart_Clear"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:onClick="onClearClicked"
+            android:text="@string/clear_label" />
 
-                <Button
-                    android:id="@+id/addChart_back"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="@string/back_label" 
-                     android:onClick="onBackClicked"/>
-
-                <Button
-                    android:id="@+id/addChart_clear"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="@string/clear_label"
-                     android:onClick="onClearClicked" 
-                    />
-
-                <Button
-                    android:id="@+id/addChart_save"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="@string/save_label" 
-                    android:onClick="onSaveClicked"/>
-
-            </RelativeLayout>
-
-        </TableRow>
-    </TableLayout>
+        <Button
+            android:id="@+id/addChart_Save"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:onClick="onSaveClicked"
+            android:text="@string/save_label" />
+    </RelativeLayout>
 
     <edu.madcourse.dancalacci.circletouch.circle
         android:id="@+id/circle"
@@ -101,7 +86,8 @@
                     android:paddingLeft="30dp"
                     android:text="Protein"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/Protein_Grayed" />
+                    android:textColor="@color/Protein_Grayed"
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/protein_box"

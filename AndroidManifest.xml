@@ -43,6 +43,25 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity
+            android:name=".circletouch.History"
+            android:label="@string/app_name" 
+            android:screenOrientation="portrait">
+        </activity>
+        
+        <activity
+            android:name=".circletouch.Profile"
+            android:label="@string/app_name" 
+            android:screenOrientation="portrait">
+        </activity>
+        
+        <activity
+            android:name=".circletouch.PlateChart_main"
+            android:label="@string/app_name" 
+            android:screenOrientation="portrait">
+        </activity>
+        
+        
         <!-- TeamMembers Activity -->
         <activity
             android:name=".TeamMembers"
