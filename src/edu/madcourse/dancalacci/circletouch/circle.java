@@ -25,185 +25,185 @@ import android.widget.TextView;
 
 
 public class circle extends View {
-  private String TAG = "circletouch.circle";
-  private Canvas canvas;
-  // view boundary for the circle.
-  private RectF mCircleBounds = new RectF();
-  private ArrayList<TouchPoint> mPoints = new ArrayList<TouchPoint>();
+	private String TAG = "circletouch.circle";
+	private Canvas canvas;
+	// view boundary for the circle.
+	private RectF mCircleBounds = new RectF();
+	private ArrayList<TouchPoint> mPoints = new ArrayList<TouchPoint>();
 
-  //Items 
-  private ArrayList<Category> mCategories = new ArrayList<Category>();
+	//Items 
+	private ArrayList<Category> mCategories = new ArrayList<Category>();
 
-  // circle positions
-  private float mCircleX;
-  private float mCircleY;
-  private float mCircleRadius;
+	// circle positions
+	private float mCircleX;
+	private float mCircleY;
+	private float mCircleRadius;
 
-  // angle stuff
-  private final double ANGLE_THRESHOLD = 0.174532*2;
+	// angle stuff
+	private final double ANGLE_THRESHOLD = 0.174532*2;
 
-  // touchPoint info
-  private int mTouchPointRadius;
-  private int mTouchPointColor;
+	// touchPoint info
+	private int mTouchPointRadius;
+	private int mTouchPointColor;
 
-  // gesture detection
-  private GestureDetector mGestureDetector;
-  private boolean inScroll = false;
+	// gesture detection
+	private GestureDetector mGestureDetector;
+	private boolean inScroll = false;
 
 
-  //paints
-  private Paint mCirclePaint;
-  private Paint mTouchPointPaint;
-  private Paint mSeparatorLinesPaint;
-  private Context mContext;
-  // for categories
-  private Paint mCategoryPaint;
-  /*private Paint mProteinPaint;
+	//paints
+	private Paint mCirclePaint;
+	private Paint mTouchPointPaint;
+	private Paint mSeparatorLinesPaint;
+	private Context mContext;
+	// for categories
+	private Paint mCategoryPaint;
+	/*private Paint mProteinPaint;
   private Paint mVegetablePaint;
   private Paint mDairyPaint;
   private Paint mOilSugarPaint;
   private Paint mFruitPaint;
   private Paint mGrainPaint;*/
-  /**
-   * boring constructor with just a context
-   */
-  public circle(Context c) {
-    super(c);
-    init();
-    mContext = c;
-  }
+	/**
+	 * boring constructor with just a context
+	 */
+	public circle(Context c) {
+		super(c);
+		init();
+		mContext = c;
+	}
 
-  /**
-   * constructor with attrs etc.
-   */
-  public circle(Context ctx, AttributeSet attrs) {
-    super(ctx, attrs);
+	/**
+	 * constructor with attrs etc.
+	 */
+	public circle(Context ctx, AttributeSet attrs) {
+		super(ctx, attrs);
 
-    mContext = ctx;
+		mContext = ctx;
 
-    // attrs contains the raw values for the XML attributes
-    // that were specified in the layout, which don't include
-    // attributes set by styles or themes, and which may have
-    // unresolved references. Call obtainStyledAttributes()
-    // to get the final values for each attribute.
-    //
-    // This call uses R.styleable.PieChart, which is an array of
-    // the custom attributes that were declared in attrs.xml.
-    TypedArray a = ctx.getTheme().obtainStyledAttributes(
-        attrs,
-        R.styleable.circle,
-        0, 0);
+		// attrs contains the raw values for the XML attributes
+		// that were specified in the layout, which don't include
+		// attributes set by styles or themes, and which may have
+		// unresolved references. Call obtainStyledAttributes()
+		// to get the final values for each attribute.
+		//
+		// This call uses R.styleable.PieChart, which is an array of
+		// the custom attributes that were declared in attrs.xml.
+		TypedArray a = ctx.getTheme().obtainStyledAttributes(
+				attrs,
+				R.styleable.circle,
+				0, 0);
 
-    try {
-      // resolve values from the typedarray and store into fields
-      mTouchPointRadius = 
-        a.getInteger(R.styleable.circle_touchPointRadius, 40);
-      mTouchPointColor = 
-        a.getInteger(R.styleable.circle_touchPointColor,0xffff0000); 
+		try {
+			// resolve values from the typedarray and store into fields
+			mTouchPointRadius = 
+					a.getInteger(R.styleable.circle_touchPointRadius, 40);
+			mTouchPointColor = 
+					a.getInteger(R.styleable.circle_touchPointColor,0xffff0000); 
 
-      // mTextWidth = a.getDimension(R.styleable.PieChart_labelWidth,
-      // 0.0f);
-    } finally {
-      // release TypedArray
-      a.recycle();
+			// mTextWidth = a.getDimension(R.styleable.PieChart_labelWidth,
+			// 0.0f);
+		} finally {
+			// release TypedArray
+			a.recycle();
 
-      Log.d(TAG,
-          "mTouchPointRadius is: " + mTouchPointRadius);
-      Log.d(TAG, 
-          "mTouchPointColor is: " + mTouchPointColor);
-    }
+			Log.d(TAG,
+					"mTouchPointRadius is: " + mTouchPointRadius);
+			Log.d(TAG, 
+					"mTouchPointColor is: " + mTouchPointColor);
+		}
 
-    // initialize everything
-    init();
-  }
+		// initialize everything
+		init();
+	}
 
-  /**
-   * Called when the size of the screen is changed; we describe the size of
-   * the circle and it's boundary area here.
-   */
-  public void onSizeChanged(int w, int h, int oldw, int oldh) {
-    // calculate the total padding size
-    float xpad = (float) (getPaddingLeft() + getPaddingRight());
-    float ypad = (float) (getPaddingTop() + getPaddingBottom());
+	/**
+	 * Called when the size of the screen is changed; we describe the size of
+	 * the circle and it's boundary area here.
+	 */
+	public void onSizeChanged(int w, int h, int oldw, int oldh) {
+		// calculate the total padding size
+		float xpad = (float) (getPaddingLeft() + getPaddingRight());
+		float ypad = (float) (getPaddingTop() + getPaddingBottom());
 
-    //figure out the "correct" width and height based on the padding
-    float ww = (float) w - xpad;
-    float hh = (float) h - ypad;
+		//figure out the "correct" width and height based on the padding
+		float ww = (float) w - xpad;
+		float hh = (float) h - ypad;
 
-    // let's make the circle as large as it can be for this view
-    float diameter = (float) Math.min(ww, hh);
+		// let's make the circle as large as it can be for this view
+		float diameter = (float) Math.min(ww, hh);
 
-    // make the rectf for the boundary
-    mCircleBounds = new RectF(
-        0.0f,
-        0.0f,
-        diameter,
-        diameter);
+		// make the rectf for the boundary
+		mCircleBounds = new RectF(
+				0.0f,
+				0.0f,
+				diameter,
+				diameter);
 
-    // offset the boundary rect in accordance with the padding
-    mCircleBounds.offsetTo(getPaddingLeft(), getPaddingTop());
+		// offset the boundary rect in accordance with the padding
+		mCircleBounds.offsetTo(getPaddingLeft(), getPaddingTop());
 
-    // calculate the circle's coordinates and stuff based on the boundary
-    mCircleRadius = diameter/2f;
-    mCircleX      = mCircleBounds.left + mCircleBounds.width()/2;
-    mCircleY      = mCircleBounds.top + mCircleBounds.height()/2;
+		// calculate the circle's coordinates and stuff based on the boundary
+		mCircleRadius = diameter/2f;
+		mCircleX      = mCircleBounds.left + mCircleBounds.width()/2;
+		mCircleY      = mCircleBounds.top + mCircleBounds.height()/2;
 
-    // if the touchpoints are gonna go out of the padding, fix it.
-    float farthest = mTouchPointRadius + diameter;
-    if (farthest > w - xpad/2 || farthest > h-ypad/2) {
-      mTouchPointRadius = (int)Math.min(xpad, ypad)/4;
-      Log.d(TAG, 
-          "Touchpoints are a little big. reducing to: " +
-          mTouchPointRadius);
-      Log.d(TAG, "mCircle center is: " +mCircleX +", "+mCircleY);
+		// if the touchpoints are gonna go out of the padding, fix it.
+		float farthest = mTouchPointRadius + diameter;
+		if (farthest > w - xpad/2 || farthest > h-ypad/2) {
+			mTouchPointRadius = (int)Math.min(xpad, ypad)/4;
+			Log.d(TAG, 
+					"Touchpoints are a little big. reducing to: " +
+							mTouchPointRadius);
+			Log.d(TAG, "mCircle center is: " +mCircleX +", "+mCircleY);
 
-    }
-  }
-  /**
-   * Adds an item to the list of points
-   * @param degrees the degree value for the point to add.
-   */
-  private void addItem(double rads) {
-    // create a new point
-    TouchPoint p = new TouchPoint();
-    p.mRads = rads;
+		}
+	}
+	/**
+	 * Adds an item to the list of points
+	 * @param degrees the degree value for the point to add.
+	 */
+	private void addItem(double rads) {
+		// create a new point
+		TouchPoint p = new TouchPoint();
+		p.mRads = rads;
 
-    // add it to the list of points
-    mPoints.add(p);
-    sortListCW(mPoints, 0);
-    invalidate();
-  }
+		// add it to the list of points
+		mPoints.add(p);
+		sortListCW(mPoints, 0);
+		invalidate();
+	}
 
-  /**
-   * Adds category to the list of Categories
-   * TODO: COLOR IN SLICES
-   * @param category
-   * @param Color
-   */
-  private void addCategory(String category, int color){
-      addCategoryHelper(null, null, category, color);
-      addPoints();		
-  }
+	/**
+	 * Adds category to the list of Categories
+	 * TODO: COLOR IN SLICES
+	 * @param category
+	 * @param Color
+	 */
+	private void addCategory(String category, int color){
+		addCategoryHelper(null, null, category, color);
+		addPoints();		
+	}
 
-  private void addNItems(int n) {
-    double radSections = (Math.PI*2)/n;
-    double totalRads = 0;
-    for (int i = 0; i < n; i++) {
-      totalRads = moveRadCW(totalRads, radSections);
-      addItem(totalRads);
-    }
-  }
+	private void addNItems(int n) {
+		double radSections = (Math.PI*2)/n;
+		double totalRads = 0;
+		for (int i = 0; i < n; i++) {
+			totalRads = moveRadCW(totalRads, radSections);
+			addItem(totalRads);
+		}
+	}
 
 
-  /**
-   * Adds points to the charts
-   */
-  private void addPoints(){
-    int cSize = mCategories.size();		
-    clearPoints();
-    addNItems(cSize);
-    setPointsToCategories();
-	/*
+	/**
+	 * Adds points to the charts
+	 */
+	private void addPoints(){
+		int cSize = mCategories.size();		
+		clearPoints();
+		addNItems(cSize);
+		setPointsToCategories();
+		/*
     // needs to take into acount -pi and +pi etc.
     double rads = (Math.PI * 2) / (cSize);
     double rads_sum = 0;
@@ -217,367 +217,447 @@ public class circle extends View {
       }
       setPointsToCategories();
     }*/
-  }
+	}
 
-  /**
-   * Clears all the points 
-   */
-  private void clearPoints(){
-    mPoints.clear();
-  }
+	/**
+	 * Clears all the points 
+	 */
+	private void clearPoints(){
+		mPoints.clear();
+	}
 
-  /**
-   * Sets the points associated to the category
-   */
-  // this doesn't add the correct points.  REview.
-  private void setPointsToCategories(){
-    int size = mPoints.size();
-    int i = 0;
-    int j = i+1;
-    for (Category c : mCategories){
-    	Log.d(TAG, "Index I:"+i);
-    	Log.d(TAG, "Index J:"+j);
+	/**
+	 * Sets the points associated to the category
+	 */
+	// this doesn't add the correct points.  REview.
+	private void setPointsToCategories(){
+		int size = mPoints.size();
+		int i = 0;
+		int j = i+1;
+		for (Category c : mCategories){
+			Log.d(TAG, "Index I:"+i);
+			Log.d(TAG, "Index J:"+j);
 
-    	c.setpCCW(mPoints.get(i));
-    	if (i == (size - 1)){
-    		c.setpCW(mPoints.get(0));
-    	}else{
-    		c.setpCW(mPoints.get(j));
-    	}
+			c.setpCCW(mPoints.get(i));
+			if (i == (size - 1)){
+				c.setpCW(mPoints.get(0));
+			}else{
+				c.setpCW(mPoints.get(j));
+			}
 
-    	Log.d(TAG, "mPoints Size: "+ mPoints.size());
-    	Log.d(TAG, "pCCW: "+ c.getpCCW());
-    	Log.d(TAG, "pCW: "+ c.getpCW());
+			Log.d(TAG, "mPoints Size: "+ mPoints.size());
+			Log.d(TAG, "pCCW: "+ c.getpCCW());
+			Log.d(TAG, "pCW: "+ c.getpCW());
 
-    	i++;
-    	j++;
-    }      
-  }
+			i++;
+			j++;
+		}      
+	}
 
-  /**
-   * Removes the specified category from the list
-   * @param category
-   */
-  private void removeCategory(String category){
-    int index = 0;
-    // iterate through category list, skip down if we find category
-    for(Category c : mCategories){
-      if(c.getCategory().equalsIgnoreCase(category)){
-        break;
-      }else{
-        index = index + 1;
-      }
-    }
-    mCategories.remove(index);
-    // if only one category, remove the only remaining one
-    if(mCategories.size() < 2){
-      clearPoints();
-      Log.d(TAG, "ALL GONE: " + mPoints.toString());
-    }else{
-      addPoints();
-      setPointsToCategories();
-    }
-  }
+	/**
+	 * Removes the specified category from the list
+	 * @param category
+	 */
+	private void removeCategory(String category){
+		int index = 0;
+		// iterate through category list, skip down if we find category
+		for(Category c : mCategories){
+			if(c.getCategory().equalsIgnoreCase(category)){
+				break;
+			}else{
+				index = index + 1;
+			}
+		}
+		mCategories.remove(index);
+		// if only one category, remove the only remaining one
+		if(mCategories.size() < 2){
+			clearPoints();
+			Log.d(TAG, "ALL GONE: " + mPoints.toString());
+		}else{
+			addPoints();
+			setPointsToCategories();
+		}
+	}
 
-  /**
-   * Adds categories Helper
-   * @param pCCW - Counter Clockwise point
-   * @param pCW - Clockwise point
-   * @param category - the Category of the slice
-   * @param color - Color of the category
-   */
-  private void addCategoryHelper(TouchPoint pCCW, TouchPoint pCW, String category,  int color){
-    Category item = new Category(pCCW, pCW, category, color);
+	/**
+	 * Adds categories Helper
+	 * @param pCCW - Counter Clockwise point
+	 * @param pCW - Clockwise point
+	 * @param category - the Category of the slice
+	 * @param color - Color of the category
+	 */
+	private void addCategoryHelper(TouchPoint pCCW, TouchPoint pCW, String category,  int color){
+		Category item = new Category(pCCW, pCW, category, color);
 
-    mCategories.add(item);
-  }
+		mCategories.add(item);
+	}
 
-  /**
-   * Container for "Items" on the pie chart
-   * @param pCCW - the Counter Clockwise Point
-   * @param pCW - the Clockwise Point
-   * @param category - One of: Protein, Grains, Vegetable, Oil/Fat/Sweets, Dairy, Fruits	
-   * @param color - Color of the slice 
-   */
-  //foo
-  private class Category {
-    private TouchPoint pCCW;
-    private TouchPoint pCW;
-    private String category;
-    private int color;
+	/**
+	 * Container for "Items" on the pie chart
+	 * @param pCCW - the Counter Clockwise Point
+	 * @param pCW - the Clockwise Point
+	 * @param category - One of: Protein, Grains, Vegetable, Oil/Fat/Sweets, Dairy, Fruits	
+	 * @param color - Color of the slice 
+	 */
+	//foo
+	private class Category {
+		private TouchPoint pCCW;
+		private TouchPoint pCW;
+		private String category;
+		private int color;
 
-    public Category(TouchPoint ccw, TouchPoint cw, String category, int c ){
-      this.pCCW = ccw;
-      this.pCW = cw;
-      this.category = category;
-      this.color = c;
-    }
+		public Category(TouchPoint ccw, TouchPoint cw, String category, int c ){
+			this.pCCW = ccw;
+			this.pCW = cw;
+			this.category = category;
+			this.color = c;
+		}
 
-    public TouchPoint getpCCW(){
-      return this.pCCW;
-    }
+		public TouchPoint getpCCW(){
+			return this.pCCW;
+		}
 
-    public TouchPoint getpCW(){
-      return this.pCW;
-    }
+		public TouchPoint getpCW(){
+			return this.pCW;
+		}
 
-    public void setpCCW(TouchPoint ccw){
-      this.pCCW = ccw;
-    }
+		public void setpCCW(TouchPoint ccw){
+			this.pCCW = ccw;
+		}
 
-    public void setpCW(TouchPoint cw){
-      this.pCW = cw;
-    }
+		public void setpCW(TouchPoint cw){
+			this.pCW = cw;
+		}
 
-    public String getCategory(){
-      return this.category;
-    }
+		public String getCategory(){
+			return this.category;
+		}
 
-    public int getColor(){
-      return this.color;
-    }
+		public int getColor(){
+			return this.color;
+		}
 
-    public void setColor(int color){
-      this.color = color;
-    }
-    
-    public String toString(){
-    	return this.category;
-    }
-  }
-  /**
-   * Checks whether the category already exists in the list
-   * @param category - name of category (ignores UPPER/LOWER case)
-   * @return inList - exist in list 
-   */
-  public boolean isCategoryinList(String category){
-    boolean inList = false;
+		public void setColor(int color){
+			this.color = color;
+		}
 
-    for(Category c : mCategories){
-      if (c.getCategory().equalsIgnoreCase(category)){
-        inList = true;
-      }
-    }
+		public String toString(){
+			return this.category;
+		}
+	}
+	/**
+	 * Checks whether the category already exists in the list
+	 * @param category - name of category (ignores UPPER/LOWER case)
+	 * @return inList - exist in list 
+	 */
+	public boolean isCategoryinList(String category){
+		boolean inList = false;
 
-    return inList;
-  }
+		for(Category c : mCategories){
+			if (c.getCategory().equalsIgnoreCase(category)){
+				inList = true;
+			}
+		}
 
-  public void onProteinClicked(View v){
-    String category = "Protein";
-    TextView box = (TextView) v.findViewById(R.id.protein_box);
-    TextView text = (TextView) v.findViewById(R.id.protein_label);
+		return inList;
+	}
 
-    boolean inList = isCategoryinList(category);
+	public void clearChart() {
+		// TODO Auto-generated method stub
+			this.mCategories.clear();
+			this.mPoints.clear();	
+			invalidate();
+	}
 
-    if(inList){
-      // Deselect
-      box.setBackgroundColor(getResources().getColor(R.color.Protein_Grayed));
-      text.setTextColor(getResources().getColor(R.color.Protein_Grayed));
-      removeCategory(category);
-    }else{
-      // Select
-      box.setBackgroundColor(getResources().getColor(R.color.Protein));
-      text.setTextColor(getResources().getColor(R.color.Protein));
-      addCategory(category, getResources().getColor(R.color.Protein));
-    }		 
-    invalidate();
-  }
+	public void onProteinClicked(View v){
+		String category = "Protein";
 
-  public void onVegetableClicked(View v){
-    String category = "Vegetable";
-    TextView box = (TextView) v.findViewById(R.id.vegetable_box);
-    TextView text = (TextView) v.findViewById(R.id.vegetable_label);
+		boolean inList = isCategoryinList(category);
 
-    boolean inList = isCategoryinList(category);
+		if(inList){
+			// Deselect
+			setProteinDeselect(v);
+			removeCategory(category);
+		}else{
+			// Select
+			setProteinDeselect(v);
+			addCategory(category, getResources().getColor(R.color.Protein));
+		}		 
+		invalidate();
+	}
+	
+	public void setProteinDeselect(View v){
+		TextView box = (TextView) v.findViewById(R.id.protein_box);
+		TextView text = (TextView) v.findViewById(R.id.protein_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Protein_Grayed));
+		text.setTextColor(getResources().getColor(R.color.Protein_Grayed));
+	}
+	
+	private void setProteinSelect(View v){
+		TextView box = (TextView) v.findViewById(R.id.protein_box);
+		TextView text = (TextView) v.findViewById(R.id.protein_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Protein));
+		text.setTextColor(getResources().getColor(R.color.Protein));
+	}
+	
+	
+	public void onVegetableClicked(View v){
+		String category = "Vegetable";
 
-    if(inList){
-      // Deselect
-      box.setBackgroundColor(getResources().getColor(R.color.Vegetable_Grayed));
-      text.setTextColor(getResources().getColor(R.color.Vegetable_Grayed));
-      removeCategory(category);
-    }else{
-      // Select
-      box.setBackgroundColor(getResources().getColor(R.color.Vegetable));
-      text.setTextColor(getResources().getColor(R.color.Vegetable));
-      addCategory(category, getResources().getColor(R.color.Vegetable));
-    }	
-    invalidate();
-  }
+		boolean inList = isCategoryinList(category);
 
-  public void onDairyClicked(View v){
-    String category = "Dairy";
-    TextView box = (TextView) v.findViewById(R.id.dairy_box);
-    TextView text = (TextView) v.findViewById(R.id.dairy_label);
+		if(inList){
+			// Deselect
+			setVegetableDeselect(v);
+			removeCategory(category);
+		}else{
+			// Select
+			setVegetableSelect(v);
+			addCategory(category, getResources().getColor(R.color.Vegetable));
+		}	
+		invalidate();
+	}
+	
+	public void setVegetableDeselect(View v){
+		TextView box = (TextView) v.findViewById(R.id.vegetable_box);
+		TextView text = (TextView) v.findViewById(R.id.vegetable_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Vegetable_Grayed));
+		text.setTextColor(getResources().getColor(R.color.Vegetable_Grayed));
+	}
+	
+	private void setVegetableSelect(View v){
+		TextView box = (TextView) v.findViewById(R.id.vegetable_box);
+		TextView text = (TextView) v.findViewById(R.id.vegetable_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Vegetable));
+		text.setTextColor(getResources().getColor(R.color.Vegetable));
+	}
 
-    boolean inList = isCategoryinList(category);
+	public void onDairyClicked(View v){
+		String category = "Dairy";
 
-    if(inList){
-      // Deselect
-      box.setBackgroundColor(getResources().getColor(R.color.Dairy_Grayed));
-      text.setTextColor(getResources().getColor(R.color.Dairy_Grayed));
-      removeCategory(category);
-    }else{
-      // Select
-      box.setBackgroundColor(getResources().getColor(R.color.Dairy));
-      text.setTextColor(getResources().getColor(R.color.Dairy));
-      addCategory(category, getResources().getColor(R.color.Dairy));
-    }	
-    invalidate();
-  }
+		boolean inList = isCategoryinList(category);
 
-  public void onFruitClicked(View v){
-    String category = "Fruit";
-    TextView box = (TextView) v.findViewById(R.id.fruit_box);
-    TextView text = (TextView) v.findViewById(R.id.fruit_label);
+		if(inList){
+			// Deselect
+			setDairyDeselect(v);
+			removeCategory(category);
+		}else{
+			// Select
+			setDairySelect(v);
+			addCategory(category, getResources().getColor(R.color.Dairy));
+		}	
+		invalidate();
+	}
+	
+	public void setDairyDeselect(View v){
+		TextView box = (TextView) v.findViewById(R.id.dairy_box);
+		TextView text = (TextView) v.findViewById(R.id.dairy_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Dairy_Grayed));
+		text.setTextColor(getResources().getColor(R.color.Dairy_Grayed));
+	}
+	
+	private void setDairySelect(View v){
+		TextView box = (TextView) v.findViewById(R.id.dairy_box);
+		TextView text = (TextView) v.findViewById(R.id.dairy_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Dairy));
+		text.setTextColor(getResources().getColor(R.color.Dairy));
+	}
 
-    boolean inList = isCategoryinList(category);
+	public void onFruitClicked(View v){
+		String category = "Fruit";
 
-    if(inList){
-      // Deselect
-      box.setBackgroundColor(getResources().getColor(R.color.Fruit_Grayed));
-      text.setTextColor(getResources().getColor(R.color.Fruit_Grayed));
-      removeCategory(category);
-    }else{
-      // Select
-      box.setBackgroundColor(getResources().getColor(R.color.Fruit));
-      text.setTextColor(getResources().getColor(R.color.Fruit));
-      addCategory(category, getResources().getColor(R.color.Fruit));
-    }
-    invalidate();
-  }
+		boolean inList = isCategoryinList(category);
 
-  public void onGrainClicked(View v){
-    String category = "Grain";
-    TextView box = (TextView) v.findViewById(R.id.grain_box);
-    TextView text = (TextView) v.findViewById(R.id.grain_label);
+		if(inList){
+			// Deselect
+			setFruitDeselect(v);
+			removeCategory(category);
+		}else{
+			// Select
+			setFruitSelect(v);
+			addCategory(category, getResources().getColor(R.color.Fruit));
+		}
+		invalidate();
+	}
+	
+	public void setFruitDeselect(View v){
+		TextView box = (TextView) v.findViewById(R.id.fruit_box);
+		TextView text = (TextView) v.findViewById(R.id.fruit_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Fruit_Grayed));
+		text.setTextColor(getResources().getColor(R.color.Fruit_Grayed));
+	}
+	
+	private void setFruitSelect(View v){
+		TextView box = (TextView) v.findViewById(R.id.fruit_box);
+		TextView text = (TextView) v.findViewById(R.id.fruit_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Fruit));
+		text.setTextColor(getResources().getColor(R.color.Fruit));
+	}
 
-    boolean inList = isCategoryinList(category);
+	public void onGrainClicked(View v){
+		String category = "Grain";
 
-    if(inList){
-      // Deselect
-      box.setBackgroundColor(getResources().getColor(R.color.Grain_Grayed));
-      text.setTextColor(getResources().getColor(R.color.Grain_Grayed));
-      removeCategory(category);
-    }else{
-      // Select
-      box.setBackgroundColor(getResources().getColor(R.color.Grain));
-      text.setTextColor(getResources().getColor(R.color.Grain));
-      addCategory(category, getResources().getColor(R.color.Grain));
-    }	
-    invalidate();
-  }
+		boolean inList = isCategoryinList(category);
 
-  public void onOilSugarClicked(View v){
-    String category = "OilSugar";
-    TextView box = (TextView) v.findViewById(R.id.oil_box);
-    TextView text = (TextView) v.findViewById(R.id.oil_label);
+		if(inList){
+			// Deselect
+			setGrainDeselect(v);
+			removeCategory(category);
+		}else{
+			// Select
+			setGrainSelect(v);
+			addCategory(category, getResources().getColor(R.color.Grain));
+		}	
+		invalidate();
+	}
+	
+	public void setGrainDeselect(View v){
+		TextView box = (TextView) v.findViewById(R.id.grain_box);
+		TextView text = (TextView) v.findViewById(R.id.grain_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Grain_Grayed));
+		text.setTextColor(getResources().getColor(R.color.Grain_Grayed));
+	}
+	
+	private void setGrainSelect(View v){
+		TextView box = (TextView) v.findViewById(R.id.grain_box);
+		TextView text = (TextView) v.findViewById(R.id.grain_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Grain));
+		text.setTextColor(getResources().getColor(R.color.Grain));
+	}
 
-    boolean inList = isCategoryinList(category);
+	public void onOilSugarClicked(View v){
+		String category = "OilSugar";
 
-    if(inList){
-      // Deselect
-      box.setBackgroundColor(getResources().getColor(R.color.Oil_Sugar_Grayed));
-      text.setTextColor(getResources().getColor(R.color.Oil_Sugar_Grayed));
-      removeCategory(category);
-    }else{
-      // Select
-      box.setBackgroundColor(getResources().getColor(R.color.Oil_Sugar));
-      text.setTextColor(getResources().getColor(R.color.Oil_Sugar));
-      addCategory(category, getResources().getColor(R.color.Oil_Sugar));
-    }	
-    invalidate();
-  }
+		boolean inList = isCategoryinList(category);
+
+		if(inList){
+			// Deselect
+			setOilSugarDeselect(v);
+			removeCategory(category);
+		}else{
+			// Select
+			setOilSugarSelect(v);
+			addCategory(category, getResources().getColor(R.color.Oil_Sugar));
+		}	
+		invalidate();
+	}
+	
+	public void setOilSugarDeselect(View v){
+		TextView box = (TextView) v.findViewById(R.id.oil_box);
+		TextView text = (TextView) v.findViewById(R.id.oil_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Oil_Sugar_Grayed));
+		text.setTextColor(getResources().getColor(R.color.Oil_Sugar_Grayed));
+	}
+	
+	private void setOilSugarSelect(View v){
+		TextView box = (TextView) v.findViewById(R.id.oil_box);
+		TextView text = (TextView) v.findViewById(R.id.oil_label);
+		
+		box.setBackgroundColor(getResources().getColor(R.color.Oil_Sugar));
+		text.setTextColor(getResources().getColor(R.color.Oil_Sugar));
+	}
 
 
-  /**
-   * Draws the view
-   * @param canvas The canvas to draw on, dummy!
-   */
-  protected void onDraw(Canvas canvas) {
-    super.onDraw(canvas);
+	/**
+	 * Draws the view
+	 * @param canvas The canvas to draw on, dummy!
+	 */
+	protected void onDraw(Canvas canvas) {
+		super.onDraw(canvas);
 
-    int size = mCategories.size();
-    if (size >= 2){
-    	for (int i = 0; i < size; i++){
-    		Category c = mCategories.get(i);
-	    //for (Category c : mCategories){
+		int size = mCategories.size();
+		if (size >= 2){
+			for (int i = 0; i < size; i++){
+				Category c = mCategories.get(i);
+				//for (Category c : mCategories){
 				//Log.d(TAG, "mCategories[" + i + "]:" + mCategories.toString());
-	    	
-	    	
+
+
 				//Log.d(TAG, "Category :" + c.toString()); 
-	    	TouchPoint end = c.getpCW();
-	    	TouchPoint start = c.getpCCW();
-				
-	    	PointF touchPointCoordsStart = radsToPointF(start.mRads);
-	    	PointF touchPointCoordsEnd = radsToPointF(end.mRads);
-					
-	    	Paint color = new Paint(Paint.ANTI_ALIAS_FLAG);
-	    	color.setColor(c.getColor());
-	    	color.setStyle(Paint.Style.FILL_AND_STROKE);
+				TouchPoint end = c.getpCW();
+				TouchPoint start = c.getpCCW();
 
-        float startAngle = (float) radsToDegree(start.mRads);
-        float endAngle = (float) radsToDegree(end.mRads);
-        float sweepAngle;
-        // get correct rad magnitude
-        if (getDifference(start.mRads, end.mRads) < 0) {
-          sweepAngle = (float) (Math.PI*2 + getDifference(start.mRads, end.mRads));
-        } else {
-          sweepAngle = (float) (getDifference(start.mRads, end.mRads));
-        }
-        // convert to degrees
-        sweepAngle = radsToDegree(sweepAngle);
+				PointF touchPointCoordsStart = radsToPointF(start.mRads);
+				PointF touchPointCoordsEnd = radsToPointF(end.mRads);
 
-        //float sweepAngle = (float) radsToDegree(Math.abs(getDifference(start.mRads, end.mRads)));
-        Log.d(TAG, ">>>>SWEEP: " + sweepAngle);
-        Log.d(TAG, "Color :" + color); 
-        //canvas.drawArc(mCircleBounds, 360 - radsToDegree(startAngle), radsToDegree(angle), true, color);
-        canvas.drawArc(mCircleBounds, startAngle, sweepAngle, true, color);
+				Paint color = new Paint(Paint.ANTI_ALIAS_FLAG);
+				color.setColor(c.getColor());
+				color.setStyle(Paint.Style.FILL_AND_STROKE);
 
-      }	
-    } else if (size == 1) { // only one category
-      Category c = mCategories.get(0);
-      Paint color = new Paint(Paint.ANTI_ALIAS_FLAG);
-      color.setColor(c.getColor());
-      color.setStyle(Paint.Style.FILL_AND_STROKE);
-      canvas.drawArc(mCircleBounds, 0f, 360f, true, color);
-    }
+				float startAngle = (float) radsToDegree(start.mRads);
+				float endAngle = (float) radsToDegree(end.mRads);
+				float sweepAngle;
+				// get correct rad magnitude
+				if (getDifference(start.mRads, end.mRads) < 0) {
+					sweepAngle = (float) (Math.PI*2 + getDifference(start.mRads, end.mRads));
+				} else {
+					sweepAngle = (float) (getDifference(start.mRads, end.mRads));
+				}
+				// convert to degrees
+				sweepAngle = radsToDegree(sweepAngle);
+
+				//float sweepAngle = (float) radsToDegree(Math.abs(getDifference(start.mRads, end.mRads)));
+				Log.d(TAG, ">>>>SWEEP: " + sweepAngle);
+				Log.d(TAG, "Color :" + color); 
+				//canvas.drawArc(mCircleBounds, 360 - radsToDegree(startAngle), radsToDegree(angle), true, color);
+				canvas.drawArc(mCircleBounds, startAngle, sweepAngle, true, color);
+
+			}	
+		} else if (size == 1) { // only one category
+			Category c = mCategories.get(0);
+			Paint color = new Paint(Paint.ANTI_ALIAS_FLAG);
+			color.setColor(c.getColor());
+			color.setStyle(Paint.Style.FILL_AND_STROKE);
+			canvas.drawArc(mCircleBounds, 0f, 360f, true, color);
+		}
 
 
 
-    for (TouchPoint point : mPoints) {
-      PointF touchPointCoords = radsToPointF(point.mRads);
+		for (TouchPoint point : mPoints) {
+			PointF touchPointCoords = radsToPointF(point.mRads);
 
-      // draw the touchPoint on the canvas
-      canvas.drawCircle(
-          touchPointCoords.x,
-          touchPointCoords.y,
-          mTouchPointRadius,
-          mTouchPointPaint
-          );
-    }
+			// draw the touchPoint on the canvas
+			canvas.drawCircle(
+					touchPointCoords.x,
+					touchPointCoords.y,
+					mTouchPointRadius,
+					mTouchPointPaint
+					);
+		}
 
-    // drawing the circle
-    canvas.drawCircle(
-        mCircleX,
-        mCircleY,
-        mCircleRadius,
-        mCirclePaint
-        );
+		// drawing the circle
+		canvas.drawCircle(
+				mCircleX,
+				mCircleY,
+				mCircleRadius,
+				mCirclePaint
+				);
 
-    // drawing the touch-points
-    for (TouchPoint point : mPoints) {
-      PointF touchPointCoords = radsToPointF(point.mRads);
-      canvas.drawLine(
-          mCircleX,
-          mCircleY,
-          touchPointCoords.x,
-          touchPointCoords.y,
-          mSeparatorLinesPaint
-          );
-    }
+		// drawing the touch-points
+		for (TouchPoint point : mPoints) {
+			PointF touchPointCoords = radsToPointF(point.mRads);
+			canvas.drawLine(
+					mCircleX,
+					mCircleY,
+					touchPointCoords.x,
+					touchPointCoords.y,
+					mSeparatorLinesPaint
+					);
+		}
 
-    // drawing the slices
-    /*for (Category c : mCategories) {
+		// drawing the slices
+		/*for (Category c : mCategories) {
       mCategoryPaint.setColor(c.getColor());
       canvas.drawArc(
       mCircleBounds,
@@ -588,70 +668,70 @@ public class circle extends View {
       }*/
 
 
-  }
+	}
 
-  /**
-   * doing stuff with touch
-   */
-  @Override
-    public boolean onTouchEvent(MotionEvent event) {
-      //Log.d(TAG, "ONTOUCHEVENT | received a touchEvent");
-      boolean result = mGestureDetector.onTouchEvent(event);
+	/**
+	 * doing stuff with touch
+	 */
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		//Log.d(TAG, "ONTOUCHEVENT | received a touchEvent");
+		boolean result = mGestureDetector.onTouchEvent(event);
 
-      // if the user lifts their finger, we're not in a scroll.
-      if (event.getAction() == MotionEvent.ACTION_UP) {
-        inScroll = false;
-        onScrollFinished();
-      }
+		// if the user lifts their finger, we're not in a scroll.
+		if (event.getAction() == MotionEvent.ACTION_UP) {
+			inScroll = false;
+			onScrollFinished();
+		}
 
-      // return true if mGestureDetector handled the event
-      if (result) {
-        return result;
-      }
-      return false;
+		// return true if mGestureDetector handled the event
+		if (result) {
+			return result;
+		}
+		return false;
 
-    }
+	}
 
-  private float radsToDegree(double val){
-    float toDegree = (float) Math.toDegrees(val);
-    Log.d(TAG, 
-        val +
-        " radians is " +
-        toDegree +
-        "degrees");
-    return toDegree;
-  }
+	private float radsToDegree(double val){
+		float toDegree = (float) Math.toDegrees(val);
+		Log.d(TAG, 
+				val +
+				" radians is " +
+				toDegree +
+				"degrees");
+		return toDegree;
+	}
 
-  /**
-   * converts a radian value to a coordinate on the edge of the circle
-   * @param theta The radian value to convert to a coordinate
-   */
-  private PointF radsToPointF(double theta) {
-    float y = (float)
-      (mCircleY + (Math.sin(theta) * mCircleRadius));
-    float x = (float)
-      (mCircleX + (Math.cos(theta) * mCircleRadius));
-    return new PointF(x, y);
-  }
+	/**
+	 * converts a radian value to a coordinate on the edge of the circle
+	 * @param theta The radian value to convert to a coordinate
+	 */
+	private PointF radsToPointF(double theta) {
+		float y = (float)
+				(mCircleY + (Math.sin(theta) * mCircleRadius));
+		float x = (float)
+				(mCircleX + (Math.cos(theta) * mCircleRadius));
+		return new PointF(x, y);
+	}
 
-  /**
-   * Same thing as pointFtoDegrees, but separate values for the x and y vals.
-   * @param x the x-value of the coordinate
-   * @param y the y-value of the coordinate
-   * */
-  private double coordsToRads(float x, float y) {
-    double rads = (double) Math.atan2((y - mCircleX),(x - mCircleX));
-    // range of atan2 output is -pi to pi...it's weird.
-    return rads;
-  }
+	/**
+	 * Same thing as pointFtoDegrees, but separate values for the x and y vals.
+	 * @param x the x-value of the coordinate
+	 * @param y the y-value of the coordinate
+	 * */
+	private double coordsToRads(float x, float y) {
+		double rads = (double) Math.atan2((y - mCircleX),(x - mCircleX));
+		// range of atan2 output is -pi to pi...it's weird.
+		return rads;
+	}
 
-  /*[>*
-   * determines the number of degrees between two points using the circle's
-   * center point.
-   * @param x1 The x-coordinate of the first point
-   * @param y1 The y-coordinate of the first point
-   * @param x2 The x-coordinate of the second point
-   * @param y2 The y-coordinate of the second point
+	/*[>*
+	 * determines the number of degrees between two points using the circle's
+	 * center point.
+	 * @param x1 The x-coordinate of the first point
+	 * @param y1 The y-coordinate of the first point
+	 * @param x2 The x-coordinate of the second point
+	 * @param y2 The y-coordinate of the second point
    <]
    public double radsMovedBetweenPoints(
    float x1, float y1, float x2, float y2) {
@@ -660,405 +740,406 @@ public class circle extends View {
    return (double) (angle2-angle1);
    }*/
 
+	/**
+	 * Initializes some values and all of the fancy paints and listeners
+	 */
+	private void init() {
+
+		// set up the circle paint
+		mCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		mCirclePaint.setStyle(Paint.Style.STROKE);
+
+		mCategoryPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		mCategoryPaint.setStyle(Paint.Style.FILL);
+
+		// set up the touchpoint paint
+		mTouchPointPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		mTouchPointPaint.setStyle(Paint.Style.FILL);
+		mTouchPointPaint.setColor(mTouchPointColor);
+
+		// set up the separatorLines paint
+		mSeparatorLinesPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		mSeparatorLinesPaint.setStyle(Paint.Style.STROKE);
+
+		printTouchPoints();
+		sortListCW(mPoints, 0);
+		printTouchPoints();
+
+		// set up the gesture detector
+		mGestureDetector = new GestureDetector(
+				circle.this.getContext(), 
+				new GestureListener());
+
+		// Turn off long press--this control doesn't use it, and if long press is
+		// enabled, you can't scroll for a bit, pause, then scroll some more 
+		// (the pause is interpreted as a long press, apparently)
+		mGestureDetector.setIsLongpressEnabled(false);
+
+		invalidate();
+	}
+	private void printTouchPoints() {
+		for (TouchPoint p : mPoints) {
+			System.out.println("" + p.mRads);
+		}
+	}
+
+	/**
+	 * Container for touch points
+	 */
+	private class TouchPoint implements Comparable<TouchPoint> {
+		public double mRads;
+		public boolean isBeingTouched = false;
+
+
+		/**
+		 * positive if getDifference(this, tp) is positive, 0 if it's 0,
+		 * negative if it's negative.
+		 * @param tp The touchpoint to compare this to
+		 */
+		public int compareTo(TouchPoint tp) throws ClassCastException {
+			if (getDifference(this.mRads, tp.mRads) == 0) {
+				return 0;
+			} else {
+				return getDifference(this.mRads, tp.mRads) > 0 ? 1 : -1;
+			}
+		}
+	}
+
+	/**
+	 * Moves start delta degrees clockwise
+	 * @param start The start angle in radians
+	 * @param delta The amount to rotate start by
+	 */
+	public double moveRadCW(double start, double delta) {
+		// if we're going from + to - (bottom to top)
+		if (start + delta > Math.PI) {
+			double radsUntilPI = Math.PI - start;
+			delta -= radsUntilPI;
+			return -1*(Math.PI - delta);
+		} else {
+			start += delta;
+			return start;
+		}
+	}
+
+	/**
+	 * Moves start by delta degrees counter clockwise
+	 * @param start The start angle in radians
+	 * @param delta The amount to rotate start by
+	 */
+	public double moveRadCCW(double start, double delta) {
+		// from negative to positive (top to bottom)
+		if (start - delta < Math.PI && start < 0) {
+			double radsUntilPI = Math.PI + start;
+			delta -= radsUntilPI;
+			return Math.PI - delta;
+		} else {
+			start -= delta;
+			return start;
+		}
+	}
+
+
+	/**
+	 * returns true if the given x and y coords are "inside" of point p - in 
+	 * quotes because we're a little lenient to give the users some wiggle room.
+	 * @param x The x value of the coordinate to check
+	 * @param y The y-value of the coordinate to check
+	 * @param p The TouchPoint to check
+	 */
+	private boolean isTouchingThisPoint(float x, float y, TouchPoint p) {
+		PointF pCoords = radsToPointF((double)p.mRads);
+		double dist = Math.sqrt( 
+				Math.pow( (double)pCoords.x - x, 2) +
+				Math.pow( (double)pCoords.y - y, 2));
+		// make it * 2 to give users a little breathing room(the dots are small)
+		return dist <= mTouchPointRadius*2;
+	}
+
+	/**
+	 * returns true if d1 is within 30 degrees in front of d2
+	 * @param start the reference radian value
+	 * @param start the radian value to check the position of
+	 */
+	private boolean movingClockwise(double start, double end) {
+		double diff = getDifference(start, end);
+		return diff > 0;
+	}
+
+	/**
+	 * returns true if the given point has another point in front of it
+	 * (clockwise) within ANGLE_THRESHOLD or less - should only be called if 
+	 * the touchPoint is being rotated clockwise.
+	 * @param p1 the point to check
+	 */
+	private boolean hasPointInFront(TouchPoint p1) {
+		for (TouchPoint point : mPoints) {
+			// edge case
+			if (point.mRads < 0 && p1.mRads > 0 &&
+					((Math.PI + point.mRads + Math.PI - p1.mRads) <= ANGLE_THRESHOLD)) {
+				return true;
+			} else if (point.mRads > p1.mRads &&
+					point.mRads - p1.mRads < ANGLE_THRESHOLD) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * returns true if the given point has another point in behind it
+	 * (counter-clockwise) within 10 degrees or less - should only be called if 
+	 * the touchPoint is being rotated counterclockwise.
+	 * @param p1 the point to check
+	 */
+	private boolean hasPointBehind(TouchPoint p1) {
+		for (TouchPoint point : mPoints) {
+			// edge case
+			if (point.mRads > 0 && p1.mRads < 0 &&
+					(Math.PI - point.mRads + Math.PI + p1.mRads <= ANGLE_THRESHOLD)) {
+				return true;
+			} else if (point.mRads < p1.mRads &&
+					p1.mRads - point.mRads <= ANGLE_THRESHOLD) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * returns the difference between two radian values, negative if end is
+	 * under pi rads away from start, ccw, positive otherwise.
+	 * @param start The first angle
+	 * @param end The second angle
+	 */
+	private double getDifference(double start, double end) {
+		// if result is greater than pi, subtract it from 2pi.
+		double diff;
+		//edge case from -pi to pi
+		if (end < 0 && start > 0) {
+			diff = Math.PI - start + Math.PI + end;
+		}
+		// reverse case - start is on top, end is on bottom. Also handles reg. case
+		else {
+			diff = end - start;
+		}
+		if (diff > Math.PI) {
+			diff = diff-Math.PI*2; // negative because it's in ccw rotation
+		}
+		return diff;
+	}
+
+	/**
+	 * Returns true if rm is in the arc that is less than pi between r1 and r2.
+	 * r1 is start, r2 is end, we're testing to see if rm is in the middle.
+	 * @param r1 The first angle
+	 * @param rm The angle in question
+	 * @param r2 The second angle
+	 */
+	private boolean isBetween(double r1, double rm, double r2) {
+		// if the arc from r1 to r2 is less than pi but greater than 0
+		if (movingClockwise(r1, r2)){
+			// if the arc from rm to r2 is + but less than the arc from r2 to r1
+			if (getDifference(r1, rm) > 0) {
+				if( (getDifference(r1, rm) < getDifference(r1, r2))) {
+					Log.d(TAG, rm + " IS BETWEEN " + r1 +" AND " +r2);
+					return true;
+				}
+				else { return false; }
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+	private boolean hasPassed(double r1, double rm, double r2) {
+		if (movingClockwise(r1, r2)) {
+			if (getDifference(r1, rm) > 0 &&
+					getDifference(r2, rm) < 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/** 
+	 * on my anonymous inner class grind - this sorts the given arraylist by
+	 * the rotation distance from refRad to each touchPoint, clockwise.
+	 * @param pts The arrayList to sort
+	 * @param refRad The referance radian measurement
+	 */
+	private void sortListCW(
+			ArrayList<TouchPoint> pts,
+			final double refRad) {
+
+		Collections.sort( pts, 
+				new Comparator<TouchPoint>() {
+			public int compare(TouchPoint a, TouchPoint b) {
+				// difference is >0 if clockwise, <0 if not.
+				double aDiff = getDifference(refRad, a.mRads);
+				double bDiff = getDifference(refRad, b.mRads);
+				if (aDiff < 0) {
+					aDiff = Math.PI*2 + aDiff;
+				}
+				if (bDiff < 0) {
+					bDiff = Math.PI*2 + bDiff;
+				}
+				return (aDiff > bDiff ? 1 : (aDiff == bDiff ? 0 : -1));
+			}
+		}
+				);
+	}
+
+	/** 
+	 * on my anonymous inner class grind - this sorts the given arraylist by
+	 * the rotation distance from refRad to each touchPoint, counter-clockwise.
+	 * @param pts The arrayList to sort
+	 * @param refRad The referance radian measurement
+	 */
+	private void sortListCCW(
+			ArrayList<TouchPoint> pts,
+			final double refRad) {
+
+		Collections.sort( pts, 
+				new Comparator<TouchPoint>() {
+			public int compare(TouchPoint a, TouchPoint b) {
+				// difference is >0 if clockwise, <0 if not.
+				double aDiff = getDifference(refRad, a.mRads);
+				double bDiff = getDifference(refRad, b.mRads);
+				if (aDiff < 0) {
+					aDiff = Math.PI*2 + aDiff;
+				}
+				if (bDiff < 0) {
+					bDiff = Math.PI*2 + bDiff;
+				}
+				return (aDiff > bDiff ? -1 : (aDiff == bDiff ? 0 : 1));
+			}
+		}
+				);
+	}
+	/*
   /**
-   * Initializes some values and all of the fancy paints and listeners
-   */
-  private void init() {
+	 * Handles when the scroll movement is finished
+	 */
+	private void onScrollFinished() {
+		for (TouchPoint p : mPoints) {
+			p.isBeingTouched = false;
+		}
+		printTouchPoints();
+		inScroll = false;
+	}
 
-    // set up the circle paint
-    mCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    mCirclePaint.setStyle(Paint.Style.STROKE);
+	/**
+	 * let's track some gestures
+	 */
+	private class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
-    mCategoryPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    mCategoryPaint.setStyle(Paint.Style.FILL);
+		@Override
+		public boolean onScroll(
+				MotionEvent e1,
+				MotionEvent e2,
+				float distanceX,
+				float distanceY) {
 
-    // set up the touchpoint paint
-    mTouchPointPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    mTouchPointPaint.setStyle(Paint.Style.FILL);
-    mTouchPointPaint.setColor(mTouchPointColor);
+			float lastX = e2.getX() + distanceX;
+			float lastY = e2.getY() + distanceY;
 
-    // set up the separatorLines paint
-    mSeparatorLinesPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    mSeparatorLinesPaint.setStyle(Paint.Style.STROKE);
+			// calculate the degree values of the last touch event and the 
+			// current touch event
+			double lastRad = coordsToRads(lastX, lastY);
+			double curRad = coordsToRads(e2.getX(), e2.getY());
 
-    printTouchPoints();
-    sortListCW(mPoints, 0);
-    printTouchPoints();
+			// difference between the current position being touched
+			// and the last position
+			double radDifference = getDifference(lastRad, curRad);
+			double firstRad = coordsToRads(e1.getX(), e1.getY());
 
-    // set up the gesture detector
-    mGestureDetector = new GestureDetector(
-        circle.this.getContext(), 
-        new GestureListener());
+			// have we moved clockwise?
+			boolean clockwise = movingClockwise(lastRad, curRad);
 
-    // Turn off long press--this control doesn't use it, and if long press is
-    // enabled, you can't scroll for a bit, pause, then scroll some more 
-    // (the pause is interpreted as a long press, apparently)
-    mGestureDetector.setIsLongpressEnabled(false);
-
-    invalidate();
-  }
-  private void printTouchPoints() {
-    for (TouchPoint p : mPoints) {
-      System.out.println("" + p.mRads);
-    }
-  }
-
-  /**
-   * Container for touch points
-   */
-  private class TouchPoint implements Comparable<TouchPoint> {
-    public double mRads;
-    public boolean isBeingTouched = false;
-
-    
-      /**
-       * positive if getDifference(this, tp) is positive, 0 if it's 0,
-       * negative if it's negative.
-       * @param tp The touchpoint to compare this to
-       */
-      public int compareTo(TouchPoint tp) throws ClassCastException {
-        if (getDifference(this.mRads, tp.mRads) == 0) {
-          return 0;
-        } else {
-          return getDifference(this.mRads, tp.mRads) > 0 ? 1 : -1;
-        }
-      }
-  }
-
-  /**
-   * Moves start delta degrees clockwise
-   * @param start The start angle in radians
-   * @param delta The amount to rotate start by
-   */
-  public double moveRadCW(double start, double delta) {
-    // if we're going from + to - (bottom to top)
-    if (start + delta > Math.PI) {
-      double radsUntilPI = Math.PI - start;
-      delta -= radsUntilPI;
-      return -1*(Math.PI - delta);
-    } else {
-      start += delta;
-      return start;
-    }
-  }
-
-  /**
-   * Moves start by delta degrees counter clockwise
-   * @param start The start angle in radians
-   * @param delta The amount to rotate start by
-   */
-  public double moveRadCCW(double start, double delta) {
-    // from negative to positive (top to bottom)
-    if (start - delta < Math.PI && start < 0) {
-      double radsUntilPI = Math.PI + start;
-      delta -= radsUntilPI;
-      return Math.PI - delta;
-    } else {
-      start -= delta;
-      return start;
-    }
-  }
-
-
-  /**
-   * returns true if the given x and y coords are "inside" of point p - in 
-   * quotes because we're a little lenient to give the users some wiggle room.
-   * @param x The x value of the coordinate to check
-   * @param y The y-value of the coordinate to check
-   * @param p The TouchPoint to check
-   */
-  private boolean isTouchingThisPoint(float x, float y, TouchPoint p) {
-    PointF pCoords = radsToPointF((double)p.mRads);
-    double dist = Math.sqrt( 
-        Math.pow( (double)pCoords.x - x, 2) +
-        Math.pow( (double)pCoords.y - y, 2));
-    // make it * 2 to give users a little breathing room(the dots are small)
-    return dist <= mTouchPointRadius*2;
-  }
-
-  /**
-   * returns true if d1 is within 30 degrees in front of d2
-   * @param start the reference radian value
-   * @param start the radian value to check the position of
-   */
-  private boolean movingClockwise(double start, double end) {
-    double diff = getDifference(start, end);
-    return diff > 0;
-  }
-
-  /**
-   * returns true if the given point has another point in front of it
-   * (clockwise) within ANGLE_THRESHOLD or less - should only be called if 
-   * the touchPoint is being rotated clockwise.
-   * @param p1 the point to check
-   */
-  private boolean hasPointInFront(TouchPoint p1) {
-    for (TouchPoint point : mPoints) {
-      // edge case
-      if (point.mRads < 0 && p1.mRads > 0 &&
-          ((Math.PI + point.mRads + Math.PI - p1.mRads) <= ANGLE_THRESHOLD)) {
-        return true;
-      } else if (point.mRads > p1.mRads &&
-          point.mRads - p1.mRads < ANGLE_THRESHOLD) {
-        return true;
-          }
-    }
-    return false;
-  }
-
-  /**
-   * returns true if the given point has another point in behind it
-   * (counter-clockwise) within 10 degrees or less - should only be called if 
-   * the touchPoint is being rotated counterclockwise.
-   * @param p1 the point to check
-   */
-  private boolean hasPointBehind(TouchPoint p1) {
-    for (TouchPoint point : mPoints) {
-      // edge case
-      if (point.mRads > 0 && p1.mRads < 0 &&
-          (Math.PI - point.mRads + Math.PI + p1.mRads <= ANGLE_THRESHOLD)) {
-        return true;
-      } else if (point.mRads < p1.mRads &&
-          p1.mRads - point.mRads <= ANGLE_THRESHOLD) {
-        return true;
-          }
-    }
-    return false;
-  }
-
-  /**
-   * returns the difference between two radian values, negative if end is
-   * under pi rads away from start, ccw, positive otherwise.
-   * @param start The first angle
-   * @param end The second angle
-   */
-  private double getDifference(double start, double end) {
-    // if result is greater than pi, subtract it from 2pi.
-    double diff;
-    //edge case from -pi to pi
-    if (end < 0 && start > 0) {
-      diff = Math.PI - start + Math.PI + end;
-    }
-    // reverse case - start is on top, end is on bottom. Also handles reg. case
-    else {
-      diff = end - start;
-    }
-    if (diff > Math.PI) {
-      diff = diff-Math.PI*2; // negative because it's in ccw rotation
-    }
-    return diff;
-  }
-
-  /**
-   * Returns true if rm is in the arc that is less than pi between r1 and r2.
-   * r1 is start, r2 is end, we're testing to see if rm is in the middle.
-   * @param r1 The first angle
-   * @param rm The angle in question
-   * @param r2 The second angle
-   */
-  private boolean isBetween(double r1, double rm, double r2) {
-    // if the arc from r1 to r2 is less than pi but greater than 0
-    if (movingClockwise(r1, r2)){
-      // if the arc from rm to r2 is + but less than the arc from r2 to r1
-      if (getDifference(r1, rm) > 0) {
-        if( (getDifference(r1, rm) < getDifference(r1, r2))) {
-          Log.d(TAG, rm + " IS BETWEEN " + r1 +" AND " +r2);
-          return true;
-        }
-        else { return false; }
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }
-  private boolean hasPassed(double r1, double rm, double r2) {
-    if (movingClockwise(r1, r2)) {
-      if (getDifference(r1, rm) > 0 &&
-          getDifference(r2, rm) < 0) {
-        return true;
-          }
-    }
-    return false;
-  }
-
-  /** 
-   * on my anonymous inner class grind - this sorts the given arraylist by
-   * the rotation distance from refRad to each touchPoint, clockwise.
-   * @param pts The arrayList to sort
-   * @param refRad The referance radian measurement
-   */
-  private void sortListCW(
-      ArrayList<TouchPoint> pts,
-      final double refRad) {
-
-    Collections.sort( pts, 
-        new Comparator<TouchPoint>() {
-          public int compare(TouchPoint a, TouchPoint b) {
-            // difference is >0 if clockwise, <0 if not.
-            double aDiff = getDifference(refRad, a.mRads);
-            double bDiff = getDifference(refRad, b.mRads);
-            if (aDiff < 0) {
-              aDiff = Math.PI*2 + aDiff;
-            }
-            if (bDiff < 0) {
-              bDiff = Math.PI*2 + bDiff;
-            }
-            return (aDiff > bDiff ? 1 : (aDiff == bDiff ? 0 : -1));
-          }
-    }
-    );
-      }
-
-  /** 
-   * on my anonymous inner class grind - this sorts the given arraylist by
-   * the rotation distance from refRad to each touchPoint, counter-clockwise.
-   * @param pts The arrayList to sort
-   * @param refRad The referance radian measurement
-   */
-  private void sortListCCW(
-      ArrayList<TouchPoint> pts,
-      final double refRad) {
-
-    Collections.sort( pts, 
-        new Comparator<TouchPoint>() {
-          public int compare(TouchPoint a, TouchPoint b) {
-            // difference is >0 if clockwise, <0 if not.
-            double aDiff = getDifference(refRad, a.mRads);
-            double bDiff = getDifference(refRad, b.mRads);
-            if (aDiff < 0) {
-              aDiff = Math.PI*2 + aDiff;
-            }
-            if (bDiff < 0) {
-              bDiff = Math.PI*2 + bDiff;
-            }
-            return (aDiff > bDiff ? -1 : (aDiff == bDiff ? 0 : 1));
-          }
-    }
-    );
-      }
-  /*
-  /**
-   * Handles when the scroll movement is finished
-   */
-  private void onScrollFinished() {
-    for (TouchPoint p : mPoints) {
-      p.isBeingTouched = false;
-    }
-    printTouchPoints();
-    inScroll = false;
-  }
-
-  /**
-   * let's track some gestures
-   */
-  private class GestureListener extends GestureDetector.SimpleOnGestureListener {
-
-    @Override
-      public boolean onScroll(
-          MotionEvent e1,
-          MotionEvent e2,
-          float distanceX,
-          float distanceY) {
-
-        float lastX = e2.getX() + distanceX;
-        float lastY = e2.getY() + distanceY;
-
-        // calculate the degree values of the last touch event and the 
-        // current touch event
-        double lastRad = coordsToRads(lastX, lastY);
-        double curRad = coordsToRads(e2.getX(), e2.getY());
-
-        // difference between the current position being touched
-        // and the last position
-        double radDifference = getDifference(lastRad, curRad);
-        double firstRad = coordsToRads(e1.getX(), e1.getY());
-
-        // have we moved clockwise?
-        boolean clockwise = movingClockwise(lastRad, curRad);
-
-        // normal touch handling
-        for (TouchPoint p : mPoints ){
-          // if we're touching this point
-          if (isTouchingThisPoint(e1.getX(), e1.getY(), p)) {
-            inScroll = true;
-            p.isBeingTouched = true;
-            // if the point "isbeingtouched"...
-          } if (p.isBeingTouched) {
-            p.mRads = coordsToRads(e2.getX(), e2.getY());
-            /*Log.d(TAG, "last: " + lastRad);
+			// normal touch handling
+			for (TouchPoint p : mPoints ){
+				// if we're touching this point
+				if (isTouchingThisPoint(e1.getX(), e1.getY(), p)) {
+					inScroll = true;
+					p.isBeingTouched = true;
+					// if the point "isbeingtouched"...
+				} if (p.isBeingTouched) {
+					p.mRads = coordsToRads(e2.getX(), e2.getY());
+					/*Log.d(TAG, "last: " + lastRad);
               Log.d(TAG, "diff: " + radDifference);
               Log.d(TAG, "curr: " + curRad);*/
 
-            // keep 'em in line, cw
-            sortListCW(mPoints, p.mRads);
+					// keep 'em in line, cw
+					sortListCW(mPoints, p.mRads);
 
-            // handling keeping the buffer distance with jumps
-            // This code uses the ordering of mPoints to 
-            // enforce the buffer space between points.
-            for ( TouchPoint pt : mPoints) {
-              // normal movement, using the ordering of the elements, from
-              // the current touchPoint
-              //cw
-              if (clockwise) {
-                // normal movement using ordering of the elements
-                if (!pt.isBeingTouched && hasPassed(
-                      lastRad, 
-                      pt.mRads, 
-                      moveRadCW(curRad, ANGLE_THRESHOLD))) {
-                  pt.mRads = moveRadCW( curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD);
-                  //ccw
-                      }
-                if ( !pt.isBeingTouched && hasPointBehind(pt) ) {
-                  double prevPointRads = mPoints.get(mPoints.indexOf(pt)-1).mRads;
-                  pt.mRads = moveRadCW(prevPointRads, ANGLE_THRESHOLD);
-                }
-              } else {
-                // making a CCW-ordered arrayList, since we're moving CCW.
-                ArrayList<TouchPoint> CCWList = new ArrayList<TouchPoint>();
-                CCWList.addAll(mPoints.subList(1, mPoints.size()));
-                Collections.reverse(CCWList);
-                CCWList.add(0, mPoints.get(0));
+					// handling keeping the buffer distance with jumps
+					// This code uses the ordering of mPoints to 
+					// enforce the buffer space between points.
+					for ( TouchPoint pt : mPoints) {
+						// normal movement, using the ordering of the elements, from
+						// the current touchPoint
+						//cw
+						if (clockwise) {
+							// normal movement using ordering of the elements
+							if (!pt.isBeingTouched && hasPassed(
+									lastRad, 
+									pt.mRads, 
+									moveRadCW(curRad, ANGLE_THRESHOLD))) {
+								pt.mRads = moveRadCW( curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD);
+								//ccw
+							}
+							if ( !pt.isBeingTouched && hasPointBehind(pt) ) {
+								double prevPointRads = mPoints.get(mPoints.indexOf(pt)-1).mRads;
+								pt.mRads = moveRadCW(prevPointRads, ANGLE_THRESHOLD);
+							}
+						} else {
+							// making a CCW-ordered arrayList, since we're moving CCW.
+							ArrayList<TouchPoint> CCWList = new ArrayList<TouchPoint>();
+							CCWList.addAll(mPoints.subList(1, mPoints.size()));
+							Collections.reverse(CCWList);
+							CCWList.add(0, mPoints.get(0));
 
-                // normal movement using ordering of the elements
-                if (!pt.isBeingTouched && hasPassed(
-                      moveRadCCW(curRad, ANGLE_THRESHOLD),
-                      pt.mRads,
-                      lastRad)) {
-                  int ccwIndex = CCWList.indexOf(pt);
-                  pt.mRads = moveRadCCW( curRad, ccwIndex*ANGLE_THRESHOLD);
-                  //pt.mRads = moveRadCCW( curRad, ccwIndex*ANGLE_THRESHOLD);
-                      }
-                if ( !pt.isBeingTouched && hasPointInFront(pt)) {
-                  double nextPointRads = CCWList.get(CCWList.indexOf(pt)-1).mRads;
-                  pt.mRads = moveRadCCW(nextPointRads, ANGLE_THRESHOLD);
-                }
-              }
+							// normal movement using ordering of the elements
+							if (!pt.isBeingTouched && hasPassed(
+									moveRadCCW(curRad, ANGLE_THRESHOLD),
+									pt.mRads,
+									lastRad)) {
+								int ccwIndex = CCWList.indexOf(pt);
+								pt.mRads = moveRadCCW( curRad, ccwIndex*ANGLE_THRESHOLD);
+								//pt.mRads = moveRadCCW( curRad, ccwIndex*ANGLE_THRESHOLD);
+							}
+							if ( !pt.isBeingTouched && hasPointInFront(pt)) {
+								double nextPointRads = CCWList.get(CCWList.indexOf(pt)-1).mRads;
+								pt.mRads = moveRadCCW(nextPointRads, ANGLE_THRESHOLD);
+							}
+						}
 
 
-              // cw and then ccw 'jumping'
-              if (!pt.isBeingTouched && hasPassed(lastRad, pt.mRads, curRad)) {
-                pt.mRads = moveRadCW(
-                    curRad, 
-                    mPoints.indexOf(pt)*ANGLE_THRESHOLD);
-              } else if (!pt.isBeingTouched && hasPassed(curRad, pt.mRads, lastRad)) {
-                pt.mRads = moveRadCCW(curRad, ANGLE_THRESHOLD);
-              }
-            }
+						// cw and then ccw 'jumping'
+						if (!pt.isBeingTouched && hasPassed(lastRad, pt.mRads, curRad)) {
+							pt.mRads = moveRadCW(
+									curRad, 
+									mPoints.indexOf(pt)*ANGLE_THRESHOLD);
+						} else if (!pt.isBeingTouched && hasPassed(curRad, pt.mRads, lastRad)) {
+							pt.mRads = moveRadCCW(curRad, ANGLE_THRESHOLD);
+						}
+					}
 
-            inScroll = true;
-            invalidate();
-            return true;
-          }
-        }
-        return false;
-          }
-    // we need to return true here so we can actually scroll.
-    public boolean onDown(MotionEvent e) {
-      return true;
-    }
-  }
+					inScroll = true;
+					invalidate();
+					return true;
+				}
+			}
+			return false;
+		}
+		// we need to return true here so we can actually scroll.
+		public boolean onDown(MotionEvent e) {
+			return true;
+		}
+	}
+
 }
 
 
