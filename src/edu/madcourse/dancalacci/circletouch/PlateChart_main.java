@@ -18,18 +18,13 @@ public class PlateChart_main extends TabActivity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.platechart_main);
-		tabHost = (TabHost) findViewById(android.R.id.tabs);
+		setContentView(R.layout.multiplayer_main);
+		tabHost = (TabHost) findViewById(android.R.id.tabhost);
+		
 		setTabs() ;
 	}
 
 	private void setTabs() {
-
-		// Tab for add chart
-		TabSpec addChartSpec = tabHost.newTabSpec("addChart");
-		addChartSpec.setIndicator(this.getResources().getText(R.string.addChlart_label));
-		Intent addChartIntent = new Intent(this, AddChart.class);
-		addChartSpec.setContent(addChartIntent);
 
 		// Tab for history
 		TabSpec historySpec = tabHost.newTabSpec("History");
@@ -44,7 +39,6 @@ public class PlateChart_main extends TabActivity{
 		profileSpec.setContent(profileIntent);
 
 		// Adding all TabSpec to TabHost
-		tabHost.addTab(addChartSpec); // Adding add chart tab
 		tabHost.addTab(historySpec); // Adding history tab
 		tabHost.addTab(profileSpec); // Adding profile tab
 		
