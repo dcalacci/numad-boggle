@@ -40,7 +40,7 @@ public class circle extends View {
 	private float mCircleRadius;
 
 	// angle stuff
-	private final double ANGLE_THRESHOLD = 0.174532*2;
+	private final double ANGLE_THRESHOLD = 0.174532*3;
 
 	// touchPoint info
 	private int mTouchPointRadius;
@@ -1050,16 +1050,11 @@ public class circle extends View {
 			double lastRad = coordsToRads(lastX, lastY);
 			double curRad = coordsToRads(e2.getX(), e2.getY());
 
-			// difference between the current position being touched
-			// and the last position
-			double radDifference = getDifference(lastRad, curRad);
-			double firstRad = coordsToRads(e1.getX(), e1.getY());
-
 			// have we moved clockwise?
 			boolean clockwise = movingClockwise(lastRad, curRad);
 
 			// normal touch handling
-			for (TouchPoint p : mPoints ){
+			for ( TouchPoint p : mPoints ){
 				// if we're touching this point
 				if (isTouchingThisPoint(e1.getX(), e1.getY(), p)) {
 					inScroll = true;
@@ -1119,7 +1114,7 @@ public class circle extends View {
 
 						// cw and then ccw 'jumping'
 						if (!pt.isBeingTouched && hasPassed(lastRad, pt.mRads, curRad)) {
-							pt.mRads = moveRadCW(
+		pt.mRads = moveRadCW(
 									curRad, 
 									mPoints.indexOf(pt)*ANGLE_THRESHOLD);
 						} else if (!pt.isBeingTouched && hasPassed(curRad, pt.mRads, lastRad)) {
