@@ -8,12 +8,12 @@ import android.widget.TextView;
 
 public class AddChart extends Activity {
     /** Called when the activity is first created. */
-	circle cir;
+	Chart_View cir;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.platechart_add);
-        final circle c = (circle) this.findViewById(R.id.circle);
+        final Chart_View c = (Chart_View) this.findViewById(R.id.circle);
         cir = c;
     }
     

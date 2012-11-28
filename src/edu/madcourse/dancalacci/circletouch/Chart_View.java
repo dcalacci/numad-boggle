@@ -24,7 +24,7 @@ import android.widget.TextView;
 //TODO: dragging is weird sometimes. fix that.
 
 
-public class circle extends View {
+public class Chart_View extends View {
 	private String TAG = "circletouch.circle";
 	private Canvas canvas;
 	// view boundary for the circle.
@@ -67,7 +67,7 @@ public class circle extends View {
 	/**
 	 * boring constructor with just a context
 	 */
-	public circle(Context c) {
+	public Chart_View(Context c) {
 		super(c);
 		init();
 		mContext = c;
@@ -76,7 +76,7 @@ public class circle extends View {
 	/**
 	 * constructor with attrs etc.
 	 */
-	public circle(Context ctx, AttributeSet attrs) {
+	public Chart_View(Context ctx, AttributeSet attrs) {
 		super(ctx, attrs);
 
 		mContext = ctx;
@@ -767,7 +767,7 @@ public class circle extends View {
 
 		// set up the gesture detector
 		mGestureDetector = new GestureDetector(
-				circle.this.getContext(), 
+				Chart_View.this.getContext(), 
 				new GestureListener());
 
 		// Turn off long press--this control doesn't use it, and if long press is
