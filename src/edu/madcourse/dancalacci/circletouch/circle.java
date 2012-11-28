@@ -107,10 +107,10 @@ public class circle extends View {
 			// release TypedArray
 			a.recycle();
 
-			Log.d(TAG,
+			/*Log.d(TAG,
 					"mTouchPointRadius is: " + mTouchPointRadius);
 			Log.d(TAG, 
-					"mTouchPointColor is: " + mTouchPointColor);
+					"mTouchPointColor is: " + mTouchPointColor);*/
 		}
 
 		// initialize everything
@@ -235,8 +235,8 @@ public class circle extends View {
 		int i = 0;
 		int j = i+1;
 		for (Category c : mCategories){
-			Log.d(TAG, "Index I:"+i);
-			Log.d(TAG, "Index J:"+j);
+			//Log.d(TAG, "Index I:"+i);
+			//Log.d(TAG, "Index J:"+j);
 
 			c.setpCCW(mPoints.get(i));
 			if (i == (size - 1)){
@@ -245,9 +245,9 @@ public class circle extends View {
 				c.setpCW(mPoints.get(j));
 			}
 
-			Log.d(TAG, "mPoints Size: "+ mPoints.size());
-			Log.d(TAG, "pCCW: "+ c.getpCCW());
-			Log.d(TAG, "pCW: "+ c.getpCW());
+			//Log.d(TAG, "mPoints Size: "+ mPoints.size());
+			//Log.d(TAG, "pCCW: "+ c.getpCCW());
+			//Log.d(TAG, "pCW: "+ c.getpCW());
 
 			i++;
 			j++;
@@ -272,7 +272,7 @@ public class circle extends View {
 		// if only one category, remove the only remaining one
 		if(mCategories.size() < 2){
 			clearPoints();
-			Log.d(TAG, "ALL GONE: " + mPoints.toString());
+			//Log.d(TAG, "ALL GONE: " + mPoints.toString());
 		}else{
 			addPoints();
 			setPointsToCategories();
@@ -608,8 +608,8 @@ public class circle extends View {
 				sweepAngle = radsToDegree(sweepAngle);
 
 				//float sweepAngle = (float) radsToDegree(Math.abs(getDifference(start.mRads, end.mRads)));
-				Log.d(TAG, ">>>>SWEEP: " + sweepAngle);
-				Log.d(TAG, "Color :" + color); 
+				//Log.d(TAG, ">>>>SWEEP: " + sweepAngle);
+				//Log.d(TAG, "Color :" + color); 
 				//canvas.drawArc(mCircleBounds, 360 - radsToDegree(startAngle), radsToDegree(angle), true, color);
 				canvas.drawArc(mCircleBounds, startAngle, sweepAngle, true, color);
 
@@ -694,11 +694,11 @@ public class circle extends View {
 
 	private float radsToDegree(double val){
 		float toDegree = (float) Math.toDegrees(val);
-		Log.d(TAG, 
+		/*Log.d(TAG, 
 				val +
 				" radians is " +
 				toDegree +
-				"degrees");
+				"degrees");*/
 		return toDegree;
 	}
 
@@ -778,9 +778,12 @@ public class circle extends View {
 		invalidate();
 	}
 	private void printTouchPoints() {
-		for (TouchPoint p : mPoints) {
+    for (int i = 0; i< mPoints.size(); i++) {
+      System.out.println(i + ": " + mPoints.get(i).mRads);
+    }
+		/*for (TouchPoint p : mPoints) {
 			System.out.println("" + p.mRads);
-		}
+		}*/
 	}
 
 	/**
@@ -942,7 +945,7 @@ public class circle extends View {
 			// if the arc from rm to r2 is + but less than the arc from r2 to r1
 			if (getDifference(r1, rm) > 0) {
 				if( (getDifference(r1, rm) < getDifference(r1, r2))) {
-					Log.d(TAG, rm + " IS BETWEEN " + r1 +" AND " +r2);
+					//Log.d(TAG, rm + " IS BETWEEN " + r1 +" AND " +r2);
 					return true;
 				}
 				else { return false; }
@@ -1067,7 +1070,73 @@ public class circle extends View {
               Log.d(TAG, "curr: " + curRad);*/
 
 					// keep 'em in line, cw
-					sortListCW(mPoints, p.mRads);
+					//sortListCW(mPoints, p.mRads);
+
+          if (clockwise) {
+            sortListCW(mPoints, p.mRads);
+            for ( TouchPoint pt : mPoints) {
+              if (!pt.isBeingTouched && 
+                  hasPassed( lastRad, pt.mRads, moveRadCW(curRad, ANGLE_THRESHOLD))) {
+                pt.mRads = moveRadCW( curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD);
+                  }
+
+              // if the point isn't the one being touched but it has a point 
+              // behind it
+              if (!pt.isBeingTouched && hasPointBehind(pt)) {
+                // Get the radian value of the point behind this point
+                // and move the touchpoint 
+                double prevPointRads = mPoints.get(mPoints.indexOf(pt)-1).mRads;
+                pt.mRads = moveRadCW(prevPointRads, ANGLE_THRESHOLD);
+              }
+            }
+          }
+          //Counter-Clockwise
+          else {
+            Log.d(TAG, "Before move: ");
+            printTouchPoints();
+            sortListCCW(mPoints, p.mRads);
+            mPoints.add(0, mPoints.get(mPoints.size()-1));
+            mPoints.remove(mPoints.size()-1);
+            Log.d(TAG, "After move: :");
+            printTouchPoints();
+            for (TouchPoint pt : mPoints) {
+              /*// Make a list of touchPoints, ordered CCW
+              ArrayList<TouchPoint> CCWList = new ArrayList<TouchPoint>();
+              // add all the points from mPoints, excluding the point being touched
+              CCWList.addAll(mPoints.subList(1, mPoints.size()));
+              Collections.reverse(CCWList);
+              CCWList.add(0, mPoints.get(0));
+              // Now have a CCW-ordered list of all the points*/
+
+              if (!pt.isBeingTouched) {
+                if (hasPassed(moveRadCW(curRad, ANGLE_THRESHOLD), pt.mRads, lastRad)) {
+                  Log.d(TAG, "About to hit something CCW");
+                  Log.d(TAG, "About to hit something CCW"+pt.mRads);
+                  // move rad CCW starting at the point being touched, ending at
+                  // the point's index*angle_threshold
+                  Log.d(TAG, "Moving " +pt.mRads+" over to "+ moveRadCCW( curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD));
+                  pt.mRads = moveRadCCW( curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD);
+                }
+                // if it has a point in front of it
+                if (hasPointInFront(pt)) {
+                  Log.d(TAG, "Something about to hit " + pt.mRads);
+                  double nextPointRads = mPoints.get(mPoints.indexOf(pt)-1).mRads;
+                  pt.mRads = moveRadCCW(nextPointRads, ANGLE_THRESHOLD);
+                }
+              }
+            }
+          }
+          
+   /*if (!pt.isBeingTouched && hasPassed(lastRad, pt.mRads, curRad)) {
+		pt.mRads = moveRadCW(curRad, indexOf(pt)*ANGLE_THRESHOLD);
+						} else if (!pt.isBeingTouched && hasPassed(curRad, pt.mRads, lastRad)) {
+							pt.mRads = moveRadCCW(curRad, ANGLE_THRESHOLD);
+						}
+					}*/
+
+
+/*
+					//sortListCW(mPoints, p.mRads);
 
 					// handling keeping the buffer distance with jumps
 					// This code uses the ordering of mPoints to 
@@ -1121,6 +1190,7 @@ public class circle extends View {
 							pt.mRads = moveRadCCW(curRad, ANGLE_THRESHOLD);
 						}
 					}
+          */
 
 					inScroll = true;
 					invalidate();
@@ -1129,6 +1199,7 @@ public class circle extends View {
 			}
 			return false;
 		}
+    
 		// we need to return true here so we can actually scroll.
 		public boolean onDown(MotionEvent e) {
 			return true;
