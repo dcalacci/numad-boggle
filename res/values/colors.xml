@@ -31,9 +31,16 @@
     <color name="boggle_background">#fdf6e3</color>
     <color name="multiplayer_game_boardColor">#657b83</color>
     
-        <color name="Background">#fffafa</color>
+    
+    <!-- Plate Chart Colors -->
+    
+    <!-- Basic Content -->
+    <color name="Chart_Background">#fffafa</color>
     <color name="Category_Background">#f0ffff</color>
     
+    <!-- Tabs -->
+    <color name="Tab_Selected">#8b8878</color>
+    <color name="Tab_Unselected">#cdc8b1</color>
     <!-- Base Colors -->
     <color name="Protein">#b22222</color>
     <color name="Vegetable">#228b22</color>
@@ -58,4 +65,6 @@
     <color name="Fruit_Grayed">#dda0dd</color>
     <color name="Grain_Grayed">#d2b48c</color>
 
+    
+    
 </resources>

@@ -6,30 +6,27 @@ import edu.madcourse.dancalacci.multiplayer.Multiplayer_Received_Requests;
 import edu.madcourse.dancalacci.multiplayer.Multiplayer_Sent_Requests;
 import android.app.TabActivity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 import android.widget.TabHost.TabSpec;
 
-public class PlateChart_main extends TabActivity{
+public class PlateChart_main extends TabActivity implements OnTabChangeListener{
 	TabHost tabHost;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.platechart_main);
-		tabHost = (TabHost) findViewById(android.R.id.tabs);
+		setContentView(R.layout.multiplayer_main);
+		tabHost = (TabHost) findViewById(android.R.id.tabhost);
+		tabHost.setOnTabChangedListener(this);
 		setTabs() ;
 	}
 
 	private void setTabs() {
-
-		// Tab for add chart
-		TabSpec addChartSpec = tabHost.newTabSpec("addChart");
-		addChartSpec.setIndicator(this.getResources().getText(R.string.addChlart_label));
-		Intent addChartIntent = new Intent(this, AddChart.class);
-		addChartSpec.setContent(addChartIntent);
 
 		// Tab for history
 		TabSpec historySpec = tabHost.newTabSpec("History");
@@ -44,9 +41,26 @@ public class PlateChart_main extends TabActivity{
 		profileSpec.setContent(profileIntent);
 
 		// Adding all TabSpec to TabHost
-		tabHost.addTab(addChartSpec); // Adding add chart tab
 		tabHost.addTab(historySpec); // Adding history tab
 		tabHost.addTab(profileSpec); // Adding profile tab
+		
+		for(int i=0;i<tabHost.getTabWidget().getChildCount();i++)
+        {
+        	tabHost.getTabWidget().getChildAt(i).setBackgroundColor(getResources().getColor(R.color.Tab_Unselected));
+        }
+		tabHost.getTabWidget().setCurrentTab(0);
+        tabHost.getTabWidget().getChildAt(0).setBackgroundColor(getResources().getColor(R.color.Tab_Selected));
+		
+	}
+
+	@Override
+	public void onTabChanged(String tabId) {
+		for(int i=0;i<tabHost.getTabWidget().getChildCount();i++)
+        {
+        	tabHost.getTabWidget().getChildAt(i).setBackgroundColor(getResources().getColor(R.color.Tab_Unselected));
+        } 
+				
+		tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab()).setBackgroundColor(getResources().getColor(R.color.Tab_Selected));
 		
 	}
 

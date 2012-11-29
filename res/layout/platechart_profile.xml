@@ -2,7 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@color/Chart_Background"
     android:orientation="vertical" >
+
+    <edu.madcourse.dancalacci.circletouch.Profile_View
+        android:id="@+id/profileView1"
+        android:layout_width="wrap_content"
+        android:layout_height="420dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/button_addChart"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_centerInParent="true"
+            android:onClick="onAddChartClick"
+            android:text="Add Chart" />
+    </RelativeLayout>
 
 </LinearLayout>

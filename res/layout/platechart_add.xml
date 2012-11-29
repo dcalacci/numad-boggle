@@ -4,7 +4,7 @@
     xmlns:custom="http//schemas.android.com/apk/res/edu.madcourse.dancalacci.circletouch"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/Background"
+    android:background="@color/Chart_Background"
     android:orientation="vertical"
     android:weightSum="1.00"
     tools:context=".AddChart" >
@@ -41,10 +41,10 @@
             android:text="@string/save_label" />
     </RelativeLayout>
 
-    <edu.madcourse.dancalacci.circletouch.circle
+    <edu.madcourse.dancalacci.circletouch.Chart_View
         android:id="@+id/circle"
         android:layout_width="match_parent"
-        android:layout_height="384dp"
+        android:layout_height="340dp"
         android:layout_gravity="top|center"
         android:layout_weight="0.10"
         android:background="@android:color/white"
