@@ -831,15 +831,14 @@ public class circle extends View {
 	 * @param delta The amount to rotate start by
 	 */
 	public double moveRadCCW(double start, double delta) {
-		// from negative to positive (top to bottom)
-		if (start - delta < Math.PI && start < 0) {
-			double radsUntilPI = Math.PI + start;
-			delta -= radsUntilPI;
-			return Math.PI - delta;
-		} else {
-			start -= delta;
-			return start;
-		}
+    if (start - delta < -1*Math.PI) {
+      double radsUntilPI = Math.PI + start;
+      delta -= radsUntilPI;
+      return (Math.PI - delta);
+    } else {
+      start -= delta;
+      return start;
+    }
 	}
 
 
@@ -1114,13 +1113,15 @@ public class circle extends View {
                   Log.d(TAG, "About to hit something CCW"+pt.mRads);
                   // move rad CCW starting at the point being touched, ending at
                   // the point's index*angle_threshold
-                  Log.d(TAG, "Moving " +pt.mRads+" over to "+ moveRadCCW( curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD));
                   pt.mRads = moveRadCCW( curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD);
                 }
                 // if it has a point in front of it
                 if (hasPointInFront(pt)) {
                   Log.d(TAG, "Something about to hit " + pt.mRads);
+                  Log.d(TAG, "indexOf...-1: "+(mPoints.indexOf(pt)-1));
+                  Log.d(TAG, "indexOf...-1 rads: "+(mPoints.get((mPoints.indexOf(pt)-1)).mRads));
                   double nextPointRads = mPoints.get(mPoints.indexOf(pt)-1).mRads;
+                  Log.d(TAG, "moving "+pt.mRads+" to " +moveRadCCW(nextPointRads, ANGLE_THRESHOLD));
                   pt.mRads = moveRadCCW(nextPointRads, ANGLE_THRESHOLD);
                 }
               }
