@@ -1034,6 +1034,40 @@ public class circle extends View {
 		inScroll = false;
 	}
 
+  /*
+   * Fixes errors in the ordering of the points. 
+   * i.e:
+   * 1 0.5
+   * 2 0.23
+   * 3 0.72
+   * 4 0.89
+   * if the ordering if CCW, then it should change to this if the threshold
+   * is .1:
+   * 1. 0.5
+   * 2. 0.6
+   * 3. 0.72
+   * 4. 0.89
+   * or something
+   */
+  private void fixSkippedPoint(boolean clockwise) {
+    ArrayList<Integer> indices = new ArrayList<Integer>();
+    for (TouchPoint p : mPoints) {
+      for (TouchPoint p2 : mPoints) {
+        if (!p.isBeingTouched && !p2.isBeingTouched) {
+          if (clockwise) {
+            if (getDifference(p.mRads, p2.mRads) < 0) {
+              p2.mRads = moveRadCW(p.mRads, ANGLE_THRESHOLD);
+            }
+          } else {
+            if (getDifference(p.mRads, p2.mRads) > 0) {
+              p2.mRads = moveRadCCW(p.mRads, ANGLE_THRESHOLD);
+            }
+          }
+        }
+      }
+    }
+  }
+
 	/**
 	 * let's track some gestures
 	 */
@@ -1098,8 +1132,9 @@ public class circle extends View {
               skipped = true;
             }
           }
+          // 
           if (skipped) {
-            //...
+            fixSkippedPoint(clockwise);
           }
 
 
