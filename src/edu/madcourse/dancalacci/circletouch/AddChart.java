@@ -52,6 +52,9 @@ public class AddChart extends Activity {
 	
 	public void onClearClicked(View v){
 		cir.clearChart();
+		
+		//Required due to the context of the circle view:
+		
 		//Protein
 		cir.setProteinDeselect(this.findViewById(R.id.protein_view));
 		

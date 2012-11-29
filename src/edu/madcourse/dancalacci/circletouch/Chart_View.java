@@ -299,7 +299,6 @@ public class Chart_View extends View {
 	 * @param category - One of: Protein, Grains, Vegetable, Oil/Fat/Sweets, Dairy, Fruits	
 	 * @param color - Color of the slice 
 	 */
-	//foo
 	private class Category {
 		private TouchPoint pCCW;
 		private TouchPoint pCW;
@@ -361,7 +360,10 @@ public class Chart_View extends View {
 
 		return inList;
 	}
-
+	/**
+	 * Clears the Chart of its contents
+	 * Clears associated ArrayLists
+	 */
 	public void clearChart() {
 		// TODO Auto-generated method stub
 			this.mCategories.clear();
@@ -369,6 +371,11 @@ public class Chart_View extends View {
 			invalidate();
 	}
 
+	/**
+	 * When Protein is clicked it adds or removes from the chart
+	 * Adds / Removes from mCategories ArrayList
+	 * @param v - View 
+	 */
 	public void onProteinClicked(View v){
 		String category = "Protein";
 
@@ -380,12 +387,16 @@ public class Chart_View extends View {
 			removeCategory(category);
 		}else{
 			// Select
-			setProteinDeselect(v);
+			setProteinSelect(v);
 			addCategory(category, getResources().getColor(R.color.Protein));
 		}		 
 		invalidate();
 	}
 	
+	/**
+	 * Updates the color of the protein text and box icon to deselect state
+	 * @param v - View
+	 */
 	public void setProteinDeselect(View v){
 		TextView box = (TextView) v.findViewById(R.id.protein_box);
 		TextView text = (TextView) v.findViewById(R.id.protein_label);
@@ -394,7 +405,11 @@ public class Chart_View extends View {
 		text.setTextColor(getResources().getColor(R.color.Protein_Grayed));
 	}
 	
-	private void setProteinSelect(View v){
+	/**
+	 * Updates the color of the protein text and box icon to select state
+	 * @param v - View
+	 */
+	public void setProteinSelect(View v){
 		TextView box = (TextView) v.findViewById(R.id.protein_box);
 		TextView text = (TextView) v.findViewById(R.id.protein_label);
 		
@@ -402,7 +417,11 @@ public class Chart_View extends View {
 		text.setTextColor(getResources().getColor(R.color.Protein));
 	}
 	
-	
+	/**
+	 * When Vegetable is clicked it adds or removes from the chart
+	 * Adds / Removes from mCategories ArrayList
+	 * @param v
+	 */
 	public void onVegetableClicked(View v){
 		String category = "Vegetable";
 
@@ -420,6 +439,10 @@ public class Chart_View extends View {
 		invalidate();
 	}
 	
+	/**
+	 * Updates the color of the vegetable text and box icon to deselect state
+	 * @param v - View
+	 */
 	public void setVegetableDeselect(View v){
 		TextView box = (TextView) v.findViewById(R.id.vegetable_box);
 		TextView text = (TextView) v.findViewById(R.id.vegetable_label);
@@ -428,7 +451,11 @@ public class Chart_View extends View {
 		text.setTextColor(getResources().getColor(R.color.Vegetable_Grayed));
 	}
 	
-	private void setVegetableSelect(View v){
+	/**
+	 * Updates the color of the vegetable text and box icon to select state
+	 * @param v - View
+	 */
+	public void setVegetableSelect(View v){
 		TextView box = (TextView) v.findViewById(R.id.vegetable_box);
 		TextView text = (TextView) v.findViewById(R.id.vegetable_label);
 		
@@ -436,6 +463,11 @@ public class Chart_View extends View {
 		text.setTextColor(getResources().getColor(R.color.Vegetable));
 	}
 
+	/**
+	 * When Dairy is clicked it adds or removes from the chart
+	 * Adds / Removes from mCategories ArrayList
+	 * @param v - View
+	 */
 	public void onDairyClicked(View v){
 		String category = "Dairy";
 
@@ -453,6 +485,10 @@ public class Chart_View extends View {
 		invalidate();
 	}
 	
+	/**
+	 * Updates the color of the dairy text and box icon to deselect state
+	 * @param v - View
+	 */
 	public void setDairyDeselect(View v){
 		TextView box = (TextView) v.findViewById(R.id.dairy_box);
 		TextView text = (TextView) v.findViewById(R.id.dairy_label);
@@ -461,7 +497,11 @@ public class Chart_View extends View {
 		text.setTextColor(getResources().getColor(R.color.Dairy_Grayed));
 	}
 	
-	private void setDairySelect(View v){
+	/**
+	 * Updates the color of the dairy text and box icon to select state
+	 * @param v - View
+	 */
+	public void setDairySelect(View v){
 		TextView box = (TextView) v.findViewById(R.id.dairy_box);
 		TextView text = (TextView) v.findViewById(R.id.dairy_label);
 		
@@ -469,6 +509,11 @@ public class Chart_View extends View {
 		text.setTextColor(getResources().getColor(R.color.Dairy));
 	}
 
+	/**
+	 * When Fruit is clicked it adds or removes from the chart
+	 * Adds / Removes from mCategories ArrayList
+	 * @param v
+	 */
 	public void onFruitClicked(View v){
 		String category = "Fruit";
 
@@ -486,6 +531,10 @@ public class Chart_View extends View {
 		invalidate();
 	}
 	
+	/**
+	 * Updates the color of the fruit text and box icon to deselect state
+	 * @param v - View
+	 */
 	public void setFruitDeselect(View v){
 		TextView box = (TextView) v.findViewById(R.id.fruit_box);
 		TextView text = (TextView) v.findViewById(R.id.fruit_label);
@@ -494,7 +543,11 @@ public class Chart_View extends View {
 		text.setTextColor(getResources().getColor(R.color.Fruit_Grayed));
 	}
 	
-	private void setFruitSelect(View v){
+	/**
+	 * Updates the color of the fruit text and box icon to select state
+	 * @param v - View
+	 */
+	public void setFruitSelect(View v){
 		TextView box = (TextView) v.findViewById(R.id.fruit_box);
 		TextView text = (TextView) v.findViewById(R.id.fruit_label);
 		
@@ -502,6 +555,11 @@ public class Chart_View extends View {
 		text.setTextColor(getResources().getColor(R.color.Fruit));
 	}
 
+	/**
+	 * When Grain is clicked it adds or removes from the chart
+	 * Adds / Removes from mCategories ArrayList
+	 * @param v
+	 */
 	public void onGrainClicked(View v){
 		String category = "Grain";
 
@@ -519,6 +577,10 @@ public class Chart_View extends View {
 		invalidate();
 	}
 	
+	/**
+	 * Updates the color of the grain text and box icon to deselect state
+	 * @param v - View
+	 */
 	public void setGrainDeselect(View v){
 		TextView box = (TextView) v.findViewById(R.id.grain_box);
 		TextView text = (TextView) v.findViewById(R.id.grain_label);
@@ -527,7 +589,11 @@ public class Chart_View extends View {
 		text.setTextColor(getResources().getColor(R.color.Grain_Grayed));
 	}
 	
-	private void setGrainSelect(View v){
+	/**
+	 * Updates the color of the grain text and box icon to select state
+	 * @param v - View
+	 */
+	public void setGrainSelect(View v){
 		TextView box = (TextView) v.findViewById(R.id.grain_box);
 		TextView text = (TextView) v.findViewById(R.id.grain_label);
 		
@@ -535,6 +601,11 @@ public class Chart_View extends View {
 		text.setTextColor(getResources().getColor(R.color.Grain));
 	}
 
+	/**
+	 * When Oil/Sugar is clicked it adds or removes from the chart
+	 * Adds / Removes from mCategories ArrayList
+	 * @param v
+	 */
 	public void onOilSugarClicked(View v){
 		String category = "OilSugar";
 
@@ -552,6 +623,10 @@ public class Chart_View extends View {
 		invalidate();
 	}
 	
+	/**
+	 * Updates the color of the oil/sugar text and box icon to deselect state
+	 * @param v - View
+	 */
 	public void setOilSugarDeselect(View v){
 		TextView box = (TextView) v.findViewById(R.id.oil_box);
 		TextView text = (TextView) v.findViewById(R.id.oil_label);
@@ -560,7 +635,11 @@ public class Chart_View extends View {
 		text.setTextColor(getResources().getColor(R.color.Oil_Sugar_Grayed));
 	}
 	
-	private void setOilSugarSelect(View v){
+	/**
+	 * Updates the color of the oil/sugar text and box icon to select state
+	 * @param v - View
+	 */
+	public void setOilSugarSelect(View v){
 		TextView box = (TextView) v.findViewById(R.id.oil_box);
 		TextView text = (TextView) v.findViewById(R.id.oil_label);
 		

@@ -9,10 +9,13 @@ import android.view.View;
 
 public class History extends Activity{
 
+	History_View hist;
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.platechart_history);
+        final History_View h = (History_View) this.findViewById(R.id.historyView1);
+        hist = h;
 	}
 
 	public void onAddChartClick(View v){
