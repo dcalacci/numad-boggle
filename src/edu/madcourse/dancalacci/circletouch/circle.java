@@ -841,7 +841,6 @@ public class circle extends View {
     }
 	}
 
-
 	/**
 	 * returns true if the given x and y coords are "inside" of point p - in 
 	 * quotes because we're a little lenient to give the users some wiggle room.
@@ -999,6 +998,9 @@ public class circle extends View {
 	 * @param pts The arrayList to sort
 	 * @param refRad The referance radian measurement
 	 */
+  //TODO: fix this to do the following:
+  //            mPoints.add(0, mPoints.get(mPoints.size()-1));
+  //          mPoints.remove(mPoints.size()-1);
 	private void sortListCCW(
 			ArrayList<TouchPoint> pts,
 			final double refRad) {
@@ -1070,6 +1072,36 @@ public class circle extends View {
 
 					// keep 'em in line, cw
 					//sortListCW(mPoints, p.mRads);
+          
+          if (clockwise) {
+            sortListCW(mPoints, p.mRads);
+          } else {
+            sortListCCW(mPoints, p.mRads);
+            mPoints.add(0, mPoints.get(mPoints.size()-1));
+            mPoints.remove(mPoints.size()-1);
+          }
+          boolean skipped = false;
+          for (TouchPoint pt : mPoints) {
+            if (!pt.isBeingTouched && hasPassed(lastRad, pt.mRads, curRad)) {
+              Log.d(TAG, "Skipped CW");
+              Log.d(TAG, "Moving: " +pt.mRads +" to "+moveRadCW(curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD));
+              pt.mRads = moveRadCW(curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD);
+              skipped = true;
+            } else if (!pt.isBeingTouched && hasPassed(curRad, pt.mRads, lastRad)) {
+              Log.d(TAG, "Skipped CCW");
+              Log.d(TAG, "Moving: " + pt.mRads + " to " + moveRadCW(curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD));
+              Log.d(TAG, "index of the point: " +(mPoints.indexOf(pt)));
+              printTouchPoints();
+              Log.d(TAG, "curRad: " +curRad+" and the amount: " +mPoints.indexOf(pt)*ANGLE_THRESHOLD + 
+                "and the total: " + moveRadCW(curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD));
+              pt.mRads = ((moveRadCCW(curRad, mPoints.indexOf(pt)))*ANGLE_THRESHOLD);
+              skipped = true;
+            }
+          }
+          if (skipped) {
+            //...
+          }
+
 
           if (clockwise) {
             sortListCW(mPoints, p.mRads);
@@ -1089,6 +1121,7 @@ public class circle extends View {
               }
             }
           }
+          // end of CW movement
           //Counter-Clockwise
           else {
             Log.d(TAG, "Before move: ");
@@ -1127,8 +1160,8 @@ public class circle extends View {
               }
             }
           }
-          
-   /*if (!pt.isBeingTouched && hasPassed(lastRad, pt.mRads, curRad)) {
+          // end of CCW movement
+    /*if (!pt.isBeingTouched && hasPassed(lastRad, pt.mRads, curRad)) {
 		pt.mRads = moveRadCW(curRad, indexOf(pt)*ANGLE_THRESHOLD);
 						} else if (!pt.isBeingTouched && hasPassed(curRad, pt.mRads, lastRad)) {
 							pt.mRads = moveRadCCW(curRad, ANGLE_THRESHOLD);
