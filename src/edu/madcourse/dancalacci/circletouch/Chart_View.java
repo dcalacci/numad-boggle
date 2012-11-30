@@ -1136,12 +1136,16 @@ public class Chart_View extends View {
             mPoints.indexOf(p2) != 0) {
 
           if (clockwise) {
-            if (getDifference(p.mRads, p2.mRads) < 0 &&
+            if (getDifference(p.mRads, p2.mRads) <= 0 && p != p2 &&
                 mPoints.indexOf(p2) < mPoints.indexOf(p)) {
               Log.d(TAG, "hit CW part, before move: ");
               printTouchPoints();
-              Log.d(TAG, "moving " +mPoints.indexOf(p2) + " at " +p2.mRads+ " to " +moveRadCCW(p.mRads, ANGLE_THRESHOLD));
-              p2.mRads = moveRadCW(p.mRads, ANGLE_THRESHOLD);
+              Log.d(TAG, "p is " +mPoints.indexOf(p)+", " +p.mRads);
+              Log.d(TAG, "p2 is " + mPoints.indexOf(p2)+", " +p2.mRads);
+              //Log.d(TAG, "moving " +mPoints.indexOf(p2) + " at " +p2.mRads+ " to " +moveRadCCW(p.mRads, ANGLE_THRESHOLD));
+              Log.d(TAG, "moving " +mPoints.indexOf(p) + " at " +p.mRads+ " to " +moveRadCW(p2.mRads, ANGLE_THRESHOLD));
+              p.mRads = moveRadCW(p2.mRads, ANGLE_THRESHOLD);
+              //p2.mRads = moveRadCW(p.mRads, ANGLE_THRESHOLD);
               Log.d(TAG, "After move: ");
               printTouchPoints();
             }
@@ -1211,21 +1215,27 @@ public class Chart_View extends View {
             if (!pt.isBeingTouched && hasPassed(lastRad, pt.mRads, curRad)) {
               Log.d(TAG, "Skipped CW");
               Log.d(TAG, "Moving: " + mPoints.indexOf(pt) + ", " +pt.mRads +" to "+moveRadCW(curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD));
+              Log.d(TAG, "curRad: " +curRad+" and the amount: " +mPoints.indexOf(pt)*ANGLE_THRESHOLD + 
+                "and the total: " + moveRadCW(curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD));
+              pt.mRads = moveRadCW(curRad, (mPoints.indexOf(pt)*ANGLE_THRESHOLD));
+              printTouchPoints();
               skipped = true;
             } else if (!pt.isBeingTouched && hasPassed(curRad, pt.mRads, lastRad)) {
               Log.d(TAG, "Skipped CCW");
               Log.d(TAG, "Moving: " +mPoints.indexOf(pt) + ", "+ pt.mRads + " to " + moveRadCW(curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD));
               Log.d(TAG, "index of the point: " +(mPoints.indexOf(pt)));
-              printTouchPoints();
               Log.d(TAG, "curRad: " +curRad+" and the amount: " +mPoints.indexOf(pt)*ANGLE_THRESHOLD + 
                 "and the total: " + moveRadCW(curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD));
               pt.mRads = moveRadCCW(curRad, (mPoints.indexOf(pt)*ANGLE_THRESHOLD));
+              printTouchPoints();
               skipped = true;
             }
-          }
+          
           // 
           if (skipped) {
             fixSkippedPoint(clockwise);
+            setPointsToCategories();
+          }
           }
 
 
