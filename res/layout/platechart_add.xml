@@ -11,7 +11,8 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="0dp" 
+        android:layout_weight="0.08">
 
         <Button
             android:id="@+id/addChart_Back"
@@ -19,6 +20,7 @@
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:onClick="onBackClicked"
             android:text="@string/back_label" />
 
@@ -28,6 +30,7 @@
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
             android:onClick="onClearClicked"
             android:text="@string/clear_label" />
 
@@ -37,26 +40,30 @@
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:onClick="onSaveClicked"
             android:text="@string/save_label" />
+
     </RelativeLayout>
 
     <edu.madcourse.dancalacci.circletouch.Chart_View
         android:id="@+id/circle"
         android:layout_width="match_parent"
-        android:layout_height="340dp"
+        android:layout_height="0dp"
+        android:layout_weight="0.72"
         android:layout_gravity="top|center"
-        android:layout_weight="0.10"
         android:background="@android:color/white"
         android:padding="20dp"
         custom:touchPointPosition="0" />
 
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_gravity="bottom|center"
-        android:layout_weight="0.90"
-        android:weightSum="1.0" >
+        android:layout_weight="0.2"
+        android:weightSum="1.0" 
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp">
 
         <TableRow
             android:id="@+id/tableRow1"
