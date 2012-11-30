@@ -53,7 +53,6 @@ public class PlateChart_main extends TabActivity implements OnTabChangeListener{
 		
 	}
 
-	@Override
 	public void onTabChanged(String tabId) {
 		for(int i=0;i<tabHost.getTabWidget().getChildCount();i++)
         {
