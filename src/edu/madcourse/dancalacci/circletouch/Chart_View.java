@@ -254,6 +254,23 @@ public class Chart_View extends View {
 		}      
 	}
 
+  private void refreshCategoryPoints() {
+    int size = mPoints.size()-1;
+    int i = 0;
+    int j = i+1;
+    
+    for (Category c : mCategories) {
+      c.setpCCW(mPoints.get(i));
+      if (i == size) {
+        c.setpCW(mPoints.get(0));
+      } else {
+        c.setpCW(mPoints.get(j));
+      }
+      i++;
+      j++;
+    }
+  }
+
 	/**
 	 * Removes the specified category from the list
 	 * @param category
@@ -1234,7 +1251,8 @@ public class Chart_View extends View {
           // 
           if (skipped) {
             fixSkippedPoint(clockwise);
-            setPointsToCategories();
+            //setPointsToCategories();
+            invalidate();
           }
           }
 
