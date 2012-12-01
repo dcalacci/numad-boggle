@@ -6,28 +6,28 @@
     android:orientation="vertical"
     android:weightSum="1.0" >
 
-    <edu.madcourse.dancalacci.circletouch.History_View
-        android:id="@+id/historyView1"
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" 
+        android:layout_weight="0.88">
+    </ListView>
+
+    <LinearLayout
+        android:id="@+id/platechart_history_actionBar"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_gravity="top|center"
-        android:layout_weight="0.88" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="bottom|center"
+        android:gravity="bottom"
         android:layout_weight="0.12"
-        android:paddingBottom="2dp"
-        android:paddingTop="2dp" >
+        android:weightSum="1.0" >
 
         <Button
             android:id="@+id/button_addChart"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
             android:onClick="onAddChartClick"
             android:text="Add Chart" />
-    </RelativeLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

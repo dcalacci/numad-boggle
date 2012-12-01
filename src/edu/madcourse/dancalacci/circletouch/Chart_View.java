@@ -856,6 +856,7 @@ public class Chart_View extends View {
 
 		invalidate();
 	}
+	
 	private void printTouchPoints() {
 		for (TouchPoint p : mPoints) {
 			System.out.println("" + p.mRads);
