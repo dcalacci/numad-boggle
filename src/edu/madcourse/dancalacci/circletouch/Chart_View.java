@@ -1094,9 +1094,6 @@ public class Chart_View extends View {
 	 * @param pts The arrayList to sort
 	 * @param refRad The referance radian measurement
 	 */
-  //TODO: fix this to do the following:
-  //            mPoints.add(0, mPoints.get(mPoints.size()-1));
-  //          mPoints.remove(mPoints.size()-1);
 	private void sortListCCW(
 			ArrayList<TouchPoint> pts,
 			final double refRad) {
@@ -1117,6 +1114,8 @@ public class Chart_View extends View {
 			}
 		}
 				);
+    pts.add(0, mPoints.get(mPoints.size()-1));
+    pts.remove(mPoints.size()-1);
 	}
 	/*
   /**
@@ -1149,8 +1148,14 @@ public class Chart_View extends View {
     ArrayList<Integer> indices = new ArrayList<Integer>();
     for (TouchPoint p : mPoints) {
       for (TouchPoint p2 : mPoints) {
+
+        // if p is the point being touched
+        if (mPoints.indexOf(p) == 0) {
+          
+        }
         if (mPoints.indexOf(p) != 0 &&
             mPoints.indexOf(p2) != 0) {
+          // if the both points aren't the one being touched, and 
 
           // need to keep them IN ORDER.
           if (clockwise) {
@@ -1179,6 +1184,44 @@ public class Chart_View extends View {
               Log.d(TAG, "After move: ");
               printTouchPoints();
             }
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Moves the points according to the scroll event rads
+   * @param curRad The current rad from the scroll event
+   * @param lastRad The last rad from the scroll event
+   * @param clockwise True if we're moving clockwise, false otherwise
+   */
+  private void movePoints(double curRad, double lastRad, boolean clockwise) {
+    // CW Movement
+    if (clockwise) {
+      sortListCW(mPoints, curRad);
+      Log.d(TAG, "CLOCKWISE");
+      for (TouchPoint pt : mPoints) {
+        if (!pt.isBeingTouched) {
+          if (hasPointBehind(pt)) {
+            // Move point ANGLE_THRESHOLD in front of the next (CW) pt.
+            double prevPointRads = mPoints.get(mPoints.indexOf(pt)-1).mRads;
+            pt.mRads = moveRadCW(prevPointRads, ANGLE_THRESHOLD);
+          }
+        }
+      }
+    }
+    // CCW Movement
+    else {
+      sortListCCW(mPoints, curRad);
+      Log.d(TAG, "COUNTER CLOCKWISE");
+
+      for (TouchPoint pt : mPoints) {
+        if (!pt.isBeingTouched) {
+          if (hasPointInFront(pt)) {
+            // Move point ANGLE_THRESHOLD behind(cw) the next(CCW) pt.
+            double nextPointRads = mPoints.get(mPoints.indexOf(pt)-1).mRads;
+            pt.mRads = moveRadCCW(nextPointRads, ANGLE_THRESHOLD);
           }
         }
       }
@@ -1224,23 +1267,25 @@ public class Chart_View extends View {
 					// keep 'em in line, cw
 					//sortListCW(mPoints, p.mRads);
           
-          if (clockwise) {
-            sortListCW(mPoints, p.mRads);
-          } else {
-            sortListCCW(mPoints, p.mRads);
-            mPoints.add(0, mPoints.get(mPoints.size()-1));
-            mPoints.remove(mPoints.size()-1);
+          if (p.isBeingTouched) {
+            if (clockwise) {
+              sortListCW(mPoints, p.mRads);
+            } else {
+              sortListCCW(mPoints, p.mRads);
+            }
           }
           boolean skipped = false;
           for (TouchPoint pt : mPoints) {
+            /* cw */
             if (!pt.isBeingTouched && hasPassed(lastRad, pt.mRads, curRad)) {
-              Log.d(TAG, "Skipped CW");
-              Log.d(TAG, "Moving: " + mPoints.indexOf(pt) + ", " +pt.mRads +" to "+moveRadCW(curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD));
-              Log.d(TAG, "curRad: " +curRad+" and the amount: " +mPoints.indexOf(pt)*ANGLE_THRESHOLD + 
-                "and the total: " + moveRadCW(curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD));
-              pt.mRads = moveRadCW(curRad, (mPoints.indexOf(pt)*ANGLE_THRESHOLD));
-              printTouchPoints();
-              skipped = true;
+              fixSkippedPoint(clockwise);
+              /* Log.d(TAG, "Skipped CW"); */
+              /* Log.d(TAG, "Moving: " + mPoints.indexOf(pt) + ", " +pt.mRads +" to "+moveRadCW(curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD)); */
+              /* Log.d(TAG, "curRad: " +curRad+" and the amount: " +mPoints.indexOf(pt)*ANGLE_THRESHOLD +  */
+              /*   "and the total: " + moveRadCW(curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD)); */
+              /* pt.mRads = moveRadCW(curRad, (mPoints.indexOf(pt)*ANGLE_THRESHOLD)); */
+              /* printTouchPoints(); */
+              /* skipped = true; */
             } else if (!pt.isBeingTouched && hasPassed(curRad, pt.mRads, lastRad)) {
               Log.d(TAG, "Skipped CCW");
               Log.d(TAG, "Moving: " +mPoints.indexOf(pt) + ", "+ pt.mRads + " to " + moveRadCW(curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD));
@@ -1259,65 +1304,63 @@ public class Chart_View extends View {
             invalidate();
           }
           }
+          movePoints(curRad, lastRad, clockwise);
 
-
-          if (clockwise) {
-            sortListCW(mPoints, p.mRads);
-            Log.d(TAG, "CLOCKWISE");
-            printTouchPoints();
-            for ( TouchPoint pt : mPoints) {
-              if (!pt.isBeingTouched && 
-                  hasPassed( lastRad, pt.mRads, moveRadCW(curRad, ANGLE_THRESHOLD))) {
-                pt.mRads = moveRadCW( curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD);
-                  }
-
-              // if the point isn't the one being touched but it has a point 
-              // behind it
-              if (!pt.isBeingTouched && hasPointBehind(pt)) {
-                // Get the radian value of the point behind this point
-                // and move the touchpoint 
-                double prevPointRads = mPoints.get(mPoints.indexOf(pt)-1).mRads;
-                pt.mRads = moveRadCW(prevPointRads, ANGLE_THRESHOLD);
-              }
-            }
-          }
-          // end of CW movement
-          //Counter-Clockwise
-          else {
-            sortListCCW(mPoints, p.mRads);
-            mPoints.add(0, mPoints.get(mPoints.size()-1));
-            mPoints.remove(mPoints.size()-1);
-            Log.d(TAG, "COUNTER CW");
-            printTouchPoints();
-            for (TouchPoint pt : mPoints) {
-              /*// Make a list of touchPoints, ordered CCW
-              ArrayList<TouchPoint> CCWList = new ArrayList<TouchPoint>();
-              // add all the points from mPoints, excluding the point being touched
-              CCWList.addAll(mPoints.subList(1, mPoints.size()));
-              Collections.reverse(CCWList);
-              CCWList.add(0, mPoints.get(0));
-              // Now have a CCW-ordered list of all the points*/
-
-              if (!pt.isBeingTouched) {
-                if (hasPassed(moveRadCW(curRad, ANGLE_THRESHOLD), pt.mRads, lastRad)) {
-                  Log.d(TAG, "About to hit something CCW");
-                  Log.d(TAG, "About to hit something CCW"+pt.mRads);
-                  // move rad CCW starting at the point being touched, ending at
-                  // the point's index*angle_threshold
-                  pt.mRads = moveRadCCW( curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD);
-                }
-                // if it has a point in front of it
-                if (hasPointInFront(pt)) {
-                  Log.d(TAG, "Something about to hit " + pt.mRads);
-                  Log.d(TAG, "indexOf...-1: "+(mPoints.indexOf(pt)-1));
-                  Log.d(TAG, "indexOf...-1 rads: "+(mPoints.get((mPoints.indexOf(pt)-1)).mRads));
-                  double nextPointRads = mPoints.get(mPoints.indexOf(pt)-1).mRads;
-                  Log.d(TAG, "moving "+pt.mRads+" to " +moveRadCCW(nextPointRads, ANGLE_THRESHOLD));
-                  pt.mRads = moveRadCCW(nextPointRads, ANGLE_THRESHOLD);
-                }
-              }
-            }
-          }
+/*  */
+/*           if (clockwise) { */
+/*             sortListCW(mPoints, p.mRads); */
+/*             Log.d(TAG, "CLOCKWISE"); */
+/*             printTouchPoints(); */
+/*             for ( TouchPoint pt : mPoints) { */
+/*               if (!pt.isBeingTouched &&  */
+/*                   hasPassed( lastRad, pt.mRads, moveRadCW(curRad, ANGLE_THRESHOLD))) { */
+/*                 pt.mRads = moveRadCW( curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD); */
+/*                   } */
+/*  */
+/*               // if the point isn't the one being touched but it has a point  */
+/*               // behind it */
+/*               if (!pt.isBeingTouched && hasPointBehind(pt)) { */
+/*                 // Get the radian value of the point behind this point */
+/*                 // and move the touchpoint  */
+/*                 double prevPointRads = mPoints.get(mPoints.indexOf(pt)-1).mRads; */
+/*                 pt.mRads = moveRadCW(prevPointRads, ANGLE_THRESHOLD); */
+/*               } */
+/*             } */
+/*           } */
+/*           // end of CW movement */
+/*           //Counter-Clockwise */
+/*           else { */
+/*             sortListCCW(mPoints, p.mRads); */
+/*             Log.d(TAG, "COUNTER CW"); */
+/*             printTouchPoints(); */
+/*             for (TouchPoint pt : mPoints) { */
+/*               ArrayList<TouchPoint> CCWList = new ArrayList<TouchPoint>(); */
+/*               // add all the points from mPoints, excluding the point being touched */
+/*               CCWList.addAll(mPoints.subList(1, mPoints.size())); */
+/*               Collections.reverse(CCWList); */
+/*               CCWList.add(0, mPoints.get(0)); */
+/*               // Now have a CCW-ordered list of all the points*/ 
+/*  */
+/*               if (!pt.isBeingTouched) { */
+/*                 if (hasPassed(moveRadCW(curRad, ANGLE_THRESHOLD), pt.mRads, lastRad)) { */
+/*                   Log.d(TAG, "About to hit something CCW"); */
+/*                   Log.d(TAG, "About to hit something CCW"+pt.mRads); */
+/*                   // move rad CCW starting at the point being touched, ending at */
+/*                   // the point's index*angle_threshold */
+/*                   pt.mRads = moveRadCCW( curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD); */
+/*                 } */
+/*                 // if it has a point in front of it */
+/*                 if (hasPointInFront(pt)) { */
+/*                   Log.d(TAG, "Something about to hit " + pt.mRads); */
+/*                   Log.d(TAG, "indexOf...-1: "+(mPoints.indexOf(pt)-1)); */
+/*                   Log.d(TAG, "indexOf...-1 rads: "+(mPoints.get((mPoints.indexOf(pt)-1)).mRads)); */
+/*                   double nextPointRads = mPoints.get(mPoints.indexOf(pt)-1).mRads; */
+/*                   Log.d(TAG, "moving "+pt.mRads+" to " +moveRadCCW(nextPointRads, ANGLE_THRESHOLD)); */
+/*                   pt.mRads = moveRadCCW(nextPointRads, ANGLE_THRESHOLD); */
+/*                 } */
+/*               } */
+/*             } */
+/*           } */
           // end of CCW movement
     /*if (!pt.isBeingTouched && hasPassed(lastRad, pt.mRads, curRad)) {
 		pt.mRads = moveRadCW(curRad, indexOf(pt)*ANGLE_THRESHOLD);
