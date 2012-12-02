@@ -1,9 +1,6 @@
 package edu.madcourse.dancalacci.circletouch;
 
 import edu.madcourse.dancalacci.R;
-import edu.madcourse.dancalacci.multiplayer.Multiplayer_CurrentGames;
-import edu.madcourse.dancalacci.multiplayer.Multiplayer_Received_Requests;
-import edu.madcourse.dancalacci.multiplayer.Multiplayer_Sent_Requests;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -53,7 +50,6 @@ public class PlateChart_main extends TabActivity implements OnTabChangeListener{
 		
 	}
 
-	@Override
 	public void onTabChanged(String tabId) {
 		for(int i=0;i<tabHost.getTabWidget().getChildCount();i++)
         {
