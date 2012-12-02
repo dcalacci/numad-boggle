@@ -35,14 +35,24 @@ public class History extends ListActivity{
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		Log.d(TAG, "onCreate");
 		setContentView(R.layout.platechart_history);
+		
+		//addContent();
+	}
+	
 
-		addContent();
 
+	protected void onResume() {
+		super.onResume();
+		list.clear();
+		readData();
 		getListView().setEmptyView(findViewById(android.R.id.empty));
 		adapter = new History_Adaptor(thisActivity, R.layout.platechart_history, list);
 		setListAdapter(adapter);
 	}
+
+
 
 	/**
 	 * Gets the current date and time based on the system settings/timezone
@@ -56,21 +66,21 @@ public class History extends ListActivity{
 		return formattedDate;
 	}
 
-	public void addContent(){
-		list.add(getTime());
-	}
+//	public void addContent(){
+//		list.add(getTime());
+//	}
 
 	public void addContent(String content){
 		list.add(content);
 	}
 
 	public void readData(){
-		File mydir = this.getDir("plate_chart", Context.MODE_PRIVATE);              
-		File lister = mydir.getAbsoluteFile();
-		for (String list : lister.list())
+		Log.d(TAG, "ReadData");
+		String[] myFiles = this.fileList();
+		for (String list : myFiles)
 		{
-			
 			try {
+				Log.d("readData", "File: "+list);
 				FileInputStream fis = this.openFileInput(list);
 				BufferedReader r = new BufferedReader(new InputStreamReader(fis));
 				String s = "";

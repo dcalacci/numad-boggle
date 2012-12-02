@@ -17,7 +17,7 @@ public class PlateChart_main extends TabActivity implements OnTabChangeListener{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.multiplayer_main);
+		setContentView(R.layout.multiplayer_main); // Dont mind this
 		tabHost = (TabHost) findViewById(android.R.id.tabhost);
 		tabHost.setOnTabChangedListener(this);
 		setTabs() ;

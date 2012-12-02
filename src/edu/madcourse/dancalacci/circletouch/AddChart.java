@@ -127,29 +127,29 @@ public class AddChart extends Activity {
 		return formattedDate;
 	}
 
-	/**
-	 * Save file to internal memory
-	 * @param data - Stored data
-	 */
-	public void save(String data){
-		String date = getDate();
-		String fileName = date+".txt";
-
-		try{
-			FileWriter write = new FileWriter(this.getFilesDir() + "/plate_chart/" + fileName, true);
-			write.append(data+"\r\n"); //adds new line.
-			write.close();
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-
-	}	
+		/**
+		 * Save file to internal memory
+		 * @param data - Stored data
+		 */
+		public void save(String data){
+			String date = getDate();
+			String fileName = date+".txt";
+	
+			try{
+				FileWriter write = new FileWriter(this.getFilesDir() + "/" + fileName, true);
+				write.append(data+"\r\n"); //adds new line.
+				write.close();
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	
+	
+		}	
 
 
 }
