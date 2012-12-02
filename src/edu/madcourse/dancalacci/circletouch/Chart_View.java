@@ -46,10 +46,10 @@ public class Chart_View extends View {
   private float mCircleRadius;
 
   // angle stuff
-  // 30 degrees in radians
+  // 20 degrees in radians
   private final double ANGLE_THRESHOLD = 0.174532*2;
-  // 5 degrees in radians
-  private final double ANGLE_INTERVAL = 0.0174532*5;
+  // 10 degrees in radians
+  private final double ANGLE_INTERVAL = 0.174532;
 
 
   // touchPoint info
