@@ -37,12 +37,14 @@ public class AddChart extends Activity {
 		setContentView(R.layout.platechart_add);
 		final Chart_View c = (Chart_View) this.findViewById(R.id.circle);
 		cir = c;
+
     cir.setCanEdit(mCanEdit);
     addCategories(categories);
     Log.d(TAG, "@@AddChart_ canEdit: "+mCanEdit);
     this.mCanEdit = false;
     cir.setCanEdit(false);
     Log.d(TAG, "@@AddChart_ After: canEdit: "+mCanEdit);
+
 	}
 
   private void addCategories(ArrayList<String> categories) {
@@ -119,7 +121,7 @@ public class AddChart extends Activity {
 		save(data);
 		finish(); // 
 	}
-
+	
 	public String parseData(JSONArray jArray){
 		String data = this.getDateTime() + "_" + jArray.toString();
 		return data;
@@ -174,34 +176,34 @@ public class AddChart extends Activity {
 	 */
 	public String getDate(){
 		Calendar c = Calendar.getInstance();
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd_HH+mm+ss");
 		String formattedDate = df.format(c.getTime());		
 		return formattedDate;
 	}
 
-		/**
-		 * Save file to internal memory
-		 * @param data - Stored data
-		 */
-		public void save(String data){
-			String date = getDate();
-			String fileName = date+".txt";
-	
-			try{
-				FileWriter write = new FileWriter(this.getFilesDir() + "/" + fileName, true);
-				write.write(data+"\r\n"); //adds new line.
-				write.close();
-				
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	
-	
-		}	
+	/**
+	 * Save file to internal memory
+	 * @param data - Stored data
+	 */
+	public void save(String data){
+		String date = getDate();
+		String fileName = date+".txt";
+
+		try{
+			FileWriter write = new FileWriter(this.getFilesDir() + "/" + fileName, true);
+			write.write(data+"\r\n"); //adds new line.
+			write.close();
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+	}	
 
 
 }
