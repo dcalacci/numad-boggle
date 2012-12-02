@@ -30,47 +30,54 @@
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <!--  CircleTouch Activity -->
+
+        <!-- CircleTouch Activity -->
 
         <activity
             android:name=".circletouch.AddChart"
-            android:label="@string/app_name" 
-            android:screenOrientation="portrait">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
-
+        
         <activity
+            android:name=".circletouch.History_byDate"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+         </activity>
+         
+         <activity
             android:name=".circletouch.CategorySelection"
             android:label="@string/app_name" 
             android:screenOrientation="portrait">
         </activity>
         
         <activity
-            android:name=".circletouch.History"
+            android:name=".circletouch.History_byTime"
             android:label="@string/app_name" 
             android:screenOrientation="portrait">
         </activity>
         
         <activity
             android:name=".circletouch.Profile"
-            android:label="@string/app_name" 
-            android:screenOrientation="portrait">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
         
         <activity
             android:name=".circletouch.PlateChart_main"
-            android:label="@string/app_name" 
-            android:screenOrientation="portrait">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        
+
         <!-- TeamMembers Activity -->
         <activity
             android:name=".TeamMembers"

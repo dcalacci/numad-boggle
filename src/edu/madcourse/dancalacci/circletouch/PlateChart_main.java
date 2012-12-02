@@ -28,7 +28,7 @@ public class PlateChart_main extends TabActivity implements OnTabChangeListener{
 		// Tab for history
 		TabSpec historySpec = tabHost.newTabSpec("History");
 		historySpec.setIndicator(this.getResources().getText(R.string.history_label));
-		Intent historyIntent = new Intent(this, History.class);
+		Intent historyIntent = new Intent(this, History_byDate.class);
 		historySpec.setContent(historyIntent);
 
 		// Tab for profile
@@ -48,6 +48,10 @@ public class PlateChart_main extends TabActivity implements OnTabChangeListener{
 		tabHost.getTabWidget().setCurrentTab(0);
         tabHost.getTabWidget().getChildAt(0).setBackgroundColor(getResources().getColor(R.color.Tab_Selected));
 		
+	}
+	
+	public TabHost getMyTabHost(){
+		return tabHost;
 	}
 
 	public void onTabChanged(String tabId) {

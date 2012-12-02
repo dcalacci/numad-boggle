@@ -48,6 +48,7 @@ public class Chart_View extends View {
   // 5 degrees in radians
   private final double ANGLE_INTERVAL = 0.0174532*5;
 
+
   // touchPoint info
   private int mTouchPointRadius;
   private int mTouchPointColor;
@@ -56,6 +57,7 @@ public class Chart_View extends View {
   private GestureDetector mGestureDetector;
   private boolean inScroll = false;
 
+  
 
   //paints
   private Paint mCirclePaint;
