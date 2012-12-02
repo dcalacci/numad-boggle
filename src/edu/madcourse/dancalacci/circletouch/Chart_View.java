@@ -1,9 +1,11 @@
 package edu.madcourse.dancalacci.circletouch;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Map;
 
 import edu.madcourse.dancalacci.R;
 import android.content.Context;
@@ -19,6 +21,9 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 //TODO: dragging is weird sometimes. fix that.
@@ -366,9 +371,9 @@ public class Chart_View extends View {
 	 */
 	public void clearChart() {
 		// TODO Auto-generated method stub
-			this.mCategories.clear();
-			this.mPoints.clear();	
-			invalidate();
+		this.mCategories.clear();
+		this.mPoints.clear();	
+		invalidate();
 	}
 
 	/**
@@ -392,7 +397,7 @@ public class Chart_View extends View {
 		}		 
 		invalidate();
 	}
-	
+
 	/**
 	 * Updates the color of the protein text and box icon to deselect state
 	 * @param v - View
@@ -400,11 +405,11 @@ public class Chart_View extends View {
 	public void setProteinDeselect(View v){
 		TextView box = (TextView) v.findViewById(R.id.protein_box);
 		TextView text = (TextView) v.findViewById(R.id.protein_label);
-		
+
 		box.setBackgroundColor(getResources().getColor(R.color.Protein_Grayed));
 		text.setTextColor(getResources().getColor(R.color.Protein_Grayed));
 	}
-	
+
 	/**
 	 * Updates the color of the protein text and box icon to select state
 	 * @param v - View
@@ -412,11 +417,11 @@ public class Chart_View extends View {
 	public void setProteinSelect(View v){
 		TextView box = (TextView) v.findViewById(R.id.protein_box);
 		TextView text = (TextView) v.findViewById(R.id.protein_label);
-		
+
 		box.setBackgroundColor(getResources().getColor(R.color.Protein));
 		text.setTextColor(getResources().getColor(R.color.Protein));
 	}
-	
+
 	/**
 	 * When Vegetable is clicked it adds or removes from the chart
 	 * Adds / Removes from mCategories ArrayList
@@ -438,7 +443,7 @@ public class Chart_View extends View {
 		}	
 		invalidate();
 	}
-	
+
 	/**
 	 * Updates the color of the vegetable text and box icon to deselect state
 	 * @param v - View
@@ -446,11 +451,11 @@ public class Chart_View extends View {
 	public void setVegetableDeselect(View v){
 		TextView box = (TextView) v.findViewById(R.id.vegetable_box);
 		TextView text = (TextView) v.findViewById(R.id.vegetable_label);
-		
+
 		box.setBackgroundColor(getResources().getColor(R.color.Vegetable_Grayed));
 		text.setTextColor(getResources().getColor(R.color.Vegetable_Grayed));
 	}
-	
+
 	/**
 	 * Updates the color of the vegetable text and box icon to select state
 	 * @param v - View
@@ -458,7 +463,7 @@ public class Chart_View extends View {
 	public void setVegetableSelect(View v){
 		TextView box = (TextView) v.findViewById(R.id.vegetable_box);
 		TextView text = (TextView) v.findViewById(R.id.vegetable_label);
-		
+
 		box.setBackgroundColor(getResources().getColor(R.color.Vegetable));
 		text.setTextColor(getResources().getColor(R.color.Vegetable));
 	}
@@ -484,7 +489,7 @@ public class Chart_View extends View {
 		}	
 		invalidate();
 	}
-	
+
 	/**
 	 * Updates the color of the dairy text and box icon to deselect state
 	 * @param v - View
@@ -492,11 +497,11 @@ public class Chart_View extends View {
 	public void setDairyDeselect(View v){
 		TextView box = (TextView) v.findViewById(R.id.dairy_box);
 		TextView text = (TextView) v.findViewById(R.id.dairy_label);
-		
+
 		box.setBackgroundColor(getResources().getColor(R.color.Dairy_Grayed));
 		text.setTextColor(getResources().getColor(R.color.Dairy_Grayed));
 	}
-	
+
 	/**
 	 * Updates the color of the dairy text and box icon to select state
 	 * @param v - View
@@ -504,7 +509,7 @@ public class Chart_View extends View {
 	public void setDairySelect(View v){
 		TextView box = (TextView) v.findViewById(R.id.dairy_box);
 		TextView text = (TextView) v.findViewById(R.id.dairy_label);
-		
+
 		box.setBackgroundColor(getResources().getColor(R.color.Dairy));
 		text.setTextColor(getResources().getColor(R.color.Dairy));
 	}
@@ -530,7 +535,7 @@ public class Chart_View extends View {
 		}
 		invalidate();
 	}
-	
+
 	/**
 	 * Updates the color of the fruit text and box icon to deselect state
 	 * @param v - View
@@ -538,11 +543,11 @@ public class Chart_View extends View {
 	public void setFruitDeselect(View v){
 		TextView box = (TextView) v.findViewById(R.id.fruit_box);
 		TextView text = (TextView) v.findViewById(R.id.fruit_label);
-		
+
 		box.setBackgroundColor(getResources().getColor(R.color.Fruit_Grayed));
 		text.setTextColor(getResources().getColor(R.color.Fruit_Grayed));
 	}
-	
+
 	/**
 	 * Updates the color of the fruit text and box icon to select state
 	 * @param v - View
@@ -550,7 +555,7 @@ public class Chart_View extends View {
 	public void setFruitSelect(View v){
 		TextView box = (TextView) v.findViewById(R.id.fruit_box);
 		TextView text = (TextView) v.findViewById(R.id.fruit_label);
-		
+
 		box.setBackgroundColor(getResources().getColor(R.color.Fruit));
 		text.setTextColor(getResources().getColor(R.color.Fruit));
 	}
@@ -576,7 +581,7 @@ public class Chart_View extends View {
 		}	
 		invalidate();
 	}
-	
+
 	/**
 	 * Updates the color of the grain text and box icon to deselect state
 	 * @param v - View
@@ -584,11 +589,11 @@ public class Chart_View extends View {
 	public void setGrainDeselect(View v){
 		TextView box = (TextView) v.findViewById(R.id.grain_box);
 		TextView text = (TextView) v.findViewById(R.id.grain_label);
-		
+
 		box.setBackgroundColor(getResources().getColor(R.color.Grain_Grayed));
 		text.setTextColor(getResources().getColor(R.color.Grain_Grayed));
 	}
-	
+
 	/**
 	 * Updates the color of the grain text and box icon to select state
 	 * @param v - View
@@ -596,7 +601,7 @@ public class Chart_View extends View {
 	public void setGrainSelect(View v){
 		TextView box = (TextView) v.findViewById(R.id.grain_box);
 		TextView text = (TextView) v.findViewById(R.id.grain_label);
-		
+
 		box.setBackgroundColor(getResources().getColor(R.color.Grain));
 		text.setTextColor(getResources().getColor(R.color.Grain));
 	}
@@ -622,7 +627,7 @@ public class Chart_View extends View {
 		}	
 		invalidate();
 	}
-	
+
 	/**
 	 * Updates the color of the oil/sugar text and box icon to deselect state
 	 * @param v - View
@@ -630,11 +635,11 @@ public class Chart_View extends View {
 	public void setOilSugarDeselect(View v){
 		TextView box = (TextView) v.findViewById(R.id.oil_box);
 		TextView text = (TextView) v.findViewById(R.id.oil_label);
-		
+
 		box.setBackgroundColor(getResources().getColor(R.color.Oil_Sugar_Grayed));
 		text.setTextColor(getResources().getColor(R.color.Oil_Sugar_Grayed));
 	}
-	
+
 	/**
 	 * Updates the color of the oil/sugar text and box icon to select state
 	 * @param v - View
@@ -642,9 +647,32 @@ public class Chart_View extends View {
 	public void setOilSugarSelect(View v){
 		TextView box = (TextView) v.findViewById(R.id.oil_box);
 		TextView text = (TextView) v.findViewById(R.id.oil_label);
-		
+
 		box.setBackgroundColor(getResources().getColor(R.color.Oil_Sugar));
 		text.setTextColor(getResources().getColor(R.color.Oil_Sugar));
+	}
+
+	/**
+	 * gets the Chart data (Category Name, pCCW, pCW)
+	 * @return JSONArray - Contains JSONObjects of each category
+	 */
+	public JSONArray getChartData(){
+		Log.d(TAG, mCategories.toString());
+		String localTag = "Chart_View.getChartData";
+		JSONArray jsonArray = new JSONArray();
+		
+		for(Category category : mCategories){
+			Map obj = new LinkedHashMap(); 
+			
+			obj.put("Category", category.getCategory());
+			obj.put("pCCW", category.getpCCW().getmRads());
+			obj.put("pCW", category.getpCW().getmRads());
+			
+			JSONObject jsonObject = new JSONObject(obj);
+			jsonArray.put(jsonObject);
+
+		}	
+		return jsonArray;
 	}
 
 
@@ -856,7 +884,7 @@ public class Chart_View extends View {
 
 		invalidate();
 	}
-	
+
 	private void printTouchPoints() {
 		for (TouchPoint p : mPoints) {
 			System.out.println("" + p.mRads);
@@ -870,7 +898,6 @@ public class Chart_View extends View {
 		public double mRads;
 		public boolean isBeingTouched = false;
 
-
 		/**
 		 * positive if getDifference(this, tp) is positive, 0 if it's 0,
 		 * negative if it's negative.
@@ -882,6 +909,10 @@ public class Chart_View extends View {
 			} else {
 				return getDifference(this.mRads, tp.mRads) > 0 ? 1 : -1;
 			}
+		}
+
+		public double getmRads(){
+			return this.mRads;
 		}
 	}
 

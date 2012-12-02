@@ -1,5 +1,11 @@
 package edu.madcourse.dancalacci.circletouch;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,22 +28,22 @@ public class History extends ListActivity{
 	History_Adaptor adapter;
 	final History thisActivity = this;
 	ArrayList<String> list = new ArrayList<String>();
-	
+
 	//NOT USED FOR NOW
 	//History_View hist;
-	
+
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.platechart_history);
-		
+
 		addContent();
-		
+
 		getListView().setEmptyView(findViewById(android.R.id.empty));
 		adapter = new History_Adaptor(thisActivity, R.layout.platechart_history, list);
 		setListAdapter(adapter);
 	}
-	
+
 	/**
 	 * Gets the current date and time based on the system settings/timezone
 	 * @return String formattedDate
@@ -46,16 +52,48 @@ public class History extends ListActivity{
 		Calendar c = Calendar.getInstance();
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String formattedDate = df.format(c.getTime());
-		
+
 		return formattedDate;
 	}
-	
+
 	public void addContent(){
 		list.add(getTime());
 	}
-	
-	/*
-	 * TODO: Opens game based on user ID Key
+
+	public void addContent(String content){
+		list.add(content);
+	}
+
+	public void readData(){
+		File mydir = this.getDir("plate_chart", Context.MODE_PRIVATE);              
+		File lister = mydir.getAbsoluteFile();
+		for (String list : lister.list())
+		{
+			
+			try {
+				FileInputStream fis = this.openFileInput(list);
+				BufferedReader r = new BufferedReader(new InputStreamReader(fis));
+				String s = "";
+				while ((s = r.readLine()) != null) {
+					int end = s.indexOf("_");
+					addContent(s.substring(0, end).replace("+", " "));
+				}
+				r.close(); 
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+
+	}
+
+	/**
+	 * Opens Chart based on date
 	 * Sets ListItem Click Listener
 	 * (non-Javadoc)
 	 * @see android.app.ListActivity#onListItemClick(android.widget.ListView, android.view.View, int, long)
@@ -66,10 +104,10 @@ public class History extends ListActivity{
 		Log.d(TAG, "onListItemClick: " + chart);
 		if(! (chart.equals("ERROR"))){
 			Intent i = new Intent(this, AddChart.class);
-				
+
 			startActivity(i);
 		}
-		
+
 	}
 
 	public class History_Adaptor extends BaseAdapter{
@@ -88,7 +126,7 @@ public class History extends ListActivity{
 			// TODO Auto-generated method stub
 			return mHistoryList.size();
 		}
-		
+
 		public String getContent(int pos){
 			return mHistoryList.get(pos);
 		}
@@ -138,10 +176,10 @@ public class History extends ListActivity{
 
 	}
 
-	
+
 	public void onAddChartClick(View v){
 		Intent i = new Intent(this, AddChart.class);
 		startActivity(i);
 	}
-	
+
 }
