@@ -20,4 +20,5 @@ local.properties
 .project
 .settings/
 
-
+# dan's stupid pomodoro thing
+.pomo
