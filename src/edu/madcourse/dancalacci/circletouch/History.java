@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class History extends ListActivity{
 	private String TAG = "circletouch.History";
@@ -38,18 +39,18 @@ public class History extends ListActivity{
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate");
 		setContentView(R.layout.platechart_history);
-		
+
 		//addContent();
 	}
-	
+
 
 
 	protected void onResume() {
 		super.onResume();
 		list.clear();
-		readData();
+		getEntryList();
 		Collections.reverse(list);
-		
+
 		getListView().setEmptyView(findViewById(android.R.id.empty));
 		adapter = new History_Adaptor(thisActivity, R.layout.platechart_history, list);
 		setListAdapter(adapter);
@@ -69,15 +70,15 @@ public class History extends ListActivity{
 		return formattedDate;
 	}
 
-//	public void addContent(){
-//		list.add(getTime());
-//	}
+	//	public void addContent(){
+	//		list.add(getTime());
+	//	}
 
 	public void addContent(String content){
 		list.add(content);
 	}
 
-	public void readData(){
+	public void getEntryList(){
 		Log.d(TAG, "ReadData");
 		String[] myFiles = this.fileList();
 		for (String list : myFiles)
@@ -99,9 +100,41 @@ public class History extends ListActivity{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
-		
+	}
+
+	public String getEntryData(String entry){
+		String data = "ERROR";
+
+		Log.d(TAG, "ReadData");
+		String[] myFiles = this.fileList();
+		for (String list : myFiles)
+		{
+			try {
+				Log.d("readData", "File: "+list);
+				FileInputStream fis = this.openFileInput(list);
+				BufferedReader r = new BufferedReader(new InputStreamReader(fis));
+				String s = "";
+				while ((s = r.readLine()) != null) {
+					String[] line = s.split("_");
+					if (line[0].equalsIgnoreCase(entry)){
+						return data = line[0];
+					}
+
+				}
+				r.close(); 
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
+		return data;
 
 	}
 
@@ -116,12 +149,30 @@ public class History extends ListActivity{
 		String chart = adapter.getContent(position);
 		Log.d(TAG, "onListItemClick: " + chart);
 		if(! (chart.equals("ERROR"))){
-			Intent i = new Intent(this, AddChart.class);
-
-			startActivity(i);
+			TextView entry = (TextView) v.findViewById(R.id.platechart_history_textView_content);
+			String date_entry = formatEntry(entry.getText().toString());
+			String data = getEntryData(date_entry);
+			if(!(data.equalsIgnoreCase("ERROR"))){
+				//TODO: change to proper activity
+				Intent i = new Intent(this, AddChart.class);
+				i.putExtra("DATA", data);
+				startActivity(i);
+				
+			}else{
+				Toast.makeText(v.getContext(), "ERROR: Entry not found!", Toast.LENGTH_SHORT).show();
+			}
 		}
 
 	}
+
+	public String formatEntry(String entry){
+		String record_log; 
+		record_log = entry.replace(" ", "+");
+		return record_log;		
+	}
+
+
+
 
 	public class History_Adaptor extends BaseAdapter{
 		private ArrayList<String> mHistoryList = new ArrayList<String>();
