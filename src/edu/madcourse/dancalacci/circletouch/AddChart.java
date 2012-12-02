@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ public class AddChart extends Activity {
   boolean mCanEdit = true;
   
 	public void onCreate(Bundle savedInstanceState) {
+    this.requestWindowFeature(Window.FEATURE_NO_TITLE);
     Bundle extras = getIntent().getExtras();
     ArrayList<String> categories = extras.getStringArrayList("categories");
     mCanEdit = extras.getBoolean("canEdit");
@@ -39,10 +41,10 @@ public class AddChart extends Activity {
 		cir = c;
     cir.setCanEdit(mCanEdit);
     addCategories(categories);
-    Log.d(TAG, "@@AddChart_ canEdit: "+mCanEdit);
-    this.mCanEdit = false;
-    cir.setCanEdit(false);
-    Log.d(TAG, "@@AddChart_ After: canEdit: "+mCanEdit);
+    /* Log.d(TAG, "@@AddChart_ canEdit: "+mCanEdit); */
+    /* this.mCanEdit = false; */
+    /* cir.setCanEdit(false);; */
+    /* Log.d(TAG, "@@AddChart_ After: canEdit: "+mCanEdit); */
 	}
 
   private void addCategories(ArrayList<String> categories) {
