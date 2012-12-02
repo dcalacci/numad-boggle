@@ -19,6 +19,7 @@
     <string name="back_label">Back</string>
     <string name="clear_label">Clear</string>
     <string name="save_label">Save</string>
+    <string name="next_label">Next</string>
     
     <!-- Team Members -->
     <string name="team_members_label">Team Members</string>

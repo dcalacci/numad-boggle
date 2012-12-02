@@ -59,7 +59,7 @@ public class AddChart extends Activity {
 	}
 
 	public void onSaveClicked(View v){
-		//String date_time = getDateTime();
+		String date_time = getDateTime();
 		//TODO: SAVE TO DISK
 		JSONArray chartData = cir.getChartData();
 		Log.d("TAG", chartData.toString());
@@ -137,7 +137,7 @@ public class AddChart extends Activity {
 	
 			try{
 				FileWriter write = new FileWriter(this.getFilesDir() + "/" + fileName, true);
-				write.write(data); //adds new line.
+				write.write(data+"\r\n"); //adds new line.
 				write.close();
 				
 			} catch (FileNotFoundException e) {
