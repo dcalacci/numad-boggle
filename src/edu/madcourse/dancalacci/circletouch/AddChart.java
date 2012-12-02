@@ -59,7 +59,7 @@ public class AddChart extends Activity {
 	}
 
 	public void onSaveClicked(View v){
-		String date_time = getDateTime();
+		//String date_time = getDateTime();
 		//TODO: SAVE TO DISK
 		JSONArray chartData = cir.getChartData();
 		Log.d("TAG", chartData.toString());
@@ -122,7 +122,7 @@ public class AddChart extends Activity {
 	 */
 	public String getDate(){
 		Calendar c = Calendar.getInstance();
-		SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd");
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 		String formattedDate = df.format(c.getTime());		
 		return formattedDate;
 	}
@@ -137,7 +137,7 @@ public class AddChart extends Activity {
 	
 			try{
 				FileWriter write = new FileWriter(this.getFilesDir() + "/" + fileName, true);
-				write.append(data+"\r\n"); //adds new line.
+				write.write(data); //adds new line.
 				write.close();
 				
 			} catch (FileNotFoundException e) {

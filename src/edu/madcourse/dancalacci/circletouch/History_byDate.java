@@ -22,14 +22,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class History extends ListActivity{
+public class History_byDate extends ListActivity{
 	private String TAG = "circletouch.History";
 	History_Adaptor adapter;
-	final History thisActivity = this;
-	ArrayList<String> list = new ArrayList<String>();
+	final History_byDate thisActivity = this;
+	ArrayList<String> entryList = new ArrayList<String>();
 
 	//NOT USED FOR NOW
 	//History_View hist;
@@ -47,17 +48,15 @@ public class History extends ListActivity{
 
 	protected void onResume() {
 		super.onResume();
-		list.clear();
-		getEntryList();
-		Collections.reverse(list);
+		entryList.clear();
+		getDateList();
+		Collections.reverse(entryList);
 
 		getListView().setEmptyView(findViewById(android.R.id.empty));
-		adapter = new History_Adaptor(thisActivity, R.layout.platechart_history, list);
+		adapter = new History_Adaptor(thisActivity, R.layout.platechart_history, entryList);
 		setListAdapter(adapter);
 	}
-
-
-
+	
 	/**
 	 * Gets the current date and time based on the system settings/timezone
 	 * @return String formattedDate
@@ -70,74 +69,25 @@ public class History extends ListActivity{
 		return formattedDate;
 	}
 
-	//	public void addContent(){
-	//		list.add(getTime());
-	//	}
-
 	public void addContent(String content){
-		list.add(content);
+		//entryList.add(content);
 	}
 
-	public void getEntryList(){
-		Log.d(TAG, "ReadData");
+	
+	public void getDateList(){
 		String[] myFiles = this.fileList();
-		for (String list : myFiles)
-		{
-			try {
-				Log.d("readData", "File: "+list);
-				FileInputStream fis = this.openFileInput(list);
-				BufferedReader r = new BufferedReader(new InputStreamReader(fis));
-				String s = "";
-				while ((s = r.readLine()) != null) {
-					int end = s.indexOf("_");
-					addContent(s.substring(0, end).replace("+", " "));
-				}
-				r.close(); 
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		for(String file : myFiles){
+			
+			String[] fileName = file.split("_");
+			String date = fileName[0];
+			if(!(entryList.contains(date))){
+				entryList.add(date);
 			}
-
 		}
 	}
+	
 
-	public String getEntryData(String entry){
-		String data = "ERROR";
-
-		Log.d(TAG, "ReadData");
-		String[] myFiles = this.fileList();
-		for (String list : myFiles)
-		{
-			try {
-				Log.d("readData", "File: "+list);
-				FileInputStream fis = this.openFileInput(list);
-				BufferedReader r = new BufferedReader(new InputStreamReader(fis));
-				String s = "";
-				while ((s = r.readLine()) != null) {
-					String[] line = s.split("_");
-					if (line[0].equalsIgnoreCase(entry)){
-						return data = line[0];
-					}
-
-				}
-				r.close(); 
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
-
-		return data;
-
-	}
-
+	
 	/**
 	 * Opens Chart based on date
 	 * Sets ListItem Click Listener
@@ -151,13 +101,10 @@ public class History extends ListActivity{
 		if(! (chart.equals("ERROR"))){
 			TextView entry = (TextView) v.findViewById(R.id.platechart_history_textView_content);
 			String date_entry = formatEntry(entry.getText().toString());
-			String data = getEntryData(date_entry);
-			if(!(data.equalsIgnoreCase("ERROR"))){
-				//TODO: change to proper activity
-				Intent i = new Intent(this, AddChart.class);
-				i.putExtra("DATA", data);
+			if(!(date_entry.equalsIgnoreCase("ERROR")) || date_entry != null ){
+				Intent i = new Intent(this, History_byTime.class);
+				i.putExtra("DATE", date_entry);
 				startActivity(i);
-				
 			}else{
 				Toast.makeText(v.getContext(), "ERROR: Entry not found!", Toast.LENGTH_SHORT).show();
 			}

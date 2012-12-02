@@ -86,7 +86,7 @@ public class Chart_View extends View {
 	 */
 	public Chart_View(Context ctx, AttributeSet attrs) {
 		super(ctx, attrs);
-
+		
 		mContext = ctx;
 
 		// attrs contains the raw values for the XML attributes
