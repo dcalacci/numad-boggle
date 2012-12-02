@@ -681,25 +681,7 @@ public class Chart_View extends View {
         canvas.drawArc(mCircleBounds, startAngle, sweepAngle, true, color);
 
       }	
-      for (TouchPoint point : mPoints) {
-        PointF touchPointCoords = radsToPointF(point.mRads);
 
-        // draw the touchPoint on the canvas
-        canvas.drawCircle(
-            touchPointCoords.x,
-            touchPointCoords.y,
-            mTouchPointRadius,
-            mTouchPointPaint
-            );
-      }
-
-      // drawing the circle
-      canvas.drawCircle(
-          mCircleX,
-          mCircleY,
-          mCircleRadius,
-          mCirclePaint
-          );
 
       // drawing the touch-points
       for (TouchPoint point : mPoints) {
@@ -712,13 +694,37 @@ public class Chart_View extends View {
             mSeparatorLinesPaint
             );
       }
+      for (TouchPoint point : mPoints) {
+        PointF touchPointCoords = radsToPointF(point.mRads);
+
+        // draw the touchPoint on the canvas
+        canvas.drawCircle(
+            touchPointCoords.x,
+            touchPointCoords.y,
+            mTouchPointRadius,
+            mTouchPointPaint
+            );
+      }
     } else if (size == 1) { // only one category
       Category c = mCategories.get(0);
       Paint color = new Paint(Paint.ANTI_ALIAS_FLAG);
       color.setColor(c.getColor());
       color.setStyle(Paint.Style.FILL_AND_STROKE);
       canvas.drawArc(mCircleBounds, 0f, 360f, true, color);
+    } else { // no categories
+      Paint noCats = new Paint(Paint.ANTI_ALIAS_FLAG);
+      noCats.setColor(0xff888888);
+      noCats.setStyle(Paint.Style.FILL_AND_STROKE);
+      canvas.drawArc(mCircleBounds, 0f, 360f, true, noCats);
     }
+    // drawing the circle
+    /* canvas.drawCircle( */
+    /*     mCircleX, */
+    /*     mCircleY, */
+    /*     mCircleRadius, */
+    /*     mCirclePaint */
+    /*     ); */
+
   }
 
   /**
@@ -814,37 +820,37 @@ public class Chart_View extends View {
     invalidate();
   }
 
-	private void printTouchPoints() {
+  private void printTouchPoints() {
     for (int i = 0; i< mPoints.size(); i++) {
       System.out.println(i + ": " + mPoints.get(i).mRads);
     }
   }
- 
 
-	/**
-	 * Container for touch points
-	 */
-	private class TouchPoint implements Comparable<TouchPoint> {
-		public double mRads;
-		public boolean isBeingTouched = false;
 
-		/**
-		 * positive if getDifference(this, tp) is positive, 0 if it's 0,
-		 * negative if it's negative.
-		 * @param tp The touchpoint to compare this to
-		 */
-		public int compareTo(TouchPoint tp) throws ClassCastException {
-			if (getDifference(this.mRads, tp.mRads) == 0) {
-				return 0;
-			} else {
-				return getDifference(this.mRads, tp.mRads) > 0 ? 1 : -1;
-			}
-		}
+  /**
+   * Container for touch points
+   */
+  private class TouchPoint implements Comparable<TouchPoint> {
+    public double mRads;
+    public boolean isBeingTouched = false;
 
-		public double getmRads(){
-			return this.mRads;
-		}
-	}
+    /**
+     * positive if getDifference(this, tp) is positive, 0 if it's 0,
+     * negative if it's negative.
+     * @param tp The touchpoint to compare this to
+     */
+    public int compareTo(TouchPoint tp) throws ClassCastException {
+      if (getDifference(this.mRads, tp.mRads) == 0) {
+        return 0;
+      } else {
+        return getDifference(this.mRads, tp.mRads) > 0 ? 1 : -1;
+      }
+    }
+
+    public double getmRads(){
+      return this.mRads;
+    }
+  }
 
   /**
    * Moves start delta degrees clockwise
