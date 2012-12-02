@@ -23,18 +23,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class AddChart extends Activity {
+  private final String TAG = "circletouch.circle";
 	/** Called when the activity is first created. */
 	Chart_View cir;
+  boolean mCanEdit = true;
   
 	public void onCreate(Bundle savedInstanceState) {
     Bundle extras = getIntent().getExtras();
     ArrayList<String> categories = extras.getStringArrayList("categories");
+    mCanEdit = extras.getBoolean("canEdit");
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.platechart_add);
 		final Chart_View c = (Chart_View) this.findViewById(R.id.circle);
 		cir = c;
+    cir.setCanEdit(mCanEdit);
     addCategories(categories);
+    Log.d(TAG, "@@AddChart_ canEdit: "+mCanEdit);
+    this.mCanEdit = false;
+    cir.setCanEdit(false);
+    Log.d(TAG, "@@AddChart_ After: canEdit: "+mCanEdit);
 	}
 
   private void addCategories(ArrayList<String> categories) {
@@ -67,27 +75,39 @@ public class AddChart extends Activity {
 
 
 	public void onProteinClicked(View v){
-		cir.onProteinClicked(v);
-	}
+    if (mCanEdit) {
+      cir.onProteinClicked(v);
+    }
+  }
 
 	public void onVegetableClicked(View v){
-		cir.onVegetableClicked(v);
+    if (mCanEdit) {
+      cir.onVegetableClicked(v);
+    }
 	}
 
 	public void onDairyClicked(View v){
-		cir.onDairyClicked(v);
+    if (mCanEdit) {
+      cir.onDairyClicked(v);
+    }
 	}
 
 	public void onFruitClicked(View v){
-		cir.onFruitClicked(v);
+    if (mCanEdit) {
+      cir.onFruitClicked(v);
+    }
 	}
 
 	public void onGrainClicked(View v){
-		cir.onGrainClicked(v);
+    if (mCanEdit) {
+      cir.onGrainClicked(v);
+    }
 	}
 
 	public void onOilSugarClicked(View v){
-		cir.onOilSugarClicked(v);
+    if (mCanEdit) {
+      cir.onOilSugarClicked(v);
+    }
 	}
 
 	public void onSaveClicked(View v){

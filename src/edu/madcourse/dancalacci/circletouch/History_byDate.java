@@ -189,7 +189,7 @@ public class History_byDate extends ListActivity{
 
 
 	public void onAddChartClick(View v){
-		Intent i = new Intent(this, AddChart.class);
+		Intent i = new Intent(this, CategorySelection.class);
 		startActivity(i);
 	}
 

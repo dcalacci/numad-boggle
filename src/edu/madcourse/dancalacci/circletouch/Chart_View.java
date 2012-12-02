@@ -34,6 +34,9 @@ public class Chart_View extends View {
   private RectF mCircleBounds = new RectF();
   private ArrayList<TouchPoint> mPoints = new ArrayList<TouchPoint>();
 
+  // True if we can edit the circle. True by default.
+  private boolean mCanEdit = true;
+
   //Items 
   private ArrayList<Category> mCategories = new ArrayList<Category>();
 
@@ -160,6 +163,23 @@ public class Chart_View extends View {
 
     }
   }
+  
+  /**
+   * Gets the CanEdit variable
+   * @return Whether or not we can edit the chart
+   */
+  public boolean getCanEdit() {
+    return this.mCanEdit;
+  }
+
+  /**
+   * Sets mCanEdit to the given boolean value
+   * @param canEdit the value to set mCanEdit to.
+   */
+  public void setCanEdit(boolean val) {
+    this.mCanEdit = val;
+  }
+
   /**
    * Adds an item to the list of points
    * @param degrees the degree value for the point to add.
@@ -686,6 +706,7 @@ public class Chart_View extends View {
       // drawing the touch-points
       for (TouchPoint point : mPoints) {
         PointF touchPointCoords = radsToPointF(point.mRads);
+        //Draw the separators
         canvas.drawLine(
             mCircleX,
             mCircleY,
@@ -694,16 +715,17 @@ public class Chart_View extends View {
             mSeparatorLinesPaint
             );
       }
-      for (TouchPoint point : mPoints) {
-        PointF touchPointCoords = radsToPointF(point.mRads);
-
-        // draw the touchPoint on the canvas
-        canvas.drawCircle(
-            touchPointCoords.x,
-            touchPointCoords.y,
-            mTouchPointRadius,
-            mTouchPointPaint
-            );
+      if (mCanEdit) {
+        for (TouchPoint point : mPoints) {
+          PointF touchPointCoords = radsToPointF(point.mRads);
+          // draw the touchPoint on the canvas
+          canvas.drawCircle(
+              touchPointCoords.x,
+              touchPointCoords.y,
+              mTouchPointRadius,
+              mTouchPointPaint
+              );
+        }
       }
     } else if (size == 1) { // only one category
       Category c = mCategories.get(0);
@@ -1195,6 +1217,9 @@ public class Chart_View extends View {
           MotionEvent e2,
           float distanceX,
           float distanceY) {
+
+        // if we can't edit, fuhgeddaboutit
+        if (!mCanEdit) { return false;}
 
         float lastX = e2.getX() + distanceX;
         float lastY = e2.getY() + distanceY;

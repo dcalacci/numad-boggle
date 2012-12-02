@@ -30,6 +30,7 @@ public class CategorySelection extends Activity {
     Intent i = new Intent(this, AddChart.class);
     // need to give AddChart the array of items selected.
     i.putExtra("categories", mCategories);
+    i.putExtra("canEdit", true);
     startActivity(i);
 
   }
