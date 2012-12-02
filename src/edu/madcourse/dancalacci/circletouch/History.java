@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 
 import edu.madcourse.dancalacci.R;
 import android.app.ListActivity;
@@ -47,6 +48,8 @@ public class History extends ListActivity{
 		super.onResume();
 		list.clear();
 		readData();
+		Collections.reverse(list);
+		
 		getListView().setEmptyView(findViewById(android.R.id.empty));
 		adapter = new History_Adaptor(thisActivity, R.layout.platechart_history, list);
 		setListAdapter(adapter);
