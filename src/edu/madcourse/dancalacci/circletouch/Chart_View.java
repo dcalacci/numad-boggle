@@ -104,16 +104,9 @@ public class Chart_View extends View {
 			mTouchPointColor = 
 					a.getInteger(R.styleable.circle_touchPointColor,0xffff0000); 
 
-			// mTextWidth = a.getDimension(R.styleable.PieChart_labelWidth,
-			// 0.0f);
 		} finally {
 			// release TypedArray
 			a.recycle();
-
-			/*Log.d(TAG,
-					"mTouchPointRadius is: " + mTouchPointRadius);
-			Log.d(TAG, 
-					"mTouchPointColor is: " + mTouchPointColor);*/
 		}
 
 		// initialize everything
@@ -179,9 +172,8 @@ public class Chart_View extends View {
 
 	/**
 	 * Adds category to the list of Categories
-	 * TODO: COLOR IN SLICES
-	 * @param category
-	 * @param Color
+	 * @param category The category to add
+	 * @param Color The color of the category
 	 */
 	private void addCategory(String category, int color){
 		addCategoryHelper(null, null, category, color);
@@ -206,20 +198,6 @@ public class Chart_View extends View {
 		clearPoints();
 		addNItems(cSize);
 		setPointsToCategories();
-		/*
-    // needs to take into acount -pi and +pi etc.
-    double rads = (Math.PI * 2) / (cSize);
-    double rads_sum = 0;
-
-    clearPoints();
-
-    if(cSize != 1){
-      for (int i = 0; i < cSize; i++){
-        rads_sum += rads;
-        addItem(rads_sum);
-      }
-      setPointsToCategories();
-    }*/
 	}
 
 	/**
@@ -232,14 +210,11 @@ public class Chart_View extends View {
 	/**
 	 * Sets the points associated to the category
 	 */
-	// this doesn't add the correct points.  REview.
 	private void setPointsToCategories(){
 		int size = mPoints.size();
 		int i = 0;
 		int j = i+1;
 		for (Category c : mCategories){
-			//Log.d(TAG, "Index I:"+i);
-			//Log.d(TAG, "Index J:"+j);
 
 			c.setpCCW(mPoints.get(i));
 			if (i == (size - 1)){
@@ -248,31 +223,10 @@ public class Chart_View extends View {
 				c.setpCW(mPoints.get(j));
 			}
 
-			//Log.d(TAG, "mPoints Size: "+ mPoints.size());
-			//Log.d(TAG, "pCCW: "+ c.getpCCW());
-			//Log.d(TAG, "pCW: "+ c.getpCW());
-
 			i++;
 			j++;
 		}      
 	}
-
-  private void refreshCategoryPoints() {
-    int size = mPoints.size()-1;
-    int i = 0;
-    int j = i+1;
-    
-    for (Category c : mCategories) {
-      c.setpCCW(mPoints.get(i));
-      if (i == size) {
-        c.setpCW(mPoints.get(0));
-      } else {
-        c.setpCW(mPoints.get(j));
-      }
-      i++;
-      j++;
-    }
-  }
 
 	/**
 	 * Removes the specified category from the list
@@ -292,7 +246,6 @@ public class Chart_View extends View {
 		// if only one category, remove the only remaining one
 		if(mCategories.size() < 2){
 			clearPoints();
-			//Log.d(TAG, "ALL GONE: " + mPoints.toString());
 		}else{
 			addPoints();
 			setPointsToCategories();
@@ -385,7 +338,6 @@ public class Chart_View extends View {
 	 * Clears associated ArrayLists
 	 */
 	public void clearChart() {
-		// TODO Auto-generated method stub
 			this.mCategories.clear();
 			this.mPoints.clear();	
 			invalidate();
@@ -679,23 +631,15 @@ public class Chart_View extends View {
 		if (size >= 2){
 			for (int i = 0; i < size; i++){
 				Category c = mCategories.get(i);
-				//for (Category c : mCategories){
-				//Log.d(TAG, "mCategories[" + i + "]:" + mCategories.toString());
 
-
-				//Log.d(TAG, "Category :" + c.toString()); 
 				TouchPoint end = c.getpCW();
 				TouchPoint start = c.getpCCW();
-
-				PointF touchPointCoordsStart = radsToPointF(start.mRads);
-				PointF touchPointCoordsEnd = radsToPointF(end.mRads);
 
 				Paint color = new Paint(Paint.ANTI_ALIAS_FLAG);
 				color.setColor(c.getColor());
 				color.setStyle(Paint.Style.FILL_AND_STROKE);
 
 				float startAngle = (float) radsToDegree(start.mRads);
-				float endAngle = (float) radsToDegree(end.mRads);
 				float sweepAngle;
 				// get correct rad magnitude
 				if (getDifference(start.mRads, end.mRads) < 0) {
@@ -703,13 +647,8 @@ public class Chart_View extends View {
 				} else {
 					sweepAngle = (float) (getDifference(start.mRads, end.mRads));
 				}
-				// convert to degrees
+				// convert to degrees, draw the arc.
 				sweepAngle = radsToDegree(sweepAngle);
-
-				//float sweepAngle = (float) radsToDegree(Math.abs(getDifference(start.mRads, end.mRads)));
-				//Log.d(TAG, ">>>>SWEEP: " + sweepAngle);
-				//Log.d(TAG, "Color :" + color); 
-				//canvas.drawArc(mCircleBounds, 360 - radsToDegree(startAngle), radsToDegree(angle), true, color);
 				canvas.drawArc(mCircleBounds, startAngle, sweepAngle, true, color);
 
 			}	
@@ -754,19 +693,6 @@ public class Chart_View extends View {
 					mSeparatorLinesPaint
 					);
 		}
-
-		// drawing the slices
-		/*for (Category c : mCategories) {
-      mCategoryPaint.setColor(c.getColor());
-      canvas.drawArc(
-      mCircleBounds,
-      (float)Math.toDegrees(c.pCCW.mRads),
-      (float)Math.toDegrees(c.pCW.mRads),
-      true,
-      mCategoryPaint);
-      }*/
-
-
 	}
 
 	/**
@@ -823,21 +749,6 @@ public class Chart_View extends View {
 		// range of atan2 output is -pi to pi...it's weird.
 		return rads;
 	}
-
-	/*[>*
-	 * determines the number of degrees between two points using the circle's
-	 * center point.
-	 * @param x1 The x-coordinate of the first point
-	 * @param y1 The y-coordinate of the first point
-	 * @param x2 The x-coordinate of the second point
-	 * @param y2 The y-coordinate of the second point
-   <]
-   public double radsMovedBetweenPoints(
-   float x1, float y1, float x2, float y2) {
-   double angle1 = coordsToRads(x1, y1);
-   double angle2 = coordsToRads(x2, y2);
-   return (double) (angle2-angle1);
-   }*/
 
 	/**
 	 * Initializes some values and all of the fancy paints and listeners
@@ -1006,17 +917,6 @@ public class Chart_View extends View {
 		return false;
 	}
 
-  private boolean isBehind(TouchPoint p1, double rads) {
-    if (rads > 0 && p1.mRads < 0 &&
-        (Math.PI - rads + Math.PI + p1.mRads <= ANGLE_THRESHOLD)) {
-      return true;
-        } else if (rads < p1.mRads &&
-            p1.mRads - rads <= ANGLE_THRESHOLD) {
-          return true;
-            }
-    return false;
-  }
-
 	/**
 	 * returns the difference between two radian values, negative if end is
 	 * under pi rads away from start, ccw, positive otherwise.
@@ -1040,31 +940,13 @@ public class Chart_View extends View {
 		return diff;
 	}
 
-	/**
-	 * Returns true if rm is in the arc that is less than pi between r1 and r2.
-	 * r1 is start, r2 is end, we're testing to see if rm is in the middle.
-	 * @param r1 The first angle
-	 * @param rm The angle in question
-	 * @param r2 The second angle
-	 */
-	private boolean isBetween(double r1, double rm, double r2) {
-		// if the arc from r1 to r2 is less than pi but greater than 0
-		if (movingClockwise(r1, r2)){
-			// if the arc from rm to r2 is + but less than the arc from r2 to r1
-			if (getDifference(r1, rm) > 0) {
-				if( (getDifference(r1, rm) < getDifference(r1, r2))) {
-					//Log.d(TAG, rm + " IS BETWEEN " + r1 +" AND " +r2);
-					return true;
-				}
-				else { return false; }
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-	private boolean hasPassed(double r1, double rm, double r2) {
+  /**
+   * Returns true if the ark between r1 and r2 has passed rm
+   * @param r1 The starting radian
+   * @param rm The radian we're checking
+   * @param r2 The ending radian
+   */
+private boolean hasPassed(double r1, double rm, double r2) {
 		if (movingClockwise(r1, r2)) {
 			if (getDifference(r1, rm) > 0 &&
 					getDifference(r2, rm) < 0) {
@@ -1131,7 +1013,7 @@ public class Chart_View extends View {
     pts.add(0, mPoints.get(mPoints.size()-1));
     pts.remove(mPoints.size()-1);
 	}
-	/*
+	
   /**
 	 * Handles when the scroll movement is finished
 	 */
@@ -1142,67 +1024,6 @@ public class Chart_View extends View {
 		printTouchPoints();
 		inScroll = false;
 	}
-
-  /*
-   * Fixes errors in the ordering of the points. 
-   * i.e:
-   * 1 0.5
-   * 2 0.23
-   * 3 0.72
-   * 4 0.89
-   * if the ordering if CCW, then it should change to this if the threshold
-   * is .1:
-   * 1. 0.5
-   * 2. 0.6
-   * 3. 0.72
-   * 4. 0.89
-   * or something
-   */
-  private void fixSkippedPoint(boolean clockwise) {
-    ArrayList<Integer> indices = new ArrayList<Integer>();
-    for (TouchPoint p : mPoints) {
-      for (TouchPoint p2 : mPoints) {
-
-        // if p is the point being touched
-        if (mPoints.indexOf(p) == 0) {
-          
-        }
-        if (mPoints.indexOf(p) != 0 &&
-            mPoints.indexOf(p2) != 0) {
-          // if the both points aren't the one being touched, and 
-
-          // need to keep them IN ORDER.
-          if (clockwise) {
-            if (getDifference(p.mRads, p2.mRads) >= 0 && p != p2 &&
-                mPoints.indexOf(p2) < mPoints.indexOf(p)) {
-              Log.d(TAG, "hit CW part, before move: ");
-              printTouchPoints();
-              Log.d(TAG, "p is " +mPoints.indexOf(p)+", " +p.mRads);
-              Log.d(TAG, "p2 is " + mPoints.indexOf(p2)+", " +p2.mRads);
-              //Log.d(TAG, "moving " +mPoints.indexOf(p2) + " at " +p2.mRads+ " to " +moveRadCCW(p.mRads, ANGLE_THRESHOLD));
-              // this moves it behind the point in question, not to the correct spot.  
-              // also this can be called when we only skip over ONE, instead of many.
-              // take that into account.
-              Log.d(TAG, "moving " +mPoints.indexOf(p) + " at " +p.mRads+ " to " +moveRadCCW(p2.mRads, ANGLE_THRESHOLD));
-              p.mRads = moveRadCW(p2.mRads, ANGLE_THRESHOLD);
-              //p2.mRads = moveRadCW(p.mRads, ANGLE_THRESHOLD);
-              Log.d(TAG, "After move: ");
-              printTouchPoints();
-            }
-          } else {
-            if (getDifference(p.mRads, p2.mRads) > 0) {
-              Log.d(TAG, "hit CCW part, before move: ");
-              printTouchPoints();
-              Log.d(TAG, "moving " +mPoints.indexOf(p2) + " at " +p2.mRads+ " to " +moveRadCCW(p.mRads, ANGLE_THRESHOLD));
-              p2.mRads = moveRadCCW(p.mRads, ANGLE_THRESHOLD);
-              Log.d(TAG, "After move: ");
-              printTouchPoints();
-            }
-          }
-        }
-      }
-    }
-  }
 
   /**
    * Return a list of interpolated radians, given a start and end radian, using
@@ -1275,6 +1096,12 @@ public class Chart_View extends View {
     invalidate();
   }
 
+  /**
+   * Returns true if a point is between curRad and lastRad
+   * @param curRad Current radian of the scroll
+   * @param lastRad Last radian of the scroll
+   * @param cw True if we're moving clockwise, false otherwise
+   */
   private boolean skippedPoint(double curRad, double lastRad, boolean cw) {
     boolean skipped = false;
     for (TouchPoint pt : mPoints) {
@@ -1346,6 +1173,8 @@ public class Chart_View extends View {
         // have we moved clockwise?
         boolean clockwise = movingClockwise(lastRad, curRad);
 
+        // if we're not in a scroll already, figure out which one is being 
+        // touched
         if (!inScroll) {
           for (TouchPoint p : mPoints) {
             // mark the point being touched
@@ -1355,71 +1184,27 @@ public class Chart_View extends View {
             }
           }
         }
-        for (TouchPoint p : mPoints) {
-          if (p.isBeingTouched) {
-            if (clockwise) {
-              sortListCW(mPoints, p.mRads);
-            } else {
-              sortListCCW(mPoints, p.mRads);
+        if (inScroll) {
+          // Then, sort mPoints accordingly
+          double touchRads = 0;;
+          for (TouchPoint p : mPoints) {
+            if (p.isBeingTouched) {
+              touchRads = p.mRads;
             }
           }
+          if (clockwise) {
+            sortListCW(mPoints, touchRads);
+          } else {
+            sortListCCW(mPoints, touchRads);
+          }
+
+          movePoints(curRad, lastRad, clockwise);
+          invalidate();
+          return true;
         }
-        movePoints(curRad, lastRad, clockwise);
-
-
-
-
-
-    /* //-------------------------------------------- */
-    /* // Figure out which one we're touching. */
-    /* for ( TouchPoint p : mPoints ){ */
-    /*   if (isTouchingThisPoint(e1.getX(), e1.getY(), p)) { */
-    /*     inScroll = true; */
-    /*     p.isBeingTouched = true; */
-    /*   } if (p.isBeingTouched) { */
-    /*     p.mRads = coordsToRads(e2.getX(), e2.getY()); */
-    /*     invalidate(); */
-    /*     if (p.isBeingTouched) { */
-    /*       if (clockwise) { */
-    /*         sortListCW(mPoints, p.mRads); */
-    /*       } else { */
-    /*         sortListCCW(mPoints, p.mRads); */
-    /*       } */
-    /*     } */
-    /*     boolean skipped = false; */
-    /*     for (TouchPoint pt : mPoints) { */
-    /*       if (!pt.isBeingTouched) { */
-    /*         // Skipping clockwise */
-    /*         if (hasPassed(lastRad, pt.mRads, curRad)) { */
-    /*           skipped = true; */
-    /*         } */
-
-    /*         // Skipping counter-clockwise */
-    /*         if (hasPassed(curRad, pt.mRads, lastRad)) { */
-    /*           skipped = true; */
-    /*         } */
-    /*       } */
-    /*     } */
-
-    /*     //  */
-    /*     if (skipped) { */
-    /*       Log.d(TAG, "@@@Skipped a point!"); */
-    /*       //fixSkippedPoint(clockwise); */
-    /*       interpolateRads(lastRad, curRad); */
-    /*       //refreshCategoryPoints(); */
-    /*       invalidate(); */
-    /*     } */
-    /*   } */
-    /*   movePoints(curRad, lastRad, clockwise); */
-
-    /*   inScroll = true; */
-    /*   invalidate(); */
-    /*   return true; */
-    /* } */
-    invalidate();
-    return true;
-
-  }
+        invalidate();
+        return false;
+          }
 
   // we need to return true here so we can actually scroll.
   public boolean onDown(MotionEvent e) {
