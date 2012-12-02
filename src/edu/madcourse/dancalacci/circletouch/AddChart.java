@@ -137,7 +137,7 @@ public class AddChart extends Activity {
 
 		try{
 			FileWriter write = new FileWriter(this.getFilesDir() + "/plate_chart/" + fileName, true);
-			write.append(data+"\r\n"); //adds new line
+			write.append(data+"\r\n"); //adds new line.
 			write.close();
 			
 		} catch (FileNotFoundException e) {
