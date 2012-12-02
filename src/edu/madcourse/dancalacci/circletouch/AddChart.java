@@ -10,9 +10,8 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
+import java.util.ArrayList;
 import org.json.JSONArray;
-
 import edu.madcourse.dancalacci.R;
 import android.app.Activity;
 import android.content.Context;
@@ -26,13 +25,46 @@ import android.widget.Toast;
 public class AddChart extends Activity {
 	/** Called when the activity is first created. */
 	Chart_View cir;
-	@Override
+  
 	public void onCreate(Bundle savedInstanceState) {
+    Bundle extras = getIntent().getExtras();
+    ArrayList<String> categories = extras.getStringArrayList("categories");
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.platechart_add);
 		final Chart_View c = (Chart_View) this.findViewById(R.id.circle);
 		cir = c;
+    addCategories(categories);
 	}
+
+  private void addCategories(ArrayList<String> categories) {
+    for (String cat : categories) {
+      addCategory(cat);
+    }
+  }
+
+  private void addCategory(String category) {
+    if (category.equals("Protein")) {
+      final View protein_view = (View) this.findViewById(R.id.protein_view);
+      onProteinClicked(protein_view);
+    } else if (category.equals("Vegetable")) {
+      final View vegetable_view = (View) this.findViewById(R.id.vegetable_view);
+      onVegetableClicked(vegetable_view);
+    } else if ( category.equals("Fruit")) {
+      final View fruit_view = (View) this.findViewById(R.id.fruit_view);
+      onFruitClicked(fruit_view);
+    } else if (category.equals("Dairy")) {
+      final View dairy_view = (View) this.findViewById(R.id.dairy_view);
+      onDairyClicked(dairy_view);
+    } else if (category.equals("Grain")) {
+      final View grain_view = (View) this.findViewById(R.id.grain_view);
+      onGrainClicked(grain_view);
+    } else if (category.equals("Oil/Sugar")) {
+      final View oil_view = (View) this.findViewById(R.id.oil_view);
+      onOilSugarClicked(oil_view);
+    }
+  }
+
 
 	public void onProteinClicked(View v){
 		cir.onProteinClicked(v);

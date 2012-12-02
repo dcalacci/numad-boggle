@@ -8,14 +8,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.RelativeLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.TableRow;
 
 public class CategorySelection extends Activity {
 
-  ArrayList<String> categories = new ArrayList<String>();
+  ArrayList<String> mCategories = new ArrayList<String>();
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -30,9 +28,8 @@ public class CategorySelection extends Activity {
 
   public void onNextClicked(View v) {
     Intent i = new Intent(this, AddChart.class);
-
     // need to give AddChart the array of items selected.
-    /* i.putExtra( */
+    i.putExtra("categories", mCategories);
     startActivity(i);
 
   }
@@ -42,7 +39,7 @@ public class CategorySelection extends Activity {
   // ------
   public void onProteinClicked(View v) {
     String category = "Protein";
-    boolean inList = categories.contains(category);
+    boolean inList = mCategories.contains(category);
     if (inList) {
       setProteinDeselect(v);
       removeCategory(category);
@@ -77,7 +74,7 @@ public class CategorySelection extends Activity {
   // ---------
   public void onVegetableClicked(View v) {
     String category = "Vegetable";
-    boolean inList = categories.contains(category);
+    boolean inList = mCategories.contains(category);
     if (inList) {
       setVegetableDeselect(v);
       removeCategory(category);
@@ -113,7 +110,7 @@ public class CategorySelection extends Activity {
   // --------
   public void onDairyClicked(View v) {
     String category = "Dairy";
-    boolean inList = categories.contains(category);
+    boolean inList = mCategories.contains(category);
     if (inList) {
       setDairyDeselect(v);
       removeCategory(category);
@@ -149,7 +146,7 @@ public class CategorySelection extends Activity {
   // --------
   public void onFruitClicked(View v) {
     String category = "Fruit";
-    boolean inList = categories.contains(category);
+    boolean inList = mCategories.contains(category);
     if (inList) {
       setFruitDeselect(v);
       removeCategory(category);
@@ -186,7 +183,7 @@ public class CategorySelection extends Activity {
   // --------
   public void onGrainClicked(View v) {
     String category = "Grain";
-    boolean inList = categories.contains(category);
+    boolean inList = mCategories.contains(category);
     if (inList) {
       setGrainDeselect(v);
       removeCategory(category);
@@ -222,7 +219,7 @@ public class CategorySelection extends Activity {
   // --------
   public void onOilSugarClicked(View v) {
     String category = "Oil/Sugar";
-    boolean inList = categories.contains(category);
+    boolean inList = mCategories.contains(category);
     if (inList) {
       setOilDeselect(v);
       removeCategory(category);
@@ -255,11 +252,11 @@ public class CategorySelection extends Activity {
 
 
   public void removeCategory(String category){
-    categories.remove(category);
+    mCategories.remove(category);
   }
 
   public void addCategory(String category){
-    categories.add(category);
+    mCategories.add(category);
   }
 
 }
