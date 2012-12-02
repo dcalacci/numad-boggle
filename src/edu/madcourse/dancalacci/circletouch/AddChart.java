@@ -135,20 +135,10 @@ public class AddChart extends Activity {
 		String date = getDate();
 		String fileName = date+".txt";
 
-		File dir = new File (this.getFilesDir() + "/", "plate_chart");
-		if(!dir.exists()){
-			dir.mkdir();
-		}
-		File file = new File(this.getFilesDir() + "/plate_chart/", fileName);
-		try {
-			if(!file.exists()){
-				file.createNewFile();
-			}
-			FileOutputStream fOut = new FileOutputStream(file, true);
-			OutputStreamWriter myOutWriter =new OutputStreamWriter(fOut);
-			myOutWriter.append(data);
-			myOutWriter.close();
-			fOut.close();
+		try{
+			FileWriter write = new FileWriter(this.getFilesDir() + "/plate_chart/" + fileName, true);
+			write.append(data+"\r\n");
+			write.close();
 
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
