@@ -40,7 +40,10 @@ public class Chart_View extends View {
 	private float mCircleRadius;
 
 	// angle stuff
+  // 30 degrees in radians
 	private final double ANGLE_THRESHOLD = 0.174532*3;
+  // 1 degree in radians
+  private final double ANGLE_INTERVAL = 0.0174532925;
 
 	// touchPoint info
 	private int mTouchPointRadius;
@@ -1003,6 +1006,17 @@ public class Chart_View extends View {
 		return false;
 	}
 
+  private boolean isBehind(TouchPoint p1, double rads) {
+    if (rads > 0 && p1.mRads < 0 &&
+        (Math.PI - rads + Math.PI + p1.mRads <= ANGLE_THRESHOLD)) {
+      return true;
+        } else if (rads < p1.mRads &&
+            p1.mRads - rads <= ANGLE_THRESHOLD) {
+          return true;
+            }
+    return false;
+  }
+
 	/**
 	 * returns the difference between two radian values, negative if end is
 	 * under pi rads away from start, ccw, positive otherwise.
@@ -1202,11 +1216,13 @@ public class Chart_View extends View {
       sortListCW(mPoints, curRad);
       Log.d(TAG, "CLOCKWISE");
       for (TouchPoint pt : mPoints) {
-        if (!pt.isBeingTouched) {
+        if (!pt.isBeingTouched && mPoints.indexOf(pt)!=0) {
           if (hasPointBehind(pt)) {
             // Move point ANGLE_THRESHOLD in front of the next (CW) pt.
+            Log.d(TAG, "movePoints_CW moving" +pt.mRads+" to "+mPoints.get(mPoints.indexOf(pt)-1).mRads);
             double prevPointRads = mPoints.get(mPoints.indexOf(pt)-1).mRads;
             pt.mRads = moveRadCW(prevPointRads, ANGLE_THRESHOLD);
+            /* pt.mRads = moveRadCW(curRad, ANGLE_THRESHOLD); */
           }
         }
       }
@@ -1220,11 +1236,46 @@ public class Chart_View extends View {
         if (!pt.isBeingTouched) {
           if (hasPointInFront(pt)) {
             // Move point ANGLE_THRESHOLD behind(cw) the next(CCW) pt.
+            Log.d(TAG, "movePoints_CCW moving" +pt.mRads+" to "+mPoints.get(mPoints.indexOf(pt)-1).mRads);
             double nextPointRads = mPoints.get(mPoints.indexOf(pt)-1).mRads;
             pt.mRads = moveRadCCW(nextPointRads, ANGLE_THRESHOLD);
           }
         }
       }
+    }
+  }
+
+  /**
+   * Creates an ArrayList of interpolated radian values using a constant value
+   * @param startRad The starting radian
+   * @param endRad The ending radian
+   */
+  private void interpolateRads(double startRad, double endRad) {
+    //ANGLE_INTERVAL
+    ArrayList<Double> interpolated = new ArrayList<Double>();
+    double diff = getDifference(startRad, endRad);
+    boolean clckwise = true;
+    // moving CW
+    if (diff > 0) {
+      int numAngles = (int)(diff/ANGLE_INTERVAL);
+      for (int i=0; i < numAngles; i++) {
+        double toAdd = moveRadCW(startRad, i*ANGLE_INTERVAL);
+        interpolated.add(i, toAdd);
+      }
+      interpolated.add(endRad);
+
+    }else {
+      clckwise = false;
+      diff = Math.abs(diff);
+      int numAngles = (int)(diff/ANGLE_INTERVAL);
+      for (int i=0; i < numAngles; i++) {
+        double toAdd = moveRadCCW(startRad, i*ANGLE_INTERVAL);
+        interpolated.add(i, toAdd);
+      }
+    }
+    for (int i=1; i<interpolated.size(); i++) {
+      Log.d(TAG, "INTER_ movePoints("+interpolated.get(i-1)+", "+interpolated.get(i)+")");
+      movePoints(interpolated.get(i-1), interpolated.get(i), clckwise);
     }
   }
 
@@ -1251,22 +1302,14 @@ public class Chart_View extends View {
 			// have we moved clockwise?
 			boolean clockwise = movingClockwise(lastRad, curRad);
 
-			// normal touch handling
+      // Figure out which one we're touching.
 			for ( TouchPoint p : mPoints ){
-				// if we're touching this point
 				if (isTouchingThisPoint(e1.getX(), e1.getY(), p)) {
 					inScroll = true;
 					p.isBeingTouched = true;
-					// if the point "isbeingtouched"...
 				} if (p.isBeingTouched) {
 					p.mRads = coordsToRads(e2.getX(), e2.getY());
-					/*Log.d(TAG, "last: " + lastRad);
-              Log.d(TAG, "diff: " + radDifference);
-              Log.d(TAG, "curr: " + curRad);*/
-
-					// keep 'em in line, cw
-					//sortListCW(mPoints, p.mRads);
-          
+          invalidate();
           if (p.isBeingTouched) {
             if (clockwise) {
               sortListCW(mPoints, p.mRads);
@@ -1276,170 +1319,43 @@ public class Chart_View extends View {
           }
           boolean skipped = false;
           for (TouchPoint pt : mPoints) {
-            /* cw */
-            if (!pt.isBeingTouched && hasPassed(lastRad, pt.mRads, curRad)) {
-              fixSkippedPoint(clockwise);
-              /* Log.d(TAG, "Skipped CW"); */
-              /* Log.d(TAG, "Moving: " + mPoints.indexOf(pt) + ", " +pt.mRads +" to "+moveRadCW(curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD)); */
-              /* Log.d(TAG, "curRad: " +curRad+" and the amount: " +mPoints.indexOf(pt)*ANGLE_THRESHOLD +  */
-              /*   "and the total: " + moveRadCW(curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD)); */
-              /* pt.mRads = moveRadCW(curRad, (mPoints.indexOf(pt)*ANGLE_THRESHOLD)); */
-              /* printTouchPoints(); */
-              /* skipped = true; */
-            } else if (!pt.isBeingTouched && hasPassed(curRad, pt.mRads, lastRad)) {
-              Log.d(TAG, "Skipped CCW");
-              Log.d(TAG, "Moving: " +mPoints.indexOf(pt) + ", "+ pt.mRads + " to " + moveRadCW(curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD));
-              Log.d(TAG, "index of the point: " +(mPoints.indexOf(pt)));
-              Log.d(TAG, "curRad: " +curRad+" and the amount: " +mPoints.indexOf(pt)*ANGLE_THRESHOLD + 
-                "and the total: " + moveRadCW(curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD));
-              pt.mRads = moveRadCCW(curRad, (mPoints.indexOf(pt)*ANGLE_THRESHOLD));
-              printTouchPoints();
-              skipped = true;
+            if (!pt.isBeingTouched) {
+              // Skipping clockwise
+              if (hasPassed(lastRad, pt.mRads, curRad)) {
+                skipped = true;
+              }
+
+              // Skipping counter-clockwise
+              if (hasPassed(curRad, pt.mRads, lastRad)) {
+                skipped = true;
+              }
             }
-          
+          }
+
           // 
           if (skipped) {
-            fixSkippedPoint(clockwise);
-            refreshCategoryPoints();
+            Log.d(TAG, "@@@Skipped a point!");
+            /* fixSkippedPoint(clockwise); */
+            interpolateRads(lastRad, curRad);
+            /* refreshCategoryPoints(); */
             invalidate();
           }
-          }
-          movePoints(curRad, lastRad, clockwise);
+        }
+        movePoints(curRad, lastRad, clockwise);
 
-/*  */
-/*           if (clockwise) { */
-/*             sortListCW(mPoints, p.mRads); */
-/*             Log.d(TAG, "CLOCKWISE"); */
-/*             printTouchPoints(); */
-/*             for ( TouchPoint pt : mPoints) { */
-/*               if (!pt.isBeingTouched &&  */
-/*                   hasPassed( lastRad, pt.mRads, moveRadCW(curRad, ANGLE_THRESHOLD))) { */
-/*                 pt.mRads = moveRadCW( curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD); */
-/*                   } */
-/*  */
-/*               // if the point isn't the one being touched but it has a point  */
-/*               // behind it */
-/*               if (!pt.isBeingTouched && hasPointBehind(pt)) { */
-/*                 // Get the radian value of the point behind this point */
-/*                 // and move the touchpoint  */
-/*                 double prevPointRads = mPoints.get(mPoints.indexOf(pt)-1).mRads; */
-/*                 pt.mRads = moveRadCW(prevPointRads, ANGLE_THRESHOLD); */
-/*               } */
-/*             } */
-/*           } */
-/*           // end of CW movement */
-/*           //Counter-Clockwise */
-/*           else { */
-/*             sortListCCW(mPoints, p.mRads); */
-/*             Log.d(TAG, "COUNTER CW"); */
-/*             printTouchPoints(); */
-/*             for (TouchPoint pt : mPoints) { */
-/*               ArrayList<TouchPoint> CCWList = new ArrayList<TouchPoint>(); */
-/*               // add all the points from mPoints, excluding the point being touched */
-/*               CCWList.addAll(mPoints.subList(1, mPoints.size())); */
-/*               Collections.reverse(CCWList); */
-/*               CCWList.add(0, mPoints.get(0)); */
-/*               // Now have a CCW-ordered list of all the points*/ 
-/*  */
-/*               if (!pt.isBeingTouched) { */
-/*                 if (hasPassed(moveRadCW(curRad, ANGLE_THRESHOLD), pt.mRads, lastRad)) { */
-/*                   Log.d(TAG, "About to hit something CCW"); */
-/*                   Log.d(TAG, "About to hit something CCW"+pt.mRads); */
-/*                   // move rad CCW starting at the point being touched, ending at */
-/*                   // the point's index*angle_threshold */
-/*                   pt.mRads = moveRadCCW( curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD); */
-/*                 } */
-/*                 // if it has a point in front of it */
-/*                 if (hasPointInFront(pt)) { */
-/*                   Log.d(TAG, "Something about to hit " + pt.mRads); */
-/*                   Log.d(TAG, "indexOf...-1: "+(mPoints.indexOf(pt)-1)); */
-/*                   Log.d(TAG, "indexOf...-1 rads: "+(mPoints.get((mPoints.indexOf(pt)-1)).mRads)); */
-/*                   double nextPointRads = mPoints.get(mPoints.indexOf(pt)-1).mRads; */
-/*                   Log.d(TAG, "moving "+pt.mRads+" to " +moveRadCCW(nextPointRads, ANGLE_THRESHOLD)); */
-/*                   pt.mRads = moveRadCCW(nextPointRads, ANGLE_THRESHOLD); */
-/*                 } */
-/*               } */
-/*             } */
-/*           } */
-          // end of CCW movement
-    /*if (!pt.isBeingTouched && hasPassed(lastRad, pt.mRads, curRad)) {
-		pt.mRads = moveRadCW(curRad, indexOf(pt)*ANGLE_THRESHOLD);
-						} else if (!pt.isBeingTouched && hasPassed(curRad, pt.mRads, lastRad)) {
-							pt.mRads = moveRadCCW(curRad, ANGLE_THRESHOLD);
-						}
-					}*/
+        inScroll = true;
+        invalidate();
+        return true;
+      }
+        
+    return false;
+  }
 
-
-/*
-					//sortListCW(mPoints, p.mRads);
-
-					// handling keeping the buffer distance with jumps
-					// This code uses the ordering of mPoints to 
-					// enforce the buffer space between points.
-					for ( TouchPoint pt : mPoints) {
-						// normal movement, using the ordering of the elements, from
-						// the current touchPoint
-						//cw
-						if (clockwise) {
-							// normal movement using ordering of the elements
-							if (!pt.isBeingTouched && hasPassed(
-									lastRad, 
-									pt.mRads, 
-									moveRadCW(curRad, ANGLE_THRESHOLD))) {
-								pt.mRads = moveRadCW( curRad, mPoints.indexOf(pt)*ANGLE_THRESHOLD);
-								//ccw
-							}
-							if ( !pt.isBeingTouched && hasPointBehind(pt) ) {
-								double prevPointRads = mPoints.get(mPoints.indexOf(pt)-1).mRads;
-								pt.mRads = moveRadCW(prevPointRads, ANGLE_THRESHOLD);
-							}
-						} else {
-							// making a CCW-ordered arrayList, since we're moving CCW.
-							ArrayList<TouchPoint> CCWList = new ArrayList<TouchPoint>();
-							CCWList.addAll(mPoints.subList(1, mPoints.size()));
-							Collections.reverse(CCWList);
-							CCWList.add(0, mPoints.get(0));
-
-							// normal movement using ordering of the elements
-							if (!pt.isBeingTouched && hasPassed(
-									moveRadCCW(curRad, ANGLE_THRESHOLD),
-									pt.mRads,
-									lastRad)) {
-								int ccwIndex = CCWList.indexOf(pt);
-								pt.mRads = moveRadCCW( curRad, ccwIndex*ANGLE_THRESHOLD);
-								//pt.mRads = moveRadCCW( curRad, ccwIndex*ANGLE_THRESHOLD);
-							}
-							if ( !pt.isBeingTouched && hasPointInFront(pt)) {
-								double nextPointRads = CCWList.get(CCWList.indexOf(pt)-1).mRads;
-								pt.mRads = moveRadCCW(nextPointRads, ANGLE_THRESHOLD);
-							}
-						}
-
-
-						// cw and then ccw 'jumping'
-						if (!pt.isBeingTouched && hasPassed(lastRad, pt.mRads, curRad)) {
-		pt.mRads = moveRadCW(
-									curRad, 
-									mPoints.indexOf(pt)*ANGLE_THRESHOLD);
-						} else if (!pt.isBeingTouched && hasPassed(curRad, pt.mRads, lastRad)) {
-							pt.mRads = moveRadCCW(curRad, ANGLE_THRESHOLD);
-						}
-					}
-          */
-
-					inScroll = true;
-					invalidate();
-					return true;
-				}
-			}
-			return false;
-		}
-    
-		// we need to return true here so we can actually scroll.
-		public boolean onDown(MotionEvent e) {
-			return true;
-		}
-	}
+  // we need to return true here so we can actually scroll.
+  public boolean onDown(MotionEvent e) {
+    return true;
+  }
+}
 
 }
 
