@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 
 import edu.madcourse.dancalacci.R;
 import android.app.ListActivity;
@@ -53,6 +54,7 @@ public class History_byTime extends ListActivity{
 		super.onResume();
 		entryList.clear();
 		getTimeList();
+		
 		Collections.reverse(entryList);
 
 		getListView().setEmptyView(findViewById(android.R.id.empty));
@@ -88,7 +90,8 @@ public class History_byTime extends ListActivity{
 		{
 			if(list.contains(current_date)){
 				String[] file = list.split("_");
-				String time = file[1].replace(".txt", "");
+				Log.d(TAG, "Content: "+file[1]);
+				String time = file[1].replace("+", ":").replace(".txt", "");
 				entryList.add(time);
 			}
 		}
@@ -129,12 +132,12 @@ public class History_byTime extends ListActivity{
 		Log.d(TAG, "onListItemClick: " + chart);
 		if(! (chart.equals("ERROR"))){
 			TextView entry = (TextView) v.findViewById(R.id.platechart_history_textView_content);
-			String date_entry = formatEntry(entry.getText().toString());
+			String date_entry = formatEntry(entry.getText().toString().replace(":", "+"));
 			String data = getEntryData(date_entry);
 			if(!(data.equalsIgnoreCase("ERROR"))){
-
-				Intent i = new Intent(this, AddChart.class);
-				i.putExtra("DATA", data);
+				Log.d(TAG, "File Data : " + data); 
+				Intent i = new Intent(this, CategorySelection.class);
+				i.putExtra("categories", data);
 				startActivity(i);
 			}else{
 				Toast.makeText(v.getContext(), "ERROR: Entry not found!", Toast.LENGTH_SHORT).show();
@@ -148,9 +151,6 @@ public class History_byTime extends ListActivity{
 		record_log = entry.replace(" ", "+");
 		return record_log;		
 	}
-
-
-
 
 	public class History_Adaptor extends BaseAdapter{
 		private ArrayList<String> mHistoryList = new ArrayList<String>();
@@ -220,7 +220,7 @@ public class History_byTime extends ListActivity{
 
 
 	public void onAddChartClick(View v){
-		Intent i = new Intent(this, AddChart.class);
+		Intent i = new Intent(this, CategorySelection.class);
 		startActivity(i);
 	}
 
