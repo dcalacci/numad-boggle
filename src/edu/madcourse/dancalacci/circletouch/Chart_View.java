@@ -43,7 +43,7 @@ public class Chart_View extends View {
   // 30 degrees in radians
 	private final double ANGLE_THRESHOLD = 0.174532*3;
   // 1 degree in radians
-  private final double ANGLE_INTERVAL = 0.00174532925;
+  private final double ANGLE_INTERVAL = 0.174532;
 
 	// touchPoint info
 	private int mTouchPointRadius;
@@ -1258,11 +1258,13 @@ public class Chart_View extends View {
           if (hasPointBehind(pt)) {
             double prevPointRads = mPoints.get(mPoints.indexOf(pt)-1).mRads;
             pt.mRads = moveRadCW(prevPointRads, ANGLE_THRESHOLD);
+            Log.d(TAG, "@@movePointBeingTouched | CW moving "+mPoints.indexOf(pt) +" to " +moveRadCW(prevPointRads, ANGLE_THRESHOLD));
           }
         } else {
           if (hasPointInFront(pt)) {
             double nextPointRads = mPoints.get(mPoints.indexOf(pt)-1).mRads;
             pt.mRads = moveRadCCW(nextPointRads, ANGLE_THRESHOLD);
+            Log.d(TAG, "@@movePointBeingTouched | CCW moving "+mPoints.indexOf(pt) +" to " +moveRadCCW(nextPointRads, ANGLE_THRESHOLD));
           }
         }
       } else { // we're touching it
@@ -1272,6 +1274,22 @@ public class Chart_View extends View {
     printTouchPoints();
     invalidate();
   }
+
+  private boolean skippedPoint(double curRad, double lastRad, boolean cw) {
+    boolean skipped = false;
+    for (TouchPoint pt : mPoints) {
+      if (!pt.isBeingTouched) {
+        if (cw && !pt.isBeingTouched && hasPassed(lastRad, pt.mRads, curRad)) {
+          skipped = true;
+        }
+        else if (hasPassed(curRad, pt.mRads, lastRad)) {
+          skipped = true;
+        }
+      }
+    }
+    return skipped;
+  }
+
 
   /**
    * Move all points in mPoints, given the curRad and lastRad values from an
@@ -1284,9 +1302,12 @@ public class Chart_View extends View {
     Log.d(TAG, "@@_movePoints( "+curRad+", "+lastRad+", clockwise: "+clockwise+" )");
     // mPoints is sorted clockwise or ccw from the point being touched(0)
     // Get the radians moved. should be positive if clockwise==true
-    double diff = getDifference(lastRad, curRad);
+    if (skippedPoint(curRad, lastRad, clockwise)) {
+      Log.d(TAG, "@@_movePoints | >>SKIPPED<<");
+
+    /* double diff = getDifference(lastRad, curRad); */
     // if we've moved more than our designated interval
-    if (Math.abs(diff) > ANGLE_INTERVAL) {
+    /* if (Math.abs(diff) > ANGLE_INTERVAL) { */
       Log.d(TAG, "@@_movePoints | diff > interval. Interpolating...");
       // interpolate the values
       ArrayList<Double> interpolated = interpolate(mPoints.get(0).mRads, curRad, clockwise);
@@ -1325,82 +1346,86 @@ public class Chart_View extends View {
         // have we moved clockwise?
         boolean clockwise = movingClockwise(lastRad, curRad);
 
-        for (TouchPoint p : mPoints) {
-          // mark the point being touched
-          if (isTouchingThisPoint(e1.getX(), e1.getY(), p)) {
-            inScroll = true;
-            p.isBeingTouched = true;
-          }
-            if (p.isBeingTouched) {
-              if (clockwise) {
-                sortListCW(mPoints, p.mRads);
-              } else {
-                sortListCCW(mPoints, p.mRads);
-              }
+        if (!inScroll) {
+          for (TouchPoint p : mPoints) {
+            // mark the point being touched
+            if (isTouchingThisPoint(e1.getX(), e1.getY(), p)) {
+              inScroll = true;
+              p.isBeingTouched = true;
             }
           }
+        }
+        for (TouchPoint p : mPoints) {
+          if (p.isBeingTouched) {
+            if (clockwise) {
+              sortListCW(mPoints, p.mRads);
+            } else {
+              sortListCCW(mPoints, p.mRads);
+            }
+          }
+        }
         movePoints(curRad, lastRad, clockwise);
 
 
 
 
 
-        /* //-------------------------------------------- */
-        /* // Figure out which one we're touching. */
-        /* for ( TouchPoint p : mPoints ){ */
-        /*   if (isTouchingThisPoint(e1.getX(), e1.getY(), p)) { */
-        /*     inScroll = true; */
-        /*     p.isBeingTouched = true; */
-        /*   } if (p.isBeingTouched) { */
-        /*     p.mRads = coordsToRads(e2.getX(), e2.getY()); */
-        /*     invalidate(); */
-        /*     if (p.isBeingTouched) { */
-        /*       if (clockwise) { */
-        /*         sortListCW(mPoints, p.mRads); */
-        /*       } else { */
-        /*         sortListCCW(mPoints, p.mRads); */
-        /*       } */
-        /*     } */
-        /*     boolean skipped = false; */
-        /*     for (TouchPoint pt : mPoints) { */
-        /*       if (!pt.isBeingTouched) { */
-        /*         // Skipping clockwise */
-        /*         if (hasPassed(lastRad, pt.mRads, curRad)) { */
-        /*           skipped = true; */
-        /*         } */
+    /* //-------------------------------------------- */
+    /* // Figure out which one we're touching. */
+    /* for ( TouchPoint p : mPoints ){ */
+    /*   if (isTouchingThisPoint(e1.getX(), e1.getY(), p)) { */
+    /*     inScroll = true; */
+    /*     p.isBeingTouched = true; */
+    /*   } if (p.isBeingTouched) { */
+    /*     p.mRads = coordsToRads(e2.getX(), e2.getY()); */
+    /*     invalidate(); */
+    /*     if (p.isBeingTouched) { */
+    /*       if (clockwise) { */
+    /*         sortListCW(mPoints, p.mRads); */
+    /*       } else { */
+    /*         sortListCCW(mPoints, p.mRads); */
+    /*       } */
+    /*     } */
+    /*     boolean skipped = false; */
+    /*     for (TouchPoint pt : mPoints) { */
+    /*       if (!pt.isBeingTouched) { */
+    /*         // Skipping clockwise */
+    /*         if (hasPassed(lastRad, pt.mRads, curRad)) { */
+    /*           skipped = true; */
+    /*         } */
 
-        /*         // Skipping counter-clockwise */
-        /*         if (hasPassed(curRad, pt.mRads, lastRad)) { */
-        /*           skipped = true; */
-        /*         } */
-        /*       } */
-        /*     } */
+    /*         // Skipping counter-clockwise */
+    /*         if (hasPassed(curRad, pt.mRads, lastRad)) { */
+    /*           skipped = true; */
+    /*         } */
+    /*       } */
+    /*     } */
 
-        /*     //  */
-        /*     if (skipped) { */
-        /*       Log.d(TAG, "@@@Skipped a point!"); */
-        /*       //fixSkippedPoint(clockwise); */
-        /*       interpolateRads(lastRad, curRad); */
-        /*       //refreshCategoryPoints(); */
-        /*       invalidate(); */
-        /*     } */
-        /*   } */
-        /*   movePoints(curRad, lastRad, clockwise); */
+    /*     //  */
+    /*     if (skipped) { */
+    /*       Log.d(TAG, "@@@Skipped a point!"); */
+    /*       //fixSkippedPoint(clockwise); */
+    /*       interpolateRads(lastRad, curRad); */
+    /*       //refreshCategoryPoints(); */
+    /*       invalidate(); */
+    /*     } */
+    /*   } */
+    /*   movePoints(curRad, lastRad, clockwise); */
 
-        /*   inScroll = true; */
-        /*   invalidate(); */
-        /*   return true; */
-        /* } */
-        invalidate();
-        return true;
+    /*   inScroll = true; */
+    /*   invalidate(); */
+    /*   return true; */
+    /* } */
+    invalidate();
+    return true;
 
-          }
-
-    // we need to return true here so we can actually scroll.
-    public boolean onDown(MotionEvent e) {
-      return true;
-    }
   }
+
+  // we need to return true here so we can actually scroll.
+  public boolean onDown(MotionEvent e) {
+    return true;
+  }
+}
 
 }
 
