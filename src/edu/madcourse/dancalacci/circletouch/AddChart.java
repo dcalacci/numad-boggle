@@ -1,13 +1,25 @@
 package edu.madcourse.dancalacci.circletouch;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import org.json.JSONArray;
+
 import edu.madcourse.dancalacci.R;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AddChart extends Activity {
 	/** Called when the activity is first created. */
@@ -45,9 +57,18 @@ public class AddChart extends Activity {
 	}
 
 	public void onSaveClicked(View v){
-		String time = getTime();
+		String date_time = getDateTime();
 		//TODO: SAVE TO DISK
-		finish();
+		JSONArray chartData = cir.getChartData();
+		Log.d("TAG", chartData.toString());
+		String data = parseData(chartData);
+		save(data);
+		finish(); // 
+	}
+
+	public String parseData(JSONArray jArray){
+		String data = this.getDateTime() + "_" + jArray.toString();
+		return data;
 	}
 
 	public void onBackClicked(View v){
@@ -86,11 +107,55 @@ public class AddChart extends Activity {
 	 * Gets the current date and time based on the system settings/timezone
 	 * @return String formattedDate
 	 */
-	public String getTime(){
+	public String getDateTime(){
 		Calendar c = Calendar.getInstance();
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd+HH:mm:ss");
 		String formattedDate = df.format(c.getTime());
-		
+
 		return formattedDate;
 	}
+	/**
+	 * Gets the Current date for file name
+	 * @return String date - format YYYY_MM_DD
+	 */
+	public String getDate(){
+		Calendar c = Calendar.getInstance();
+		SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd");
+		String formattedDate = df.format(c.getTime());		
+		return formattedDate;
+	}
+
+	/**
+	 * Save file to internal memory
+	 * @param data - Stored data
+	 */
+	public void save(String data){
+		String date = getDate();
+		String fileName = date+".txt";
+		
+		File dir = new File (this.getFilesDir() + "/", "plate_chart");
+		if(!dir.exists()){
+			dir.mkdir();
+		}
+		File file = new File(this.getFilesDir() + "/plate_chart/", fileName);
+		try {
+			if(!file.exists()){
+				file.createNewFile();
+			}
+			FileOutputStream fos = this.openFileOutput(this.getFilesDir()+"/plate_chart/"+fileName, this.MODE_PRIVATE);
+			Writer out = new OutputStreamWriter(fos);
+			out.write(data);
+	        out.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+	}	
+
+	
 }
