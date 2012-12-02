@@ -1,23 +1,144 @@
 package edu.madcourse.dancalacci.circletouch;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+
 import edu.madcourse.dancalacci.R;
-import edu.madcourse.dancalacci.boggle.Game;
-import android.app.Activity;
+import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
-public class History extends Activity{
-
-	History_View hist;
+public class History extends ListActivity{
+	private String TAG = "circletouch.History";
+	History_Adaptor adapter;
+	final History thisActivity = this;
+	ArrayList<String> list = new ArrayList<String>();
+	
+	//NOT USED FOR NOW
+	//History_View hist;
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.platechart_history);
-        final History_View h = (History_View) this.findViewById(R.id.historyView1);
-        hist = h;
+		
+		addContent();
+		
+		getListView().setEmptyView(findViewById(android.R.id.empty));
+		adapter = new History_Adaptor(thisActivity, R.layout.platechart_history, list);
+		setListAdapter(adapter);
+	}
+	
+	/**
+	 * Gets the current date and time based on the system settings/timezone
+	 * @return String formattedDate
+	 */
+	public String getTime(){
+		Calendar c = Calendar.getInstance();
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String formattedDate = df.format(c.getTime());
+		
+		return formattedDate;
+	}
+	
+	public void addContent(){
+		list.add(getTime());
+	}
+	
+	/*
+	 * TODO: Opens game based on user ID Key
+	 * Sets ListItem Click Listener
+	 * (non-Javadoc)
+	 * @see android.app.ListActivity#onListItemClick(android.widget.ListView, android.view.View, int, long)
+	 */
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		// TODO Auto-generated method stub
+		String chart = adapter.getContent(position);
+		Log.d(TAG, "onListItemClick: " + chart);
+		if(! (chart.equals("ERROR"))){
+			Intent i = new Intent(this, AddChart.class);
+				
+			startActivity(i);
+		}
+		
 	}
 
+	public class History_Adaptor extends BaseAdapter{
+		private ArrayList<String> mHistoryList = new ArrayList<String>();
+		private Context mContext;
+		private int rowResID;
+
+		public History_Adaptor(Context c, int rowResID, ArrayList<String> historyList){
+			this.mContext = c;
+			this.mHistoryList = historyList;
+			this.rowResID = rowResID;
+		}
+
+
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return mHistoryList.size();
+		}
+		
+		public String getContent(int pos){
+			return mHistoryList.get(pos);
+		}
+
+
+		public Object getItem(int position) {
+			// TODO Auto-generated method stub
+			return position;
+		}
+
+
+		public long getItemId(int position) {
+			// TODO Auto-generated method stub
+			return position;
+		}
+
+		public boolean isEmptyList(){
+			return mHistoryList.contains("");
+		}
+
+		public View getView(int position, View view, ViewGroup parent) {
+			boolean isEmpty = isEmptyList();
+
+			if(view == null ){
+				getListView().setEmptyView(findViewById(android.R.id.empty));
+				if(!isEmpty){
+					LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+					view = inflater.inflate(R.layout.platechart_history_rows, parent, false);
+				}else{
+					LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+					view = inflater.inflate(R.layout.platechart_history_empty, parent, false);
+				}
+			}
+
+			TextView date = (TextView) 
+					view.findViewById(R.id.platechart_history_textView_content);
+			if(!isEmpty){
+				date.setText(mHistoryList.get(position));
+			}else{
+				date.setText("No Entries Found");
+			}
+
+			// Give it a nice background
+			return view;
+		}			
+
+
+	}
+
+	
 	public void onAddChartClick(View v){
 		Intent i = new Intent(this, AddChart.class);
 		startActivity(i);

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/Chart_Background"
+    android:orientation="horizontal"
+    android:paddingBottom="6dip"
+    android:paddingTop="4dp"
+    android:weightSum="1.0" >
+
+    <TextView
+        android:id="@+id/platechart_history_empty_textView_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" 
+        android:textSize="20dp"
+        android:focusable="false"
+        android:gravity="center"
+        android:focusableInTouchMode="false"
+        >
+    </TextView>
+
+
+
+</LinearLayout>

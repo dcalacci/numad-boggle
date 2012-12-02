@@ -1,5 +1,8 @@
 package edu.madcourse.dancalacci.circletouch;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import edu.madcourse.dancalacci.R;
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,18 +10,18 @@ import android.view.View;
 import android.widget.TextView;
 
 public class AddChart extends Activity {
-    /** Called when the activity is first created. */
+	/** Called when the activity is first created. */
 	Chart_View cir;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.platechart_add);
-        final Chart_View c = (Chart_View) this.findViewById(R.id.circle);
-        cir = c;
-    }
-    
-    public void onProteinClicked(View v){
-    	cir.onProteinClicked(v);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.platechart_add);
+		final Chart_View c = (Chart_View) this.findViewById(R.id.circle);
+		cir = c;
+	}
+
+	public void onProteinClicked(View v){
+		cir.onProteinClicked(v);
 	}
 
 	public void onVegetableClicked(View v){
@@ -40,37 +43,54 @@ public class AddChart extends Activity {
 	public void onOilSugarClicked(View v){
 		cir.onOilSugarClicked(v);
 	}
-	
+
 	public void onSaveClicked(View v){
-		//TODO: do stuff
+		String time = getTime();
+		//TODO: SAVE TO DISK
 		finish();
 	}
-	
+
 	public void onBackClicked(View v){
 		finish();
 	}
-	
+
+	/**
+	 * Clears the chart and set the deselects for all categories
+	 * @param v
+	 */
 	public void onClearClicked(View v){
 		cir.clearChart();
-		
+
 		//Required due to the context of the circle view:
-		
+
 		//Protein
 		cir.setProteinDeselect(this.findViewById(R.id.protein_view));
-		
+
 		//Vegetable
 		cir.setVegetableDeselect(this.findViewById(R.id.vegetable_view));
-		
+
 		//Dairy
 		cir.setDairyDeselect(this.findViewById(R.id.dairy_view));
-		
+
 		//Fruit
 		cir.setFruitDeselect(this.findViewById(R.id.fruit_view));
-		
+
 		//Grain
 		cir.setGrainDeselect(this.findViewById(R.id.grain_view));
-		
+
 		//Oil Sugar
 		cir.setOilSugarDeselect(this.findViewById(R.id.oil_view));
+	}
+
+	/**
+	 * Gets the current date and time based on the system settings/timezone
+	 * @return String formattedDate
+	 */
+	public String getTime(){
+		Calendar c = Calendar.getInstance();
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String formattedDate = df.format(c.getTime());
+		
+		return formattedDate;
 	}
 }
