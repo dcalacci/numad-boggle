@@ -3,8 +3,10 @@ package edu.madcourse.dancalacci.circletouch;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -132,7 +134,7 @@ public class AddChart extends Activity {
 	public void save(String data){
 		String date = getDate();
 		String fileName = date+".txt";
-		
+
 		File dir = new File (this.getFilesDir() + "/", "plate_chart");
 		if(!dir.exists()){
 			dir.mkdir();
@@ -142,10 +144,12 @@ public class AddChart extends Activity {
 			if(!file.exists()){
 				file.createNewFile();
 			}
-			FileOutputStream fos = this.openFileOutput(this.getFilesDir()+"/plate_chart/"+fileName, this.MODE_PRIVATE);
-			Writer out = new OutputStreamWriter(fos);
-			out.write(data);
-	        out.close();
+			FileOutputStream fOut = new FileOutputStream(file, true);
+			OutputStreamWriter myOutWriter =new OutputStreamWriter(fOut);
+			myOutWriter.append(data);
+			myOutWriter.close();
+			fOut.close();
+
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -157,5 +161,5 @@ public class AddChart extends Activity {
 
 	}	
 
-	
+
 }
