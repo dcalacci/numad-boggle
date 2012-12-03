@@ -30,6 +30,8 @@ import android.widget.Toast;
 
 public class History_byTime extends ListActivity{
 	private String TAG = "circletouch.History";
+	private final String TAG_FROMHISTORY = "FROMHISTORY";
+	private final String TAG_FROMCATEGORYSELECT = "FROMCATEGORYSELECT";
 	History_Adaptor adapter;
 	final History_byTime thisActivity = this;
 	ArrayList<String> entryList = new ArrayList<String>();
@@ -144,7 +146,7 @@ public class History_byTime extends ListActivity{
 				Log.d(TAG, "File Data : " + data); 
 				Intent i = new Intent(this, AddChart.class);
 				i.putExtra("DATA", data);
-				i.putExtra("canEdit", false);
+				i.putExtra("origin", this.TAG_FROMHISTORY);
 				i.putExtra("FileName", fileName);
 				startActivity(i);
 			}else{

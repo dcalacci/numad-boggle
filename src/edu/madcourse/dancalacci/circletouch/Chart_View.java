@@ -29,13 +29,15 @@ import org.json.JSONObject;
 
 public class Chart_View extends View {
   private String TAG = "circletouch.circle";
+  private final String TAG_FROMHISTORY = "FROMHISTORY";
+  private final String TAG_FROMCATEGORYSELECT = "FROMCATEGORYSELECT";
   private Canvas canvas;
   // view boundary for the circle.
   private RectF mCircleBounds = new RectF();
   private ArrayList<TouchPoint> mPoints = new ArrayList<TouchPoint>();
 
   // True if we can edit the circle. True by default.
-  private boolean mCanEdit = true;
+  private String mOrigin = "";
 
   //Items 
   private ArrayList<Category> mCategories = new ArrayList<Category>();
@@ -164,21 +166,25 @@ public class Chart_View extends View {
     }
   }
   
-  /**
-   * Gets the CanEdit variable
-   * @return Whether or not we can edit the chart
-   */
-  public boolean getCanEdit() {
-    return this.mCanEdit;
-  }
+	/**
+	 * Gets the mOrigin variable
+	 * @return Whether or not we can edit the chart
+	 */
+	public String getmOrigin() {
+		return this.mOrigin;
+	}
 
-  /**
-   * Sets mCanEdit to the given boolean value
-   * @param canEdit the value to set mCanEdit to.
-   */
-  public void setCanEdit(boolean val) {
-    this.mCanEdit = val;
-  }
+	/**
+	 * Sets mCanEdit to the given boolean value
+	 * @param canEdit the value to set mCanEdit to.
+	 */
+	public void setmOrigin(String origin) {
+		this.mOrigin = origin;
+	}
+	
+	public boolean isSameOrigin(String other){
+		return this.mOrigin.equals(other);
+	}
   
   public void setmCategory(ArrayList<Category> categoryList){
 	  this.mCategories = categoryList;
@@ -690,7 +696,7 @@ public class Chart_View extends View {
             mSeparatorLinesPaint
             );
       }
-      if (mCanEdit) {
+      if (isSameOrigin(TAG_FROMCATEGORYSELECT)) {
         for (TouchPoint point : mPoints) {
           PointF touchPointCoords = radsToPointF(point.mRads);
           // draw the touchPoint on the canvas
@@ -991,7 +997,6 @@ public class Chart_View extends View {
     }
     );
       }
-  }
 
   /** 
    * on my anonymous inner class grind - this sorts the given arraylist by
@@ -1172,7 +1177,7 @@ public class Chart_View extends View {
           float distanceY) {
 
         // if we can't edit, fuhgeddaboutit
-        if (!mCanEdit) { return false;}
+        if (isSameOrigin(TAG_FROMHISTORY)) { return false;}
 
         float lastX = e2.getX() + distanceX;
         float lastY = e2.getY() + distanceY;
@@ -1225,5 +1230,4 @@ public class Chart_View extends View {
   }
 
 }
-
 
