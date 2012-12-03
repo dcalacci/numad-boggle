@@ -991,6 +991,7 @@ public class Chart_View extends View {
     }
     );
       }
+  }
 
   /** 
    * on my anonymous inner class grind - this sorts the given arraylist by
