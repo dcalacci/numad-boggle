@@ -215,7 +215,7 @@ public class CategorySelection extends Activity {
   // Oil/Sugar
   // --------
   public void onOilSugarClicked(View v) {
-    String category = "Oil/Sugar";
+    String category = "OilSugar";
     boolean inList = mCategories.contains(category);
     if (inList) {
       setOilDeselect(v);
