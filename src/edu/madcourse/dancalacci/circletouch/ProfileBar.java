@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 public class ProfileBar {
   ArrayList<Category> mCategories;
-  ArrayList<ProfileBarSegment> mSegments;
+  ArrayList<ProfileBarSegment> mProfileBarSegments;
   Context mContext;
   private static final String TAG = "edu.madcourse.circletouch.ProfileBar";
 

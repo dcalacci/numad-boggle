@@ -194,6 +194,5 @@ public class History_byDate extends ListActivity{
 		Intent i = new Intent(this, CategorySelection.class);
 		startActivity(i);
 	}
->>>>>>> edit state working
 
 }
