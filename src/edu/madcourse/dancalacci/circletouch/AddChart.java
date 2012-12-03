@@ -54,14 +54,37 @@ public class AddChart extends Activity {
       ArrayList<Category> cats = 
         JSONParser.getCatListFromString(static_data, this);
       // set the circles' categories and touchpoints
+      this.selectCategoryObjects(cats);
       cir.setmCategory(cats);
       cir.setmPoints(Category.getTouchPointsFromCategoryList(cats));
+    }
+  }
+
+  private void selectCategoryObjects(ArrayList<Category> cats) {
+    for (Category cat : cats) {
+      selectCategory(cat.getCategory());
     }
   }
 
   private void addCategories(ArrayList<String> categories) {
     for (String cat : categories) {
       addCategory(cat);
+    }
+  }
+
+  private void selectCategory(String category) {
+    if (category.equals("Protein")) {
+      cir.setProteinSelect(this.findViewById(R.id.protein_view));
+    } else if (category.equals("Vegetable")) {
+      cir.setVegetableSelect(this.findViewById(R.id.vegetable_view));
+    } else if ( category.equals("Fruit")) {
+      cir.setFruitSelect(this.findViewById(R.id.fruit_view));
+    } else if (category.equals("Dairy")) {
+      cir.setDairySelect(this.findViewById(R.id.dairy_view));
+    } else if (category.equals("Grain")) {
+      cir.setGrainSelect(this.findViewById(R.id.grain_view));
+    } else if (category.equals("OilSugar")) {
+      cir.setOilSugarSelect(this.findViewById(R.id.oil_view));
     }
   }
 
@@ -81,7 +104,7 @@ public class AddChart extends Activity {
     } else if (category.equals("Grain")) {
       final View grain_view = (View) this.findViewById(R.id.grain_view);
       onGrainClicked(grain_view);
-    } else if (category.equals("Oil/Sugar")) {
+    } else if (category.equals("OilSugar")) {
       final View oil_view = (View) this.findViewById(R.id.oil_view);
       onOilSugarClicked(oil_view);
     }
