@@ -1,5 +1,7 @@
 package edu.madcourse.dancalacci.circletouch;
 
+import java.util.ArrayList;
+
 import edu.madcourse.dancalacci.R;
 import android.content.Context;
 
@@ -57,6 +59,19 @@ public class Category {
       } else {
         return ctx.getResources().getColor(R.color.Oil_Sugar);
       }
+    }
+
+    /**
+     * Returns an arraylist of touchPoints from an arraylist of categories
+     * @param cats The list of categories to get the touchpoints from
+     */
+    public static ArrayList<TouchPoint> getTouchPointsFromCategoryList(
+        ArrayList<Category> cats) {
+      ArrayList<TouchPoint> pts = new ArrayList<TouchPoint>();
+      for (Category c : cats) {
+        pts.add(c.getpCW());
+      }
+      return pts;
     }
 
     public TouchPoint getpCCW(){

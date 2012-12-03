@@ -50,17 +50,12 @@ public class AddChart extends Activity {
     }
     // coming from history
     else{
-      JSONArray jArray = new JSONArray();
-
-      process_data(static_data.replace("[", "").replace("]", ""));
-    }
-
-  }
-
-  private void process_data(String static_data){
-    String[] categoryArray = static_data.split("}");
-    for(String s : categoryArray){
-      s.split(",");
+      // get the array of categories from the extra
+      ArrayList<Category> cats = 
+        JSONParser.getCatListFromString(static_data, this);
+      // set the circles' categories and touchpoints
+      cir.setmCategory(cats);
+      cir.setmPoints(Category.getTouchPointsFromCategoryList(cats));
     }
   }
 
