@@ -24,89 +24,107 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class AddChart extends Activity {
-  private final String TAG = "circletouch.circle";
+	private final String TAG = "circletouch.circle";
 	/** Called when the activity is first created. */
 	Chart_View cir;
-  boolean mCanEdit = true;
-  
+	boolean mCanEdit = true;
+
 	public void onCreate(Bundle savedInstanceState) {
-    this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-    Bundle extras = getIntent().getExtras();
-    ArrayList<String> categories = extras.getStringArrayList("categories");
-    mCanEdit = extras.getBoolean("canEdit");
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		Bundle extras = getIntent().getExtras();
+		ArrayList<String> categories = extras.getStringArrayList("categories");
+		String static_data = extras.getString("DATA");
+
+		mCanEdit = extras.getBoolean("canEdit");
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.platechart_add);
 		final Chart_View c = (Chart_View) this.findViewById(R.id.circle);
 		cir = c;
 
-    cir.setCanEdit(mCanEdit);
-    addCategories(categories);
+		cir.setCanEdit(mCanEdit);
+
+		if(static_data == null){
+			addCategories(categories);
+		}else{
+			JSONArray jArray = new JSONArray();
+			jArray.
+			
+			process_data(static_data.replace("[", "").replace("]", ""));
+		}
+
+	}
+	
+	private void process_data(String static_data){
+		String[] categoryArray = static_data.split("}");
+		for(String s : categoryArray){
+			s.split(",");
+		}
 	}
 
-  private void addCategories(ArrayList<String> categories) {
-    for (String cat : categories) {
-      addCategory(cat);
-    }
-  }
+	private void addCategories(ArrayList<String> categories) {
+		for (String cat : categories) {
+			addCategory(cat);
+		}
+	}
 
-  private void addCategory(String category) {
-    if (category.equals("Protein")) {
-      final View protein_view = (View) this.findViewById(R.id.protein_view);
-      onProteinClicked(protein_view);
-    } else if (category.equals("Vegetable")) {
-      final View vegetable_view = (View) this.findViewById(R.id.vegetable_view);
-      onVegetableClicked(vegetable_view);
-    } else if ( category.equals("Fruit")) {
-      final View fruit_view = (View) this.findViewById(R.id.fruit_view);
-      onFruitClicked(fruit_view);
-    } else if (category.equals("Dairy")) {
-      final View dairy_view = (View) this.findViewById(R.id.dairy_view);
-      onDairyClicked(dairy_view);
-    } else if (category.equals("Grain")) {
-      final View grain_view = (View) this.findViewById(R.id.grain_view);
-      onGrainClicked(grain_view);
-    } else if (category.equals("Oil/Sugar")) {
-      final View oil_view = (View) this.findViewById(R.id.oil_view);
-      onOilSugarClicked(oil_view);
-    }
-  }
+	private void addCategory(String category) {
+		if (category.equals("Protein")) {
+			final View protein_view = (View) this.findViewById(R.id.protein_view);
+			onProteinClicked(protein_view);
+		} else if (category.equals("Vegetable")) {
+			final View vegetable_view = (View) this.findViewById(R.id.vegetable_view);
+			onVegetableClicked(vegetable_view);
+		} else if ( category.equals("Fruit")) {
+			final View fruit_view = (View) this.findViewById(R.id.fruit_view);
+			onFruitClicked(fruit_view);
+		} else if (category.equals("Dairy")) {
+			final View dairy_view = (View) this.findViewById(R.id.dairy_view);
+			onDairyClicked(dairy_view);
+		} else if (category.equals("Grain")) {
+			final View grain_view = (View) this.findViewById(R.id.grain_view);
+			onGrainClicked(grain_view);
+		} else if (category.equals("Oil/Sugar")) {
+			final View oil_view = (View) this.findViewById(R.id.oil_view);
+			onOilSugarClicked(oil_view);
+		}
+	}
 
 
 	public void onProteinClicked(View v){
-    if (mCanEdit) {
-      cir.onProteinClicked(v);
-    }
-  }
+		if (mCanEdit) {
+			cir.onProteinClicked(v);
+		}
+	}
 
 	public void onVegetableClicked(View v){
-    if (mCanEdit) {
-      cir.onVegetableClicked(v);
-    }
+		if (mCanEdit) {
+			cir.onVegetableClicked(v);
+		}
 	}
 
 	public void onDairyClicked(View v){
-    if (mCanEdit) {
-      cir.onDairyClicked(v);
-    }
+		if (mCanEdit) {
+			cir.onDairyClicked(v);
+		}
 	}
 
 	public void onFruitClicked(View v){
-    if (mCanEdit) {
-      cir.onFruitClicked(v);
-    }
+		if (mCanEdit) {
+			cir.onFruitClicked(v);
+		}
 	}
 
 	public void onGrainClicked(View v){
-    if (mCanEdit) {
-      cir.onGrainClicked(v);
-    }
+		if (mCanEdit) {
+			cir.onGrainClicked(v);
+		}
 	}
 
 	public void onOilSugarClicked(View v){
-    if (mCanEdit) {
-      cir.onOilSugarClicked(v);
-    }
+		if (mCanEdit) {
+			cir.onOilSugarClicked(v);
+		}
 	}
 
 	public void onSaveClicked(View v){
@@ -118,9 +136,9 @@ public class AddChart extends Activity {
 		save(data);
 		finish(); // 
 	}
-	
+
 	public String parseData(JSONArray jArray){
-		String data = this.getDateTime() + "_" + jArray.toString();
+		String data = jArray.toString();
 		return data;
 	}
 

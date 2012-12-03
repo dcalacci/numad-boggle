@@ -179,6 +179,14 @@ public class Chart_View extends View {
   public void setCanEdit(boolean val) {
     this.mCanEdit = val;
   }
+  
+  public void setmCategory(ArrayList<Category> categoryList){
+	  this.mCategories = categoryList;
+  }
+  
+  public void setmPoints(ArrayList<TouchPoint> pointsList){
+	  this.mPoints = pointsList;
+  }
 
   /**
    * Adds an item to the list of points
@@ -297,51 +305,7 @@ public class Chart_View extends View {
    * @param category - One of: Protein, Grains, Vegetable, Oil/Fat/Sweets, Dairy, Fruits	
    * @param color - Color of the slice 
    */
-  private class Category {
-    private TouchPoint pCCW;
-    private TouchPoint pCW;
-    private String category;
-    private int color;
-
-    public Category(TouchPoint ccw, TouchPoint cw, String category, int c ){
-      this.pCCW = ccw;
-      this.pCW = cw;
-      this.category = category;
-      this.color = c;
-    }
-
-    public TouchPoint getpCCW(){
-      return this.pCCW;
-    }
-
-    public TouchPoint getpCW(){
-      return this.pCW;
-    }
-
-    public void setpCCW(TouchPoint ccw){
-      this.pCCW = ccw;
-    }
-
-    public void setpCW(TouchPoint cw){
-      this.pCW = cw;
-    }
-
-    public String getCategory(){
-      return this.category;
-    }
-
-    public int getColor(){
-      return this.color;
-    }
-
-    public void setColor(int color){
-      this.color = color;
-    }
-
-    public String toString(){
-      return this.category;
-    }
-  }
+  
   /**
    * Checks whether the category already exists in the list
    * @param category - name of category (ignores UPPER/LOWER case)
@@ -849,30 +813,7 @@ public class Chart_View extends View {
   }
 
 
-  /**
-   * Container for touch points
-   */
-  private class TouchPoint implements Comparable<TouchPoint> {
-    public double mRads;
-    public boolean isBeingTouched = false;
-
-    /**
-     * positive if getDifference(this, tp) is positive, 0 if it's 0,
-     * negative if it's negative.
-     * @param tp The touchpoint to compare this to
-     */
-    public int compareTo(TouchPoint tp) throws ClassCastException {
-      if (getDifference(this.mRads, tp.mRads) == 0) {
-        return 0;
-      } else {
-        return getDifference(this.mRads, tp.mRads) > 0 ? 1 : -1;
-      }
-    }
-
-    public double getmRads(){
-      return this.mRads;
-    }
-  }
+ 
 
   /**
    * Moves start delta degrees clockwise

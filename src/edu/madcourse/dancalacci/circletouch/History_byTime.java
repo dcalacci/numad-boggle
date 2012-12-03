@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,7 +44,10 @@ public class History_byTime extends ListActivity{
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		Log.d(TAG, "onCreate");
 		setContentView(R.layout.platechart_history);
-
+		
+		Button addChart_Button = (Button) this.findViewById(R.id.button_addChart);
+		addChart_Button.setVisibility(Button.GONE);
+		
 		this.current_date = this.getIntent().getExtras().getString("DATE");
 		//addContent();
 	}
@@ -136,8 +140,9 @@ public class History_byTime extends ListActivity{
 			String data = getEntryData(date_entry);
 			if(!(data.equalsIgnoreCase("ERROR"))){
 				Log.d(TAG, "File Data : " + data); 
-				Intent i = new Intent(this, CategorySelection.class);
-				i.putExtra("categories", data);
+				Intent i = new Intent(this, AddChart.class);
+				i.putExtra("DATA", data);
+				i.putExtra("canEdit", false);
 				startActivity(i);
 			}else{
 				Toast.makeText(v.getContext(), "ERROR: Entry not found!", Toast.LENGTH_SHORT).show();
@@ -145,7 +150,7 @@ public class History_byTime extends ListActivity{
 		}
 
 	}
-
+	
 	public String formatEntry(String entry){
 		String record_log; 
 		record_log = entry.replace(" ", "+");
