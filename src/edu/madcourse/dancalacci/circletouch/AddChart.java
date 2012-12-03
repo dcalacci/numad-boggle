@@ -175,11 +175,12 @@ public class AddChart extends Activity {
 	public void onSaveClicked(View v){
 		if(mOrigin.equals(this.TAG_FROMCATEGORYSELECT)){
 			String date_time = getDateTime();
+			Log.d(TAG, "is saving ?");
 			//TODO: SAVE TO DISK
 			JSONArray chartData = cir.getChartData();
 			Log.d("TAG", chartData.toString());
 			String data = parseData(chartData);
-			save(data);
+			save(data, fileName);
 			finish(); // 
 		}else if(mOrigin.equals(this.TAG_FROMHISTORY)){
 			cir.setmOrigin(this.TAG_FROMCATEGORYSELECT);
@@ -231,12 +232,17 @@ public class AddChart extends Activity {
 	 * Save file to internal memory
 	 * @param data - Stored data
 	 */
-	public void save(String data){
+	public void save(String data, String FileName){
 		String date = getDate();
-		String fileName = date+".txt";
-
-		try{
-			FileWriter write = new FileWriter(this.getFilesDir() + "/" + fileName, true);
+		if(FileName == null){ 				// generates name of file
+			FileName = date+".txt";
+		}else if (FileName != null){ 		// Deletes current file
+			File file = new File(this.getFilesDir(), FileName);
+			boolean deleted = file.delete();
+		}
+		Log.d(TAG, "save() filename: " + FileName);
+		try{			
+			FileWriter write = new FileWriter(this.getFilesDir() + "/" + FileName, true);
 			write.write(data+"\r\n"); //adds new line.
 			write.close();
 
