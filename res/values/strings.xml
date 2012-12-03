@@ -19,6 +19,7 @@
     <string name="back_label">Back</string>
     <string name="delete_label">Delete</string>
     <string name="save_label">Save</string>
+    <string name="edit_label">Edit</string>
     <string name="next_label">Next</string>
     <string name="category_select_header">What did you eat?</string>
     
