@@ -59,8 +59,9 @@ public class History_byTime extends ListActivity{
 		entryList.clear();
 		getTimeList();
 		
+		Collections.sort(entryList);
 		Collections.reverse(entryList);
-
+		
 		getListView().setEmptyView(findViewById(android.R.id.empty));
 		adapter = new History_Adaptor(thisActivity, R.layout.platechart_history, entryList);
 		setListAdapter(adapter);
