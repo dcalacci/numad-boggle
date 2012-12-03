@@ -77,6 +77,7 @@ public class Chart_View extends View {
     private Paint mOilSugarPaint;
     private Paint mFruitPaint;
     private Paint mGrainPaint;*/
+<<<<<<< HEAD
 	/**
 	 * boring constructor with just a context
 	 */
@@ -755,6 +756,682 @@ public class Chart_View extends View {
 	private float radsToDegree(double val){
 		float toDegree = (float) Math.toDegrees(val);
 		/*Log.d(TAG, 
+=======
+  /**
+   * boring constructor with just a context
+   */
+  public Chart_View(Context c) {
+    super(c);
+    init();
+    mContext = c;
+  }
+
+  /**
+   * constructor with attrs etc.
+   */
+  public Chart_View(Context ctx, AttributeSet attrs) {
+    super(ctx, attrs);
+
+    mContext = ctx;
+
+    // attrs contains the raw values for the XML attributes
+    // that were specified in the layout, which don't include
+    // attributes set by styles or themes, and which may have
+    // unresolved references. Call obtainStyledAttributes()
+    // to get the final values for each attribute.
+    //
+    // This call uses R.styleable.PieChart, which is an array of
+    // the custom attributes that were declared in attrs.xml.
+    TypedArray a = ctx.getTheme().obtainStyledAttributes(
+        attrs,
+        R.styleable.circle,
+        0, 0);
+
+    try {
+      // resolve values from the typedarray and store into fields
+      mTouchPointRadius = 
+        a.getInteger(R.styleable.circle_touchPointRadius, 40);
+      mTouchPointColor = 
+        a.getInteger(R.styleable.circle_touchPointColor,0xffff0000); 
+
+    } finally {
+      // release TypedArray
+      a.recycle();
+    }
+
+    // initialize everything
+    init();
+  }
+
+  /**
+   * Called when the size of the screen is changed; we describe the size of
+   * the circle and it's boundary area here.
+   */
+  public void onSizeChanged(int w, int h, int oldw, int oldh) {
+    // calculate the total padding size
+    float xpad = (float) (getPaddingLeft() + getPaddingRight());
+    float ypad = (float) (getPaddingTop() + getPaddingBottom());
+
+    //figure out the "correct" width and height based on the padding
+    float ww = (float) w - xpad;
+    float hh = (float) h - ypad;
+
+    // let's make the circle as large as it can be for this view
+    float diameter = (float) Math.min(ww, hh);
+
+    // make the rectf for the boundary
+    mCircleBounds = new RectF(
+        0.0f,
+        0.0f,
+        diameter,
+        diameter);
+
+    // offset the boundary rect in accordance with the padding
+    mCircleBounds.offsetTo(getPaddingLeft(), getPaddingTop());
+
+    // calculate the circle's coordinates and stuff based on the boundary
+    mCircleRadius = diameter/2f;
+    mCircleX      = mCircleBounds.left + mCircleBounds.width()/2;
+    mCircleY      = mCircleBounds.top + mCircleBounds.height()/2;
+
+    // if the touchpoints are gonna go out of the padding, fix it.
+    float farthest = mTouchPointRadius + diameter;
+    if (farthest > w - xpad/2 || farthest > h-ypad/2) {
+      mTouchPointRadius = (int)Math.min(xpad, ypad)/4;
+      Log.d(TAG, 
+          "Touchpoints are a little big. reducing to: " +
+          mTouchPointRadius);
+      Log.d(TAG, "mCircle center is: " +mCircleX +", "+mCircleY);
+
+    }
+  }
+  
+  /**
+   * Gets the CanEdit variable
+   * @return Whether or not we can edit the chart
+   */
+  public boolean getCanEdit() {
+    return this.mCanEdit;
+  }
+
+  /**
+   * Sets mCanEdit to the given boolean value
+   * @param canEdit the value to set mCanEdit to.
+   */
+  public void setCanEdit(boolean val) {
+    this.mCanEdit = val;
+  }
+  
+  public void setmCategory(ArrayList<Category> categoryList){
+	  this.mCategories = categoryList;
+  }
+  
+  public void setmPoints(ArrayList<TouchPoint> pointsList){
+	  this.mPoints = pointsList;
+  }
+
+  /**
+   * Adds an item to the list of points
+   * @param degrees the degree value for the point to add.
+   */
+  private void addItem(double rads) {
+    // create a new point
+    TouchPoint p = new TouchPoint();
+    p.mRads = rads;
+
+    // add it to the list of points
+    mPoints.add(p);
+    sortListCW(mPoints, 0);
+    invalidate();
+  }
+
+  /**
+   * Adds category to the list of Categories
+   * @param category The category to add
+   * @param Color The color of the category
+   */
+  private void addCategory(String category, int color){
+    addCategoryHelper(null, null, category, color);
+    addPoints();		
+  }
+
+  private void addNItems(int n) {
+    double radSections = (Math.PI*2)/n;
+    double totalRads = 0;
+    for (int i = 0; i < n; i++) {
+      totalRads = moveRadCW(totalRads, radSections);
+      addItem(totalRads);
+    }
+  }
+
+
+  /**
+   * Adds points to the charts
+   */
+  private void addPoints(){
+    int cSize = mCategories.size();		
+    clearPoints();
+    addNItems(cSize);
+    setPointsToCategories();
+  }
+
+  /**
+   * Clears all the points 
+   */
+  private void clearPoints(){
+    mPoints.clear();
+  }
+
+  /**
+   * Links the points and categories...duh.
+   */
+  public void linkPointsAndCategories() {
+    for (TouchPoint pt : mPoints) {
+      for (Category c : mCategories) {
+        if (pt.mRads == c.getpCW().mRads) {
+          c.setpCW(pt);
+        } else if (pt.mRads == c.getpCCW().mRads) {
+          c.setpCCW(pt);
+        }
+      }
+    }
+  }
+  /**
+   * Sets the points associated to the category
+   */
+  private void setPointsToCategories(){
+    int size = mPoints.size();
+    int i = 0;
+    int j = i+1;
+    for (Category c : mCategories){
+
+      c.setpCCW(mPoints.get(i));
+      if (i == (size - 1)){
+        c.setpCW(mPoints.get(0));
+      }else{
+        c.setpCW(mPoints.get(j));
+      }
+
+      i++;
+      j++;
+    }      
+  }
+
+  /**
+   * Removes the specified category from the list
+   * @param category
+   */
+  private void removeCategory(String category){
+    int index = 0;
+    // iterate through category list, skip down if we find category
+    for(Category c : mCategories){
+      if(c.getCategory().equalsIgnoreCase(category)){
+        break;
+      }else{
+        index = index + 1;
+      }
+    }
+    mCategories.remove(index);
+    // if only one category, remove the only remaining one
+    if(mCategories.size() < 2){
+      clearPoints();
+    }else{
+      addPoints();
+      setPointsToCategories();
+    }
+  }
+
+  /**
+   * Adds categories Helper
+   * @param pCCW - Counter Clockwise point
+   * @param pCW - Clockwise point
+   * @param category - the Category of the slice
+   * @param color - Color of the category
+   */
+  private void addCategoryHelper(TouchPoint pCCW, TouchPoint pCW, String category,  int color){
+    Category item = new Category(pCCW, pCW, category, color);
+
+    mCategories.add(item);
+  }
+
+  /**
+   * Checks whether the category already exists in the list
+   * @param category - name of category (ignores UPPER/LOWER case)
+   * @return inList - exist in list 
+   */
+  public boolean isCategoryinList(String category){
+    boolean inList = false;
+
+    for(Category c : mCategories){
+      if (c.getCategory().equalsIgnoreCase(category)){
+        inList = true;
+      }
+    }
+
+    return inList;
+  }
+  /**
+   * Clears the Chart of its contents
+   * Clears associated ArrayLists
+   */
+  public void clearChart() {
+    // TODO Auto-generated method stub
+    this.mCategories.clear();
+    this.mPoints.clear();	
+    invalidate();
+  }
+
+  /**
+   * When Protein is clicked it adds or removes from the chart
+   * Adds / Removes from mCategories ArrayList
+   * @param v - View 
+   */
+  public void onProteinClicked(View v){
+    String category = "Protein";
+
+    boolean inList = isCategoryinList(category);
+
+    if(inList){
+      // Deselect
+      setProteinDeselect(v);
+      removeCategory(category);
+    }else{
+      // Select
+      setProteinSelect(v);
+      addCategory(category, getResources().getColor(R.color.Protein));
+    }		 
+    invalidate();
+  }
+
+  /**
+   * Updates the color of the protein text and box icon to deselect state
+   * @param v - View
+   */
+  public void setProteinDeselect(View v){
+    TextView box = (TextView) v.findViewById(R.id.protein_box);
+    TextView text = (TextView) v.findViewById(R.id.protein_label);
+
+    box.setBackgroundColor(getResources().getColor(R.color.Protein_Grayed));
+    text.setTextColor(getResources().getColor(R.color.Protein_Grayed));
+  }
+
+  /**
+   * Updates the color of the protein text and box icon to select state
+   * @param v - View
+   */
+  public void setProteinSelect(View v){
+    TextView box = (TextView) v.findViewById(R.id.protein_box);
+    TextView text = (TextView) v.findViewById(R.id.protein_label);
+
+    box.setBackgroundColor(getResources().getColor(R.color.Protein));
+    text.setTextColor(getResources().getColor(R.color.Protein));
+  }
+
+  /**
+   * When Vegetable is clicked it adds or removes from the chart
+   * Adds / Removes from mCategories ArrayList
+   * @param v
+   */
+  public void onVegetableClicked(View v){
+    String category = "Vegetable";
+
+    boolean inList = isCategoryinList(category);
+
+    if(inList){
+      // Deselect
+      setVegetableDeselect(v);
+      removeCategory(category);
+    }else{
+      // Select
+      setVegetableSelect(v);
+      addCategory(category, getResources().getColor(R.color.Vegetable));
+    }	
+    invalidate();
+  }
+
+  /**
+   * Updates the color of the vegetable text and box icon to deselect state
+   * @param v - View
+   */
+  public void setVegetableDeselect(View v){
+    TextView box = (TextView) v.findViewById(R.id.vegetable_box);
+    TextView text = (TextView) v.findViewById(R.id.vegetable_label);
+
+    box.setBackgroundColor(getResources().getColor(R.color.Vegetable_Grayed));
+    text.setTextColor(getResources().getColor(R.color.Vegetable_Grayed));
+  }
+
+  /**
+   * Updates the color of the vegetable text and box icon to select state
+   * @param v - View
+   */
+  public void setVegetableSelect(View v){
+    TextView box = (TextView) v.findViewById(R.id.vegetable_box);
+    TextView text = (TextView) v.findViewById(R.id.vegetable_label);
+
+    box.setBackgroundColor(getResources().getColor(R.color.Vegetable));
+    text.setTextColor(getResources().getColor(R.color.Vegetable));
+  }
+
+  /**
+   * When Dairy is clicked it adds or removes from the chart
+   * Adds / Removes from mCategories ArrayList
+   * @param v - View
+   */
+  public void onDairyClicked(View v){
+    String category = "Dairy";
+
+    boolean inList = isCategoryinList(category);
+
+    if(inList){
+      // Deselect
+      setDairyDeselect(v);
+      removeCategory(category);
+    }else{
+      // Select
+      setDairySelect(v);
+      addCategory(category, getResources().getColor(R.color.Dairy));
+    }	
+    invalidate();
+  }
+
+  /**
+   * Updates the color of the dairy text and box icon to deselect state
+   * @param v - View
+   */
+  public void setDairyDeselect(View v){
+    TextView box = (TextView) v.findViewById(R.id.dairy_box);
+    TextView text = (TextView) v.findViewById(R.id.dairy_label);
+
+    box.setBackgroundColor(getResources().getColor(R.color.Dairy_Grayed));
+    text.setTextColor(getResources().getColor(R.color.Dairy_Grayed));
+  }
+
+  /**
+   * Updates the color of the dairy text and box icon to select state
+   * @param v - View
+   */
+  public void setDairySelect(View v){
+    TextView box = (TextView) v.findViewById(R.id.dairy_box);
+    TextView text = (TextView) v.findViewById(R.id.dairy_label);
+
+    box.setBackgroundColor(getResources().getColor(R.color.Dairy));
+    text.setTextColor(getResources().getColor(R.color.Dairy));
+  }
+
+  /**
+   * When Fruit is clicked it adds or removes from the chart
+   * Adds / Removes from mCategories ArrayList
+   * @param v
+   */
+  public void onFruitClicked(View v){
+    String category = "Fruit";
+
+    boolean inList = isCategoryinList(category);
+
+    if(inList){
+      // Deselect
+      setFruitDeselect(v);
+      removeCategory(category);
+    }else{
+      // Select
+      setFruitSelect(v);
+      addCategory(category, getResources().getColor(R.color.Fruit));
+    }
+    invalidate();
+  }
+
+  /**
+   * Updates the color of the fruit text and box icon to deselect state
+   * @param v - View
+   */
+  public void setFruitDeselect(View v){
+    TextView box = (TextView) v.findViewById(R.id.fruit_box);
+    TextView text = (TextView) v.findViewById(R.id.fruit_label);
+
+    box.setBackgroundColor(getResources().getColor(R.color.Fruit_Grayed));
+    text.setTextColor(getResources().getColor(R.color.Fruit_Grayed));
+  }
+
+  /**
+   * Updates the color of the fruit text and box icon to select state
+   * @param v - View
+   */
+  public void setFruitSelect(View v){
+    TextView box = (TextView) v.findViewById(R.id.fruit_box);
+    TextView text = (TextView) v.findViewById(R.id.fruit_label);
+
+    box.setBackgroundColor(getResources().getColor(R.color.Fruit));
+    text.setTextColor(getResources().getColor(R.color.Fruit));
+  }
+
+  /**
+   * When Grain is clicked it adds or removes from the chart
+   * Adds / Removes from mCategories ArrayList
+   * @param v
+   */
+  public void onGrainClicked(View v){
+    String category = "Grain";
+
+    boolean inList = isCategoryinList(category);
+
+    if(inList){
+      // Deselect
+      setGrainDeselect(v);
+      removeCategory(category);
+    }else{
+      // Select
+      setGrainSelect(v);
+      addCategory(category, getResources().getColor(R.color.Grain));
+    }	
+    invalidate();
+  }
+
+  /**
+   * Updates the color of the grain text and box icon to deselect state
+   * @param v - View
+   */
+  public void setGrainDeselect(View v){
+    TextView box = (TextView) v.findViewById(R.id.grain_box);
+    TextView text = (TextView) v.findViewById(R.id.grain_label);
+
+    box.setBackgroundColor(getResources().getColor(R.color.Grain_Grayed));
+    text.setTextColor(getResources().getColor(R.color.Grain_Grayed));
+  }
+
+  /**
+   * Updates the color of the grain text and box icon to select state
+   * @param v - View
+   */
+  public void setGrainSelect(View v){
+    TextView box = (TextView) v.findViewById(R.id.grain_box);
+    TextView text = (TextView) v.findViewById(R.id.grain_label);
+
+    box.setBackgroundColor(getResources().getColor(R.color.Grain));
+    text.setTextColor(getResources().getColor(R.color.Grain));
+  }
+
+  /**
+   * When Oil/Sugar is clicked it adds or removes from the chart
+   * Adds / Removes from mCategories ArrayList
+   * @param v
+   */
+  public void onOilSugarClicked(View v){
+    String category = "OilSugar";
+
+    boolean inList = isCategoryinList(category);
+
+    if(inList){
+      // Deselect
+      setOilSugarDeselect(v);
+      removeCategory(category);
+    }else{
+      // Select
+      setOilSugarSelect(v);
+      addCategory(category, getResources().getColor(R.color.Oil_Sugar));
+    }	
+    invalidate();
+  }
+
+  /**
+   * Updates the color of the oil/sugar text and box icon to deselect state
+   * @param v - View
+   */
+  public void setOilSugarDeselect(View v){
+    TextView box = (TextView) v.findViewById(R.id.oil_box);
+    TextView text = (TextView) v.findViewById(R.id.oil_label);
+
+    box.setBackgroundColor(getResources().getColor(R.color.Oil_Sugar_Grayed));
+    text.setTextColor(getResources().getColor(R.color.Oil_Sugar_Grayed));
+  }
+
+  /**
+   * Updates the color of the oil/sugar text and box icon to select state
+   * @param v - View
+   */
+  public void setOilSugarSelect(View v){
+    TextView box = (TextView) v.findViewById(R.id.oil_box);
+    TextView text = (TextView) v.findViewById(R.id.oil_label);
+
+    box.setBackgroundColor(getResources().getColor(R.color.Oil_Sugar));
+    text.setTextColor(getResources().getColor(R.color.Oil_Sugar));
+  }
+
+  /**
+   * gets the Chart data (Category Name, pCCW, pCW)
+   * @return JSONArray - Contains JSONObjects of each category
+   */
+  public JSONArray getChartData(){
+    Log.d(TAG, mCategories.toString());
+    String localTag = "Chart_View.getChartData";
+    JSONArray jsonArray = new JSONArray();
+
+    for(Category category : mCategories){
+      Map obj = new LinkedHashMap(); 
+
+      obj.put("Category", category.getCategory());
+      obj.put("pCCW", category.getpCCW().getmRads());
+      obj.put("pCW", category.getpCW().getmRads());
+
+      JSONObject jsonObject = new JSONObject(obj);
+      jsonArray.put(jsonObject);
+
+    }	
+    return jsonArray;
+  }
+
+
+  /**
+   * Draws the view
+   * @param canvas The canvas to draw on, dummy!
+   */
+  protected void onDraw(Canvas canvas) {
+    super.onDraw(canvas);
+/*  */
+/*     Paint background = new Paint(Paint.ANTI_ALIAS_FLAG); */
+/*     background.setColor(this.getResources().getColor(R.color.Chart_Background)); */
+/*     background.setStyle(Paint.Style.FILL_AND_STROKE); */
+/*     canvas.drawRect(mCircleBounds, background); */
+/*  */
+    int size = mCategories.size();
+    if (size >= 2){
+      for (int i = 0; i < size; i++){
+        Category c = mCategories.get(i);
+
+        TouchPoint end = c.getpCW();
+        TouchPoint start = c.getpCCW();
+
+        Paint color = new Paint(Paint.ANTI_ALIAS_FLAG);
+        color.setColor(c.getColor());
+        color.setStyle(Paint.Style.FILL_AND_STROKE);
+
+        float startAngle = (float) radsToDegree(start.mRads);
+        float sweepAngle;
+        // get correct rad magnitude
+        if (getDifference(start.mRads, end.mRads) < 0) {
+          sweepAngle = (float) (Math.PI*2 + getDifference(start.mRads, end.mRads));
+        } else {
+          sweepAngle = (float) (getDifference(start.mRads, end.mRads));
+        }
+        // convert to degrees, draw the arc.
+        sweepAngle = radsToDegree(sweepAngle);
+        canvas.drawArc(mCircleBounds, startAngle, sweepAngle, true, color);
+
+      }	
+
+
+      // drawing the touch-points
+      for (TouchPoint point : mPoints) {
+        PointF touchPointCoords = radsToPointF(point.mRads);
+        //Draw the separators
+        canvas.drawLine(
+            mCircleX,
+            mCircleY,
+            touchPointCoords.x,
+            touchPointCoords.y,
+            mSeparatorLinesPaint
+            );
+      }
+      if (mCanEdit) {
+        for (TouchPoint point : mPoints) {
+          PointF touchPointCoords = radsToPointF(point.mRads);
+          // draw the touchPoint on the canvas
+          canvas.drawCircle(
+              touchPointCoords.x,
+              touchPointCoords.y,
+              mTouchPointRadius,
+              mTouchPointPaint
+              );
+        }
+      }
+    } else if (size == 1) { // only one category
+      Category c = mCategories.get(0);
+      Paint color = new Paint(Paint.ANTI_ALIAS_FLAG);
+      color.setColor(c.getColor());
+      color.setStyle(Paint.Style.FILL_AND_STROKE);
+      canvas.drawArc(mCircleBounds, 0f, 360f, true, color);
+    } else { // no categories
+      Paint noCats = new Paint(Paint.ANTI_ALIAS_FLAG);
+      noCats.setColor(mContext.getResources().getColor(R.color.Chart_Circle_empty));
+      noCats.setStyle(Paint.Style.FILL_AND_STROKE);
+      canvas.drawArc(mCircleBounds, 0f, 360f, true, noCats);
+    }
+    // drawing the circle
+    /* canvas.drawCircle( */
+    /*     mCircleX, */
+    /*     mCircleY, */
+    /*     mCircleRadius, */
+    /*     mCirclePaint */
+    /*     ); */
+
+  }
+
+  /**
+   * doing stuff with touch
+   */
+  @Override
+    public boolean onTouchEvent(MotionEvent event) {
+      //Log.d(TAG, "ONTOUCHEVENT | received a touchEvent");
+      boolean result = mGestureDetector.onTouchEvent(event);
+
+      // if the user lifts their finger, we're not in a scroll.
+      if (event.getAction() == MotionEvent.ACTION_UP) {
+        inScroll = false;
+        onScrollFinished();
+      }
+
+      // return true if mGestureDetector handled the event
+      if (result) {
+        return result;
+      }
+      return false;
+
+    }
+
+  private float radsToDegree(double val){
+    float toDegree = (float) Math.toDegrees(val);
+    /*Log.d(TAG, 
+>>>>>>> 58c67ce5e2ee5f033afda77b0b2368670045ad05
       val +
       " radians is " +
       toDegree +
