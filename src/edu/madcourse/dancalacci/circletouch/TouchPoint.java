@@ -8,18 +8,18 @@ public class TouchPoint implements Comparable<TouchPoint> {
   public double mRads;
   public boolean isBeingTouched = false;
 
-  
-  public TouchPoint() {
-		super();
-		this.mRads = mRads;
-	}
-  
-  public TouchPoint(double mRads) {
-	super();
-	this.mRads = mRads;
-}
 
-/**
+  public TouchPoint() {
+    super();
+    this.mRads = mRads;
+  }
+
+  public TouchPoint(double mRads) {
+    super();
+    this.mRads = mRads;
+  }
+
+  /**
    * positive if getDifference(this, tp) is positive, 0 if it's 0,
    * negative if it's negative.
    * @param tp The touchpoint to compare this to
@@ -35,7 +35,7 @@ public class TouchPoint implements Comparable<TouchPoint> {
   public double getmRads(){
     return this.mRads;
   }
-  
+
   /**
    * returns the difference between two radian values, negative if end is
    * under pi rads away from start, ccw, positive otherwise.
@@ -58,5 +58,5 @@ public class TouchPoint implements Comparable<TouchPoint> {
     }
     return diff;
   }
-  
+
 }

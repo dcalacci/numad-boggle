@@ -1,7 +1,11 @@
 package edu.madcourse.dancalacci.circletouch;
 
+import edu.madcourse.dancalacci.R;
+import android.content.Context;
 
-public  class Category {
+
+
+public class Category {
     private TouchPoint pCCW;
     private TouchPoint pCW;
     private String category;
@@ -12,6 +16,47 @@ public  class Category {
       this.pCW = cw;
       this.category = category;
       this.color = c;
+    }
+
+    public Category() {
+    }
+
+    /** Returns the integer color(Grayed) of the given category
+     * @param c The category to get the color of
+     */
+    public static int getGrayedColor(String c, Context ctx) {
+      if (c.equals("Protein")) {
+        return ctx.getResources().getColor(R.color.Protein_Grayed);
+      } else if (c.equals("Vegetable")) {
+        return ctx.getResources().getColor(R.color.Vegetable_Grayed);
+      } else if ( c.equals("Fruit")) {
+        return ctx.getResources().getColor(R.color.Fruit_Grayed);
+      } else if (c.equals("Dairy")) {
+        return ctx.getResources().getColor(R.color.Dairy_Grayed);
+      } else if (c.equals("Grain")) {
+        return ctx.getResources().getColor(R.color.Grain_Grayed);
+      } else {
+        return ctx.getResources().getColor(R.color.Oil_Sugar_Grayed);
+      }
+    }
+
+    /** Returns the integer color of the given category
+     * @param c The category to get the color of
+     */
+    public static int getColor(String c, Context ctx) {
+      if (c.equals("Protein")) {
+        return ctx.getResources().getColor(R.color.Protein);
+      } else if (c.equals("Vegetable")) {
+        return ctx.getResources().getColor(R.color.Vegetable);
+      } else if ( c.equals("Fruit")) {
+        return ctx.getResources().getColor(R.color.Fruit);
+      } else if (c.equals("Dairy")) {
+        return ctx.getResources().getColor(R.color.Dairy);
+      } else if (c.equals("Grain")) {
+        return ctx.getResources().getColor(R.color.Grain);
+      } else {
+        return ctx.getResources().getColor(R.color.Oil_Sugar);
+      }
     }
 
     public TouchPoint getpCCW(){
@@ -45,4 +90,4 @@ public  class Category {
     public String toString(){
       return this.category;
     }
-  }
+}
