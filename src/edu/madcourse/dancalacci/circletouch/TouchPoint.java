@@ -32,6 +32,20 @@ public class TouchPoint implements Comparable<TouchPoint> {
     }
   }
 
+  /**
+   * Returns the number of clockwise radians between the first and second
+   * point, moving clockwise from the first point.
+   * @param tp1 The first point.
+   * @param tp2 The second point.
+   */
+  public static double getDistCW(TouchPoint tp1, TouchPoint tp2) {
+    double diff = getDifference(tp1.mRads, tp2.mRads);
+    if (diff < 0) {
+      diff = Math.PI*2 + diff;
+    }
+    return diff;
+  }
+
   public double getmRads(){
     return this.mRads;
   }
@@ -42,7 +56,7 @@ public class TouchPoint implements Comparable<TouchPoint> {
    * @param start The first angle
    * @param end The second angle
    */
-  private double getDifference(double start, double end) {
+  private static double getDifference(double start, double end) {
     // if result is greater than pi, subtract it from 2pi.
     double diff;
     //edge case from -pi to pi
