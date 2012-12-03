@@ -101,6 +101,7 @@ public class ProfileBar {
         counter++;
       }
     }
+	return counter;
   }
   /**
    * Returns an ArrayList of all the segments stored in files
@@ -127,6 +128,7 @@ public class ProfileBar {
         categories.addAll(JSONParser.getCatListFromString(fileData, mContext));
       }
     }
+	return categories;
   }
 
   /**

@@ -78,8 +78,8 @@ public class History_byDate extends ListActivity{
 	
 	public void getDateList(){
 		String[] myFiles = this.fileList();
+		Log.d(TAG, "list: "+ myFiles);
 		for(String file : myFiles){
-			
 			String[] fileName = file.split("_");
 			String date = fileName[0];
 			if(!(entryList.contains(date))){
@@ -157,13 +157,13 @@ public class History_byDate extends ListActivity{
 		}
 
 		public boolean isEmptyList(){
-			return mHistoryList.contains("");
+			return mHistoryList.equals(null);
 		}
 
 		public View getView(int position, View view, ViewGroup parent) {
 			boolean isEmpty = isEmptyList();
 
-			if(view == null ){
+			if(view == null){
 				getListView().setEmptyView(findViewById(android.R.id.empty));
 				if(!isEmpty){
 					LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -192,6 +192,7 @@ public class History_byDate extends ListActivity{
 
 	public void onAddChartClick(View v){
 		Intent i = new Intent(this, CategorySelection.class);
+		i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 		startActivity(i);
 	}
 

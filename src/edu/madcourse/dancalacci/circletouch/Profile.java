@@ -15,7 +15,8 @@ public class Profile extends Activity{
   }
 
   public void onAddChartClick(View v){
-    Intent i = new Intent(this, AddChart.class);
+    Intent i = new Intent(this, CategorySelection.class);
+    i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
     startActivity(i);
   }
 }

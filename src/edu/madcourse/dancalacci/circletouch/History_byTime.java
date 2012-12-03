@@ -196,7 +196,7 @@ public class History_byTime extends ListActivity{
 		}
 
 		public boolean isEmptyList(){
-			return mHistoryList.contains("");
+			return  mHistoryList.isEmpty();
 		}
 
 		public View getView(int position, View view, ViewGroup parent) {
@@ -231,6 +231,7 @@ public class History_byTime extends ListActivity{
 
 	public void onAddChartClick(View v){
 		Intent i = new Intent(this, CategorySelection.class);
+		i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 		startActivity(i);
 	}
 
