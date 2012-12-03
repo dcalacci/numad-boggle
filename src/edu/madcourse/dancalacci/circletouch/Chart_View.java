@@ -710,7 +710,7 @@ public class Chart_View extends View {
       canvas.drawArc(mCircleBounds, 0f, 360f, true, color);
     } else { // no categories
       Paint noCats = new Paint(Paint.ANTI_ALIAS_FLAG);
-      noCats.setColor(0xff888888);
+      noCats.setColor(mContext.getResources().getColor(R.color.Chart_Circle_empty));
       noCats.setStyle(Paint.Style.FILL_AND_STROKE);
       canvas.drawArc(mCircleBounds, 0f, 360f, true, noCats);
     }
