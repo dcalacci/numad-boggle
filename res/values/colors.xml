@@ -46,7 +46,7 @@
     <color name="Protein">#dc322f</color>
     <color name="Vegetable">#859900</color>
     <color name="Dairy">#268bd2</color>
-    <color name="Oil_Sugar">#2AA198</color>
+    <color name="Oil_Sugar">#F25518</color>
     <color name="Fruit">#d33682</color>
     <color name="Grain">#cb4b16</color>
     
@@ -62,7 +62,7 @@
     <color name="Protein_Grayed">#D88382</color>
     <color name="Vegetable_Grayed">#C4CC7C</color>
     <color name="Dairy_Grayed">#b0c4de</color>
-    <color name="Oil_Sugar_Grayed">#A3CCC8</color>
+    <color name="Oil_Sugar_Grayed">#E5825B</color>
     <color name="Fruit_Grayed">#dda0dd</color>
     <color name="Grain_Grayed">#C98F78</color>
 
