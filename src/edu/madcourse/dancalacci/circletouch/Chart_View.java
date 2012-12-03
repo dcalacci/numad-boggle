@@ -241,6 +241,20 @@ public class Chart_View extends View {
   }
 
   /**
+   * Links the points and categories...duh.
+   */
+  public void linkPointsAndCategories() {
+    for (TouchPoint pt : mPoints) {
+      for (Category c : mCategories) {
+        if (pt.mRads == c.getpCW().mRads) {
+          c.setpCW(pt);
+        } else if (pt.mRads == c.getpCCW().mRads) {
+          c.setpCCW(pt);
+        }
+      }
+    }
+  }
+  /**
    * Sets the points associated to the category
    */
   private void setPointsToCategories(){
@@ -298,14 +312,6 @@ public class Chart_View extends View {
     mCategories.add(item);
   }
 
-  /**
-   * Container for "Items" on the pie chart
-   * @param pCCW - the Counter Clockwise Point
-   * @param pCW - the Clockwise Point
-   * @param category - One of: Protein, Grains, Vegetable, Oil/Fat/Sweets, Dairy, Fruits	
-   * @param color - Color of the slice 
-   */
-  
   /**
    * Checks whether the category already exists in the list
    * @param category - name of category (ignores UPPER/LOWER case)
@@ -639,7 +645,12 @@ public class Chart_View extends View {
    */
   protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
-
+/*  */
+/*     Paint background = new Paint(Paint.ANTI_ALIAS_FLAG); */
+/*     background.setColor(this.getResources().getColor(R.color.Chart_Background)); */
+/*     background.setStyle(Paint.Style.FILL_AND_STROKE); */
+/*     canvas.drawRect(mCircleBounds, background); */
+/*  */
     int size = mCategories.size();
     if (size >= 2){
       for (int i = 0; i < size; i++){
@@ -813,7 +824,7 @@ public class Chart_View extends View {
   }
 
 
- 
+
 
   /**
    * Moves start delta degrees clockwise

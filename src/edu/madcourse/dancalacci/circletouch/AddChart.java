@@ -59,6 +59,7 @@ public class AddChart extends Activity {
       this.selectCategoryObjects(cats);
       cir.setmCategory(cats);
       cir.setmPoints(Category.getTouchPointsFromCategoryList(cats));
+      cir.linkPointsAndCategories();
     }
   }
 
