@@ -12,8 +12,23 @@
   <RelativeLayout
       android:layout_width="wrap_content"
       android:layout_height="0dp" 
-      android:layout_weight="0.08">
+      android:layout_weight="0.08"
+      android:weightSum="1.00">
 
+    <TextView
+        android:id="@+id/header_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/categorySelect_Next"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/categorySelect_Next"
+        android:gravity="left|center_vertical|center"
+        android:text="@string/category_select_header"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/puzzle_foreground" />
+      
     <Button
         android:id="@+id/categorySelect_Next"
         style="?android:attr/buttonStyleSmall"
@@ -23,6 +38,9 @@
         android:layout_centerVertical="true"
         android:onClick="onNextClicked"
         android:text="@string/next_label" />
+
+    
+
   </RelativeLayout>
 
   <TableLayout
