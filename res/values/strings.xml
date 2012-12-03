@@ -17,7 +17,7 @@
     <string name="history_label">History</string>
     <string name="profile_label">Profile</string>
     <string name="back_label">Back</string>
-    <string name="clear_label">Clear</string>
+    <string name="delete_label">Delete</string>
     <string name="save_label">Save</string>
     <string name="next_label">Next</string>
     

@@ -15,24 +15,14 @@
         android:layout_weight="0.08">
 
         <Button
-            android:id="@+id/addChart_Back"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:onClick="onBackClicked"
-            android:text="@string/back_label" />
-
-        <Button
-            android:id="@+id/addChart_Clear"
+            android:id="@+id/addChart_Delete"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_centerVertical="true"
-            android:onClick="onClearClicked"
-            android:text="@string/clear_label" />
+            android:onClick="onDeleteClicked"
+            android:text="@string/delete_label" />
 
         <Button
             android:id="@+id/addChart_Save"

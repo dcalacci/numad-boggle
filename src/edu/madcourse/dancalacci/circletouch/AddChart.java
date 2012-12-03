@@ -26,8 +26,9 @@ import android.widget.Toast;
 public class AddChart extends Activity {
   private final String TAG = "circletouch.circle";
   /** Called when the activity is first created. */
-  Chart_View cir;
-  boolean mCanEdit = true;
+  private Chart_View cir;
+  private boolean mCanEdit = true;
+  private String fileName;
 
   public void onCreate(Bundle savedInstanceState) {
     this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -50,6 +51,7 @@ public class AddChart extends Activity {
     }
     // coming from history
     else{
+      fileName = extras.getString("FileName");
       // get the array of categories from the extra
       ArrayList<Category> cats = 
         JSONParser.getCatListFromString(static_data, this);
@@ -162,36 +164,16 @@ public class AddChart extends Activity {
     return data;
   }
 
-  public void onBackClicked(View v){
-    finish();
-  }
-
   /**
-   * Clears the chart and set the deselects for all categories
+   * Delete the chart and set the deselects for all categories
    * @param v
    */
-  public void onClearClicked(View v){
-    cir.clearChart();
-
-    //Required due to the context of the circle view:
-
-    //Protein
-    cir.setProteinDeselect(this.findViewById(R.id.protein_view));
-
-    //Vegetable
-    cir.setVegetableDeselect(this.findViewById(R.id.vegetable_view));
-
-    //Dairy
-    cir.setDairyDeselect(this.findViewById(R.id.dairy_view));
-
-    //Fruit
-    cir.setFruitDeselect(this.findViewById(R.id.fruit_view));
-
-    //Grain
-    cir.setGrainDeselect(this.findViewById(R.id.grain_view));
-
-    //Oil Sugar
-    cir.setOilSugarDeselect(this.findViewById(R.id.oil_view));
+  public void onDeleteClicked(View v){
+	  if(fileName != null){
+		  File file = new File(this.getFilesDir(), fileName);
+		  boolean deleted = file.delete();
+	  }
+	  finish();
   }
 
   /**

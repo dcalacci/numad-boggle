@@ -15,16 +15,6 @@
       android:layout_weight="0.08">
 
     <Button
-        android:id="@+id/categorySelect_Back"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:onClick="onBackClicked"
-        android:text="@string/back_label" />
-
-    <Button
         android:id="@+id/categorySelect_Next"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="80dp"

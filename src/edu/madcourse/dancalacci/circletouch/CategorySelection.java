@@ -22,10 +22,6 @@ public class CategorySelection extends Activity {
     setContentView(R.layout.platechart_select_categories);
   }
 
-  public void onBackClicked(View v) {
-    finish();
-  }
-
   public void onNextClicked(View v) {
     Intent i = new Intent(this, AddChart.class);
     // need to give AddChart the array of items selected.

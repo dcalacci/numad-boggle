@@ -138,12 +138,14 @@ public class History_byTime extends ListActivity{
 		if(! (chart.equals("ERROR"))){
 			TextView entry = (TextView) v.findViewById(R.id.platechart_history_textView_content);
 			String date_entry = formatEntry(entry.getText().toString().replace(":", "+"));
+			String fileName = current_date+"_"+ date_entry +".txt";
 			String data = getEntryData(date_entry);
 			if(!(data.equalsIgnoreCase("ERROR"))){
 				Log.d(TAG, "File Data : " + data); 
 				Intent i = new Intent(this, AddChart.class);
 				i.putExtra("DATA", data);
 				i.putExtra("canEdit", false);
+				i.putExtra("FileName", fileName);
 				startActivity(i);
 			}else{
 				Toast.makeText(v.getContext(), "ERROR: Entry not found!", Toast.LENGTH_SHORT).show();
