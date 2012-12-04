@@ -21,7 +21,7 @@
         android:clickable="false"
         android:entries="@string/empty_list_Label"
         android:gravity="center_vertical|center_horizontal|center"
-        android:text="No Entries Logged" >
+        android:text="@string/empty_list_Label" >
 
     </TextView>
 
@@ -38,7 +38,7 @@
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:onClick="onAddChartClick"
-            android:text="Add Chart" />
+            android:text="@string/addChart_label" />
     </LinearLayout>
 
 </LinearLayout>

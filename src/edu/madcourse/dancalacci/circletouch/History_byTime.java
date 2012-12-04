@@ -68,7 +68,7 @@ public class History_byTime extends ListActivity{
 		Collections.reverse(entryList);
 
 		this.setListAdapter(new ArrayAdapter<String>(this, R.layout.platechart_history_rows, R.id.label, entryList));
-		
+
 		ListView lv = getListView();
 
 		lv.setOnItemClickListener(
@@ -81,7 +81,7 @@ public class History_byTime extends ListActivity{
 						String date_entry = formatEntry(entry.replace(":", "+"));
 						String fileName = current_date+"_"+ date_entry +".txt";
 						String data = getEntryData(date_entry);
-						
+
 						Log.d(TAG, "File Data : " + data); 
 						Intent i = new Intent(getApplicationContext(), AddChart.class);
 						i.putExtra("DATA", data);
@@ -89,26 +89,11 @@ public class History_byTime extends ListActivity{
 						i.putExtra("FileName", fileName);
 						startActivity(i);
 
-//						// Launching new Activity on selecting single List Item
-//						Intent i = new Intent(getApplicationContext(), History_byTime.class);
-//						// sending data to new activity
-//						i.putExtra("DATE", date_entry);
-//						startActivity(i);
-
 					}
 
 
 				}
 				);
-
-
-		//		ListView listView = getListView();
-		//		listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-		//		
-		//		listView.setEmptyView(findViewById(android.R.id.empty));
-		//		adapter = new History_Adaptor(thisActivity, R.layout.platechart_history, entryList);
-		//		
-		//		listView.setAdapter(adapter);
 	}
 
 	/**
@@ -122,10 +107,6 @@ public class History_byTime extends ListActivity{
 
 		return formattedDate;
 	}
-
-	//	public void addContent(){
-	//		list.add(getTime());
-	//	}
 
 	public void addContent(String content){
 		//entryList.add(content);
@@ -169,106 +150,12 @@ public class History_byTime extends ListActivity{
 
 	}
 
-	//	/**
-	//	 * Opens Chart based on date
-	//	 * Sets ListItem Click Listener
-	//	 * (non-Javadoc)
-	//	 * @see android.app.ListActivity#onListItemClick(android.widget.ListView, android.view.View, int, long)
-	//	 */
-	//	protected void onListItemClick(ListView l, View v, int position, long id) {
-	//		// TODO Auto-generated method stub
-	//		String chart = adapter.getContent(position);
-	//		Log.d(TAG, "onListItemClick: " + chart);
-	//		if(! (chart.equals("ERROR"))){
-	//			TextView entry = (TextView) v.findViewById(R.id.platechart_history_textView_content);
-	//			String date_entry = formatEntry(entry.getText().toString().replace(":", "+"));
-	//			String fileName = current_date+"_"+ date_entry +".txt";
-	//			String data = getEntryData(date_entry);
-	//			if(!(data.equalsIgnoreCase("ERROR"))){
-	//				Log.d(TAG, "File Data : " + data); 
-	//				Intent i = new Intent(this, AddChart.class);
-	//				i.putExtra("DATA", data);
-	//				i.putExtra("origin", this.TAG_FROMHISTORY);
-	//				i.putExtra("FileName", fileName);
-	//				startActivity(i);
-	//			}else{
-	//				Toast.makeText(v.getContext(), "ERROR: Entry not found!", Toast.LENGTH_SHORT).show();
-	//			}
-	//		}
-	//
-	//	}
 
 	public String formatEntry(String entry){
 		String record_log; 
 		record_log = entry.replace(" ", "+");
 		return record_log;		
 	}
-
-	//	public class History_Adaptor extends BaseAdapter{
-	//		private ArrayList<String> mHistoryList = new ArrayList<String>();
-	//		private Context mContext;
-	//		private int rowResID;
-	//
-	//		public History_Adaptor(Context c, int rowResID, ArrayList<String> historyList){
-	//			this.mContext = c;
-	//			this.mHistoryList = historyList;
-	//			this.rowResID = rowResID;
-	//		}
-	//
-	//
-	//		public int getCount() {
-	//			// TODO Auto-generated method stub
-	//			return mHistoryList.size();
-	//		}
-	//
-	//		public String getContent(int pos){
-	//			return mHistoryList.get(pos);
-	//		}
-	//
-	//
-	//		public Object getItem(int position) {
-	//			// TODO Auto-generated method stub
-	//			return position;
-	//		}
-	//
-	//
-	//		public long getItemId(int position) {
-	//			// TODO Auto-generated method stub
-	//			return position;
-	//		}
-	//
-	//		public boolean isEmptyList(){
-	//			return  mHistoryList.isEmpty();
-	//		}
-	//
-	//		public View getView(int position, View view, ViewGroup parent) {
-	//			boolean isEmpty = isEmptyList();
-	//
-	//			if(view == null ){
-	//				getListView().setEmptyView(findViewById(android.R.id.empty));
-	//				if(!isEmpty){
-	//					LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-	//					view = inflater.inflate(R.layout.platechart_history_rows, parent, false);
-	//				}else{
-	//					LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-	//					view = inflater.inflate(R.layout.platechart_history_empty, parent, false);
-	//				}
-	//			}
-	//
-	//			TextView date = (TextView) 
-	//					view.findViewById(R.id.platechart_history_textView_content);
-	//			if(!isEmpty){
-	//				date.setText(mHistoryList.get(position));
-	//			}else{
-	//				date.setText("No Entries Found");
-	//			}
-	//
-	//			// Give it a nice background
-	//			return view;
-	//		}			
-	//
-	//
-	//	}
 
 
 	public void onAddChartClick(View v){

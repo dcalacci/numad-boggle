@@ -8,14 +8,14 @@
     <string name="title_activity_main">NUMAD-DanCalacci</string>
     <string name="alarms_active">Alarms active!</string>
     <string name="your_profile_label">Your Profile</string>
-    <string name="empty_list_Label">You don't have any saved meals. Click "Track Meal" button below to get started!</string>
+    <string name="empty_list_Label">You don\'t have any saved meals.\nClick \"Track Meal\" button below to get started!</string>
     <!-- Home Screen -->
     <string name="exit_label">Exit</string>
     <string name="main_title">NUMAD Dan Calacci</string>
     <string name="name">Dan Calacci</string>
 
     <!-- Plate Chart -->
-     <string name="addChlart_label">+</string>
+     <string name="addChart_label">Track Meal</string>
     <string name="history_label">History</string>
     <string name="profile_label">Profile</string>
     <string name="back_label">Back</string>
