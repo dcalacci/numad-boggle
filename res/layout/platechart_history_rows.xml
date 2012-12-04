@@ -1,25 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/Chart_Background"
-    android:orientation="horizontal"
-    android:paddingBottom="6dip"
-    android:paddingTop="4dp" >
-
-    <TextView
-        android:id="@+id/platechart_history_textView_content"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@color/Chart_Background"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:paddingLeft="4dp"
-        android:textColor="@color/boggle_foreground"
-        android:textColorHint="@color/boggle_foreground"
-        android:textSize="20dp" >
-
-    </TextView>
-
-</LinearLayout>
+<!--  Single List Item Design -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/label"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="10dip"
+        android:textSize="16dip"
+        android:textStyle="bold" >
+</TextView>

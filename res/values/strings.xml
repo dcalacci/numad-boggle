@@ -8,7 +8,7 @@
     <string name="title_activity_main">NUMAD-DanCalacci</string>
     <string name="alarms_active">Alarms active!</string>
     <string name="your_profile_label">Your Profile</string>
-    
+    <string name="empty_list_Label">You don't have any saved meals. Click "Track Meal" button below to get started!</string>
     <!-- Home Screen -->
     <string name="exit_label">Exit</string>
     <string name="main_title">NUMAD Dan Calacci</string>
