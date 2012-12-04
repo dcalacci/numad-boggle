@@ -40,6 +40,7 @@ public class ProfileBar {
    */
   public ArrayList<ProfileBarSegment> averageAllSegments() {
     // Keeping track of all the segments total percentages
+	  Log.d(TAG, "## AverageAllSegment CALLED");
     HashMap<Integer, Double> segmentTotal = 
       new HashMap<Integer, Double>();
     // Count the number of segments by color
@@ -79,6 +80,7 @@ public class ProfileBar {
           (pair.getValue() /
            numberOfSegmentsWithColor.get(pair.getKey())));
     }
+    
     ArrayList<ProfileBarSegment> segments = new ArrayList<ProfileBarSegment>();
     // segmentAverage now has Color -> Average Percentage. 
 

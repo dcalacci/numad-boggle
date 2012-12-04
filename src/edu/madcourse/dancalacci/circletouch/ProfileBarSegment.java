@@ -27,4 +27,8 @@ public class ProfileBarSegment {
   public void setColor(int color) {
     this.mColor = color;
   }
+  
+  public String getString(){
+	  return "" + mValue;
+  }
 }

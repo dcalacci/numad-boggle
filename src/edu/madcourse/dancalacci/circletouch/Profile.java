@@ -29,22 +29,33 @@ public class Profile extends Activity{
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.platechart_profile);
+    processGraph();
   }
 
   protected void onResume() {
     super.onResume();
-    /* setContentView(R.layout.platechart_profile); */
-    this.mProfileBar = new ProfileBar(this);
-    this.mProfileBarSegments = mProfileBar.averageAllSegments();
-    this.setAllSegmentValues();
-    /* View v = findViewById (R.id.platechart_profile); */
-    /* v.invalidate(); */
-    mSegmentColors.add(getResources().getColor(R.color.Protein));
-    mSegmentColors.add(getResources().getColor(R.color.Vegetable));
-    mSegmentColors.add(getResources().getColor(R.color.Dairy));
-    mSegmentColors.add(getResources().getColor(R.color.Grain));
-    mSegmentColors.add(getResources().getColor(R.color.Fruit));
-    mSegmentColors.add(getResources().getColor(R.color.Protein));
+    processGraph();
+  }
+  
+  private void processGraph(){
+	  /* setContentView(R.layout.platechart_profile); */
+	    this.mProfileBar = new ProfileBar(this);
+	    this.mProfileBarSegments = mProfileBar.averageAllSegments();
+	    
+	    for (ProfileBarSegment m : mProfileBarSegments ){
+	    	Log.d(TAG, "mProfileBarContents: " + m.getString());
+	    }
+	    
+	    Log.d(TAG, "### mProfileBarSegments: " + this.mProfileBarSegments.size());
+	    this.setAllSegmentValues();
+	    /* View v = findViewById (R.id.platechart_profile); */
+	    /* v.invalidate(); */
+	    mSegmentColors.add(getResources().getColor(R.color.Protein));
+	    mSegmentColors.add(getResources().getColor(R.color.Vegetable));
+	    mSegmentColors.add(getResources().getColor(R.color.Dairy));
+	    mSegmentColors.add(getResources().getColor(R.color.Grain));
+	    mSegmentColors.add(getResources().getColor(R.color.Fruit));
+	    mSegmentColors.add(getResources().getColor(R.color.Protein));
   }
 
 
