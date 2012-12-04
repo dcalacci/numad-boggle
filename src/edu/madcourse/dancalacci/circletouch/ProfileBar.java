@@ -38,7 +38,7 @@ public class ProfileBar {
    * all segments - the sum of the value of the segments returned is 1.
    * god this is awful
    */
-  private ArrayList<ProfileBarSegment> averageAllSegments() {
+  public ArrayList<ProfileBarSegment> averageAllSegments() {
     // Keeping track of all the segments total percentages
     HashMap<Integer, Double> segmentTotal = 
       new HashMap<Integer, Double>();
@@ -52,10 +52,19 @@ public class ProfileBar {
 
     // populate the counting map and the total map
     for (ProfileBarSegment segment : getAllSegments()) { 
+      // if we haven't added one of this color, initialize it with 0
+      if (!numberOfSegmentsWithColor.containsKey(segment.getColor())) {
+        numberOfSegmentsWithColor.put(segment.getColor(), 0);
+      }
       // add 1 to the number of segments with this color
       numberOfSegmentsWithColor.put(segment.getColor(), 
           numberOfSegmentsWithColor.get(segment.getColor()) + 1);
       // add this segment's value to the total
+      // if we havent added one of this color, initialize it with 0
+      if (!segmentTotal.containsKey(segment.getColor())) {
+        segmentTotal.put(segment.getColor(), (double)0);
+      }
+      // then/otherwise add the value
       segmentTotal.put(segment.getColor(),
           segmentTotal.get(segment.getColor()) + segment.getValue());
     }
@@ -76,7 +85,7 @@ public class ProfileBar {
     Iterator<HashMap.Entry<Integer, Double>> iter = segmentAverage.entrySet().iterator();
     // add all of the average percentages to a list of segments
     while(iter.hasNext()) {
-      HashMap.Entry<Integer, Double> pair = it.next();
+      HashMap.Entry<Integer, Double> pair = iter.next();
       segments.add(new ProfileBarSegment(pair.getValue(), pair.getKey()));
     }
     double total = 0;
@@ -110,6 +119,9 @@ public class ProfileBar {
     ArrayList<ProfileBarSegment> segments = new ArrayList<ProfileBarSegment>();
     for (Category cat : getAllCategoriesFromFiles()) {
       segments.add(new ProfileBarSegment(cat));
+    }
+    for (ProfileBarSegment seg : segments) {
+      Log.d(TAG, "Color: " +seg.getColor()+", value: "+seg.getValue());
     }
     return segments;
   }

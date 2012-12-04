@@ -2,8 +2,8 @@ package edu.madcourse.dancalacci.circletouch;
 // Container for segments
 public class ProfileBarSegment {
   // percentage is the percent value of this segment, color is the color
-  double mValue;
-  int mColor;
+  private double mValue;
+  private int mColor;
 
   public ProfileBarSegment(Category c) {
     this.mValue = (ProfileBar.categoryToPercentage(c));

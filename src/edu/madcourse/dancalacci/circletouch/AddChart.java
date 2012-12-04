@@ -111,7 +111,7 @@ public class AddChart extends Activity {
 		} else if (category.equals("OilSugar")) {
 			cir.setOilSugarSelect(this.findViewById(R.id.oil_view));
 		}
-	}
+  }
 
 	private void addCategory(String category) {
 		if (category.equals("Protein")) {
