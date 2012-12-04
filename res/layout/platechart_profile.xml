@@ -37,53 +37,53 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.30" >
 
-            <RelativeLayout
+            <TextView
                 android:id="@+id/profile_protein_block"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_weight="0"
                 android:background="@color/Protein" >
-            </RelativeLayout>
+            </TextView>
 
-            <RelativeLayout
+            <TextView
                 android:id="@+id/profile_vegetable_block"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_weight="0"
                 android:background="@color/Vegetable" >
-            </RelativeLayout>
+            </TextView>
 
-            <RelativeLayout
+            <TextView
                 android:id="@+id/profile_dairy_block"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_weight="0"
                 android:background="@color/Dairy" >
-            </RelativeLayout>
+            </TextView>
 
-            <RelativeLayout
+            <TextView
                 android:id="@+id/profile_fruit_block"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_weight="0"
                 android:background="@color/Fruit" >
-            </RelativeLayout>
+            </TextView>
 
-            <RelativeLayout
+            <TextView
                 android:id="@+id/profile_grain_block"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_weight="0"
                 android:background="@color/Grain" >
-            </RelativeLayout>
+            </TextView>
 
-            <RelativeLayout
+            <TextView
                 android:id="@+id/profile_oil_block"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_weight="0"
                 android:background="@color/Oil_Sugar" >
-            </RelativeLayout>
+            </TextView>
         </TableRow>
 
         <TableRow
@@ -180,9 +180,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_gravity="fill_vertical|fill_horizontal|center"
-                android:layout_weight="0.50"
-                
-                android:onClick="onProteinClicked" >
+                android:layout_weight="0.50">
 
                 <TextView
                     android:id="@+id/protein_label"
@@ -216,9 +214,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_gravity="fill_vertical|fill_horizontal|center"
-                android:layout_weight="0.50"
-                
-                android:onClick="onVegetableClicked" >
+                android:layout_weight="0.50">
 
                 <TextView
                     android:id="@+id/vegetable_label"
@@ -258,9 +254,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_gravity="fill_vertical|fill_horizontal|center"
-                android:layout_weight="0.50"
-                
-                android:onClick="onDairyClicked" >
+                android:layout_weight="0.50">
 
                 <TextView
                     android:id="@+id/dairy_label"
@@ -293,9 +287,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:layout_gravity="fill_vertical|fill_horizontal|center"
-                android:layout_weight="0.50"
-                
-                android:onClick="onFruitClicked" >
+                android:layout_weight="0.50">
 
                 <TextView
                     android:id="@+id/fruit_label"
@@ -335,8 +327,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_gravity="fill_vertical|fill_horizontal|center"
-                android:layout_weight="0.50"
-                android:onClick="onGrainClicked" >
+                android:layout_weight="0.50">
 
                 <TextView
                     android:id="@+id/grain_label"
@@ -369,8 +360,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_gravity="fill_vertical|fill_horizontal|center"
-                android:layout_weight="0.50"
-                android:onClick="onOilSugarClicked" >
+                android:layout_weight="0.50">
 
                 <TextView
                     android:id="@+id/oil_label"

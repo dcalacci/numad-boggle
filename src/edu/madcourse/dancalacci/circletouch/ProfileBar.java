@@ -120,9 +120,6 @@ public class ProfileBar {
     for (Category cat : getAllCategoriesFromFiles()) {
       segments.add(new ProfileBarSegment(cat));
     }
-    for (ProfileBarSegment seg : segments) {
-      Log.d(TAG, "Color: " +seg.getColor()+", value: "+seg.getValue());
-    }
     return segments;
   }
 
@@ -131,6 +128,9 @@ public class ProfileBar {
    */
   private ArrayList<Category> getAllCategoriesFromFiles() {
     String[] savedFiles = mContext.fileList();
+    for (String str : savedFiles) {
+      Log.d(TAG, "@@@@ "+str);
+    }
     ArrayList<Category> categories = new ArrayList<Category>();
     for (String filename : savedFiles) {
       String fileData = getFileData(filename);
