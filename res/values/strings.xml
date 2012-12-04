@@ -2,11 +2,13 @@
 
     <!-- General -->
     <string name="app_name">NUMAD-DanCalacci</string>
+    <string name="final_app_name">MAD-PlateChart</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">NUMAD-DanCalacci</string>
     <string name="alarms_active">Alarms active!</string>
-
+    <string name="your_profile_label">Your Profile</string>
+    
     <!-- Home Screen -->
     <string name="exit_label">Exit</string>
     <string name="main_title">NUMAD Dan Calacci</string>
