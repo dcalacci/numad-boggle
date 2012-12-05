@@ -5,10 +5,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
+import java.util.Locale;
 
 import edu.madcourse.dancalacci.R;
 import android.app.ListActivity;
@@ -23,6 +28,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 public class History_byTime extends ListActivity{
   private String TAG = "circletouch.History";
@@ -106,17 +112,35 @@ public class History_byTime extends ListActivity{
 
 
   public void getTimeList(){
-    Log.d(TAG, "ReadData");
     String[] myFiles = this.fileList();
-    for (String list : myFiles)
-    {
-      if(list.contains(current_date)){
-        String[] file = list.split("_");
-        Log.d(TAG, "Content: "+file[1]);
-        String time = file[1].replace("+", ":").replace(".txt", "");
-        entryList.add(time);
+    SimpleDateFormat fileDate = 
+      new SimpleDateFormat(AddChart.FILE_NAME_FORMAT, Locale.US);
+    SimpleDateFormat desiredFormat = 
+      new SimpleDateFormat("hh:mm a");
+
+    for (String file : myFiles) {
+      // if the date is the date we're interested in
+      if (file.contains(current_date)) {
+        Date date = fileDate.parse(file.replace(".txt", ""),
+            new ParsePosition(0));
+        String entryName = desiredFormat.format(date);
+        if (!entryList.contains(entryName)) {
+          entryList.add(entryName);
+        }
       }
     }
+/*  */
+/*     Log.d(TAG, "ReadData"); */
+/*     String[] myFiles = this.fileList(); */
+/*     for (String list : myFiles) */
+/*     { */
+/*       if(list.contains(current_date)){ */
+/*         String[] file = list.split("_"); */
+/*         Log.d(TAG, "Content: "+file[1]); */
+/*         String time = file[1].replace("+", ":").replace(".txt", ""); */
+/*         entryList.add(time); */
+/*       } */
+/*     } */
   }
 
   public String getEntryData(String entry){
@@ -141,10 +165,31 @@ public class History_byTime extends ListActivity{
   }
 
 
+  /**
+   * Returns the date of this entry from the list text, formatted for file
+   * names.
+   */
   public String formatEntry(String entry){
-    String record_log; 
-    record_log = entry.replace(" ", "+");
-    return record_log;		
+    SimpleDateFormat fileFormat = 
+      new SimpleDateFormat(AddChart.HISTORY_DATE_FORMAT, Locale.US);
+    SimpleDateFormat entryFormat= 
+      new SimpleDateFormat("hh:mm a");
+    String entryName = "";
+    try {
+      Date date = entryFormat.parse(entry);
+      entryName = fileFormat.format(date);
+    } catch(ParseException e) {
+      Log.e(TAG, "error parsing time");
+      e.printStackTrace();
+      Toast.makeText(getBaseContext(), "Sorry, I couldn't open that entry...",
+          Toast.LENGTH_SHORT).show();
+    }
+    Log.d(TAG, "time entryName: "+entryName);
+    return entryName;
+
+     /* String record_log; */
+     /* record_log = entry.replace(" ", "+"); */
+     /* return record_log; */
   }
 
 

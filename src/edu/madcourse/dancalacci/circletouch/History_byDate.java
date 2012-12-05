@@ -108,6 +108,10 @@ public class History_byDate extends ListActivity{
   }
 
 
+  /**
+   * Adds all dates from files stored on the phone to the listAdapter, 
+   * in a human-readable format.
+   */
   public void getDateList(){
     SimpleDateFormat fileDate = 
       new SimpleDateFormat(AddChart.FILE_NAME_FORMAT, Locale.US);
