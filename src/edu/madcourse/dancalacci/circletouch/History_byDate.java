@@ -134,9 +134,14 @@ public class History_byDate extends ListActivity{
 
 
 
+  /**
+   * Returns the date of this entry, formatted for referring to the file:
+   * yyyy-MM-dd.
+   * @param entry The entry string to format
+   */
   public String formatEntry(String entry){
     SimpleDateFormat fileFormat = 
-      new SimpleDateFormat(AddChart.FILE_NAME_FORMAT, Locale.US);
+      new SimpleDateFormat(AddChart.HISTORY_DATE_FORMAT, Locale.US);
     DateFormat df = DateFormat.getDateInstance(DateFormat.LONG, Locale.US);
     String entryName = "";
     try {

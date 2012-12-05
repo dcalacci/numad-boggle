@@ -31,6 +31,7 @@ public class AddChart extends Activity {
   public final static String TAG_ISEDITING = "editing";
   public final static String TAG_FILENAME = "FileName";
   public final static String FILE_NAME_FORMAT = "yyyy-MM-dd_HH+mm+ss";
+  public final static String HISTORY_DATE_FORMAT = "yyyy-MM-dd";
   /** Called when the activity is first created. */
   private Chart_View cir;
   private String mOrigin = "";
