@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,7 +18,6 @@ import java.util.Locale;
 import edu.madcourse.dancalacci.R;
 import android.app.ListActivity;
 import android.content.Intent;
-import android.net.ParseException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -108,26 +109,27 @@ public class History_byTime extends ListActivity{
   public void addContent(String content){
     //entryList.add(content);
   }
-  
-  public void getTimeList(){
-	    String[] myFiles = this.fileList();
-	    SimpleDateFormat fileDate = 
-	      new SimpleDateFormat(AddChart.FILE_NAME_FORMAT, Locale.US);
-	    SimpleDateFormat desiredFormat = 
-	      new SimpleDateFormat("hh:mm:ss a");
 
-	    for (String file : myFiles) {
-	      // if the date is the date we're interested in
-	      if (file.contains(current_date)) {
-	        Date date = fileDate.parse(file.replace(".txt", ""),
-	            new ParsePosition(0));
-	        String entryName = desiredFormat.format(date);
-	        if (!entryList.contains(entryName)) {
-	          entryList.add(entryName);
-	        }
-	      }
-	    }
-	  }
+
+  public void getTimeList(){
+    String[] myFiles = this.fileList();
+    SimpleDateFormat fileDate = 
+      new SimpleDateFormat(AddChart.FILE_NAME_FORMAT, Locale.US);
+    SimpleDateFormat desiredFormat = 
+      new SimpleDateFormat("hh:mm:ss a");
+
+    for (String file : myFiles) {
+      // if the date is the date we're interested in
+      if (file.contains(current_date)) {
+        Date date = fileDate.parse(file.replace(".txt", ""),
+            new ParsePosition(0));
+        String entryName = desiredFormat.format(date);
+        if (!entryList.contains(entryName)) {
+          entryList.add(entryName);
+        }
+      }
+    }
+  }
 
   public String getEntryData(String entry){
     String data = "ERROR";
@@ -145,36 +147,56 @@ public class History_byTime extends ListActivity{
       e.printStackTrace();
     }
 
+
     return data;
 
   }
-/*
-  * Returns the date of this entry from the list text, formatted for file
-  * names: HH+MM+ss
-  */
- public String formatEntry(String entry){
-   SimpleDateFormat fileFormat = 
-     new SimpleDateFormat(AddChart.HISTORY_TIME_FORMAT, Locale.US);
-   SimpleDateFormat entryFormat= 
-     new SimpleDateFormat("hh+mm+ss");
-   entry = entry.substring(0, entry.length() - 3);
-   String entryName = "";
-   try {
-     Log.d(TAG, "time entry: "+entry);
-     Date date = entryFormat.parse(entry);
-     entryName = fileFormat.format(date);
-   } catch(ParseException e) {
-     Log.e(TAG, "error parsing time");
-     e.printStackTrace();
-     Toast.makeText(getBaseContext(), "Sorry, I couldn't open that entry...",
-         Toast.LENGTH_SHORT).show();
-   } catch (java.text.ParseException e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
-}
-   Log.d(TAG, "time entryName: "+entryName);
-   return entryName;
- }
+
+
+  /**
+   * Formats the textview entry from the listadapter for reading from file
+   * names: HH+MM+ss
+   */
+  public String formatEntry(String entry){
+    SimpleDateFormat fileFormat = 
+      new SimpleDateFormat(AddChart.HISTORY_TIME_FORMAT, Locale.US);
+    SimpleDateFormat entryFormat= 
+      new SimpleDateFormat("hh+mm+ss");
+    // substring because we can't parse AM/PM using SimpleDateFormat
+    // get AM/PM TAG
+    String AM_PM = entry.substring(entry.length() - 2, entry.length());
+    entry = entry.substring(0, entry.length() - 3);
+    // If it's PM time, add 12 to it 
+    String hour = entry.substring(0, 2);
+    int fileHour = (Integer.parseInt(hour));
+    if (AM_PM.equals("PM")) {
+      // don't change the time if it's 12pm
+      if (fileHour != 12) {
+        fileHour += 12;
+      }
+      entry = entry.substring(2, entry.length());
+      entry = fileHour+ entry;
+    } else {
+      // edge case for 12AM
+      if (fileHour == 12) {
+        entry = "00" + entry;
+      }
+    }
+
+    String entryName = "";
+    try {
+      Log.d(TAG, "time entry: "+entry);
+      Date date = entryFormat.parse(entry);
+      entryName = fileFormat.format(date);
+    } catch(ParseException e) {
+      Log.e(TAG, "error parsing time");
+      e.printStackTrace();
+      Toast.makeText(getBaseContext(), "Sorry, I couldn't open that entry...",
+          Toast.LENGTH_SHORT).show();
+    }
+    Log.d(TAG, "time entryName: "+entryName);
+    return entryName;
+  }
 
 
   public void onAddChartClick(View v){
