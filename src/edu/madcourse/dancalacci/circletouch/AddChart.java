@@ -18,7 +18,9 @@ import java.util.Locale;
 import org.json.JSONArray;
 import edu.madcourse.dancalacci.R;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -208,38 +210,50 @@ public class AddChart extends Activity {
 
   public void onProteinClicked(View v){
     if (mIsEditing) {
+      vibrate(25);
       cir.onProteinClicked(v);
     }
   }
 
   public void onVegetableClicked(View v){
     if (mIsEditing) {
+      vibrate(25);
       cir.onVegetableClicked(v);
     }
   }
 
   public void onDairyClicked(View v){
     if (mIsEditing) {
+      vibrate(25);
       cir.onDairyClicked(v);
     }
   }
 
   public void onFruitClicked(View v){
     if (mIsEditing) {
+      vibrate(25);
       cir.onFruitClicked(v);
     }
   }
 
   public void onGrainClicked(View v){
     if (mIsEditing) {
+      vibrate(25);
       cir.onGrainClicked(v);
     }
   }
 
   public void onOilSugarClicked(View v){
     if (mIsEditing) {
+      vibrate(25);
       cir.onOilSugarClicked(v);
     }
+  }
+
+  private void vibrate(int ms) {
+    Vibrator v = 
+      (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+    v.vibrate(ms);
   }
 
   public void onSaveClicked(View v){
