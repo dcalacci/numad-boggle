@@ -22,7 +22,7 @@ public class TouchPoint implements Comparable<TouchPoint> {
   /**
    * positive if getDifference(this, tp) is positive, 0 if it's 0,
    * negative if it's negative.
-   * @param tp The touchpoint to compare this to
+   * @param  tp The touchpoint to compare this to
    */
   public int compareTo(TouchPoint tp) throws ClassCastException {
     if (getDifference(this.mRads, tp.mRads) == 0) {

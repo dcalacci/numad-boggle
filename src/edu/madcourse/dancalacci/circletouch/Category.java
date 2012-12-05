@@ -32,7 +32,7 @@ public class Category implements Comparable<Category>{
     }
 
     /** Returns the integer color(Grayed) of the given category
-     * @param c The category to get the color of
+     * @param c The category to get the color o f
      */
     public static int getGrayedColor(String c, Context ctx) {
       if (c.equals("Protein")) {

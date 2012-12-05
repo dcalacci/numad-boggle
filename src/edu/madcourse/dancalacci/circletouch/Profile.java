@@ -45,7 +45,7 @@ public class Profile extends Activity{
 
     /* for (ProfileBarSegment m : mProfileBarSegments ){ */
     /* 	Log.d(TAG, "mProfileBarContents: " + m.getString()); */
-    /* } */
+    /* }  */
 
     Log.d(TAG, "### mProfileBarSegments: " + this.mProfileBarSegments.size());
     //this.setAllSegmentValues();

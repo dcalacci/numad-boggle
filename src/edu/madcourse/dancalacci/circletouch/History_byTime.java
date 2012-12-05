@@ -5,8 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,6 +16,7 @@ import java.util.Locale;
 import edu.madcourse.dancalacci.R;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.net.ParseException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -109,27 +108,26 @@ public class History_byTime extends ListActivity{
   public void addContent(String content){
     //entryList.add(content);
   }
-
-
+  
   public void getTimeList(){
-    String[] myFiles = this.fileList();
-    SimpleDateFormat fileDate = 
-      new SimpleDateFormat(AddChart.FILE_NAME_FORMAT, Locale.US);
-    SimpleDateFormat desiredFormat = 
-      new SimpleDateFormat("hh:mm:ss a");
+	    String[] myFiles = this.fileList();
+	    SimpleDateFormat fileDate = 
+	      new SimpleDateFormat(AddChart.FILE_NAME_FORMAT, Locale.US);
+	    SimpleDateFormat desiredFormat = 
+	      new SimpleDateFormat("hh:mm:ss a");
 
-    for (String file : myFiles) {
-      // if the date is the date we're interested in
-      if (file.contains(current_date)) {
-        Date date = fileDate.parse(file.replace(".txt", ""),
-            new ParsePosition(0));
-        String entryName = desiredFormat.format(date);
-        if (!entryList.contains(entryName)) {
-          entryList.add(entryName);
-        }
-      }
-    }
-  }
+	    for (String file : myFiles) {
+	      // if the date is the date we're interested in
+	      if (file.contains(current_date)) {
+	        Date date = fileDate.parse(file.replace(".txt", ""),
+	            new ParsePosition(0));
+	        String entryName = desiredFormat.format(date);
+	        if (!entryList.contains(entryName)) {
+	          entryList.add(entryName);
+	        }
+	      }
+	    }
+	  }
 
   public String getEntryData(String entry){
     String data = "ERROR";
@@ -147,36 +145,36 @@ public class History_byTime extends ListActivity{
       e.printStackTrace();
     }
 
-
     return data;
 
   }
-
-
-  /**
-   * Returns the date of this entry from the list text, formatted for file
-   * names: HH+MM+ss
-   */
-  public String formatEntry(String entry){
-    SimpleDateFormat fileFormat = 
-      new SimpleDateFormat(AddChart.HISTORY_TIME_FORMAT, Locale.US);
-    SimpleDateFormat entryFormat= 
-      new SimpleDateFormat("hh+mm+ss");
-    entry = entry.substring(0, entry.length() - 3);
-    String entryName = "";
-    try {
-      Log.d(TAG, "time entry: "+entry);
-      Date date = entryFormat.parse(entry);
-      entryName = fileFormat.format(date);
-    } catch(ParseException e) {
-      Log.e(TAG, "error parsing time");
-      e.printStackTrace();
-      Toast.makeText(getBaseContext(), "Sorry, I couldn't open that entry...",
-          Toast.LENGTH_SHORT).show();
-    }
-    Log.d(TAG, "time entryName: "+entryName);
-    return entryName;
-  }
+/*
+  * Returns the date of this entry from the list text, formatted for file
+  * names: HH+MM+ss
+  */
+ public String formatEntry(String entry){
+   SimpleDateFormat fileFormat = 
+     new SimpleDateFormat(AddChart.HISTORY_TIME_FORMAT, Locale.US);
+   SimpleDateFormat entryFormat= 
+     new SimpleDateFormat("hh+mm+ss");
+   entry = entry.substring(0, entry.length() - 3);
+   String entryName = "";
+   try {
+     Log.d(TAG, "time entry: "+entry);
+     Date date = entryFormat.parse(entry);
+     entryName = fileFormat.format(date);
+   } catch(ParseException e) {
+     Log.e(TAG, "error parsing time");
+     e.printStackTrace();
+     Toast.makeText(getBaseContext(), "Sorry, I couldn't open that entry...",
+         Toast.LENGTH_SHORT).show();
+   } catch (java.text.ParseException e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+}
+   Log.d(TAG, "time entryName: "+entryName);
+   return entryName;
+ }
 
 
   public void onAddChartClick(View v){

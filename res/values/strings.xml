@@ -15,7 +15,7 @@
     <string name="name">Dan Calacci</string>
 
     <!-- Plate Chart -->
-     <string name="addChart_label">Track Meal</string>
+    <string name="addChart_label">Track Meal</string>
     <string name="history_label">History</string>
     <string name="profile_label">Profile</string>
     <string name="back_label">Back</string>
@@ -24,8 +24,15 @@
     <string name="edit_label">Edit</string>
     <string name="next_label">Next</string>
     <string name="category_select_header">What did you eat?</string>
-    <string name="welcome_instructions">Plate Chart is a unique \n diet-tracking application that makes it simple and fun to keep track of the types of foods you eat. \n\n Track your first meal to get started\!</string>
-    
+    <string name="welcome_instructions">Plate Chart is a unique
+        \ndiet-tracking application that makes
+        it simple and fun to keep track of the types of foods you eat.  
+        \n\nTrack your first meal to get started!</string>
+    <string name="track_meal_instructions">Just select the types of foods you\'ve eaten, and then edit
+        the <b>Plate Chart</b> to keep track of how much of each thing you ate.
+        \n\nDon\'t worry about whether or not the chart is exactly right.
+        \n\nAs long as you think it\'s accurate, it is!</string>
+
     <!-- Team Members -->
     <string name="team_members_label">Team Members</string>
     <string name="team_members_text">       name: Dan Calacci\nemail: dcalacci@ccs.neu.edu\nversion: 0.0.1</string>
@@ -57,8 +64,9 @@
     <string name="multiplayer_current_games_button_label_VS">VS</string>
 
     <!-- High Scores -->
-    
-    <!--  Trickiest Part -->
+
+
+    <!-- Trickiest Part -->
     <string name="trickiest_part_button">Trickiest Part</string>
     <string name="circletouch_hello">Hello World, circletouchActivity!</string>
     <string name="circletouch_app_name">circletouch</string>

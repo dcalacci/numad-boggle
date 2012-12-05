@@ -135,7 +135,6 @@ public class AddChart extends Activity {
 
   }
 
-
   /**
    * Gets the category data from a given filename
    * @param filename The name of the file to get data from.

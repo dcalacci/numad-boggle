@@ -42,6 +42,11 @@ public class History_byDate extends ListActivity{
   final History_byDate thisActivity = this;
   ArrayList<String> entryList = new ArrayList<String>();
 
+
+	//NOT USED FOR NOW
+	//History _View hist;
+
+
   //NOT USED FOR NOW
   //History_View hist;
 
@@ -176,5 +181,4 @@ public class History_byDate extends ListActivity{
     i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
     startActivity(i);
   }
-
 }

@@ -27,7 +27,7 @@ public class ProfileBar {
     mProfileBarSegments = categoriesToSegments(categories);
   }
 
-  // Constructor with only a context means we have to get categories from
+  //  Constructor with only a context means we have to get categories from
   // files.
   public ProfileBar(Context ctx) {
     mContext = ctx;

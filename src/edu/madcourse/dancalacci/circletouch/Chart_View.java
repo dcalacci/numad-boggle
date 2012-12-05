@@ -15,7 +15,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -160,7 +159,6 @@ public class Chart_View extends View {
     float farthest = mTouchPointRadius + diameter;
     if (farthest > w - xpad/2 || farthest > h-ypad/2) {
       mTouchPointRadius = (int)Math.min(xpad, ypad)/4;
-      mTouchPointRadius+=2;
       Log.d(TAG, 
           "Touchpoints are a little big. reducing to: " +
           mTouchPointRadius);
@@ -1252,19 +1250,8 @@ public class Chart_View extends View {
 
     // we need to return true here so we can actually scroll.
     public boolean onDown(MotionEvent e) {
-      for (TouchPoint p : mPoints) {
-        if (isTouchingThisPoint(e.getX(), e.getY(), p)) {
-          Vibrator v = 
-            (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
-          v.vibrate(25);
-          inScroll = true;
-          p.isBeingTouched = true;
-        }
-      }
-
       return true;
     }
   }
 
 }
-
