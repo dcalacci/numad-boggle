@@ -36,6 +36,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.30" >
+          <TextView
+              android:id="@+id/profile_empty_text"
+              android:layout_width="0dp"
+              android:layout_height="fill_parent"
+              android:layout_weight="0"
+              android:background="@color/Chart_Background"
+              android:gravity="center"
+              android:padding="10dip"
+              android:textSize="16dip"
+              android:textStyle="bold">
+          </TextView>
 
             <TextView
                 android:id="@+id/profile_protein_block"

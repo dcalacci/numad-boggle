@@ -37,31 +37,43 @@ public class Profile extends Activity{
     super.onResume();
     processGraph();
   }
-  
+
   private void processGraph(){
-	  /* setContentView(R.layout.platechart_profile); */
-	    this.mProfileBar = new ProfileBar(this);
-	    this.mProfileBarSegments = mProfileBar.averageAllSegments();
-	    
-	    /* for (ProfileBarSegment m : mProfileBarSegments ){ */
-	    /* 	Log.d(TAG, "mProfileBarContents: " + m.getString()); */
-	    /* } */
-	    
-	    Log.d(TAG, "### mProfileBarSegments: " + this.mProfileBarSegments.size());
-	    //this.setAllSegmentValues();
-	    
-	    this.setHashMapCategoryAverages();
-	    this.updateHashMapCategoryAverages();
-	    this.setAllSegmentValues();
-	    
-	    /* View v = findViewById (R.id.platechart_profile); */
-	    /* v.invalidate(); */
-	    mSegmentColors.add(getResources().getColor(R.color.Protein));
-	    mSegmentColors.add(getResources().getColor(R.color.Vegetable));
-	    mSegmentColors.add(getResources().getColor(R.color.Dairy));
-	    mSegmentColors.add(getResources().getColor(R.color.Grain));
-	    mSegmentColors.add(getResources().getColor(R.color.Fruit));
-	    mSegmentColors.add(getResources().getColor(R.color.Oil_Sugar));
+    /* setContentView(R.layout.platechart_profile); */
+    this.mProfileBar = new ProfileBar(this);
+    this.mProfileBarSegments = mProfileBar.averageAllSegments();
+
+    /* for (ProfileBarSegment m : mProfileBarSegments ){ */
+    /* 	Log.d(TAG, "mProfileBarContents: " + m.getString()); */
+    /* } */
+
+    Log.d(TAG, "### mProfileBarSegments: " + this.mProfileBarSegments.size());
+    //this.setAllSegmentValues();
+
+    this.setHashMapCategoryAverages();
+    this.updateHashMapCategoryAverages();
+    this.setAllSegmentValues();
+
+     TextView emptyText = (TextView)findViewById(R.id.profile_empty_text);
+     TableRow.LayoutParams lp = 
+        (TableRow.LayoutParams)emptyText.getLayoutParams();
+
+    if (mProfileBarSegments.size() == 0) {
+      lp.weight = 0.3f;
+      emptyText.setText("Track some meals to see how you stack up against the recommended average!");
+    } else {
+      lp.weight = 0.0f;
+      emptyText.setText("");
+    }
+
+    /* View v = findViewById (R.id.platechart_profile); */
+    /* v.invalidate(); */
+    mSegmentColors.add(getResources().getColor(R.color.Protein));
+    mSegmentColors.add(getResources().getColor(R.color.Vegetable));
+    mSegmentColors.add(getResources().getColor(R.color.Dairy));
+    mSegmentColors.add(getResources().getColor(R.color.Grain));
+    mSegmentColors.add(getResources().getColor(R.color.Fruit));
+    mSegmentColors.add(getResources().getColor(R.color.Oil_Sugar));
   }
 
 
@@ -70,37 +82,37 @@ public class Profile extends Activity{
     i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
     startActivity(i);
   }
-  
+
   private void setHashMapCategoryAverages(){
-	  double base = 0;
-	  allCategoryAverages.put(getResources().getColor(R.color.Protein), base);
-	  allCategoryAverages.put(getResources().getColor(R.color.Vegetable), base);
-	  allCategoryAverages.put(getResources().getColor(R.color.Dairy), base);
-	  allCategoryAverages.put(getResources().getColor(R.color.Grain), base);
-	  allCategoryAverages.put(getResources().getColor(R.color.Fruit), base);
-	  allCategoryAverages.put(getResources().getColor(R.color.Oil_Sugar), base);
+    double base = 0;
+    allCategoryAverages.put(getResources().getColor(R.color.Protein), base);
+    allCategoryAverages.put(getResources().getColor(R.color.Vegetable), base);
+    allCategoryAverages.put(getResources().getColor(R.color.Dairy), base);
+    allCategoryAverages.put(getResources().getColor(R.color.Grain), base);
+    allCategoryAverages.put(getResources().getColor(R.color.Fruit), base);
+    allCategoryAverages.put(getResources().getColor(R.color.Oil_Sugar), base);
   }
-  
+
   private void updateHashMapCategoryAverages() {
-	  Log.d(TAG, "profile size: " + mProfileBarSegments.size());
-	  Log.d(TAG, "BEFORE HASHMAP content" + allCategoryAverages.toString());
-	  if(mProfileBarSegments.size() == 1){
-		  ProfileBarSegment p = mProfileBarSegments.get(0);
-		  allCategoryAverages.remove(p.getColor());
-		  allCategoryAverages.put(p.getColor(), 1.00);
-	  }
-	  else if(mProfileBarSegments.size() > 1 ){
-		  for (ProfileBarSegment p : mProfileBarSegments){
-			  Log.d(TAG, "Value : " + p.getValue());
-			  allCategoryAverages.remove(p.getColor());
-			  allCategoryAverages.put(p.getColor(), p.getValue());
-		  }
-	  }else {
-		  setAllSegmentsToZero();
-	  }
-	  
-	  Log.d(TAG, "AFTER HASHMAP content" + allCategoryAverages.toString());
-	  
+    Log.d(TAG, "profile size: " + mProfileBarSegments.size());
+    Log.d(TAG, "BEFORE HASHMAP content" + allCategoryAverages.toString());
+    if(mProfileBarSegments.size() == 1){
+      ProfileBarSegment p = mProfileBarSegments.get(0);
+      allCategoryAverages.remove(p.getColor());
+      allCategoryAverages.put(p.getColor(), 1.00);
+    }
+    else if(mProfileBarSegments.size() > 1 ){
+      for (ProfileBarSegment p : mProfileBarSegments){
+        Log.d(TAG, "Value : " + p.getValue());
+        allCategoryAverages.remove(p.getColor());
+        allCategoryAverages.put(p.getColor(), p.getValue());
+      }
+    }else {
+      setAllSegmentsToZero();
+    }
+
+    Log.d(TAG, "AFTER HASHMAP content" + allCategoryAverages.toString());
+
   }
 
   /**
@@ -114,40 +126,39 @@ public class Profile extends Activity{
     setSegmentValueByColor(0, getResources().getColor(R.color.Fruit));
     setSegmentValueByColor(0, getResources().getColor(R.color.Oil_Sugar));
   }
-  
+
   private void setAllSegmentValues(){
-	// Protein
-	this.setSegmentValueByColor(
-			allCategoryAverages.get(getResources().getColor(R.color.Protein)), 
-			getResources().getColor(R.color.Protein));
-	
-	// Vegetable
-	this.setSegmentValueByColor(
-			allCategoryAverages.get(getResources().getColor(R.color.Vegetable)), 
-			getResources().getColor(R.color.Vegetable));
-	
-	// Dairy
-	this.setSegmentValueByColor(
-			allCategoryAverages.get(getResources().getColor(R.color.Dairy)), 
-			getResources().getColor(R.color.Dairy));
-	
-	// Grain
-	this.setSegmentValueByColor(
-			allCategoryAverages.get(getResources().getColor(R.color.Grain)), 
-			getResources().getColor(R.color.Grain));
-	
-	// Fruit
-	this.setSegmentValueByColor(
-			allCategoryAverages.get(getResources().getColor(R.color.Fruit)), 
-			getResources().getColor(R.color.Fruit));
-	
-	// Oil Sugar
-	this.setSegmentValueByColor(
-			allCategoryAverages.get(getResources().getColor(R.color.Oil_Sugar)), 
-			getResources().getColor(R.color.Oil_Sugar));
-		
+    // Protein
+    this.setSegmentValueByColor(
+        allCategoryAverages.get(getResources().getColor(R.color.Protein)), 
+        getResources().getColor(R.color.Protein));
+
+    // Vegetable
+    this.setSegmentValueByColor(
+        allCategoryAverages.get(getResources().getColor(R.color.Vegetable)), 
+        getResources().getColor(R.color.Vegetable));
+
+    // Dairy
+    this.setSegmentValueByColor(
+        allCategoryAverages.get(getResources().getColor(R.color.Dairy)), 
+        getResources().getColor(R.color.Dairy));
+
+    // Grain
+    this.setSegmentValueByColor(
+        allCategoryAverages.get(getResources().getColor(R.color.Grain)), 
+        getResources().getColor(R.color.Grain));
+
+    // Fruit
+    this.setSegmentValueByColor(
+        allCategoryAverages.get(getResources().getColor(R.color.Fruit)), 
+        getResources().getColor(R.color.Fruit));
+
+    // Oil Sugar
+    this.setSegmentValueByColor(
+        allCategoryAverages.get(getResources().getColor(R.color.Oil_Sugar)), 
+        getResources().getColor(R.color.Oil_Sugar));
   }
-  
+
   /**
    * Sets the segment's value to the given val.
    * @param val The value to set the segment to
