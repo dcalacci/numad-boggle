@@ -18,7 +18,9 @@ import java.util.Locale;
 import org.json.JSONArray;
 import edu.madcourse.dancalacci.R;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -31,6 +33,8 @@ public class AddChart extends Activity {
   public final static String TAG_ISEDITING = "editing";
   public final static String TAG_FILENAME = "FileName";
   public final static String FILE_NAME_FORMAT = "yyyy-MM-dd_HH+mm+ss";
+  public final static String HISTORY_DATE_FORMAT = "yyyy-MM-dd";
+  public final static String HISTORY_TIME_FORMAT = "HH+mm+ss";
   /** Called when the activity is first created. */
   private Chart_View cir;
   private String mOrigin = "";
@@ -131,6 +135,7 @@ public class AddChart extends Activity {
 
   }
 
+
   /**
    * Gets the category data from a given filename
    * @param filename The name of the file to get data from.
@@ -206,38 +211,50 @@ public class AddChart extends Activity {
 
   public void onProteinClicked(View v){
     if (mIsEditing) {
+      vibrate(25);
       cir.onProteinClicked(v);
     }
   }
 
   public void onVegetableClicked(View v){
     if (mIsEditing) {
+      vibrate(25);
       cir.onVegetableClicked(v);
     }
   }
 
   public void onDairyClicked(View v){
     if (mIsEditing) {
+      vibrate(25);
       cir.onDairyClicked(v);
     }
   }
 
   public void onFruitClicked(View v){
     if (mIsEditing) {
+      vibrate(25);
       cir.onFruitClicked(v);
     }
   }
 
   public void onGrainClicked(View v){
     if (mIsEditing) {
+      vibrate(25);
       cir.onGrainClicked(v);
     }
   }
 
   public void onOilSugarClicked(View v){
     if (mIsEditing) {
+      vibrate(25);
       cir.onOilSugarClicked(v);
     }
+  }
+
+  private void vibrate(int ms) {
+    Vibrator v = 
+      (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+    v.vibrate(ms);
   }
 
   public void onSaveClicked(View v){
@@ -279,7 +296,7 @@ public void onDeleteClicked(View v){
   }
   // show a toast, tell the user if it succeeded.
   if (deleted) {
-    Toast.makeText(getBaseContext(), "Entry deleted!", Toast.LENGTH_LONG).show();
+    Toast.makeText(getBaseContext(), "Entry deleted!", Toast.LENGTH_SHORT).show();
   } else {
     Toast.makeText(getBaseContext(), "Error deleting entry.",
         Toast.LENGTH_LONG).show();

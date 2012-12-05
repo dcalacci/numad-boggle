@@ -7,7 +7,7 @@ import android.content.Context;
 
 
 
-public class Category {
+public class Category implements Comparable<Category>{
     private TouchPoint pCCW;
     private TouchPoint pCW;
     private String category;
@@ -21,6 +21,14 @@ public class Category {
     }
 
     public Category() {
+    }
+
+    /**
+     * Compares this category to a given category - ordering is defined
+     * by clockwise rotation of CCW points.
+     */
+    public int compareTo(Category c) throws ClassCastException {
+      return c.getpCCW().compareTo(this.getpCCW());
     }
 
     /** Returns the integer color(Grayed) of the given category

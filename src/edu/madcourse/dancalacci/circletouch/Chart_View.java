@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -159,6 +160,7 @@ public class Chart_View extends View {
     float farthest = mTouchPointRadius + diameter;
     if (farthest > w - xpad/2 || farthest > h-ypad/2) {
       mTouchPointRadius = (int)Math.min(xpad, ypad)/4;
+      mTouchPointRadius+=2;
       Log.d(TAG, 
           "Touchpoints are a little big. reducing to: " +
           mTouchPointRadius);
@@ -291,26 +293,34 @@ public class Chart_View extends View {
   }
 
   /**
-   * Removes the specified category from the list
-   * @param category
+   * Removes the given index from categories ~~cleanly~~ - this means 
+   * in such a way that we don't reset the chart.
+   * @param index The index of the category to remove in mCategories
    */
-  private void removeCategory(String category){
-    int index = 0;
-    // iterate through category list, skip down if we find category
-    for(Category c : mCategories){
-      if(c.getCategory().equalsIgnoreCase(category)){
-        break;
-      }else{
-        index = index + 1;
+  private void removeCategory(String cat) {
+    Collections.sort(mCategories);
+
+    for (int i=0; i<mCategories.size(); i++) {
+      if (mCategories.get(i).getCategory().equalsIgnoreCase(cat)) {
+        // remove this points' CW point from the list.
+        mPoints.remove(mCategories.get(i).getpCW());
+        // set the next categories' CCW point to this categories' CCW point.
+        nextCategory(i).setpCCW(mCategories.get(i).getpCCW());
+        // finally, remove this category from the list.
+        mCategories.remove(i);
       }
     }
-    mCategories.remove(index);
-    // if only one category, remove the only remaining one
-    if(mCategories.size() < 2){
-      clearPoints();
-    }else{
-      addPoints();
-      setPointsToCategories();
+  }
+
+  /**
+   * Returns the next index in the category list
+   * @param index The index of the item that is before the item to return.
+   */
+  private Category nextCategory(int index) {
+    if (index == mCategories.size() - 1) {
+      return mCategories.get(0);
+    } else {
+      return mCategories.get(index+1);
     }
   }
 
@@ -649,7 +659,7 @@ public class Chart_View extends View {
       JSONObject jsonObject = new JSONObject(obj);
       jsonArray.put(jsonObject);
 
-    }	
+    }
     return jsonArray;
   }
 
@@ -1242,6 +1252,16 @@ public class Chart_View extends View {
 
     // we need to return true here so we can actually scroll.
     public boolean onDown(MotionEvent e) {
+      for (TouchPoint p : mPoints) {
+        if (isTouchingThisPoint(e.getX(), e.getY(), p)) {
+          Vibrator v = 
+            (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
+          v.vibrate(25);
+          inScroll = true;
+          p.isBeingTouched = true;
+        }
+      }
+
       return true;
     }
   }
