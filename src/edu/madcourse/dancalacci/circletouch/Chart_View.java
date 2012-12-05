@@ -38,6 +38,7 @@ public class Chart_View extends View {
 
   // True if we can edit the circle. True by default.
   private String mOrigin = "";
+  private boolean mIsEditing = true;
 
   //Items 
   private ArrayList<Category> mCategories = new ArrayList<Category>();
@@ -164,6 +165,14 @@ public class Chart_View extends View {
       Log.d(TAG, "mCircle center is: " +mCircleX +", "+mCircleY);
 
     }
+  }
+
+  public void setIsEditing(boolean bool) {
+    this.mIsEditing = bool;
+  }
+
+  public boolean getIsEditing() {
+    return this.mIsEditing;
   }
   
 	/**
@@ -696,7 +705,8 @@ public class Chart_View extends View {
             mSeparatorLinesPaint
             );
       }
-      if (isSameOrigin(TAG_FROMCATEGORYSELECT)) {
+      if (mIsEditing) {
+        Log.d(TAG, "@@onDraw, editing - drawing the touchPoints");
         for (TouchPoint point : mPoints) {
           PointF touchPointCoords = radsToPointF(point.mRads);
           // draw the touchPoint on the canvas
@@ -737,6 +747,12 @@ public class Chart_View extends View {
     public boolean onTouchEvent(MotionEvent event) {
       //Log.d(TAG, "ONTOUCHEVENT | received a touchEvent");
       boolean result = mGestureDetector.onTouchEvent(event);
+
+      // if we're not editing, we can't touch anything.
+      if (!mIsEditing) {
+        Log.d(TAG, "onTouchEvent returning false = !mIsEditing");
+        return false;
+      }
 
       // if the user lifts their finger, we're not in a scroll.
       if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -1176,8 +1192,9 @@ public class Chart_View extends View {
           float distanceX,
           float distanceY) {
 
+        if (!mIsEditing) { return false;}
         // if we can't edit, fuhgeddaboutit
-        if (isSameOrigin(TAG_FROMHISTORY)) { return false;}
+        /* if (isSameOrigin(TAG_FROMHISTORY)) { return false;} */
 
         float lastX = e2.getX() + distanceX;
         float lastY = e2.getY() + distanceY;
