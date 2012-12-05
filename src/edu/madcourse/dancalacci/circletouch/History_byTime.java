@@ -154,7 +154,7 @@ public class History_byTime extends ListActivity{
 
 
   /**
-   * Returns the date of this entry from the list text, formatted for file
+   * Formats the textview entry from the listadapter for reading from file
    * names: HH+MM+ss
    */
   public String formatEntry(String entry){
@@ -162,7 +162,27 @@ public class History_byTime extends ListActivity{
       new SimpleDateFormat(AddChart.HISTORY_TIME_FORMAT, Locale.US);
     SimpleDateFormat entryFormat= 
       new SimpleDateFormat("hh+mm+ss");
+    // substring because we can't parse AM/PM using SimpleDateFormat
+    // get AM/PM TAG
+    String AM_PM = entry.substring(entry.length() - 2, entry.length());
     entry = entry.substring(0, entry.length() - 3);
+    // If it's PM time, add 12 to it 
+    String hour = entry.substring(0, 2);
+    int fileHour = (Integer.parseInt(hour));
+    if (AM_PM.equals("PM")) {
+      // don't change the time if it's 12pm
+      if (fileHour != 12) {
+        fileHour += 12;
+      }
+      entry = entry.substring(2, entry.length());
+      entry = fileHour+ entry;
+    } else {
+      // edge case for 12AM
+      if (fileHour == 12) {
+        entry = "00" + entry;
+      }
+    }
+
     String entryName = "";
     try {
       Log.d(TAG, "time entry: "+entry);
