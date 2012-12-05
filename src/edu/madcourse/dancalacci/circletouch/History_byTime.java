@@ -63,6 +63,9 @@ public class History_byTime extends ListActivity{
 		super.onResume();
 		entryList.clear();
 		getTimeList();
+		if (entryList.size() == 0){
+			finish();
+		}
 
 		Collections.sort(entryList);
 		Collections.reverse(entryList);

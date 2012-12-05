@@ -89,12 +89,14 @@ public class Profile extends Activity{
 		  allCategoryAverages.remove(p.getColor());
 		  allCategoryAverages.put(p.getColor(), 1.00);
 	  }
-	  if(mProfileBarSegments.size() > 1 ){
+	  else if(mProfileBarSegments.size() > 1 ){
 		  for (ProfileBarSegment p : mProfileBarSegments){
 			  Log.d(TAG, "Value : " + p.getValue());
 			  allCategoryAverages.remove(p.getColor());
 			  allCategoryAverages.put(p.getColor(), p.getValue());
 		  }
+	  }else {
+		  setAllSegmentsToZero();
 	  }
 	  
 	  Log.d(TAG, "AFTER HASHMAP content" + allCategoryAverages.toString());
@@ -105,12 +107,12 @@ public class Profile extends Activity{
    * Sets all the segment values to zero
    */
   private void setAllSegmentsToZero() {
-    setSegmentValueByColor(getResources().getColor(R.color.Protein), 0);
-    setSegmentValueByColor(getResources().getColor(R.color.Vegetable), 0);
-    setSegmentValueByColor(getResources().getColor(R.color.Dairy), 0);
-    setSegmentValueByColor(getResources().getColor(R.color.Grain), 0);
-    setSegmentValueByColor(getResources().getColor(R.color.Fruit), 0);
-    setSegmentValueByColor(getResources().getColor(R.color.Oil_Sugar), 0);
+    setSegmentValueByColor(0, getResources().getColor(R.color.Protein));
+    setSegmentValueByColor(0, getResources().getColor(R.color.Vegetable));
+    setSegmentValueByColor(0, getResources().getColor(R.color.Dairy));
+    setSegmentValueByColor(0, getResources().getColor(R.color.Grain));
+    setSegmentValueByColor(0, getResources().getColor(R.color.Fruit));
+    setSegmentValueByColor(0, getResources().getColor(R.color.Oil_Sugar));
   }
   
   private void setAllSegmentValues(){
