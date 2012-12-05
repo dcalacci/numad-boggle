@@ -224,6 +224,8 @@ public class AddChart extends Activity {
       mIsEditing = false;
       static_data = getDataFromFile(mFileName);
       cir.setIsEditing(false);
+      Toast.makeText(getBaseContext(), "Entry saved!", 
+          Toast.LENGTH_SHORT).show();
       onResume();
     } else { // clicked edit
       Log.d(TAG, "Edit clicked, editing...");
@@ -244,9 +246,19 @@ public String parseData(JSONArray jArray){
  * @param v
  */
 public void onDeleteClicked(View v){
+  boolean deleted;
   if(mFileName != null){
     File file = new File(this.getFilesDir(), mFileName);
-    boolean deleted = file.delete();
+    deleted = file.delete();
+  }else {
+    deleted = true;
+  }
+  // show a toast, tell the user if it succeeded.
+  if (deleted) {
+    Toast.makeText(getBaseContext(), "Entry deleted!", Toast.LENGTH_LONG).show();
+  } else {
+    Toast.makeText(getBaseContext(), "Error deleting entry.",
+        Toast.LENGTH_LONG).show();
   }
   finish();
 }
