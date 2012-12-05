@@ -26,6 +26,7 @@ public class CategorySelection extends Activity {
     // need to give AddChart the array of items selected.
     i.putExtra("categories", mCategories);
     i.putExtra(AddChart.TAG_ISEDITING, true);
+    i.putExtra(AddChart.TAG_FILENAME, "");
     startActivity(i);
 
   }

@@ -4,22 +4,21 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.Writer;
+import java.text.DateFormat;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+
 import org.json.JSONArray;
 import edu.madcourse.dancalacci.R;
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -30,12 +29,16 @@ import android.widget.Toast;
 public class AddChart extends Activity {
   private final String TAG = "circletouch.circle.AddChart";
   public final static String TAG_ISEDITING = "editing";
+  public final static String TAG_FILENAME = "FileName";
+  public final static String FILE_NAME_FORMAT = "yyyy-MM-dd_HH+mm+ss";
   /** Called when the activity is first created. */
   private Chart_View cir;
   private String mOrigin = "";
   private String mFileName;
   private String static_data;
   private ArrayList<String> categories;
+
+  private Date mDate;
 
   private Boolean mIsEditing = false;
 
@@ -103,6 +106,29 @@ public class AddChart extends Activity {
       cir.setmPoints(Category.getTouchPointsFromCategoryList(cats));
       cir.linkPointsAndCategories();
     }
+
+    // make the date format for the title
+
+    SimpleDateFormat fileDate =
+      new SimpleDateFormat(FILE_NAME_FORMAT, Locale.US);
+
+   // dates in java are terrible.  what the fuck is a parseposition.
+    if (!mFileName.equals("")) {
+      Log.d(TAG, "@@@@no filename");
+      String filename = mFileName;
+      mDate = fileDate.parse(filename.replace(".txt", ""), 
+          new ParsePosition(0));
+      /* mDate = titleDate.format(mFileName.replace(".txt", "")); */
+    }
+
+    String title = "New Chart";
+    if (mDate != null) { 
+      title = DateFormat.getDateInstance().format(mDate);
+      /* title = titleDate.format(mDate); */
+    }
+    TextView tv = (TextView)this.findViewById(R.id.addChart_Title);
+    tv.setText(title);
+
   }
 
   /**
@@ -224,9 +250,7 @@ public class AddChart extends Activity {
       mIsEditing = false;
       static_data = getDataFromFile(mFileName);
       cir.setIsEditing(false);
-      Toast.makeText(getBaseContext(), "Entry saved!", 
-          Toast.LENGTH_SHORT).show();
-      onResume();
+          onResume();
     } else { // clicked edit
       Log.d(TAG, "Edit clicked, editing...");
       mIsEditing = true;
@@ -247,7 +271,7 @@ public String parseData(JSONArray jArray){
  */
 public void onDeleteClicked(View v){
   boolean deleted;
-  if(mFileName != null){
+  if(!mFileName.equals("")){
     File file = new File(this.getFilesDir(), mFileName);
     deleted = file.delete();
   }else {
@@ -269,7 +293,7 @@ public void onDeleteClicked(View v){
  */
 public String getDateTime(){
   Calendar c = Calendar.getInstance();
-  SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd+HH:mm:ss");
+  SimpleDateFormat df = new SimpleDateFormat(FILE_NAME_FORMAT);
   String formattedDate = df.format(c.getTime());
 
   return formattedDate;
@@ -280,7 +304,7 @@ public String getDateTime(){
  */
 public String getDate(){
   Calendar c = Calendar.getInstance();
-  SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd_HH+mm+ss");
+  SimpleDateFormat df = new SimpleDateFormat(FILE_NAME_FORMAT);
   String formattedDate = df.format(c.getTime());    
   return formattedDate;
 }
@@ -291,29 +315,40 @@ public String getDate(){
  */
 public void save(String data, String FileName){
   String date = getDate();
-  if(FileName == null){         // generates name of file
+  if(FileName.equals("")){         // generates name of file
     FileName = date+".txt";
     mFileName = FileName;
-  }else if (FileName != null){    // Deletes current file
+    Log.d(TAG, "making a new filename...");
+
+    SimpleDateFormat fileDate =
+      new SimpleDateFormat(FILE_NAME_FORMAT, Locale.US);
+    mDate = fileDate.parse(mFileName.replace(".txt", ""), 
+          new ParsePosition(0));
+
+  }else if (!FileName.equals("")){    // Deletes current file
+    Log.d(TAG, "saving to a file that already exists");
     File file = new File(this.getFilesDir(), FileName);
     boolean deleted = file.delete();
   }
   Log.d(TAG, "save() filename: " + FileName);
-  try{      
+  try{
     FileWriter write = new FileWriter(this.getFilesDir() + "/" + FileName, true);
     write.write(data+"\r\n"); //adds new line.
     write.close();
+    // if we get here with no exceptions, we did it!
+    Toast.makeText(getBaseContext(), "Entry saved!", 
+          Toast.LENGTH_SHORT).show();
 
   } catch (FileNotFoundException e) {
-    // TODO Auto-generated catch block
+  Toast.makeText(getBaseContext(), "Uh-Oh.  We couldn't save the chart. Try Again?", 
+          Toast.LENGTH_SHORT).show();
     e.printStackTrace();
   } catch (IOException e) {
-    // TODO Auto-generated catch block
+  Toast.makeText(getBaseContext(), "Oops! We couldn't read from your phone. Try Again!", 
+          Toast.LENGTH_SHORT).show();
     e.printStackTrace();
   }
-
-
-} 
+}
 
 
 }

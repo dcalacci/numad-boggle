@@ -13,7 +13,15 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp" 
         android:layout_weight="0.08">
-
+        <TextView
+            android:id="@+id/addChart_Title"
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:padding="10dip"
+            android:textSize="16dip"
+            android:textStyle="bold">
+        </TextView>
         <Button
             android:id="@+id/addChart_Delete"
             style="?android:attr/buttonStyleSmall"
