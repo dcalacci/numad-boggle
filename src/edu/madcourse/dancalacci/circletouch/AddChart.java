@@ -28,9 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class AddChart extends Activity {
-  private final String TAG = "circletouch.circle";
-  private final String TAG_FROMHISTORY = "FROMHISTORY";
-  private final String TAG_FROMCATEGORYSELECT = "FROMCATEGORYSELECT";
+  private final String TAG = "circletouch.circle.AddChart";
   public final static String TAG_ISEDITING = "editing";
   /** Called when the activity is first created. */
   private Chart_View cir;
@@ -86,15 +84,6 @@ public class AddChart extends Activity {
       deleteButton.setVisibility(Button.VISIBLE);
       edit_addButton.setText(R.string.edit_label);
     }
-
-/*  */
-/*    if(mOrigin.equals(this.TAG_FROMHISTORY)){ */
-/*      deleteButton.setVisibility(Button.VISIBLE); */
-/*      edit_addButton.setText(R.string.edit_label); */
-/*    }else if(mOrigin.equals(this.TAG_FROMCATEGORYSELECT)){ */
-/*      deleteButton.setVisibility(Button.INVISIBLE); */
-/*      edit_addButton.setText(R.string.save_label); */
-/*    } */
 
     // coming from categoryselection
     if(static_data == null){
@@ -189,37 +178,37 @@ public class AddChart extends Activity {
 
 
   public void onProteinClicked(View v){
-    if (mOrigin.equals(this.TAG_FROMCATEGORYSELECT)) {
+    if (mIsEditing) {
       cir.onProteinClicked(v);
     }
   }
 
   public void onVegetableClicked(View v){
-    if (mOrigin.equals(this.TAG_FROMCATEGORYSELECT)) {
+    if (mIsEditing) {
       cir.onVegetableClicked(v);
     }
   }
 
   public void onDairyClicked(View v){
-    if (mOrigin.equals(this.TAG_FROMCATEGORYSELECT)) {
+    if (mIsEditing) {
       cir.onDairyClicked(v);
     }
   }
 
   public void onFruitClicked(View v){
-    if (mOrigin.equals(this.TAG_FROMCATEGORYSELECT)) {
+    if (mIsEditing) {
       cir.onFruitClicked(v);
     }
   }
 
   public void onGrainClicked(View v){
-    if (mOrigin.equals(this.TAG_FROMCATEGORYSELECT)) {
+    if (mIsEditing) {
       cir.onGrainClicked(v);
     }
   }
 
   public void onOilSugarClicked(View v){
-    if (mOrigin.equals(this.TAG_FROMCATEGORYSELECT)) {
+    if (mIsEditing) {
       cir.onOilSugarClicked(v);
     }
   }
@@ -243,22 +232,6 @@ public class AddChart extends Activity {
       onResume();
     }
   }
-
-
-  /* if(mOrigin.equals(this.TAG_FROMCATEGORYSELECT)){ */
-  /*  String date_time = getDateTime(); */
-  /*  Log.d(TAG, "is saving ?"); */
-  /*  JSONArray chartData = cir.getChartData(); */
-  /*  Log.d("TAG", chartData.toString()); */
-  /*  String data = parseData(chartData); */
-  /*  save(data, fileName); */
-  /*  finish(); //  */
-  /* }else if(mOrigin.equals(this.TAG_FROMHISTORY)){ */
-  /*  cir.setmOrigin(this.TAG_FROMCATEGORYSELECT); */
-  /*  mOrigin = this.TAG_FROMCATEGORYSELECT; */
-  /*  onResume(); */
-  /* } */
-  /* } */
 
 public String parseData(JSONArray jArray){
   String data = jArray.toString();
