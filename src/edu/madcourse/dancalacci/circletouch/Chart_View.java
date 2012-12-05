@@ -291,36 +291,11 @@ public class Chart_View extends View {
   }
 
   /**
-   * Removes the specified category from the list
-   * @param category The category to remove
-   */
-  private void removeCategory(String category){
-    removeCategoryCleanly(category);
-    /* int index = 0; */
-    /* // iterate through category list, skip down if we find category */
-    /* for(Category c : mCategories){ */
-    /*   if(c.getCategory().equalsIgnoreCase(category)){ */
-    /*     break; */
-    /*   }else{ */
-    /*     index = index + 1; */
-    /*   } */
-    /* } */
-    /* mCategories.remove(index); */
-    /* // if only one category, remove the only remaining one */
-    /* if(mCategories.size() < 2){ */
-    /*   clearPoints(); */
-    /* }else{ */
-    /*   addPoints(); */
-    /*   setPointsToCategories(); */
-    /* } */
-  }
-
-  /**
    * Removes the given index from categories ~~cleanly~~ - this means 
    * in such a way that we don't reset the chart.
    * @param index The index of the category to remove in mCategories
    */
-  private void removeCategoryCleanly(String cat) {
+  private void removeCategory(String cat) {
     Collections.sort(mCategories);
 
     for (int i=0; i<mCategories.size(); i++) {
