@@ -43,7 +43,7 @@ public class AddChart extends Activity {
     this.requestWindowFeature(Window.FEATURE_NO_TITLE);
     super.onCreate(savedInstanceState);
     setContentView(R.layout.platechart_add);
-    
+
     Bundle extras = getIntent().getExtras();
 
     // The list of categories, populated either from the category selection
@@ -66,9 +66,8 @@ public class AddChart extends Activity {
     cir.setmOrigin(mOrigin);
 
     cir.setIsEditing(mIsEditing);
-    
   }
-  
+
   public void onResume(){
     super.onResume();
     Button deleteButton = (Button) this.findViewById(R.id.addChart_Delete);
@@ -77,17 +76,19 @@ public class AddChart extends Activity {
     // if we're editing the chart...
     if (mIsEditing) {
       Log.d(TAG, "in onResume, We're editing...");
-      deleteButton.setVisibility(Button.INVISIBLE);
+      deleteButton.setVisibility(Button.VISIBLE);
       edit_addButton.setText(R.string.save_label);
     } else {
       Log.d(TAG, "in onResume, We're NOT editing...");
-      deleteButton.setVisibility(Button.VISIBLE);
+      deleteButton.setVisibility(Button.INVISIBLE);
       edit_addButton.setText(R.string.edit_label);
     }
 
     // coming from categoryselection
     if(static_data == null){
       Log.d(TAG, "coming from category selection, no data given");
+      // delete button shouldn't exist if we're just starting to add a chart.
+      deleteButton.setVisibility(Button.INVISIBLE);
       addCategories(categories);
     }
     // coming from history
