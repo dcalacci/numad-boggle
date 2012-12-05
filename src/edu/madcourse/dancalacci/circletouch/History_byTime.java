@@ -129,18 +129,6 @@ public class History_byTime extends ListActivity{
         }
       }
     }
-/*  */
-/*     Log.d(TAG, "ReadData"); */
-/*     String[] myFiles = this.fileList(); */
-/*     for (String list : myFiles) */
-/*     { */
-/*       if(list.contains(current_date)){ */
-/*         String[] file = list.split("_"); */
-/*         Log.d(TAG, "Content: "+file[1]); */
-/*         String time = file[1].replace("+", ":").replace(".txt", ""); */
-/*         entryList.add(time); */
-/*       } */
-/*     } */
   }
 
   public String getEntryData(String entry){
@@ -188,10 +176,6 @@ public class History_byTime extends ListActivity{
     }
     Log.d(TAG, "time entryName: "+entryName);
     return entryName;
-
-     /* String record_log; */
-     /* record_log = entry.replace(" ", "+"); */
-     /* return record_log; */
   }
 
 
