@@ -45,7 +45,6 @@ public class AddChart extends Activity {
 		static_data = extras.getString("DATA");
 		fileName = extras.getString("FileName");
 		mOrigin = extras.getString("origin");
-		
 		final Chart_View c = (Chart_View) this.findViewById(R.id.circle);
 		cir = c;
 
@@ -181,6 +180,9 @@ public class AddChart extends Activity {
 			Log.d("TAG", chartData.toString());
 			String data = parseData(chartData);
 			save(data, fileName);
+			/* cir.setmOrigin(this.TAG_FROMHISTORY); */
+			/* mOrigin = this.TAG_FROMHISTORY; */
+      /* onResume(); */
 			finish(); // 
 		}else if(mOrigin.equals(this.TAG_FROMHISTORY)){
 			cir.setmOrigin(this.TAG_FROMCATEGORYSELECT);
