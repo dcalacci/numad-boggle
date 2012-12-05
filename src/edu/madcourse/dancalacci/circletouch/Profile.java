@@ -43,9 +43,9 @@ public class Profile extends Activity{
 	    this.mProfileBar = new ProfileBar(this);
 	    this.mProfileBarSegments = mProfileBar.averageAllSegments();
 	    
-	    for (ProfileBarSegment m : mProfileBarSegments ){
-	    	Log.d(TAG, "mProfileBarContents: " + m.getString());
-	    }
+	    /* for (ProfileBarSegment m : mProfileBarSegments ){ */
+	    /* 	Log.d(TAG, "mProfileBarContents: " + m.getString()); */
+	    /* } */
 	    
 	    Log.d(TAG, "### mProfileBarSegments: " + this.mProfileBarSegments.size());
 	    //this.setAllSegmentValues();
