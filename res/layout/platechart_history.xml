@@ -9,16 +9,28 @@
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="0dp" 
-        android:layout_weight="0.88">
+        android:layout_height="0dp"
+        android:layout_weight="0.88" >
     </ListView>
+
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.88"
+        android:clickable="false"
+        android:entries="@string/empty_list_Label"
+        android:gravity="center_vertical|center_horizontal|center"
+        android:text="@string/empty_list_Label" >
+
+    </TextView>
 
     <LinearLayout
         android:id="@+id/platechart_history_actionBar"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:gravity="bottom"
         android:layout_weight="0.12"
+        android:gravity="bottom"
         android:weightSum="1.0" >
 
         <Button
@@ -26,8 +38,7 @@
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:onClick="onAddChartClick"
-            android:text="Add Chart" />
-
+            android:text="@string/addChart_label" />
     </LinearLayout>
 
 </LinearLayout>
