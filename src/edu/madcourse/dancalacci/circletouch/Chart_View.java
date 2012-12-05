@@ -292,25 +292,58 @@ public class Chart_View extends View {
 
   /**
    * Removes the specified category from the list
-   * @param category
+   * @param category The category to remove
    */
   private void removeCategory(String category){
-    int index = 0;
-    // iterate through category list, skip down if we find category
-    for(Category c : mCategories){
-      if(c.getCategory().equalsIgnoreCase(category)){
-        break;
-      }else{
-        index = index + 1;
+    removeCategoryCleanly(category);
+    /* int index = 0; */
+    /* // iterate through category list, skip down if we find category */
+    /* for(Category c : mCategories){ */
+    /*   if(c.getCategory().equalsIgnoreCase(category)){ */
+    /*     break; */
+    /*   }else{ */
+    /*     index = index + 1; */
+    /*   } */
+    /* } */
+    /* mCategories.remove(index); */
+    /* // if only one category, remove the only remaining one */
+    /* if(mCategories.size() < 2){ */
+    /*   clearPoints(); */
+    /* }else{ */
+    /*   addPoints(); */
+    /*   setPointsToCategories(); */
+    /* } */
+  }
+
+  /**
+   * Removes the given index from categories ~~cleanly~~ - this means 
+   * in such a way that we don't reset the chart.
+   * @param index The index of the category to remove in mCategories
+   */
+  private void removeCategoryCleanly(String cat) {
+    Collections.sort(mCategories);
+
+    for (int i=0; i<mCategories.size(); i++) {
+      if (mCategories.get(i).getCategory().equalsIgnoreCase(cat)) {
+        // remove this points' CW point from the list.
+        mPoints.remove(mCategories.get(i).getpCW());
+        // set the next categories' CCW point to this categories' CCW point.
+        nextCategory(i).setpCCW(mCategories.get(i).getpCCW());
+        // finally, remove this category from the list.
+        mCategories.remove(i);
       }
     }
-    mCategories.remove(index);
-    // if only one category, remove the only remaining one
-    if(mCategories.size() < 2){
-      clearPoints();
-    }else{
-      addPoints();
-      setPointsToCategories();
+  }
+
+  /**
+   * Returns the next index in the category list
+   * @param index The index of the item that is before the item to return.
+   */
+  private Category nextCategory(int index) {
+    if (index == mCategories.size() - 1) {
+      return mCategories.get(0);
+    } else {
+      return mCategories.get(index+1);
     }
   }
 
@@ -649,7 +682,7 @@ public class Chart_View extends View {
       JSONObject jsonObject = new JSONObject(obj);
       jsonArray.put(jsonObject);
 
-    }	
+    }
     return jsonArray;
   }
 
