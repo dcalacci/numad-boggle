@@ -149,7 +149,9 @@ public class History_byDate extends ListActivity{
       Toast.makeText(getBaseContext(), "Sorry, I couldn't open that entry...",
           Toast.LENGTH_SHORT).show();
     }
+    Log.d(TAG, "entryName: "+ entryName);
     return entryName;
+
 
 
 
