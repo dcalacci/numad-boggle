@@ -279,7 +279,7 @@ public void onDeleteClicked(View v){
   }
   // show a toast, tell the user if it succeeded.
   if (deleted) {
-    Toast.makeText(getBaseContext(), "Entry deleted!", Toast.LENGTH_LONG).show();
+    Toast.makeText(getBaseContext(), "Entry deleted!", Toast.LENGTH_SHORT).show();
   } else {
     Toast.makeText(getBaseContext(), "Error deleting entry.",
         Toast.LENGTH_LONG).show();
