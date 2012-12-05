@@ -116,7 +116,7 @@ public class History_byTime extends ListActivity{
     SimpleDateFormat fileDate = 
       new SimpleDateFormat(AddChart.FILE_NAME_FORMAT, Locale.US);
     SimpleDateFormat desiredFormat = 
-      new SimpleDateFormat("hh:mm a");
+      new SimpleDateFormat("hh:mm:ss a");
 
     for (String file : myFiles) {
       // if the date is the date we're interested in
@@ -167,15 +167,17 @@ public class History_byTime extends ListActivity{
 
   /**
    * Returns the date of this entry from the list text, formatted for file
-   * names.
+   * names: HH+MM+ss
    */
   public String formatEntry(String entry){
     SimpleDateFormat fileFormat = 
-      new SimpleDateFormat(AddChart.HISTORY_DATE_FORMAT, Locale.US);
+      new SimpleDateFormat(AddChart.HISTORY_TIME_FORMAT, Locale.US);
     SimpleDateFormat entryFormat= 
-      new SimpleDateFormat("hh:mm a");
+      new SimpleDateFormat("hh+mm+ss");
+    entry = entry.substring(0, entry.length() - 3);
     String entryName = "";
     try {
+      Log.d(TAG, "time entry: "+entry);
       Date date = entryFormat.parse(entry);
       entryName = fileFormat.format(date);
     } catch(ParseException e) {
