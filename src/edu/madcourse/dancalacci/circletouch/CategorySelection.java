@@ -78,6 +78,8 @@ public class CategorySelection extends Activity {
 
 
 	public void onNextClicked(View v) {
+		vibrate(25);
+		
 		Intent i = new Intent(this, AddChart.class);
 		// need to give AddChart the array of items selected.
 		i.putExtra("categories", mCategories);

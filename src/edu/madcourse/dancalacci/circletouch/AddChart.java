@@ -258,6 +258,7 @@ public class AddChart extends Activity {
 
   public void onSaveClicked(View v){
     // clicked save
+  	vibrate(25);
     if (mIsEditing) {
       Log.d(TAG, "Save clicked, saving...");
       JSONArray chartData = cir.getChartData();
@@ -287,6 +288,7 @@ public String parseData(JSONArray jArray){
  */
 public void onDeleteClicked(View v){
   boolean deleted;
+  vibrate(25);
   if(!mFileName.equals("")){
     File file = new File(this.getFilesDir(), mFileName);
     deleted = file.delete();
