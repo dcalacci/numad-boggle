@@ -24,6 +24,7 @@
     <string name="edit_label">Edit</string>
     <string name="next_label">Next</string>
     <string name="category_select_header">What did you eat?</string>
+    <string name="welcome_instructions">Plate Chart is a unique \n diet-tracking application that makes it simple and fun to keep track of the types of foods you eat. \n\n Track your first meal to get started\!</string>
     
     <!-- Team Members -->
     <string name="team_members_label">Team Members</string>
