@@ -21,6 +21,7 @@ public class Profile extends Activity{
 
   private static final String TAG = "edu.madcourse.dancalacci.circletouch.Profile";
   private ProfileBar mProfileBar;
+  HashMap<Integer, Double> allCategoryAverages = new HashMap<Integer, Double>();
   private ArrayList<ProfileBarSegment> mProfileBarSegments = 
     new ArrayList<ProfileBarSegment>();
   private ArrayList<Integer> mSegmentColors = 
@@ -47,7 +48,12 @@ public class Profile extends Activity{
 	    }
 	    
 	    Log.d(TAG, "### mProfileBarSegments: " + this.mProfileBarSegments.size());
+	    //this.setAllSegmentValues();
+	    
+	    this.setHashMapCategoryAverages();
+	    this.updateHashMapCategoryAverages();
 	    this.setAllSegmentValues();
+	    
 	    /* View v = findViewById (R.id.platechart_profile); */
 	    /* v.invalidate(); */
 	    mSegmentColors.add(getResources().getColor(R.color.Protein));
@@ -55,7 +61,7 @@ public class Profile extends Activity{
 	    mSegmentColors.add(getResources().getColor(R.color.Dairy));
 	    mSegmentColors.add(getResources().getColor(R.color.Grain));
 	    mSegmentColors.add(getResources().getColor(R.color.Fruit));
-	    mSegmentColors.add(getResources().getColor(R.color.Protein));
+	    mSegmentColors.add(getResources().getColor(R.color.Oil_Sugar));
   }
 
 
@@ -64,38 +70,35 @@ public class Profile extends Activity{
     i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
     startActivity(i);
   }
-  private void setAllSegmentValues() {
-  HashMap<Integer, Double> hasBeenAdded = 
-    new HashMap<Integer, Double>();
-  /* HashSet<Integer> hasBeenAdded = new HashSet<Integer>(); */
-    for (ProfileBarSegment seg : mProfileBarSegments) {
-      hasBeenAdded.put(seg.getColor(), seg.getValue());
-    }
-
-    for (int c : mSegmentColors) {
-      if (!hasBeenAdded.containsKey(c)) {
-        Log.d(TAG, c+" hasn't been added");
-        setSegmentValueByColor(c, 0);
-      } else {
-        setSegmentValueByColor(hasBeenAdded.get(c), c);
-      }
-    }
-    // go through all the segments from the files, and set the value in the 
-    // layout according to the value of the segment
-    /* for (ProfileBarSegment seg : mProfileBarSegments) { */
-    /*   setSegmentValueByColor(seg.getValue(), seg.getColor()); */
-    /*   Log.d(TAG, "setting "+seg.getColor()+" to " +seg.getValue()); */
-    /*   int c = seg.getColor(); */
-    /*   hasBeenAdded.add(c); */
-    /* } */
-    // for every segment color we can have, loop through and see if it's been
-    // added.  If it hasn't, set the view weight to 0.
-    /* for (int c : mSegmentColors) { */
-    /*   if (!hasBeenAdded.contains(c)) { */
-    /*     Log.d(TAG, "@@@@ setting " +c +" to 0"); */
-    /*     setSegmentValueByColor(c, 0); */
-    /*   } */
-    /* } */
+  
+  private void setHashMapCategoryAverages(){
+	  double base = 0;
+	  allCategoryAverages.put(getResources().getColor(R.color.Protein), base);
+	  allCategoryAverages.put(getResources().getColor(R.color.Vegetable), base);
+	  allCategoryAverages.put(getResources().getColor(R.color.Dairy), base);
+	  allCategoryAverages.put(getResources().getColor(R.color.Grain), base);
+	  allCategoryAverages.put(getResources().getColor(R.color.Fruit), base);
+	  allCategoryAverages.put(getResources().getColor(R.color.Oil_Sugar), base);
+  }
+  
+  private void updateHashMapCategoryAverages() {
+	  Log.d(TAG, "profile size: " + mProfileBarSegments.size());
+	  Log.d(TAG, "BEFORE HASHMAP content" + allCategoryAverages.toString());
+	  if(mProfileBarSegments.size() == 1){
+		  ProfileBarSegment p = mProfileBarSegments.get(0);
+		  allCategoryAverages.remove(p.getColor());
+		  allCategoryAverages.put(p.getColor(), 1.00);
+	  }
+	  if(mProfileBarSegments.size() > 1 ){
+		  for (ProfileBarSegment p : mProfileBarSegments){
+			  Log.d(TAG, "Value : " + p.getValue());
+			  allCategoryAverages.remove(p.getColor());
+			  allCategoryAverages.put(p.getColor(), p.getValue());
+		  }
+	  }
+	  
+	  Log.d(TAG, "AFTER HASHMAP content" + allCategoryAverages.toString());
+	  
   }
 
   /**
@@ -109,6 +112,40 @@ public class Profile extends Activity{
     setSegmentValueByColor(getResources().getColor(R.color.Fruit), 0);
     setSegmentValueByColor(getResources().getColor(R.color.Oil_Sugar), 0);
   }
+  
+  private void setAllSegmentValues(){
+	// Protein
+	this.setSegmentValueByColor(
+			allCategoryAverages.get(getResources().getColor(R.color.Protein)), 
+			getResources().getColor(R.color.Protein));
+	
+	// Vegetable
+	this.setSegmentValueByColor(
+			allCategoryAverages.get(getResources().getColor(R.color.Vegetable)), 
+			getResources().getColor(R.color.Vegetable));
+	
+	// Dairy
+	this.setSegmentValueByColor(
+			allCategoryAverages.get(getResources().getColor(R.color.Dairy)), 
+			getResources().getColor(R.color.Dairy));
+	
+	// Grain
+	this.setSegmentValueByColor(
+			allCategoryAverages.get(getResources().getColor(R.color.Grain)), 
+			getResources().getColor(R.color.Grain));
+	
+	// Fruit
+	this.setSegmentValueByColor(
+			allCategoryAverages.get(getResources().getColor(R.color.Fruit)), 
+			getResources().getColor(R.color.Fruit));
+	
+	// Oil Sugar
+	this.setSegmentValueByColor(
+			allCategoryAverages.get(getResources().getColor(R.color.Oil_Sugar)), 
+			getResources().getColor(R.color.Oil_Sugar));
+		
+  }
+  
   /**
    * Sets the segment's value to the given val.
    * @param val The value to set the segment to
@@ -120,14 +157,6 @@ public class Profile extends Activity{
     TableRow.LayoutParams lp =
       (TableRow.LayoutParams)tv.getLayoutParams();
     lp.weight = (float)val;
-    /* RelativeLayout rl = (RelativeLayout)v; */
-    /* LinearLayout.LayoutParams lp = */
-    /*   (LinearLayout.LayoutParams)rl.getLayoutParams(); */
-    /* lp.weight = (float)val; */
-    /* RelativeLayout.LayoutParams lp = */
-    /*   (RelativeLayout.LayoutParams)rl.getLayoutParams(); */
-    /* lp.addRule(RelativeLayout.ABOVE, val); */
-    /* ((RelativeLayout.LayoutParams)rl.getLayoutParams()).weight = (float)val; */
   }
   /**
    * Returns the View that corresponds to the selected segment's 

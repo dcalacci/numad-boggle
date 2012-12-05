@@ -39,6 +39,7 @@ public class ProfileBar {
    * god this is awful
    */
   public ArrayList<ProfileBarSegment> averageAllSegments() {
+	//=========================================================
     // Keeping track of all the segments total percentages
 	  Log.d(TAG, "## AverageAllSegment CALLED");
     HashMap<Integer, Double> segmentTotal = 
@@ -50,7 +51,8 @@ public class ProfileBar {
     // The hashmap to return, that contains the averages for each color
     HashMap<Integer, Double> segmentAverage = 
       new HashMap<Integer, Double>();
-
+    //==========================================================
+    
     // populate the counting map and the total map
     for (ProfileBarSegment segment : getAllSegments()) { 
       // if we haven't added one of this color, initialize it with 0
