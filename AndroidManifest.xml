@@ -1,10 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.madcourse.dancalacci"
-    android:versionCode="4"
+    android:versionCode="5"
     android:versionName="2.3" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="7"
         android:targetSdkVersion="8" />
 
     <!-- NUMAD Authorization -->
@@ -19,15 +19,17 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
-        android:debuggable="true"
         android:label="@string/app_name"
-        android:theme="@style/CustomTheme" >
+        android:theme="@style/CustomTheme"
+        android:icon="@drawable/platechart_launcher">
 
         <!-- Main Activity -->
         <activity
             android:name="edu.madcourse.dancalacci.MainActivity"
             android:label="@string/title_activity_main"
             android:icon="@drawable/ic_launcher"
+            android:taskAffinity="edu.madcourse.dancalacci.MainActivity"
+            
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,6 +43,8 @@
             android:name="edu.madcourse.dancalacci.circletouch.PlateChart_main"
             android:label="@string/final_app_name"
             android:screenOrientation="portrait" 
+            android:taskAffinity="edu.madcourse.dancalacci.circletouch"
+            
             android:icon="@drawable/platechart_launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
