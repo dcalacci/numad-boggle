@@ -49,23 +49,28 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".circletouch.Plate_chart_project"
+            android:label="@string/final_app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name=".circletouch.AddChart"
-            android:label="@string/app_name"
+            android:label="@string/final_app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".circletouch.History_byDate"
-            android:label="@string/app_name"
+            android:label="@string/final_app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".circletouch.CategorySelection"
-            android:label="@string/app_name"
+            android:label="@string/final_app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".circletouch.History_byTime"
-            android:label="@string/app_name"
+            android:label="@string/final_app_name"
             android:screenOrientation="portrait" >
         </activity>
         <activity

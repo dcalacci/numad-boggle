@@ -32,6 +32,11 @@
         the <b>Plate Chart</b> to keep track of how much of each thing you ate.
         \n\nDon\'t worry about whether or not the chart is exactly right.
         \n\nAs long as you think it\'s accurate, it is!</string>
+    <string name="project_description">Plate Chart is a way to catalog and keep track of  the types of  food you eat.  After every meal 
+or snack, you enter the types of  food you ate - Protein, Vegetable, Dairy, Grains, Fruits, or Sugar/
+Oils.  You enter the data using an intuitive pie-chart like interface - there’s no text entry involved.  
+After you’ve tracked a meal, you can view your meal history or compare your tracked proportions to 
+the FDA recommended amounts.</string>
 
     <!-- Team Members -->
     <string name="team_members_label">Team Members</string>
@@ -67,7 +72,7 @@
 
 
     <!-- Trickiest Part -->
-    <string name="trickiest_part_button">Trickiest Part</string>
+    <string name="trickiest_part_button">Final Project</string>
     <string name="circletouch_hello">Hello World, circletouchActivity!</string>
     <string name="circletouch_app_name">circletouch</string>
 

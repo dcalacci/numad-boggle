@@ -22,6 +22,7 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -165,18 +166,16 @@ public class History_byDate extends ListActivity{
     }
     Log.d(TAG, "entryName: "+ entryName);
     return entryName;
-
-
-
-
-
-    /* String record_log;  */
-    /* record_log = entry.replace(" ", "+"); */
-    /* return record_log;		 */
   }
 
-
+  private void vibrate(int ms) {
+    Vibrator v = 
+      (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+    v.vibrate(ms);
+  }
+  
   public void onAddChartClick(View v){
+  	vibrate(25);
     Intent i = new Intent(this, CategorySelection.class);
     i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
     startActivity(i);

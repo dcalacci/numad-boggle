@@ -8,6 +8,7 @@ import android.content.Intent;
 import edu.madcourse.dancalacci.sudoku.*;
 import edu.madcourse.dancalacci.boggle.*;
 import edu.madcourse.dancalacci.circletouch.PlateChart_main;
+import edu.madcourse.dancalacci.circletouch.Plate_chart_project;
 
 public class MainActivity extends Activity {
 
@@ -50,7 +51,7 @@ public class MainActivity extends Activity {
     }
     
     public void OnTrickiestPartButtonClicked(View v) {
-    	Intent i = new Intent(this, PlateChart_main.class);
+    	Intent i = new Intent(this, Plate_chart_project.class);
     	startActivity(i);
     }
 }
