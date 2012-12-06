@@ -120,14 +120,14 @@ the FDA recommended amounts.</string>
        highest score wins.</string>
     <string name="boggle_acknowledgements_content">Acknowledgements</string>
     <string name="boggle_acknowledgements_button_label">Acknowledgements</string>
-    <string name="boggle_acknowledgements_text">       I\'d like to thank several people from this class for giving me
-       inspiration for some of the design concepts I use in this application,
-       especially the timer aspect, but I don\'t know their names.
-       Some pieces of code were inspired by answers to questions on StackOverflow, 
-       and some were taken directly out of the Android Documentation.  We received a good bit of help
-       from Matt Garnes to implement AsyncTask.\n\n By Jason Ng and Dan Calacci.\n\n
-       
-       This game is totally not fully functional, but much of the back-end is in place.</string>
+    <string name="boggle_acknowledgements_text">We\'d like to thank our friends 
+      and family for putting up with our 
+      effective leave of abscence this semester, attributable almost exclusively
+      to this class. We\'d also like to thank Matt Garnes, who provided insight 
+      we would not have been able to find anywhere else. All of the content in 
+      this application is  original, created by either Dan Calacci or 
+      Jayson Ng." </string>
+
     <string name="boggle_label">Boggle</string>
     <string name="boggle_new_game_label">New Game</string>
     <string name="boggle_pause_label">Pause</string>

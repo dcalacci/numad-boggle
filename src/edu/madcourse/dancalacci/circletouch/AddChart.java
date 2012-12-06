@@ -19,6 +19,7 @@ import org.json.JSONArray;
 import edu.madcourse.dancalacci.R;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 
 public class AddChart extends Activity {
   private final String TAG = "circletouch.circle.AddChart";
+  private final String SPREFSKEY = "edu.madcourse.dancalacci.circletouch.addchart";
   public final static String TAG_ISEDITING = "editing";
   public final static String TAG_FILENAME = "FileName";
   public final static String FILE_NAME_FORMAT = "yyyy-MM-dd_HH+mm+ss";
@@ -45,6 +47,7 @@ public class AddChart extends Activity {
   private Date mDate;
 
   private Boolean mIsEditing = false;
+  private Boolean fromOnCreate;
 
   public void onCreate(Bundle savedInstanceState) {
     this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -73,12 +76,40 @@ public class AddChart extends Activity {
     cir.setmOrigin(mOrigin);
 
     cir.setIsEditing(mIsEditing);
+
+    fromOnCreate = true;
+  }
+
+  public void onPause() {
+    super.onPause();
+    SharedPreferences settings = getSharedPreferences(SPREFSKEY, MODE_PRIVATE);
+         SharedPreferences.Editor prefEditor = settings.edit();
+         prefEditor.putBoolean("fromPause", true);
+         prefEditor.putString("categories", cir.getChartData().toString());
+         prefEditor.putBoolean("canEdit", mIsEditing);
+         prefEditor.commit();
+         fromOnCreate = false;
   }
 
   public void onResume(){
     super.onResume();
     Button deleteButton = (Button) this.findViewById(R.id.addChart_Delete);
     Button edit_addButton = (Button) this.findViewById(R.id.addChart_Save);
+
+    if (!fromOnCreate) {
+      SharedPreferences settings = getSharedPreferences(SPREFSKEY, MODE_PRIVATE);
+      if (settings.getBoolean("fromPause", false)) {
+        String s_cats = settings.getString("categories", "");
+
+        if (s_cats.equals("")) {
+          categories = new ArrayList<String>();
+        } else {
+          static_data = s_cats;
+        }
+        this.mIsEditing = settings.getBoolean("canEdit", false);
+        settings.edit().clear().commit();
+        }
+    }
 
     // if we're editing the chart...
     if (mIsEditing) {
@@ -267,12 +298,14 @@ public class AddChart extends Activity {
       mIsEditing = false;
       static_data = getDataFromFile(mFileName);
       cir.setIsEditing(false);
+      fromOnCreate = true;
           onResume();
     } else { // clicked edit
       Log.d(TAG, "Edit clicked, editing...");
       mIsEditing = true;
       cir.setIsEditing(true);
       cir.invalidate();
+      fromOnCreate = true;
       onResume();
     }
   }
