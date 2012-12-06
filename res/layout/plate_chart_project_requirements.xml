@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Chart_Background"
+    android:orientation="vertical"
+    android:weightSum="1.0" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/boggle_light"
+        android:gravity="center_vertical|center_horizontal|center"
+        android:text="PLATE CHART"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/boggle_hilite"
+        android:textSize="30dp"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.88" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/project_descriptions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left|center_vertical"
+                android:paddingTop="10dp"
+                android:text="@string/project_description"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/boggle_foreground" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/project_start"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.12"
+        android:onClick="OnProjectStartClicked"
+        android:text="START!" />
+
+</LinearLayout>

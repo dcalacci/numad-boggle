@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:custom="http//schemas.android.com/apk/res/edu.madcourse.dancalacci.circletouch"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/Chart_Background"
+    android:orientation="vertical"
+    android:weightSum="1.00"
+    tools:context=".CategorySelection" >
+  <!-- Buttons at top of screen -->
+  <RelativeLayout
+      android:layout_width="wrap_content"
+      android:layout_height="0dp" 
+      android:layout_weight="0.08"
+      android:weightSum="1.00">
+
+    <TextView
+        android:id="@+id/header_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/categorySelect_Next"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/categorySelect_Next"
+        android:gravity="left|center_vertical|center"
+        android:text="@string/category_select_header"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/puzzle_foreground" />
+      
+    <Button
+        android:id="@+id/categorySelect_Next"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:onClick="onNextClicked"
+        android:text="@string/next_label" />
+
+    
+
+  </RelativeLayout>
+
+  <TableLayout
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_gravity="bottom|center"
+      android:layout_weight="0.92"
+      android:weightSum="1.0">
+    <TableRow
+        android:id="@+id/csTableRowProtein"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.166"
+        android:weightSum="1.0"
+        android:clickable="true"
+        android:onClick="onProteinClicked">
+
+      <RelativeLayout
+          android:id="@+id/protein_cs_row"
+          android:layout_width="fill_parent"
+          android:layout_height="fill_parent"
+          android:layout_gravity="fill_vertical|fill_horizontal|center">
+        <TextView
+            android:id="@+id/protein_cs_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:paddingLeft="30dp"
+            android:text="Protein"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/Protein_Grayed"
+            tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/protein_cs_box"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:background="@color/Protein_Grayed"
+            android:paddingLeft="10dp"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+      </RelativeLayout>
+
+
+    </TableRow>
+        <TableRow
+            android:id="@+id/csTableRowVegetable"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.166" 
+            android:clickable="true"
+            android:onClick="onVegetableClicked" >
+          <RelativeLayout
+              android:id="@+id/vegetable_cs_row"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:layout_gravity="fill_vertical|fill_horizontal|center">
+
+            <TextView
+                android:id="@+id/vegetable_cs_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:paddingLeft="30dp"
+                android:text="Vegetable"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/Vegetable_Grayed"
+                tools:ignore="HardcodedText" />
+            <TextView
+                android:id="@+id/vegetable_cs_box"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:background="@color/Vegetable_Grayed"
+                android:paddingLeft="10dp"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+          </RelativeLayout>
+
+
+
+        </TableRow>
+        <TableRow
+            android:id="@+id/csTableRowDairy"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.166"
+            android:clickable="true"
+            android:onClick="onDairyClicked">
+          <RelativeLayout
+              android:id="@+id/dairy_cs_row"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:layout_gravity="fill_vertical|fill_horizontal|center">
+
+            <TextView
+                android:id="@+id/dairy_cs_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:paddingLeft="30dp"
+                android:text="Dairy"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/Dairy_Grayed"
+                tools:ignore="HardcodedText" />
+            <TextView
+                android:id="@+id/dairy_cs_box"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:background="@color/Dairy_Grayed"
+                android:paddingLeft="10dp"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+          </RelativeLayout>
+
+
+
+        </TableRow>
+        <TableRow
+            android:id="@+id/csTableRowFruit"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.166"
+              android:clickable="true"
+              android:onClick="onFruitClicked">
+          <RelativeLayout
+              android:id="@+id/fruit_cs_row"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:layout_gravity="fill_vertical|fill_horizontal|center">
+
+            <TextView
+                android:id="@+id/fruit_cs_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:paddingLeft="30dp"
+                android:text="Fruit"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/Fruit_Grayed"
+                tools:ignore="HardcodedText" />
+            <TextView
+                android:id="@+id/fruit_cs_box"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:background="@color/Fruit_Grayed"
+                android:paddingLeft="10dp"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+          </RelativeLayout>
+        </TableRow>
+        <TableRow
+            android:id="@+id/csTableRowGrain"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.166"
+            android:clickable="true"
+            android:onClick="onGrainClicked">
+          <RelativeLayout
+              android:id="@+id/grain_cs_row"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:layout_gravity="fill_vertical|fill_horizontal|center">
+
+            <TextView
+                android:id="@+id/grain_cs_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:paddingLeft="30dp"
+                android:text="Grain"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/Grain_Grayed"
+                tools:ignore="HardcodedText" />
+            <TextView
+                android:id="@+id/grain_cs_box"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:background="@color/Grain_Grayed"
+                android:paddingLeft="10dp"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+          </RelativeLayout>
+        </TableRow>
+        <TableRow
+            android:id="@+id/csTableRowOil"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.166"
+            android:clickable="true"
+            android:onClick="onOilSugarClicked" >
+          <RelativeLayout
+              android:id="@+id/oil_cs_row"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:layout_gravity="fill_vertical|fill_horizontal|center">
+
+            <TextView
+                android:id="@+id/oil_cs_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:paddingLeft="30dp"
+                android:text="Oil/Sugar"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/Oil_Sugar_Grayed"
+                tools:ignore="HardcodedText" />
+            <TextView
+                android:id="@+id/oil_cs_box"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:background="@color/Protein_Grayed"
+                android:paddingLeft="10dp"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+          </RelativeLayout>
+        </TableRow>
+      </TableLayout>
+
+
+    </LinearLayout>
+

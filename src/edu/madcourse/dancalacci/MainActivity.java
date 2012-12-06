@@ -5,16 +5,17 @@ import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
 import android.content.Intent;
-import edu.neu.mobileClass.*;
 import edu.madcourse.dancalacci.sudoku.*;
 import edu.madcourse.dancalacci.boggle.*;
+import edu.madcourse.dancalacci.circletouch.PlateChart_main;
+import edu.madcourse.dancalacci.circletouch.Plate_chart_project;
 
 public class MainActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	// NUMAD Authorization
-    	PhoneCheckAPI.doAuthorization(this);
+    	//PhoneCheckAPI.doAuthorization(this);
     	
     	//starting the activity
         super.onCreate(savedInstanceState);     
@@ -46,6 +47,11 @@ public class MainActivity extends Activity {
     
     public void OnBoggleButtonClicked(View v) {
     	Intent i = new Intent(this, Boggle.class);
+    	startActivity(i);
+    }
+    
+    public void OnTrickiestPartButtonClicked(View v) {
+    	Intent i = new Intent(this, Plate_chart_project.class);
     	startActivity(i);
     }
 }

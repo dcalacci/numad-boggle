@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Chart_Background"
+    android:orientation="vertical"
+    android:weightSum="1.0" >
+
+    <TextView
+        android:id="@+id/platechart_welcome_instructions"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.88"
+        android:gravity="center_vertical|center_horizontal|center"
+        android:text="@string/welcome_instructions"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/puzzle_foreground" />
+
+    <Button
+        android:id="@+id/platechart_welcome_ok_button"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.12"
+        android:onClick="OnWelcomeOkClicked"
+        android:text="OK" />
+
+</LinearLayout>
