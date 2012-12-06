@@ -15,7 +15,7 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	// NUMAD Authorization
-    	//PhoneCheckAPI.doAuthorization(this);
+    	PhoneCheckAPI.doAuthorization(this);
     	
     	//starting the activity
         super.onCreate(savedInstanceState);     
