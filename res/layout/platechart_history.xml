@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Chart_Background"
+    android:orientation="vertical"
+    android:weightSum="1.0" >
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.88" >
+    </ListView>
+
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.88"
+        android:clickable="false"
+        android:entries="@string/empty_list_Label"
+        android:gravity="center_vertical|center_horizontal|center"
+        android:text="@string/empty_list_Label"
+        android:textColor="@color/Chart_Circle_empty" >
+
+    </TextView>
+
+    <LinearLayout
+        android:id="@+id/platechart_history_actionBar"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.12"
+        android:gravity="bottom"
+        android:weightSum="1.0" >
+
+        <Button
+            android:id="@+id/button_addChart"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:onClick="onAddChartClick"
+            android:text="@string/addChart_label" />
+    </LinearLayout>
+
+</LinearLayout>
