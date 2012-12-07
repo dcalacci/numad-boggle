@@ -9,13 +9,14 @@ import edu.madcourse.dancalacci.sudoku.*;
 import edu.madcourse.dancalacci.boggle.*;
 import edu.madcourse.dancalacci.circletouch.PlateChart_main;
 import edu.madcourse.dancalacci.circletouch.Plate_chart_project;
+import edu.neu.mobileClass.PhoneCheckAPI;
 
 public class MainActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	// NUMAD Authorization
-    	PhoneCheckAPI.doAuthorization(this);
+    	 PhoneCheckAPI.doAuthorization(this);
     	
     	//starting the activity
         super.onCreate(savedInstanceState);     
