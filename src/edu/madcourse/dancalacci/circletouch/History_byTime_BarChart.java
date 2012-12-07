@@ -85,7 +85,8 @@ public class History_byTime_BarChart extends ListActivity{
 
 						// selected item
 						String entry = adapter.getEntry(position);
-						String date_entry = formatEntry(entry.replace(":", "+"));
+            String date_entry = formatEntry(entry);
+						/* String date_entry = formatEntry(entry.replace(":", "+")); */
 						String fileName = current_date+"_"+ date_entry +".txt";
 						String data = getEntryData(date_entry);
 
@@ -169,7 +170,7 @@ public class History_byTime_BarChart extends ListActivity{
 		SimpleDateFormat fileFormat = 
 				new SimpleDateFormat(AddChart.HISTORY_TIME_FORMAT, Locale.US);
 		SimpleDateFormat entryFormat= 
-				new SimpleDateFormat("hh+mm+ss");
+				new SimpleDateFormat("hh:mm:ss");
 		// substring because we can't parse AM/PM using SimpleDateFormat
 		// get AM/PM TAG
 		String AM_PM = entry.substring(entry.length() - 2, entry.length());

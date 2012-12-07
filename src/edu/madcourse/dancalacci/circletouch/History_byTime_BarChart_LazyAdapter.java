@@ -96,7 +96,12 @@ public class History_byTime_BarChart_LazyAdapter extends BaseAdapter {
       new HashMap<String, Double>();
     ArrayList<Category> cats = getCatListFromFile(index);
     for (Category cat : cats) {
-      valueMap.put(cat.getCategory(), ProfileBar.categoryToPercentage(cat));
+      double percent = ProfileBar.categoryToPercentage(cat);
+      if (percent == 0) {
+        valueMap.put(cat.getCategory(), 1.00);
+      }else {
+        valueMap.put(cat.getCategory(), ProfileBar.categoryToPercentage(cat));
+      }
     }
     return valueMap;
   }
@@ -107,6 +112,8 @@ public class History_byTime_BarChart_LazyAdapter extends BaseAdapter {
       Map.Entry<String, Double> pairs = (Map.Entry<String, Double>)it.next();
       //System.out.println(pairs.getKey() + " = " + pairs.getValue());
       setSegmentValue(pairs.getKey(), pairs.getValue(), v);
+
+      Log.d(TAG, "Setting "+pairs.getKey() +" to " +pairs.getValue());
       /* it.remove(); // avoids a ConcurrentModificationException */
     }
   }
