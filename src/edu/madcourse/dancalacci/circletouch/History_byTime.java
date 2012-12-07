@@ -210,51 +210,7 @@ public class History_byTime extends ListActivity{
     startActivity(i);
   }
 
-  public class CustomListViewAdapter extends BaseAdapter
-  {  
-  	
-  	LayoutInflater inflater;
-  	ArrayList<String> items;
-  	
-      public CustomListViewAdapter(Activity context, ArrayList<String> items) {  
-          super();
-  		
-          this.items = items;
-          this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-      }
-      
-      @Override  
-      public int getCount() {  
-          // TODO Auto-generated method stub  
-          return items.size();  
-      }  
-    
-      @Override  
-      public Object getItem(int position) {  
-          // TODO Auto-generated method stub  
-          return null;  
-      }  
-    
-      @Override  
-      public long getItemId(int position) {  
-          // TODO Auto-generated method stub  
-          return 0;  
-      }
-        
- 
-      public View getView(final int position, View convertView, ViewGroup parent) {  
-          // TODO Auto-generated method stub  
-
-      	View vi=convertView;
-          
-          if(convertView==null)
-              vi = inflater.inflate(R.layout.platechart_history_rows_barchart, null);
-              
-          
-            
-          return vi;  
-      }
-  }
+  
   
   
 }

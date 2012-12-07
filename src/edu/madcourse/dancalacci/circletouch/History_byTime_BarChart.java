@@ -40,6 +40,8 @@ public class History_byTime_BarChart extends ListActivity{
 	final History_byTime_BarChart thisActivity = this;
 	ArrayList<String> entryList = new ArrayList<String>();
 	String current_date;
+	
+	
 
 	//NOT USED FOR NOW
 	//History_View hist;
@@ -56,8 +58,6 @@ public class History_byTime_BarChart extends ListActivity{
 		this.current_date = this.getIntent().getExtras().getString("DATE");
 		//addContent();
 	}
-
-
 
 	protected void onResume() {
 		super.onResume();

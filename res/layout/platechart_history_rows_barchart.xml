@@ -27,7 +27,7 @@
             android:weightSum="1.0">
 
             <TextView
-                android:id="@+id/profile_empty_text"
+                android:id="@+id/byTime_empty_text"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_alignParentLeft="true"
@@ -40,7 +40,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/profile_protein_block"
+                android:id="@+id/byTime_protein_block"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_alignParentLeft="true"
@@ -49,7 +49,7 @@
                 android:background="@color/Protein" />
 
             <TextView
-                android:id="@+id/profile_vegetable_block"
+                android:id="@+id/byTime_vegetable_block"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_alignParentLeft="true"
@@ -58,7 +58,7 @@
                 android:background="@color/Vegetable" />
 
             <TextView
-                android:id="@+id/profile_dairy_block"
+                android:id="@+id/byTime_dairy_block"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_alignParentLeft="true"
@@ -67,7 +67,7 @@
                 android:background="@color/Dairy" />
 
             <TextView
-                android:id="@+id/profile_fruit_block"
+                android:id="@+id/byTime_fruit_block"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_alignParentLeft="true"
@@ -76,7 +76,7 @@
                 android:background="@color/Fruit" />
 
             <TextView
-                android:id="@+id/profile_grain_block"
+                android:id="@+id/byTime_grain_block"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_alignParentLeft="true"
@@ -85,7 +85,7 @@
                 android:background="@color/Grain" />
 
             <TextView
-                android:id="@+id/profile_oil_block"
+                android:id="@+id/byTime_oil_block"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_alignParentLeft="true"
