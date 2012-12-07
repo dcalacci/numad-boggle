@@ -10,7 +10,8 @@
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.88" >
+        android:layout_weight="0.88" 
+        android:cacheColorHint="#00000000">
     </ListView>
 
     <TextView
@@ -22,8 +23,7 @@
         android:entries="@string/empty_list_Label"
         android:gravity="center_vertical|center_horizontal|center"
         android:text="@string/empty_list_Label"
-        android:textColor="@color/Chart_Circle_empty"
-        >
+        android:textColor="@color/Chart_Circle_empty">
 
     </TextView>
 
