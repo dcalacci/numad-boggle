@@ -22,7 +22,8 @@
         android:entries="@string/empty_list_Label"
         android:gravity="center_vertical|center_horizontal|center"
         android:text="@string/empty_list_Label"
-        android:textColor="@color/Chart_Circle_empty" >
+        android:textColor="@color/Chart_Circle_empty"
+        >
 
     </TextView>
 
