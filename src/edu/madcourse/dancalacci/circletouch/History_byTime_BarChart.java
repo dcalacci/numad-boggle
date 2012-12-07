@@ -36,7 +36,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import edu.madcourse.dancalacci.R;
 
 public class History_byTime_BarChart extends ListActivity{
-	private String TAG = "circletouch.History_byTime_BarChart";
+	private static String TAG = "circletouch.History_byTime_BarChart";
 	//	History_Adaptor adapter;
 	final History_byTime_BarChart thisActivity = this;
 	public ArrayList<String> entryList = new ArrayList<String>();
@@ -72,7 +72,7 @@ public class History_byTime_BarChart extends ListActivity{
 		Collections.sort(entryList);
 		Collections.reverse(entryList);
 
-		adapter = new History_byTime_BarChart_LazyAdapter(this.getApplicationContext(), entryList);
+		adapter = new History_byTime_BarChart_LazyAdapter(this.getApplicationContext(), entryList, current_date);
 		setListAdapter(adapter);
 		//this.setListAdapter(new ArrayAdapter<String>(this, R.layout.platechart_history_rows_barchart, R.id.label, entryList));
 
@@ -165,7 +165,7 @@ public class History_byTime_BarChart extends ListActivity{
 	 * Formats the textview entry from the listadapter for reading from file
 	 * names: HH+MM+ss
 	 */
-	public String formatEntry(String entry){
+	public static String formatEntry(String entry){
 		SimpleDateFormat fileFormat = 
 				new SimpleDateFormat(AddChart.HISTORY_TIME_FORMAT, Locale.US);
 		SimpleDateFormat entryFormat= 
@@ -199,8 +199,8 @@ public class History_byTime_BarChart extends ListActivity{
 		} catch(ParseException e) {
 			Log.e(TAG, "error parsing time");
 			e.printStackTrace();
-			Toast.makeText(getBaseContext(), "Sorry, I couldn't open that entry...",
-					Toast.LENGTH_SHORT).show();
+			/* Toast.makeText(getBaseContext(), "Sorry, I couldn't open that entry...", */
+			/* 		Toast.LENGTH_SHORT).show(); */
 		}
 		Log.d(TAG, "time entryName: "+entryName);
 		return entryName;

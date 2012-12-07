@@ -36,7 +36,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 public class History_byTime extends ListActivity{
-  private String TAG = "circletouch.History";
+  private static String TAG = "circletouch.History";
   //	History_Adaptor adapter;
   final History_byTime thisActivity = this;
   ArrayList<String> entryList = new ArrayList<String>();
@@ -165,7 +165,7 @@ public class History_byTime extends ListActivity{
    * Formats the textview entry from the listadapter for reading from file
    * names: HH+MM+ss
    */
-  public String formatEntry(String entry){
+  public static String formatEntry(String entry){
     SimpleDateFormat fileFormat = 
       new SimpleDateFormat(AddChart.HISTORY_TIME_FORMAT, Locale.US);
     SimpleDateFormat entryFormat= 
@@ -199,8 +199,8 @@ public class History_byTime extends ListActivity{
     } catch(ParseException e) {
       Log.e(TAG, "error parsing time");
       e.printStackTrace();
-      Toast.makeText(getBaseContext(), "Sorry, I couldn't open that entry...",
-          Toast.LENGTH_SHORT).show();
+      /* Toast.makeText(this, "Sorry, I couldn't open that entry...", */
+      /*     Toast.LENGTH_SHORT).show(); */
     }
     Log.d(TAG, "time entryName: "+entryName);
     return entryName;

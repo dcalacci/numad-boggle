@@ -1,4 +1,9 @@
 package edu.madcourse.dancalacci.circletouch;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -106,6 +111,22 @@ public class JSONParser {
     }
     return cats;
       }
+
+  public static ArrayList<Category> getCatListFromFile(String filename, Context ctx) {
+    // get the time, format it, and add it to the date to make the filename
+    String data = "";
+    try {
+      FileInputStream fis = ctx.openFileInput(filename);
+      BufferedReader r = new BufferedReader(new InputStreamReader(fis));
+      data = r.readLine();
+      r.close();
+    } catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    return getCatListFromString(data, ctx);
+  }
 
 }
 
