@@ -20,7 +20,6 @@
             android:id="@android:id/tabcontent"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_above="@+id/multiplayer_navbar"
             android:layout_below="@android:id/tabs" >
 
             <!-- empty view -->

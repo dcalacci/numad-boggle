@@ -16,14 +16,19 @@ import java.util.Date;
 import java.util.Locale;
 
 import edu.madcourse.dancalacci.R;
+import android.app.Activity;
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -205,4 +210,51 @@ public class History_byTime extends ListActivity{
     startActivity(i);
   }
 
+  public class CustomListViewAdapter extends BaseAdapter
+  {  
+  	
+  	LayoutInflater inflater;
+  	ArrayList<String> items;
+  	
+      public CustomListViewAdapter(Activity context, ArrayList<String> items) {  
+          super();
+  		
+          this.items = items;
+          this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+      }
+      
+      @Override  
+      public int getCount() {  
+          // TODO Auto-generated method stub  
+          return items.size();  
+      }  
+    
+      @Override  
+      public Object getItem(int position) {  
+          // TODO Auto-generated method stub  
+          return null;  
+      }  
+    
+      @Override  
+      public long getItemId(int position) {  
+          // TODO Auto-generated method stub  
+          return 0;  
+      }
+        
+ 
+      public View getView(final int position, View convertView, ViewGroup parent) {  
+          // TODO Auto-generated method stub  
+
+      	View vi=convertView;
+          
+          if(convertView==null)
+              vi = inflater.inflate(R.layout.platechart_history_rows_barchart, null);
+              
+          
+            
+          return vi;  
+      }
+  }
+  
+  
 }

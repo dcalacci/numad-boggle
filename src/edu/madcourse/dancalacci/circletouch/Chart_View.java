@@ -112,7 +112,7 @@ public class Chart_View extends View {
     try {
       // resolve values from the typedarray and store into fields
       mTouchPointRadius = 
-        a.getInteger(R.styleable.circle_touchPointRadius, 40);
+        a.getInteger(R.styleable.circle_touchPointRadius, 25);
       mTouchPointColor = 
         a.getInteger(R.styleable.circle_touchPointColor,0xffff0000); 
 

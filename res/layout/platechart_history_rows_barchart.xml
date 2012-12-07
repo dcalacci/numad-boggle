@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1.0" >
+
+        <TextView
+            android:id="@+id/label"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.4"
+            android:padding="10dip"
+            android:textColor="@color/Chart_Circle_empty"
+            android:textSize="16dip"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6" 
+            android:weightSum="1.0">
+
+            <TextView
+                android:id="@+id/profile_empty_text"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_weight="0"
+                android:background="@color/Chart_Background"
+                android:gravity="center"
+                android:padding="10dip"
+                android:textSize="16dip"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/profile_protein_block"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/profile_empty_text"
+                android:layout_weight="0"
+                android:background="@color/Protein" />
+
+            <TextView
+                android:id="@+id/profile_vegetable_block"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/profile_protein_block"
+                android:layout_weight="0"
+                android:background="@color/Vegetable" />
+
+            <TextView
+                android:id="@+id/profile_dairy_block"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/profile_vegetable_block"
+                android:layout_weight="0"
+                android:background="@color/Dairy" />
+
+            <TextView
+                android:id="@+id/profile_fruit_block"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/profile_dairy_block"
+                android:layout_weight="0"
+                android:background="@color/Fruit" />
+
+            <TextView
+                android:id="@+id/profile_grain_block"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/profile_fruit_block"
+                android:layout_weight="0"
+                android:background="@color/Grain" />
+
+            <TextView
+                android:id="@+id/profile_oil_block"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/profile_grain_block"
+                android:layout_weight="0"
+                android:background="@color/Oil_Sugar" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
