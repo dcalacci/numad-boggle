@@ -25,7 +25,6 @@ public class Plate_chart_project extends Activity{
 	
 	public void OnProjectStartClicked(View v){
 		Intent i = new Intent(this, PlateChart_main.class);
-		i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
     startActivity(i);
 	}
 

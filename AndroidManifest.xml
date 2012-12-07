@@ -78,6 +78,11 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="edu.madcourse.dancalacci.circletouch.History_byTime_BarChart"
+            android:label="@string/final_app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="edu.madcourse.dancalacci.circletouch.Profile"
             android:label="@string/your_profile_label"
             android:screenOrientation="portrait" >

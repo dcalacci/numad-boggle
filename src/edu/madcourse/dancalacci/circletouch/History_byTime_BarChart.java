@@ -31,17 +31,17 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import edu.madcourse.dancalacci.R;
 
 public class History_byTime_BarChart extends ListActivity{
-	private String TAG = "circletouch.History";
+	private String TAG = "circletouch.History_byTime_BarChart";
 	//	History_Adaptor adapter;
 	final History_byTime_BarChart thisActivity = this;
-	ArrayList<String> entryList = new ArrayList<String>();
-	String current_date;
-	
-	
+	public ArrayList<String> entryList = new ArrayList<String>();
+	private String current_date;
+	private History_byTime_BarChart_LazyAdapter adapter;
 
 	//NOT USED FOR NOW
 	//History_View hist;
@@ -61,6 +61,8 @@ public class History_byTime_BarChart extends ListActivity{
 
 	protected void onResume() {
 		super.onResume();
+	
+		
 		entryList.clear();
 		getTimeList();
 		if (entryList.size() == 0){
@@ -70,7 +72,9 @@ public class History_byTime_BarChart extends ListActivity{
 		Collections.sort(entryList);
 		Collections.reverse(entryList);
 
-		this.setListAdapter(new ArrayAdapter<String>(this, R.layout.platechart_history_rows_barchart, R.id.label, entryList));
+		adapter = new History_byTime_BarChart_LazyAdapter(this.getApplicationContext(), entryList);
+		setListAdapter(adapter);
+		//this.setListAdapter(new ArrayAdapter<String>(this, R.layout.platechart_history_rows_barchart, R.id.label, entryList));
 
 		ListView lv = getListView();
 
@@ -80,7 +84,7 @@ public class History_byTime_BarChart extends ListActivity{
 							int position, long id) {
 
 						// selected item
-						String entry = ((TextView) view).getText().toString();
+						String entry = adapter.getEntry(position);
 						String date_entry = formatEntry(entry.replace(":", "+"));
 						String fileName = current_date+"_"+ date_entry +".txt";
 						String data = getEntryData(date_entry);
@@ -208,50 +212,4 @@ public class History_byTime_BarChart extends ListActivity{
 		i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 		startActivity(i);
 	}
-	
-	public class CustomListViewAdapter extends BaseAdapter
-  {  
-  	
-  	LayoutInflater inflater;
-  	ArrayList<String> items;
-  	
-      public CustomListViewAdapter(Activity context, ArrayList<String> items) {  
-          super();
-  		
-          this.items = items;
-          this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-      }
-      
-      @Override  
-      public int getCount() {  
-          // TODO Auto-generated method stub  
-          return items.size();  
-      }  
-    
-      @Override  
-      public Object getItem(int position) {  
-          // TODO Auto-generated method stub  
-          return null;  
-      }  
-    
-      @Override  
-      public long getItemId(int position) {  
-          // TODO Auto-generated method stub  
-          return 0;  
-      }
-        
- 
-      public View getView(final int position, View convertView, ViewGroup parent) {  
-          // TODO Auto-generated method stub  
-
-      	View vi=convertView;
-          
-          if(convertView==null)
-              vi = inflater.inflate(R.layout.platechart_history_rows_barchart, null);
-              
-          
-            
-          return vi;  
-      }
-  }
 }

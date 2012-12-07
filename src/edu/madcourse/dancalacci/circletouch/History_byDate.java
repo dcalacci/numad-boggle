@@ -84,7 +84,7 @@ public class History_byDate extends ListActivity{
             String entry = ((TextView) view).getText().toString();
             String date_entry = formatEntry(entry);
             // Launching new Activity on selecting single List Item
-            Intent i = new Intent(getApplicationContext(), History_byTime.class);
+            Intent i = new Intent(getApplicationContext(), History_byTime_BarChart.class);
             // sending data to new activity
             i.putExtra("DATE", date_entry);
             startActivity(i);

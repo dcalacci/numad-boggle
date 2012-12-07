@@ -52,6 +52,7 @@ public class MainActivity extends Activity {
     
     public void OnTrickiestPartButtonClicked(View v) {
     	Intent i = new Intent(this, Plate_chart_project.class);
+    	i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
     	startActivity(i);
     }
 }
