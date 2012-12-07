@@ -28,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,8 +53,11 @@ public class History_byTime_BarChart extends ListActivity{
 		Log.d(TAG, "onCreate");
 		setContentView(R.layout.platechart_history);
 
-		Button addChart_Button = (Button) this.findViewById(R.id.button_addChart);
-		addChart_Button.setVisibility(Button.GONE);
+		/* Button addChart_Button = (Button) this.findViewById(R.id.button_addChart); */
+		/* addChart_Button.setVisibility(Button.GONE); */
+
+    /* LinearLayout actionBar = (LinearLayout)this.findViewById(R.id.platechart_history_actionBar); */
+    /* actionBar.setVisibility(LinearLayout.GONE); */
 
 		this.current_date = this.getIntent().getExtras().getString("DATE");
 		//addContent();
@@ -77,6 +81,9 @@ public class History_byTime_BarChart extends ListActivity{
 		//this.setListAdapter(new ArrayAdapter<String>(this, R.layout.platechart_history_rows_barchart, R.id.label, entryList));
 
 		ListView lv = getListView();
+
+/*     lv.setDivider(null); */
+/*     lv.setDividerHeight(0); */
 
 		lv.setOnItemClickListener(
 				new OnItemClickListener() {
