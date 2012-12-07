@@ -31,11 +31,12 @@
     <string name="track_meal_instructions">Just select the types of foods you\'ve eaten, and then edit
         the <b>Plate Chart</b> to keep track of how much of each thing you ate.
         \n\nDon\'t worry about whether or not the chart is exactly right.
-        \n\nAs long as you think it\'s accurate, it is!</string>
+        \n\nOnce you\'ve tracked a few meals, go back to the main screen and
+        check out the "Profile" tab to see your averages.</string>
     <string name="project_description">Plate Chart is a way to catalog and keep track of  the types of  food you eat.  After every meal 
 or snack, you enter the types of  food you ate - Protein, Vegetable, Dairy, Grains, Fruits, or Sugar/
 Oils.  You enter the data using an intuitive pie-chart like interface - there’s no text entry involved.  
-After you’ve tracked a meal, you can view your meal history or compare your tracked proportions to 
+After you\’ve tracked a meal, you can view your meal history or compare your tracked proportions to 
 the FDA recommended amounts.</string>
 
     <!-- Team Members -->

@@ -29,8 +29,7 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
     }
-    
-    // Team Members Button etc. TODO
+
     public void OnTeamMembersButtonClicked(View v) {
     	Intent i = new Intent(this, TeamMembers.class);
     	startActivity(i);
