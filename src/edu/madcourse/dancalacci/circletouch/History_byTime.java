@@ -116,6 +116,9 @@ public class History_byTime extends ListActivity{
   }
 
 
+  /**
+   * Converts a filename into a formatted list entry
+   */
   public void getTimeList(){
     String[] myFiles = this.fileList();
     SimpleDateFormat fileDate = 

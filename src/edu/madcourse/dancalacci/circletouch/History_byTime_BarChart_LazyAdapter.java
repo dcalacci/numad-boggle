@@ -22,10 +22,13 @@ public class History_byTime_BarChart_LazyAdapter extends BaseAdapter {
 	private ArrayList<String> items;
 	private static LayoutInflater inflater=null;
 	ProfileBar profileBar = new ProfileBar(context);
+  private String mCurrentDay;
 
-	public History_byTime_BarChart_LazyAdapter(Context context, ArrayList<String> items) {
+	public History_byTime_BarChart_LazyAdapter(Context context, 
+      ArrayList<String> items, String current_day) {
 		this.context = context;
 		this.items = items;
+    this.mCurrentDay = current_day;
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
@@ -127,7 +130,6 @@ public class History_byTime_BarChart_LazyAdapter extends BaseAdapter {
 		oil_sugar.setLayoutParams(new LinearLayout.LayoutParams(0, LayoutParams.FILL_PARENT, (float)0.16667));
 		Log.d(TAG, "oil displayed");
 	}
-
 	
 	
 }
