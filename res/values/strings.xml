@@ -38,6 +38,9 @@ or snack, you enter the types of  food you ate - Protein, Vegetable, Dairy, Grai
 Oils.  You enter the data using an intuitive pie-chart like interface - there’s no text entry involved.  
 After you\’ve tracked a meal, you can view your meal history or compare your tracked proportions to 
 the FDA recommended amounts.</string>
+    <string name="empty_chart_message">
+        You don\'t have any categories selected - add or remove food groups by selecting them below.
+    </string>
 
     <!-- Team Members -->
     <string name="team_members_label">Team Members</string>

@@ -111,6 +111,8 @@ public class AddChart extends Activity {
         }
     }
 
+
+
     // if we're editing the chart...
     if (mIsEditing) {
       Log.d(TAG, "in onResume, We're editing...");

@@ -8,6 +8,8 @@ import java.util.Comparator;
 import java.util.Map;
 
 import edu.madcourse.dancalacci.R;
+
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -676,6 +678,17 @@ public class Chart_View extends View {
 /*     background.setStyle(Paint.Style.FILL_AND_STROKE); */
 /*     canvas.drawRect(mCircleBounds, background); */
 /*  */
+
+    TextView overlay = (TextView) 
+        ((Activity)mContext).findViewById(R.id.empty_chart_message);
+    if (!mCategories.isEmpty()) {
+      Log.d(TAG, "setting overlay text to invisible in chart_view");
+      overlay.setVisibility(View.INVISIBLE);
+    } else {
+      Log.d(TAG, "setting overlay text to visible in chart_view");
+      overlay.setVisibility(View.VISIBLE);
+    }
+
     int size = mCategories.size();
     if (size >= 2){
       for (int i = 0; i < size; i++){
