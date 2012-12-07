@@ -290,7 +290,7 @@ public class AddChart extends Activity {
   }
 
   public void onSaveClicked(View v){
-    if (categories.isEmpty()) {
+    if (cir.getChartData().length() == 0) {
       Toast.makeText(getBaseContext(),
           "Add some categories before saving your chart!",
           Toast.LENGTH_SHORT).show();
