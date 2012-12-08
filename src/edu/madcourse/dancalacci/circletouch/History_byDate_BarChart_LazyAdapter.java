@@ -82,6 +82,7 @@ public class History_byDate_BarChart_LazyAdapter extends BaseAdapter {
 	}
 	
 	private void setSegments(View v, int index) {
+		
     Iterator<Map.Entry<String, Double>> it = getValueMap(index).entrySet().iterator();
     
     while (it.hasNext()) {
@@ -136,7 +137,8 @@ public class History_byDate_BarChart_LazyAdapter extends BaseAdapter {
 		
 		for (HistoryBarChart cat : cats) {
 			double percent = cat.getValue();
-			if (percent == 0) {
+			Log.d(TAG, "Cat: " + cat.getCategory() + " Value :" + percent);
+			if (percent == 0 && cats.size() == 1) {
 				valueMap.put(cat.getCategory(), 1.00);
 			}else {
 				valueMap.put(cat.getCategory(), percent);

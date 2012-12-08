@@ -59,9 +59,6 @@ public class History_byDate extends ListActivity{
 		Collections.sort(entryList);
 		Collections.reverse(entryList);
 
-		Collections.sort(entryList);
-		Collections.reverse(entryList);
-
 		adapter = new History_byDate_BarChart_LazyAdapter(this.getApplicationContext(), entryList);
 		setListAdapter(adapter);
 		ListView lv = getListView();
