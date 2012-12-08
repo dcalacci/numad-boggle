@@ -139,7 +139,7 @@ public class History_byDate extends ListActivity{
 	 * yyyy-MM-dd.
 	 * @param entry The entry string to format
 	 */
-	public String formatEntry(String entry){
+	public static String formatEntry(String entry){
 		SimpleDateFormat fileFormat = 
 				new SimpleDateFormat(AddChart.HISTORY_DATE_FORMAT, Locale.US);
 		DateFormat df = DateFormat.getDateInstance(DateFormat.LONG, Locale.US);
@@ -148,26 +148,6 @@ public class History_byDate extends ListActivity{
 			// parse the entry into a date, and then format it according to our
 			// file names.
 			Date date = df.parse(entry);
-			entryName = fileFormat.format(date);
-		} catch(ParseException e) {
-			e.printStackTrace();
-			Toast.makeText(getBaseContext(), "Sorry, I couldn't open that entry...",
-					Toast.LENGTH_SHORT).show();
-		}
-		Log.d(TAG, "entryName: "+ entryName);
-		return entryName;
-	}
-
-	public static String formatEntry_FileType(String entry){
-		SimpleDateFormat fileFormat = 
-				new SimpleDateFormat(AddChart.HISTORY_TIME_FORMAT, Locale.US);
-		SimpleDateFormat entryFormat= 
-				new SimpleDateFormat("yyyy-MM-dd");
-		String entryName = "";
-		try {
-			// parse the entry into a date, and then format it according to our
-			// file names.
-			Date date = entryFormat.parse(entry);
 			entryName = fileFormat.format(date);
 		} catch(ParseException e) {
 			e.printStackTrace();

@@ -110,7 +110,7 @@ public class History_byTime_BarChart_LazyAdapter extends BaseAdapter {
     Iterator<Map.Entry<String, Double>> it = getValueMap(index).entrySet().iterator();
     while (it.hasNext()) {
       Map.Entry<String, Double> pairs = (Map.Entry<String, Double>)it.next();
-      //System.out.println(pairs.getKey() + " = " + pairs.getValue());
+      System.out.println(pairs.getKey() + " = " + pairs.getValue());
       setSegmentValue(pairs.getKey(), pairs.getValue(), v);
 
       Log.d(TAG, "Setting "+pairs.getKey() +" to " +pairs.getValue());

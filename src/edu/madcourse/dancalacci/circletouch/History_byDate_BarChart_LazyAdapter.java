@@ -256,7 +256,7 @@ public class History_byDate_BarChart_LazyAdapter extends BaseAdapter {
 	 */  
 	private ArrayList<Category> getAllDayCategoriesFromFiles(int index) {
 		String[] savedFiles = context.fileList();
-		String entry = History_byDate.formatEntry_FileType(items.get(index));
+		String entry = History_byDate.formatEntry(items.get(index));
 		for (String str : savedFiles) {
 			Log.d(TAG, "@@@@ "+str);
 		}

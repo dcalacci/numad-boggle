@@ -191,7 +191,7 @@ private ArrayList<ProfileBarSegment> categoriesToSegments(ArrayList<Category> ca
 protected static double categoryToPercentage(Category cat) {
   double diff = TouchPoint.getDistCW(cat.getpCCW(), cat.getpCW());
   if (diff == 0){
-  	diff = 1;
+  	diff = Math.PI*2;
   }
   Log.d(TAG, "#### DIF: " + diff);
   double frac = diff/(2*Math.PI);
