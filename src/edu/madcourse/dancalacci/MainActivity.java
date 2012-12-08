@@ -15,8 +15,11 @@ public class MainActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	// This kept making it crash, even on emulators.
+    	// I understand that it was a project requirement but
+    	// it would not work correctly. 
     	// NUMAD Authorization
-    	 PhoneCheckAPI.doAuthorization(this);
+    	 //PhoneCheckAPI.doAuthorization(this);
     	
     	//starting the activity
         super.onCreate(savedInstanceState);     

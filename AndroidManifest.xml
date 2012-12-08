@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.madcourse.dancalacci"
-    android:versionCode="6"
+    android:versionCode="8"
     android:versionName="2.3" >
 
     <uses-sdk
@@ -42,15 +42,7 @@
         <activity
             android:name="edu.madcourse.dancalacci.circletouch.PlateChart_main"
             android:label="@string/final_app_name"
-            android:screenOrientation="portrait" 
-            android:taskAffinity="edu.madcourse.dancalacci.circletouch"
-            
-            android:icon="@drawable/platechart_launcher">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="edu.madcourse.dancalacci.circletouch.Plate_chart_project"
